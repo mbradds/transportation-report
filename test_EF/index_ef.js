@@ -19,8 +19,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         //},
 
         data: {
-            //googleSpreadsheetKey: '1uAxEUIUmxmuLzkQYdAI8nVxQhMTR7TZOxCuzywXEerQ'
-            googleSpreadsheetKey:'2PACX-1vQGpduJtsnGK7VnWJNG328lxTVyumz88IuJ2xv9pzyPuKm7Rvh4o4C_-q5WoA_sQ_n2w_AMr6LWuW7D'
+            googleSpreadsheetKey: '1uAxEUIUmxmuLzkQYdAI8nVxQhMTR7TZOxCuzywXEerQ'
         },
 
         colors:['#054169','#FFBE4B','#5FBEE6','#559B37','#FF821E','#871455','#FFFFFF','#8c8c96','#42464B'],
