@@ -1,12 +1,24 @@
+var select = document.getElementById('select');
+
 document.addEventListener('DOMContentLoaded',()=>{
-    Highcharts.chart('container', {
+    var hc = Highcharts.chart('container', {
  
             chart:{
                 type:'area', //line,bar,scatter,area,areaspline
                 zoomType: 'x', //allows the user to focus in on the x or y (x,y,xy)
                 borderColor: 'black',
                 borderWidth: 1,
-                animation: false
+                animation: false,
+                events:{
+                    load: function() {
+                        this.credits.element.onclick = function() {
+                            window.open(
+                              'https://www.cer-rec.gc.ca/index-eng.html',
+                              '_blank' // <- This is what makes it open in a new window.
+                            );
+                         }
+                    }
+                }   
             },
     
             credits:{
@@ -14,42 +26,44 @@ document.addEventListener('DOMContentLoaded',()=>{
                 text:'Canada Energy Regulator',
                 href:'https://www.cer-rec.gc.ca/index-eng.html'
             },
+
+            legend: {
+                enabled: false
+            },
     
             title:{text:'Crude by Rail Exports'},
     
             data: {
                 csvURL: 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/crude_by_rail_units.csv',
-                units_: 'bbl per day',
                 
                 complete: function(options,unit_select='bbl per day') {
                     options.series = options.series.filter(data => data.name === unit_select)
-                }
+                    
+                },
+
+            
             },
-    
     
             colors:['#054169','#FFBE4B','#5FBEE6','#559B37','#FF821E','#871455','#FFFFFF','#8c8c96','#42464B'],
             
-            //series: [{
-            //    data: graph.data
-            //}],
             
-            plotOptions: {
-                series: {
-                    stickyTracking:false,
-                    marker: {
-                        enabled: false
-                    },
-                    states: {
-                        inactive: {
-                          opacity: 1
-                        }
-                      }
+            //plotOptions: {
+            //    series: {
+            //        stickyTracking:false,
+            //        marker: {
+            //            enabled: false
+            //        },
+            //        states: {
+            //            inactive: {
+            //              opacity: 1
+            //           }
+            //          },
                     
-                }
-            },
+            //    }
+            //},
     
             tooltip:{
-                shared:true
+                shared:true,
             },
     
             xAxis: {
@@ -57,15 +71,15 @@ document.addEventListener('DOMContentLoaded',()=>{
             },
     
             yAxis: {
-                title:{text:'Crude by Rail Exports'+'('+')'}
+                title:{text: 'bbl per day'}
             }
-    
+            
         });
+        
 
     });
 
 
-var select = document.getElementById('select');
 select.addEventListener('change', (select) => {
 
     var units = select.target.value;
@@ -76,8 +90,10 @@ select.addEventListener('change', (select) => {
             data: {
                 complete: function(options) {
                     options.series = options.series.filter(data => data.name === units)
-                }
-            }
+                },
+                name : units
+            },
+            yAxis: {title: {text: units}}
         })
         
         graph.redraw();
