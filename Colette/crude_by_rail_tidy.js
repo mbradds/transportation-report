@@ -1,3 +1,38 @@
+function csvFormat(columns,filter_column='Units',filter_row='bbl per day'){
+                    
+    for (i=0;i<columns.length;i++){
+        var filter_index = 0;
+        if (filter_column === columns[i][0]){
+            filter_index = i
+        }
+    };
+    
+    for (c=0;c<columns.length;c++){
+    
+        for (r=1;r<columns[c].length;r++){
+            if (columns[filter_index][r] !== filter_row){
+                delete columns[c][r];
+            }
+        }
+    
+    };
+    
+    for (c=0;c<columns.length;c++){
+        columns[c] = columns[c].filter(function (el) {
+            return el != null;
+          });
+    };
+    
+    delete columns[filter_index]
+    columns = columns.filter(function (el) {
+        return el != null;
+    });
+
+return columns
+
+}
+
+var select = document.getElementById('select');
 
 document.addEventListener('DOMContentLoaded',()=>{
     Highcharts.chart('container', {
@@ -35,25 +70,12 @@ document.addEventListener('DOMContentLoaded',()=>{
             data: {
                 csvURL: 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/crude_by_rail_tidy.csv',
 
-                parsed: function(csv,filter_col='Units'){
-      
-                    // for (i=0;i<csv.length;i++){
-                    //     var filter_index = 0;
-                    //     if (filter_col === csv[i][0]){
-                    //         filter_index = i
-                    //     }
-                    // }
-                    // console.log(filter_index);
-
-                    //for (i=0;i<csv.length;i++){
-                    //    console.log(csv[i][1]);
-                    //}
-                    console.log(csv);
-
+                parsed: function(columns,filter_column='Units',filter_row='bbl per day'){
+                    this.columns = csvFormat(columns=columns,filter_column=filter_column,filter_row=filter_row)
                 },
 
                 complete: function(options) {
-                    options.series = options.series.filter(data => data.name === 'Volume');
+                    options.xAxis.type = 'datetime';
                 }
 
             },
@@ -65,7 +87,10 @@ document.addEventListener('DOMContentLoaded',()=>{
             },
     
             xAxis: {
-                type: 'datetime'
+                type: 'datetime',
+                dateTimeLabelFormats: {
+                    day: '%e of %b'
+                }
             },
     
             yAxis: {
@@ -77,6 +102,27 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
 
 
+select.addEventListener('change', (select) => {
 
+    var units = select.target.value;
+        
+    Highcharts.charts.forEach((graph) => {
+
+        graph.update({
+
+            data: {
+                parsed: function(columns,filter_column='Units',filter_row=units){
+                    this.columns = csvFormat(columns=this.columns,filter_column=filter_column,filter_row=filter_row)
+                }
+            },
+
+            yAxis: {title: {text: units}}
+        })
+            
+        graph.redraw(true);
+            
+    });
+    
+});
 
 

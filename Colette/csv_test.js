@@ -6,6 +6,7 @@ var csv = [
 ];
 
 var filter_column = 'Units';
+var filter_row = 'bbl';
 
 for (i=0;i<csv.length;i++){
     var filter_index = 0;
@@ -16,9 +17,8 @@ for (i=0;i<csv.length;i++){
 
 for (c=0;c<csv.length;c++){
 
-    for (r=0;r<csv[c].length;r++){
-        if (csv[filter_index][r] === 'm3'){
-            //console.log(csv[c][r]);
+    for (r=1;r<csv[c].length;r++){
+        if (csv[filter_index][r] !== filter_row){
             delete csv[c][r];
         }
     }
@@ -30,6 +30,11 @@ for (c=0;c<csv.length;c++){
         return el != null;
       });
 };
+
+delete csv[filter_index]
+csv = csv.filter(function (el) {
+    return el != null;
+});
 
 console.log(csv);
 
