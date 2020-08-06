@@ -1,5 +1,4 @@
 const xhr = new XMLHttpRequest();
-//const url = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/ngl_exports.json';
 const url = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/natural-gas-liquids-exports-monthly.json'
 var githubData = JSON.parse(JSON.stringify(JSON.parse(getData(url))));
 
@@ -10,7 +9,7 @@ var dataMap = [{'x':'Period','y':'Pipeline'},
             ];
 
 var filterMap = {'Product':'Propane',
-                 'Region':'Canada',
+                 'Region':'British Columbia',
                  'Units':'m3'}
 
 function getData(Url){
@@ -20,22 +19,24 @@ function getData(Url){
     return Httpreq.responseText;          
 };
 
-
 function filterData(jsdata,map,filterMap){
+    //this for filters the data based on the default user parameters
     for (var key of Object.keys(filterMap)){
-        jsdata = jsdata.filter(row => row[key] === filterMap[key]);
+        jsdata = jsdata.filter(row => row[key] == filterMap[key]);
         jsdata = jsdata.filter(row => delete row[key]);
     }
-    for (var key of Object.keys(map)){
-        jsdata = jsdata.filter(row => row[key] = row[map[key]]);
-        jsdata = jsdata.filter(row => delete row[map[key]]);
-    }
+
+    var xyData = [];
     
-    //TODO: remove extra json columns here
-    jsdata = jsdata.map(function(elt) {return (({ x, y }) => ({ x, y }))(elt);});
+    for (var row of jsdata){
+        var xYrow = {}
+        xYrow['y'] = row[map['y']]
+        xYrow['x'] = row[map['x']]
+        xyData.push(xYrow)
+    }
 
     jsdata = {'name':map['y'],
-              'data':jsdata}
+              'data':xyData}
 
     return jsdata
 }
@@ -45,7 +46,12 @@ function mapData(filterMap){
     var json_obj = [];
     for (i=0;i<dataMap.length;i++){
         var data = JSON.parse(JSON.stringify(githubData)); //deep copy so that only one github request is made
-        json_obj.push(filterData(data,dataMap[i],filterMap));
+        var hcReady = filterData(data,dataMap[i],filterMap)
+        //data has nulls removed at this point
+        //if (hcReady['data'].length > 0){
+        //    json_obj.push(hcReady);
+        //}
+        json_obj.push(hcReady); //TODO: look into how to only show series objects with data
     }
 
     return json_obj
@@ -65,7 +71,13 @@ const chart = new Highcharts.chart('container', {
         },
 
         plotOptions: {
-            connectNulls: false
+            series: {
+                connectNulls: false 
+            }
+        },
+
+        tooltip:{
+            shared:true,
         },
     
         title:{text: 'Propane Exports'},
@@ -115,9 +127,8 @@ function graphEvent(product,units){
 
     filterMap['Product'] = product
     filterMap['Units'] = units
-    console.log(filterMap)
+    
     json_obj = mapData(filterMap)
-    console.log(json_obj)
     Highcharts.charts.forEach((graph) => {
         
         graph.update({
@@ -145,7 +156,9 @@ function graphEvent(product,units){
                 data: json_obj[3]['data'],
                 color: '#559B37'
             }],
+
             title:{text: product+' Exports'},
+
             yAxis: {
                 title:{text: product+' Exports'}
             },
@@ -160,8 +173,8 @@ function graphEvent(product,units){
 var select_product = document.getElementById('select_product');
 select_product.addEventListener('change', (select_product) => {
     var product = select_product.target.value;
-    console.log(product)
-    graphEvent(product=product,units='bbl')
+    var units = filterMap['Units']
+    graphEvent(product=product,units=units)
 
             
 });       
@@ -169,8 +182,8 @@ select_product.addEventListener('change', (select_product) => {
 var select_units = document.getElementById('select_units');
 select_units.addEventListener('change', (select_units) => {
     var units = select_units.target.value;
-    console.log(units)
-    graphEvent(product='Propane',units=units)
+    var product = filterMap['Product']
+    graphEvent(product=product,units=units)
 
             
 });       
