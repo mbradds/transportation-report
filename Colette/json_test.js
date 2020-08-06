@@ -40,7 +40,7 @@ function mapData(filter_value){
 }
 
 json_obj = mapData('bbl per day')
-console.log(json_obj)
+console.log(json_obj[1]['data'])
 
 var chart = new Highcharts.chart('container', {
  
