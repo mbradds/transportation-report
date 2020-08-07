@@ -1,3 +1,9 @@
+function getData(Url){
+    var Httpreq = new XMLHttpRequest(); // a new request
+    Httpreq.open("GET",Url,false);
+    Httpreq.send(null);
+    return Httpreq.responseText;          
+};
 const xhr = new XMLHttpRequest();
 const url = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/natural-gas-liquids-exports-monthly.json'
 var githubData = JSON.parse(JSON.stringify(JSON.parse(getData(url))));
@@ -12,38 +18,59 @@ var filterMap = {'Product':'Propane',
                  'Region':'British Columbia',
                  'Units':'m3'}
 
-function getData(Url){
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET",Url,false);
-    Httpreq.send(null);
-    return Httpreq.responseText;          
-};
 
-function filterData(jsdata,map,filterMap){
+function getUnique(items,filterColumns){
+    var lookup2 = [];
+    var result2 = {};
+
+    for(f in filterColumns){
+        lookup2.push({})
+        result2[filterColumns[f]] = []
+    }
+
+    for (var item, i = 0; item = items[i++];) {
+        for(f in filterColumns){
+            var name = item[filterColumns[f]];
+            if(!(name in lookup2[f])) {
+                lookup2[f][name] = 1;
+                result2[filterColumns[f]].push(name);
+            }
+            
+        }
+
+    }
+    return result2
+    }
+
+var drop = getUnique(githubData,filterColumns=Object.keys(filterMap))
+console.log(drop);
+
+
+function filterData(data,map,filterMap){
     //this for filters the data based on the default user parameters
     for (var key of Object.keys(filterMap)){
-        jsdata = jsdata.filter(row => row[key] == filterMap[key]);
-        jsdata = jsdata.filter(row => delete row[key]);
+        data = data.filter(row => row[key] == filterMap[key]);
+        data = data.filter(row => delete row[key]);
     }
 
     var xyData = [];
     
-    for (var row of jsdata){
+    for (var row of data){
         var xYrow = {}
         xYrow['y'] = row[map['y']]
         xYrow['x'] = row[map['x']]
         xyData.push(xYrow)
     }
 
-    jsdata = {'name':map['y'],
+    data = {'name':map['y'],
               'data':xyData}
 
-    return jsdata
+    return data
 }
 
 function mapData(filterMap){
 
-    var json_obj = [];
+    var hcColumns = [];
     for (i=0;i<dataMap.length;i++){
         var data = JSON.parse(JSON.stringify(githubData)); //deep copy so that only one github request is made
         var hcReady = filterData(data,dataMap[i],filterMap)
@@ -51,10 +78,10 @@ function mapData(filterMap){
         //if (hcReady['data'].length > 0){
         //    json_obj.push(hcReady);
         //}
-        json_obj.push(hcReady); //TODO: look into how to only show series objects with data
+        hcColumns.push(hcReady); //TODO: look into how to only show series objects with data
     }
 
-    return json_obj
+    return hcColumns
 }
 
 json_obj = mapData(filterMap)
