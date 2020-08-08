@@ -12,12 +12,12 @@ function dynamicDropDown(id, optionsArray) {
         select.options[select.options.length] = new Option(text);
     }
 
-    var select = document.getElementById(id);
+    const select = document.getElementById(id);
     select.options.length = 0;
 
-    for (var i = 0; i < optionsArray.length; i++) {
+    optionsArray.map((v, i) => {
         addOption(id, optionsArray[i], select);
-    }
+    })
 
 }
 
@@ -68,8 +68,8 @@ function filterData(data, map, filterMap) {
         data = data.filter(row => delete row[key]);
     }
 
+    // TODO: Refactor into map 
     var xyData = [];
-
     for (var row of data) {
         var xYrow = {}
         xYrow['y'] = row[map['y']]
@@ -103,16 +103,11 @@ function filterData(data, map, filterMap) {
     return data
 }
 
-function mapData(filterMap) {
-
-    var hcColumns = [];
-    for (i = 0; i < dataMap.length; i++) {
-        var data = JSON.parse(JSON.stringify(githubData)); //deep copy so that only one github request is made
-        var hcReady = filterData(data, dataMap[i], filterMap)
-        hcColumns.push(hcReady); //TODO: look into how to only show series objects with data
-    }
-
-    return hcColumns
+const mapData = (filterMap) => {
+    return dataMap.map((v, i) => {
+        const data = JSON.parse(JSON.stringify(githubData));
+        return filterData(data, dataMap[i], filterMap)
+    })
 }
 
 function graphEvent(product, units, region) {
