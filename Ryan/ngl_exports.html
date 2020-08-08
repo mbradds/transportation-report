@@ -1,20 +1,39 @@
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/data.js"></script>
-<script src="https://code.highcharts.com/modules/no-data-to-display.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
 
-<select name="" id="select_product" style="width:100x;">
-  <option value="Propane">Propane</option>
-  <option value="Butane">Butane</option>
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ff3087" />
+  <meta name="msapplication-TileColor" content="#333333">
+  <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
+  <meta name="description" content="sample" />
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/data.js"></script>
+  <script src="https://code.highcharts.com/modules/no-data-to-display.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>sample</title>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <select name="" id="select_product" style="width:100x;">
+    <option value="Propane">Propane</option>
+    <option value="Butane">Butane</option>
   </select>
-<select name="" id="select_units" style="width:100x;">
-  <option value="bbl">bbl</option>
-  <option value="m3">m3</option>
-</select>
+  <select name="" id="select_units" style="width:100x;">
+    <option value="bbl">bbl</option>
+    <option value="m3">m3</option>
+  </select>
   <select name="" id="select_region" style="width:10x;">
-</select>
+  </select>
 
-<link rel="stylesheet" href="styles.css">
-<!--<div id="container" style="min-width: 310px; max-width: 900px; height: 400px; margin: 0 auto"></div> -->
-<div id="container" style="width: 900px; height: 400px; margin: 0 auto"></div>
-<script src="ngl_exports.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <!--<div id="container" style="min-width: 310px; max-width: 900px; height: 400px; margin: 0 auto"></div> -->
+  <div id="container" style="width: 900px; height: 400px; margin: 0 auto"></div>
+  <script src="ngl_exports.js"></script>
+</body>
+
+</html>
