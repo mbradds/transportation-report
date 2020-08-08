@@ -1,4 +1,4 @@
-function getData(Url) {
+const getData = (Url) => {
     var Httpreq = new XMLHttpRequest(); // a new request
     Httpreq.open("GET", Url, false);
     Httpreq.send(null);
