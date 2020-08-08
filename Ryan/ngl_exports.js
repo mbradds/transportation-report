@@ -89,7 +89,7 @@ function filterData(data,map,filterMap){
         data = data.filter(row => row[key] == filterMap[key]['Value']);
         data = data.filter(row => delete row[key]);
     }
-    
+
     var xyData = [];
     
     for (var row of data){
@@ -98,10 +98,29 @@ function filterData(data,map,filterMap){
         xYrow['x'] = row[map['x']]
         xyData.push(xYrow)
     }
-
+    
+    //if one of the "y" columns isnt null, then add it to data. If all columns are null, then dont add it to data.
+    //this ensures that the proper amount of legend items are shown
+    let yNull = true
+    for(t=0;t<xyData.length;t++){
+        if(xyData[t]['y']!=null){
+            yNull = false;
+            break;
+        }
+    };
+    
+    //This only adds a series if there is data
+    let hasData = false
+    if (! yNull){
+        hasData = true
+    } else {
+        hasData = false
+    }
     data = {'name':map['y'],
-              'data':xyData}
-    //dynamicDropDown("select_region", drop)
+            'data':xyData,
+            'hasData': hasData
+        }
+
     return data
 }
 
@@ -111,10 +130,6 @@ function mapData(filterMap){
     for (i=0;i<dataMap.length;i++){
         var data = JSON.parse(JSON.stringify(githubData)); //deep copy so that only one github request is made
         var hcReady = filterData(data,dataMap[i],filterMap)
-        //TODO: remove series objects "columns" that are empty
-        //if (hcReady['data'].length > 0){
-        //    json_obj.push(hcReady);
-        //}
         hcColumns.push(hcReady); //TODO: look into how to only show series objects with data
     }
 
@@ -123,7 +138,11 @@ function mapData(filterMap){
 
 json_obj = mapData(filterMap)
 
-//console.log(json_obj)
+// function createSeries(json_obj){
+//     //console.log(json_obj)
+// }
+// createSeries(json_obj)
+
 
 const chart = new Highcharts.chart('container', {
  
@@ -132,6 +151,7 @@ const chart = new Highcharts.chart('container', {
             zoomType: 'x', //allows the user to focus in on the x or y (x,y,xy)
             borderColor: 'black',
             borderWidth: 1,
+            animation: true,
             events:{
                 load: function() {
                     this.credits.element.onclick = function() {
@@ -152,8 +172,12 @@ const chart = new Highcharts.chart('container', {
 
         plotOptions: {
             series: {
+                //stickyTracking: false,
                 connectNulls: false,
                 states: {
+                    inactive: {
+                        opacity: 1
+                      },
                     hover: {
                     enabled: false
                     }
@@ -162,6 +186,7 @@ const chart = new Highcharts.chart('container', {
         },
 
         tooltip:{
+            animation:true,
             shared:true,
         },
     
@@ -195,25 +220,29 @@ const chart = new Highcharts.chart('container', {
             type: 'line',
             name: json_obj[0]['name'],
             data: json_obj[0]['data'],
-            color: '#054169'
+            color: '#054169',
+            visible: json_obj[0]['hasData']
         },
         {
             type: 'line',
             name: json_obj[1]['name'],
             data: json_obj[1]['data'],
-            color: '#FFBE4B'
+            color: '#FFBE4B',
+            visible: json_obj[1]['hasData']
         },
         {
             type: 'line',
             name: json_obj[2]['name'],
             data: json_obj[2]['data'],
-            color: '#5FBEE6'
+            color: '#5FBEE6',
+            visible: json_obj[2]['hasData']
         },
         {
             type: 'line',
             name: json_obj[3]['name'],
             data: json_obj[3]['data'],
-            color: '#559B37'
+            color: '#559B37',
+            visible: json_obj[3]['hasData']
         }]
             
     });
@@ -233,25 +262,29 @@ function graphEvent(product,units,region){
                 type: 'line',
                 name: json_obj[0]['name'],
                 data: json_obj[0]['data'],
-                color: '#054169'
+                color: '#054169',
+                visible: json_obj[0]['hasData']
             },
             {
                 type: 'line',
                 name: json_obj[1]['name'],
                 data: json_obj[1]['data'],
-                color: '#FFBE4B'
+                color: '#FFBE4B',
+                visible: json_obj[1]['hasData']
             },
             {
                 type: 'line',
                 name: json_obj[2]['name'],
                 data: json_obj[2]['data'],
-                color: '#5FBEE6'
+                color: '#5FBEE6',
+                visible: json_obj[2]['hasData']
             },
             {
                 type: 'line',
                 name: json_obj[3]['name'],
                 data: json_obj[3]['data'],
-                color: '#559B37'
+                color: '#559B37',
+                visible: json_obj[3]['hasData']
             }],
 
             title:{text: region+' '+product+' Exports'},
