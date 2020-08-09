@@ -106,13 +106,13 @@ const mapData = (fm,dm) => {
 
 const createSet = (hcData,colors) => {
     return hcData.map((v,i) => {
-        series = [{
+        series = {
             type: 'line',
             name: v['name'],
             data: v['data'],
             color: colors[i],
             visible: v['hasData']
-        }]
+        }
         return series
     })
 }
@@ -124,37 +124,13 @@ function graphEvent(product, units, region, filterMap,dataMap) {
     filterMap['Region']['Value'] = region
 
     json_obj = mapData(fm = filterMap,dm=dataMap)
+    var customSeries = createSet(json_obj,colors=colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#FFFFFF', '#8c8c96', '#42464B']);
+    console.log(customSeries);
     Highcharts.charts.forEach((graph) => {
 
         graph.update({
-            series: [{
-                type: 'line',
-                name: json_obj[0]['name'],
-                data: json_obj[0]['data'],
-                color: '#054169',
-                visible: json_obj[0]['hasData']
-            },
-            {
-                type: 'line',
-                name: json_obj[1]['name'],
-                data: json_obj[1]['data'],
-                color: '#FFBE4B',
-                visible: json_obj[1]['hasData']
-            },
-            {
-                type: 'line',
-                name: json_obj[2]['name'],
-                data: json_obj[2]['data'],
-                color: '#5FBEE6',
-                visible: json_obj[2]['hasData']
-            },
-            {
-                type: 'line',
-                name: json_obj[3]['name'],
-                data: json_obj[3]['data'],
-                color: '#559B37',
-                visible: json_obj[3]['hasData']
-            }],
+
+            series: customSeries,
 
             title: { text: region + ' ' + product + ' Exports' },
 
@@ -187,11 +163,7 @@ var filterMap = {
 }
 
 json_obj = mapData(fm=filterMap,dm=dataMap);
-//console.log(json_obj);
-
-const set = createSet(json_obj,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#FFFFFF', '#8c8c96', '#42464B']);
-console.log(set)
-
+var customSeries = createSet(json_obj,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#FFFFFF', '#8c8c96', '#42464B']);
 const drop = getUnique(githubData, filterColumns = Object.keys(filterMap))
 dynamicDropDown("select_region", drop['Region'].sort())
 document.getElementById('select_region').value = 'Canada';
@@ -293,36 +265,7 @@ const chart = new Highcharts.chart('container', {
             color: '#303030'
         }
     },
-
-    series: [{
-        type: 'line',
-        name: json_obj[0]['name'],
-        data: json_obj[0]['data'],
-        color: '#054169',
-        visible: json_obj[0]['hasData']
-    },
-    {
-        type: 'line',
-        name: json_obj[1]['name'],
-        data: json_obj[1]['data'],
-        color: '#FFBE4B',
-        visible: json_obj[1]['hasData']
-    },
-    {
-        type: 'line',
-        name: json_obj[2]['name'],
-        data: json_obj[2]['data'],
-        color: '#5FBEE6',
-        visible: json_obj[2]['hasData']
-    },
-    {
-        type: 'line',
-        name: json_obj[3]['name'],
-        data: json_obj[3]['data'],
-        color: '#559B37',
-        visible: json_obj[3]['hasData']
-    }]
-
+    series: customSeries
 });
 
 
