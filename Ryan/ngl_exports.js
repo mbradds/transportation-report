@@ -5,7 +5,6 @@ const getData = (Url) => {
     return Httpreq.responseText;
 };
 
-
 function dynamicDropDown(id, optionsArray) {
 
     function addOption(id, text, select) {
@@ -56,15 +55,10 @@ function getUnique(items, filterColumns) {
     }
 }
 
-function filterData(data, map, filterMap) {
+function filterData(data, map, fm) {
     //this for filters the data based on the default user parameters
-    for (var key of Object.keys(filterMap)) {
-        //this section of code gets all the valid provinces given the product
-        //TODO: update the dropdown here with relevant regions
-        // if(filterMap[key]['Dependent'] == true){
-        //     var drop = getUnique(data,filterColumns=key)
-        // }
-        data = data.filter(row => row[key] == filterMap[key]['Value']);
+    for (var key of Object.keys(fm)) {
+        data = data.filter(row => row[key] == fm[key]['Value']);
         data = data.filter(row => delete row[key]);
     }
 
@@ -103,20 +97,33 @@ function filterData(data, map, filterMap) {
     return data
 }
 
-const mapData = (filterMap) => {
-    return dataMap.map((v, i) => {
+const mapData = (fm,dm) => {
+    return dm.map((v, i) => {
         const data = JSON.parse(JSON.stringify(githubData));
-        return filterData(data, dataMap[i], filterMap)
+        return filterData(data, dm[i], fm)
     })
 }
 
-function graphEvent(product, units, region) {
+const createSet = (hcData,colors) => {
+    return hcData.map((v,i) => {
+        series = [{
+            type: 'line',
+            name: v['name'],
+            data: v['data'],
+            color: colors[i],
+            visible: v['hasData']
+        }]
+        return series
+    })
+}
+
+function graphEvent(product, units, region, filterMap,dataMap) {
 
     filterMap['Product']['Value'] = product
     filterMap['Units']['Value'] = units
     filterMap['Region']['Value'] = region
 
-    json_obj = mapData(filterMap)
+    json_obj = mapData(fm = filterMap,dm=dataMap)
     Highcharts.charts.forEach((graph) => {
 
         graph.update({
@@ -162,7 +169,6 @@ function graphEvent(product, units, region) {
 
 }
 
-
 const xhr = new XMLHttpRequest();
 const url = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/natural-gas-liquids-exports-monthly.json'
 var githubData = JSON.parse(JSON.stringify(JSON.parse(getData(url))));
@@ -180,10 +186,13 @@ var filterMap = {
     'Region': { 'Value': 'Canada', 'Dependent': true }
 }
 
-json_obj = mapData(filterMap)
+json_obj = mapData(fm=filterMap,dm=dataMap);
+//console.log(json_obj);
 
+const set = createSet(json_obj,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#FFFFFF', '#8c8c96', '#42464B']);
+console.log(set)
 
-var drop = getUnique(githubData, filterColumns = Object.keys(filterMap))
+const drop = getUnique(githubData, filterColumns = Object.keys(filterMap))
 dynamicDropDown("select_region", drop['Region'].sort())
 document.getElementById('select_region').value = 'Canada';
 
@@ -193,7 +202,7 @@ select_product.addEventListener('change', (select_product) => {
     var product = select_product.target.value;
     var units = filterMap['Units']['Value']
     var region = filterMap['Region']['Value']
-    graphEvent(product = product, units = units, region = region)
+    graphEvent(product, units, region, filterMap, dataMap)
 });
 
 var select_units = document.getElementById('select_units');
@@ -201,7 +210,7 @@ select_units.addEventListener('change', (select_units) => {
     var units = select_units.target.value;
     var product = filterMap['Product']['Value']
     var region = filterMap['Region']['Value']
-    graphEvent(product = product, units = units, region = region)
+    graphEvent(product, units, region, filterMap, dataMap)
 });
 
 var select_region = document.getElementById('select_region');
@@ -209,14 +218,8 @@ select_region.addEventListener('change', (select_region) => {
     var region = select_region.target.value;
     var product = filterMap['Product']['Value']
     var units = filterMap['Units']['Value']
-    graphEvent(product = product, units = units, region = region)
+    graphEvent(product, units, region, filterMap, dataMap)
 });
-
-
-// function createSeries(json_obj){
-//     //console.log(json_obj)
-// }
-// createSeries(json_obj)
 
 
 const chart = new Highcharts.chart('container', {
