@@ -5,7 +5,7 @@ const getData = (Url) => {
     return Httpreq.responseText;
 };
 
-function dynamicDropDown(id, optionsArray) {
+const dynamicDropDown = (id, optionsArray) => {
 
     function addOption(id, text, select) {
         select.options[select.options.length] = new Option(text);
@@ -21,7 +21,7 @@ function dynamicDropDown(id, optionsArray) {
 }
 
 //gets the unique regions to populate the dropdown
-function getUnique(items, filterColumns) {
+const getUnique = (items, filterColumns) => {
     if (Array.isArray(filterColumns)) {
         var lookup = [];
         var result = {};
@@ -55,24 +55,24 @@ function getUnique(items, filterColumns) {
     }
 }
 
-function filterData(data, map, fm) {
+const filterData = (xyData, map, fm) => {
     //this for filters the data based on the default user parameters
     for (var key of Object.keys(fm)) {
-        data = data.filter(row => row[key] == fm[key]['Value']);
-        data = data.filter(row => delete row[key]);
+        xyData = xyData.filter(row => row[key] == fm[key]['Value']);
+        xyData = xyData.filter(row => delete row[key]);
     }
 
-    // TODO: Refactor into map 
-    var xyData = [];
-    for (var row of data) {
-        var xYrow = {}
-        xYrow['y'] = row[map['y']]
-        xYrow['x'] = row[map['x']]
-        xyData.push(xYrow)
-    }
+    xyData = xyData.map((v,i) => {
+        xYrow = {
+            y: v[map['y']],
+            x: v[map['x']]
+        }
+        return xYrow
+    })
 
     //if one of the "y" columns isnt null, then add it to data. If all columns are null, then dont add it to data.
     //this ensures that the proper amount of legend items are shown
+
     let yNull = true
     for (t = 0; t < xyData.length; t++) {
         if (xyData[t]['y'] != null) {
@@ -117,7 +117,7 @@ const createSet = (hcData,colors) => {
     })
 }
 
-function graphEvent(product, units, region, filterMap,dataMap) {
+const graphEvent = (product, units, region, filterMap,dataMap) => {
 
     filterMap['Product']['Value'] = product
     filterMap['Units']['Value'] = units
@@ -125,7 +125,6 @@ function graphEvent(product, units, region, filterMap,dataMap) {
 
     json_obj = mapData(fm = filterMap,dm=dataMap)
     var customSeries = createSet(json_obj,colors=colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#FFFFFF', '#8c8c96', '#42464B']);
-    console.log(customSeries);
     Highcharts.charts.forEach((graph) => {
 
         graph.update({
