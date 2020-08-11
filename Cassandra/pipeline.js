@@ -1,4 +1,3 @@
-
 const getData = (Url) => {
     var Httpreq = new XMLHttpRequest(); // a new request
     Httpreq.open("GET", Url, false);
@@ -60,12 +59,14 @@ const getUnique = (items, filterColumns) => {
 const filterData = (data, fm) => { 
     //get the specific pipeline
     data = data.filter(row => row.Pipeline == fm['Pipeline']['Value'])
+    var owner = data[0]['Owner']
     //these are all the financial metrics specific to the chosen pipeline
     var finMetrics = getUnique(items=data,filterColumns='Type')
 
     var hcData = [];
     for (metric in finMetrics){
         dataMetric = data.filter(row => row.Type == finMetrics[metric])
+        var unit = dataMetric[0]['Unit']
         dataMetric = dataMetric.map((v,i) =>{
             hcRow = {
                 x: v['Year'],
@@ -74,44 +75,64 @@ const filterData = (data, fm) => {
             return hcRow
         });
 
+        var showSecond = false
+
+        if (unit == '%'){
+            var yAxis = 1
+            var showSecond = true
+            var chartType = 'scatter'
+        } else {
+            var yAxis = 0
+            var chartType = 'line'
+        }
+
         var completedMetric = {
             'name': finMetrics[metric],
-            'data': dataMetric
+            'data': dataMetric,
+            'yAxis': yAxis,
+            'type': chartType
         };
         hcData.push(completedMetric)
     }
 
-    return hcData
+    return [hcData,owner,showSecond]
 }
 
 const createSet = (githubData,filterMap,colors) => {
-    hcData = filterData(githubData,filterMap)
 
-    return hcData.map((v,i) => {
+    hcData = filterData(githubData,filterMap)
+    owner = hcData[1]
+    hcData = hcData[0]
+
+    hcData = hcData.map((v,i) => {
         series = {
-            type: 'line',
+            type: v['type'],
             name: v['name'],
             data: v['data'],
-            color: colors[i]
+            color: colors[i],
+            yAxis: v['yAxis']
         }
         return series
     })
+    return [hcData,owner,showSecond]
 }
 
 var filterMap = {
-    'Pipeline': { 'Value': 'Aurora pipeline', 'Dependent': false }
+    'Pipeline': { 'Value': 'Canadian Mainline', 'Dependent': false }
 }
 
 const xhr = new XMLHttpRequest();
 const url = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/PipelineProfileTables.json'
 var githubData = JSON.parse(JSON.stringify(JSON.parse(getData(url))));
-var customSeries = createSet(githubData,filterMap,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#FFFFFF', '#8c8c96', '#42464B']);
-
+var customSeries = createSet(githubData,filterMap,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']);
+var showSecond = customSeries[2]
+var owner = customSeries[1]
+customSeries = customSeries[0]
 const drop = getUnique(githubData, filterColumns = 'Pipeline')
 dynamicDropDown("select_pipeline", drop.sort())
-document.getElementById('select_pipeline').value = 'Aurora pipeline';
+document.getElementById('select_pipeline').value = 'Canadian Mainline';
 
-const createChart = (newData) => {
+const createChart = (newData,owner,showSecond) => {
 
 const chart = new Highcharts.chart('container', {
 
@@ -159,13 +180,28 @@ const chart = new Highcharts.chart('container', {
         shared: true,
     },
 
-    title: { text: filterMap.Pipeline.Value},
+    title: {text: owner+': '+filterMap.Pipeline.Value},
 
-    colors: ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#FFFFFF', '#8c8c96', '#42464B'],
+    colors: ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B'],
 
-    yAxis: {
-        title: { text: 'Canadian Dollars ($)' }
-    },
+    // yAxis: {
+    //     title: { text: 'Canadian Dollars ($)' }
+    // },
+
+    yAxis: [{ // Primary yAxis
+        title: {
+            text: 'CAD'
+        }
+    }, { // Secondary yAxis
+        title: {
+            text: '% Metric'
+        },
+        labels: {
+            format: '{value}%'
+        },
+        opposite: true,
+        visible: showSecond
+    }],
 
     lang: {
         noData: "No Financial Data"
@@ -182,7 +218,7 @@ const chart = new Highcharts.chart('container', {
 
 }
 
-const chart = createChart(customSeries);
+const chart = createChart(customSeries,owner);
 
 var select_pipeline = document.getElementById('select_pipeline');
 select_pipeline.addEventListener('change', (select_pipeline) => {
@@ -192,8 +228,11 @@ select_pipeline.addEventListener('change', (select_pipeline) => {
 
 const graphEvent = (pipeline,filterMap) => {
     filterMap['Pipeline']['Value'] = pipeline
-    var customSeries = createSet(githubData,filterMap,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#FFFFFF', '#8c8c96', '#42464B']);
-    createChart(customSeries)
+    var customSeries = createSet(githubData,filterMap,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']);
+    var showSecond = customSeries[2]
+    var owner = customSeries[1]
+    customSeries = customSeries[0]
+    createChart(customSeries,owner,showSecond)
 }
 
 
