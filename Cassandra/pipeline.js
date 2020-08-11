@@ -81,9 +81,18 @@ const filterData = (data, fm) => {
             var yAxis = 1
             var showSecond = true
             var chartType = 'scatter'
+            // var marker = {
+            //     symbol: 'url(https://raw.githubusercontent.com/mbradds/HighchartsData/master/percentage-sign-svgrepo-com.svg)',
+            //     width: 10,
+            //     height: 10,
+            //     color: '#FFBE4B'
+            // }
         } else {
             var yAxis = 0
             var chartType = 'line'
+            // var marker = {
+            //     symbol: 'triangle'
+            // }
         }
 
         var completedMetric = {
@@ -134,87 +143,87 @@ document.getElementById('select_pipeline').value = 'Canadian Mainline';
 
 const createChart = (newData,owner,showSecond) => {
 
-const chart = new Highcharts.chart('container', {
+    const chart = new Highcharts.chart('container', {
 
-    chart: {
-        type: 'line', //line,bar,scatter,area,areaspline
-        zoomType: 'x', //allows the user to focus in on the x or y (x,y,xy)
-        borderColor: 'black',
-        borderWidth: 1,
-        animation: true,
-        events: {
-            load: function () {
-                this.credits.element.onclick = function () {
-                    window.open(
-                        'https://www.cer-rec.gc.ca/index-eng.html',
-                        '_blank' // <- This is what makes it open in a new window.
-                    );
+        chart: {
+            type: 'line', //line,bar,scatter,area,areaspline
+            zoomType: 'x', //allows the user to focus in on the x or y (x,y,xy)
+            borderColor: 'black',
+            borderWidth: 1,
+            animation: true,
+            events: {
+                load: function () {
+                    this.credits.element.onclick = function () {
+                        window.open(
+                            'https://www.cer-rec.gc.ca/index-eng.html',
+                            '_blank' // <- This is what makes it open in a new window.
+                        );
+                    }
                 }
             }
-        }
-    },
+        },
 
-    credits: {
-        //enabled:false //gets rid of the "Highcharts logo in the bottom right"
-        text: 'Canada Energy Regulator',
-        href: 'https://www.cer-rec.gc.ca/index-eng.html'
-    },
+        credits: {
+            //enabled:false //gets rid of the "Highcharts logo in the bottom right"
+            text: 'Canada Energy Regulator',
+            href: 'https://www.cer-rec.gc.ca/index-eng.html'
+        },
 
-    plotOptions: {
-        series: {
-            //stickyTracking: false,
-            connectNulls: false,
-            states: {
-                inactive: {
-                    opacity: 1
-                },
-                hover: {
-                    enabled: false
+        plotOptions: {
+            series: {
+                //stickyTracking: false,
+                connectNulls: false,
+                states: {
+                    inactive: {
+                        opacity: 1
+                    },
+                    hover: {
+                        enabled: false
+                    }
                 }
             }
-        }
-    },
-
-    tooltip: {
-        animation: true,
-        shared: true,
-    },
-
-    title: {text: owner+': '+filterMap.Pipeline.Value},
-
-    colors: ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B'],
-
-    // yAxis: {
-    //     title: { text: 'Canadian Dollars ($)' }
-    // },
-
-    yAxis: [{ // Primary yAxis
-        title: {
-            text: 'CAD'
-        }
-    }, { // Secondary yAxis
-        title: {
-            text: '% Metric'
         },
-        labels: {
-            format: '{value}%'
-        },
-        opposite: true,
-        visible: showSecond
-    }],
 
-    lang: {
-        noData: "No Financial Data"
-    },
-    noData: {
-        style: {
-            fontWeight: 'bold',
-            fontSize: '15px',
-            color: '#303030'
-        }
-    },
-    series: newData
-});
+        tooltip: {
+            animation: true,
+            shared: true,
+        },
+
+        title: {text: owner+': '+filterMap.Pipeline.Value},
+
+        colors: ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B'],
+
+        // yAxis: {
+        //     title: { text: 'Canadian Dollars ($)' }
+        // },
+
+        yAxis: [{ // Primary yAxis
+            title: {
+                text: 'CAD'
+            }
+        }, { // Secondary yAxis
+            title: {
+                text: '% Metric'
+            },
+            labels: {
+                format: '{value}%'
+            },
+            opposite: true,
+            visible: showSecond
+        }],
+
+        lang: {
+            noData: "No Financial Data"
+        },
+        noData: {
+            style: {
+                fontWeight: 'bold',
+                fontSize: '15px',
+                color: '#303030'
+            }
+        },
+        series: newData
+    });
 
 }
 
