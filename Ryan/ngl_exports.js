@@ -117,6 +117,32 @@ const createSet = (hcData,colors) => {
     })
 }
 
+
+const afterSetExtremes = (event) => {
+    console.log('changed zoom')
+    console.log(event.dataMax)
+    console.log(event.dataMin)
+    labelText = 'Visible date range:: ' + event.dataMin + ' - '+event.dataMax
+
+    chart.renderer.text(labelText, 80, 80)
+      .attr({
+        zIndex: 5
+      })
+      .css({
+        fontSize: '12px'
+      })
+      .add();
+
+    // chart.renderer.rect(75, 65, 135, 40, 2)
+    //   .attr({
+    //     'stroke-width': 2,
+    //     stroke: 'black',
+    //     fill: '#CEF74A',
+    //     zIndex: 4
+    //   })
+    //   .add();
+    }
+
 const graphEvent = (product, units, region, filterMap,dataMap) => {
 
     filterMap['Product']['Value'] = product
@@ -246,8 +272,12 @@ const chart = new Highcharts.chart('container', {
     xAxis: {
         type: 'datetime',
         dateTimeLabelFormats: {
-            day: '%e of %b'
-        }
+            day: '%e of %,b'
+        },
+        // events: {
+        //     afterSetExtremes: afterSetExtremes,
+        //     setExtremes: function(e){console.log('reset zoom')}
+        // }
     },
 
     yAxis: {

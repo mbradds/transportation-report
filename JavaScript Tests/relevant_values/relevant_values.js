@@ -7,18 +7,23 @@ const getData = (Url) => {
 
 const dynamicDropDown = (id, optionsArray) => {
 
-    function addOption(id, text, select) {
+    function addOption(text, select) {
         select.options[select.options.length] = new Option(text);
     }
 
-    const select = document.getElementById(id);
-    select.options.length = 0;
+    var select = document.getElementById(id);
+    var i, L = select.options.length - 1;
+    for(i = L; i >= 0; i--) {
+       select.remove(i);
+    }
+    //select.options.length = 0;
 
     optionsArray.map((v, i) => {
-        addOption(id, optionsArray[i], select);
+        addOption(optionsArray[i], select);
     })
 
 }
+
 
 //gets the unique regions to populate the dropdown
 const getUnique = (items, filterColumns) => {
@@ -57,13 +62,17 @@ const getUnique = (items, filterColumns) => {
 }
 
 const filterData = (data, fm) => { 
-    //get the specific pipeline
+    
+    //get the specific financial metric
     data = data.filter(row => row.Type == fm['Type']['Value'])
+    //get the pipes in commodity category
     if (fm['Pipeline']['Value'] == 'Oil'){
         data = data.filter(row => pipeCategory.Oil.includes(row.Pipeline))
     } else if (fm['Pipeline']['Value'] == 'Gas'){
         data = data.filter(row => !pipeCategory.Oil.includes(row.Pipeline))
     }
+
+    dropData = data;
     //these are all the financial metrics specific to the chosen pipeline
     var finPipes = getUnique(items=data,filterColumns='Pipeline')
 
@@ -98,7 +107,9 @@ const filterData = (data, fm) => {
 }
 
 const createSet = (githubData,filterMap,colors) => {
+
     hcData = filterData(githubData,filterMap)
+    dropData = hcData[2]
     yOptions = hcData[1]
     hcData = hcData[0]
 
@@ -111,6 +122,23 @@ const createSet = (githubData,filterMap,colors) => {
         return series
     })
     return [hcData,yOptions]
+}
+
+const relevantValues = (data,pipeGroup) => {
+    // var select_pipes = document.getElementById('select_pipelines');
+    // select_pipes.addEventListener('change', (select_pipes) => {
+    //     var pipeGroup = select_pipes.target.value;
+    //     console.log(pipeGroup)
+    // });
+
+    if (pipeGroup == 'Oil'){
+        data = data.filter(row => pipeCategory.Oil.includes(row.Pipeline))
+    } else if (pipeGroup == 'Gas'){
+        data = data.filter(row => !pipeCategory.Oil.includes(row.Pipeline))
+    }
+
+    commodityMetrics = getUnique(items=data,filterColumns='Type')
+    return commodityMetrics
 }
 
 const fillDrop = (column,dropName,value,data) => {
@@ -133,7 +161,7 @@ var githubData = JSON.parse(JSON.stringify(JSON.parse(getData(url))));
 var customSeries = createSet(githubData,filterMap,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']);
 yOptions = customSeries[1];
 customSeries = customSeries[0]
-fillDrop(column='Type',dropName='select_metric',value='Assets',data=githubData)
+//fillDrop(column='Type',dropName='select_metric',value='Assets',data=githubData)
 
 
 const createChart = (newData,yOptions) => {
@@ -221,10 +249,14 @@ select_metric.addEventListener('change', (select_metric) => {
     graphEvent(metric, pipeGroup, filterMap)
 });
 
+//selects oil, gas, or all
 var select_pipes = document.getElementById('select_pipelines');
 select_pipes.addEventListener('change', (select_pipes) => {
     var pipeGroup = select_pipes.target.value;
     var metric = filterMap.Type.Value
+    commodityMetrics = relevantValues(githubData,pipeGroup)
+    console.log(commodityMetrics)
+    dynamicDropDown('select_metric', commodityMetrics)
     graphEvent(metric, pipeGroup, filterMap)
 });
 
