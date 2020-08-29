@@ -46,9 +46,9 @@ const checkIfValid = (data) =>{
     return valid
 }   
     
-const createChart = (githubData,filterMap,colorsCapacity,colorsThroughput,y) => {
+const createChart = (githubData,filterMap,colorsCapacity,colorsThroughput,yT,yC) => {
     
-    var throughcap = filterDataSeries(githubData,filterMap,colorsCapacity,colorsThroughput,y) 
+    var throughcap = filterDataSeries(githubData,filterMap,colorsCapacity,colorsThroughput,yT,yC) 
     var throughput = throughcap.slice(0)[0]
     var capacity = throughcap.slice(-1)[0]
     var showCap = checkIfValid(capacity.data)
@@ -186,14 +186,14 @@ const getUnique = (items, filterColumns) => {
     }
 }
     
-const groupBy = (itter,column,colorsCapacity) => {
+const groupBy = (itter,column,colorsCapacity,yC) => {
     //get the appropriate color
     var capColor = colorsCapacity[itter[0]['Corporate Entity']]
     
     result = {}
     grouped = itter.reduce((result,current) => {
         result[current[column]] = result[current[column]] || [];
-        result[current[column]].push(current['Available Capacity (1000 m3/d)']);
+        result[current[column]].push(current[yC]);
         return result
     })
     
@@ -213,7 +213,7 @@ const groupBy = (itter,column,colorsCapacity) => {
     }
         
     var completedMetric = {
-        name: 'Available Capacity (1000 m3/d)',
+        name: yC,
         data: hcGroup,
         type: 'line',
         color: capColor
@@ -222,14 +222,14 @@ const groupBy = (itter,column,colorsCapacity) => {
     return completedMetric
 }
     
-const filterDataSeries = (data, fm,colorsCapacity,colorsThroughput,y) => { 
+const filterDataSeries = (data, fm,colorsCapacity,colorsThroughput,yT,yC) => { 
     //get the specific pipeline
     Object.keys(fm).map((v,i) => {
         data = data.filter(row => row[v] == fm[v]['Value'])
     })
     
     var capacity =  JSON.parse(JSON.stringify(data)); //deep copy so changes dont get applied to throughput
-    capacity = groupBy(capacity,'Date',colorsCapacity)
+    capacity = groupBy(capacity,'Date',colorsCapacity,yC)
     var products = getUnique(data,'Product')
     var throughput = [];
     for (var product in products){
@@ -238,7 +238,7 @@ const filterDataSeries = (data, fm,colorsCapacity,colorsThroughput,y) => {
         dataProduct = dataProduct.map((v,i) =>{
             hcRow = {
                 x: v['Date'],
-                y: v[y]
+                y: v[yT]
             }
             return hcRow
         });
@@ -255,9 +255,9 @@ const filterDataSeries = (data, fm,colorsCapacity,colorsThroughput,y) => {
     return [throughput,capacity]
 }
         
-const filterDataPoints = (data, fm, colors) => { 
+const filterDataPoints = (data, colors) => { 
         
-    data = data.filter(row => row.Commodity == fm.Commodity.Value)
+    //data = data.filter(row => row.Commodity == fm.Commodity.Value)
     const nameChange = [['Longitude','lon'],['Latitude','lat'],['Key Point','name']]
     data = data.map((v,i) => {
         for (var name in nameChange){
@@ -271,38 +271,7 @@ const filterDataPoints = (data, fm, colors) => {
     return data
 }
     
-const urlPoints = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/keyPoints.json'
-var githubPoints = JSON.parse(JSON.stringify(JSON.parse(getData(urlPoints))));
-const urlSeries = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/oil_throughcap.json'
-var githubSeries = JSON.parse(JSON.stringify(JSON.parse(getData(urlSeries))));
-var filterPoint = {
-    'Commodity': {'Value': 'Oil'}
-}
-const colorsCapacity = {
-    'Trans Mountain Pipeline ULC': '#FFBE4B',
-    'Enbridge Pipelines (NW) Inc.': '#054169',
-    'Enbridge Pipelines Inc.':'#5FBEE6',
-    'PKM Cochin ULC':'#559B37',
-    'TransCanada Keystone Pipeline GP Ltd.':'#FF821E'
-}
-
-const colorsThroughput = {
-    'refined petroleum products': '#5FBEE6',
-    'foreign light': '#FF821E',
-    'domestic heavy':'#871455',
-    'domestic light / ngl':'#8c8c96',
-    'domestic light':'#8c8c96'
-}
-
-var filterMap = {
-    'Corporate Entity': {'Value': 'Enbridge Pipelines Inc.'},
-    'Key Point':{'Value':'ex-Gretna'}
-}
-    
-var oilPoints = filterDataPoints(githubPoints,filterPoint,colorsCapacity)
-var blank = blankChart()
-
-const crudeMap = (colorsCapacity,colorsThroughput,y) =>{
+const crudeMap = (colorsCapacity,colorsThroughput,yT,yC) =>{
 
     Highcharts.mapChart('container_map', {
 
@@ -332,7 +301,7 @@ const crudeMap = (colorsCapacity,colorsThroughput,y) =>{
                             }
                             filterMap['Corporate Entity'].Value = this['Corporate Entity']
                             filterMap['Key Point'].Value = this.name
-                            createChart(githubSeries,filterMap,colorsCapacity,colorsThroughput,y)   
+                            createChart(githubSeries,filterMap,colorsCapacity,colorsThroughput,yT,yC)   
                         }
                     }
                 }},
@@ -419,4 +388,33 @@ const crudeMap = (colorsCapacity,colorsThroughput,y) =>{
     
     }
 
-crudeMap(colorsCapacity,colorsThroughput,y='Throughput (1000 m3/d)')
+//main program
+const urlPoints = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/keyPointsOil.json'
+var githubPoints = JSON.parse(JSON.stringify(JSON.parse(getData(urlPoints))));
+const urlSeries = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/oil_throughcap.json'
+var githubSeries = JSON.parse(JSON.stringify(JSON.parse(getData(urlSeries))));
+
+const colorsCapacity = {
+    'Trans Mountain Pipeline ULC': '#FFBE4B',
+    'Enbridge Pipelines (NW) Inc.': '#054169',
+    'Enbridge Pipelines Inc.':'#5FBEE6',
+    'PKM Cochin ULC':'#559B37',
+    'TransCanada Keystone Pipeline GP Ltd.':'#FF821E'
+}
+
+const colorsThroughput = {
+    'refined petroleum products': '#5FBEE6',
+    'foreign light': '#FF821E',
+    'domestic heavy':'#871455',
+    'domestic light / ngl':'#8c8c96',
+    'domestic light':'#8c8c96'
+}
+//TODO: look into getting rid of this object
+var filterMap = {
+    'Corporate Entity': {'Value': 'Enbridge Pipelines Inc.'},
+    'Key Point':{'Value':'ex-Gretna'}
+}
+    
+var oilPoints = filterDataPoints(githubPoints,colorsCapacity)
+var blank = blankChart()
+crudeMap(colorsCapacity,colorsThroughput,yT='Throughput (1000 m3/d)',yC='Available Capacity (1000 m3/d)')
