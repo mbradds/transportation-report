@@ -90,6 +90,7 @@ const createChart = (githubData,filterMap,colorsCapacity,colorsThroughput,yT,yC)
                 stacking: 'normal'
             },
             series: {
+                turboThreshold: 5000,
                 stickyTracking: false,
                 connectNulls: false,
                 states: {
@@ -227,7 +228,6 @@ const filterDataSeries = (data, fm,colorsCapacity,colorsThroughput,yT,yC) => {
     Object.keys(fm).map((v,i) => {
         data = data.filter(row => row[v] == fm[v]['Value'])
     })
-    
     var capacity =  JSON.parse(JSON.stringify(data)); //deep copy so changes dont get applied to throughput
     capacity = groupBy(capacity,'Date',colorsCapacity,yC)
     var products = getUnique(data,'Product')
@@ -249,7 +249,7 @@ const filterDataSeries = (data, fm,colorsCapacity,colorsThroughput,yT,yC) => {
             'type': 'area',
             'color': color
         };
-    
+        
         throughput.push(completedMetric)
     }
     return [throughput,capacity]
@@ -271,7 +271,12 @@ const filterDataPoints = (data, colors) => {
     return data
 }
     
-const crudeMap = (colorsCapacity,colorsThroughput,yT,yC) =>{
+const throughCapMap = (pointsData,seriesData,colorsCapacity,colorsThroughput,yT,yC) =>{
+
+    var filterMap = {
+        'Corporate Entity': {'Value': ''},
+        'Key Point':{'Value':''}
+    }
 
     Highcharts.mapChart('container_map', {
 
@@ -301,7 +306,7 @@ const crudeMap = (colorsCapacity,colorsThroughput,yT,yC) =>{
                             }
                             filterMap['Corporate Entity'].Value = this['Corporate Entity']
                             filterMap['Key Point'].Value = this.name
-                            createChart(githubSeries,filterMap,colorsCapacity,colorsThroughput,yT,yC)   
+                            createChart(seriesData,filterMap,colorsCapacity,colorsThroughput,yT,yC)   
                         }
                     }
                 }},
@@ -374,7 +379,7 @@ const crudeMap = (colorsCapacity,colorsThroughput,yT,yC) =>{
         },{
         type: 'mappoint',
             name: 'Key Points',
-            data : oilPoints,
+            data : pointsData,
             dataLabels: {
                     enabled: true,
                     borderRadius: 7,
@@ -389,32 +394,60 @@ const crudeMap = (colorsCapacity,colorsThroughput,yT,yC) =>{
     }
 
 //main program
-const urlPoints = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/keyPointsOil.json'
-var githubPoints = JSON.parse(JSON.stringify(JSON.parse(getData(urlPoints))));
-const urlSeries = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/oil_throughcap.json'
-var githubSeries = JSON.parse(JSON.stringify(JSON.parse(getData(urlSeries))));
-
-const colorsCapacity = {
-    'Trans Mountain Pipeline ULC': '#FFBE4B',
-    'Enbridge Pipelines (NW) Inc.': '#054169',
-    'Enbridge Pipelines Inc.':'#5FBEE6',
-    'PKM Cochin ULC':'#559B37',
-    'TransCanada Keystone Pipeline GP Ltd.':'#FF821E'
-}
-
-const colorsThroughput = {
-    'refined petroleum products': '#5FBEE6',
-    'foreign light': '#FF821E',
-    'domestic heavy':'#871455',
-    'domestic light / ngl':'#8c8c96',
-    'domestic light':'#8c8c96'
-}
-//TODO: look into getting rid of this object
-var filterMap = {
-    'Corporate Entity': {'Value': 'Enbridge Pipelines Inc.'},
-    'Key Point':{'Value':'ex-Gretna'}
-}
+const commodityGraph = (commodity) => {
     
-var oilPoints = filterDataPoints(githubPoints,colorsCapacity)
-var blank = blankChart()
-crudeMap(colorsCapacity,colorsThroughput,yT='Throughput (1000 m3/d)',yC='Available Capacity (1000 m3/d)')
+    if (commodity == 'oil'){
+        var urlPoints = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/keyPointsOil.json'
+        var urlSeries = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/oil_throughcap.json'
+        var colorsCapacity = {
+            'Trans Mountain Pipeline ULC': '#FFBE4B',
+            'Enbridge Pipelines (NW) Inc.': '#054169',
+            'Enbridge Pipelines Inc.':'#5FBEE6',
+            'PKM Cochin ULC':'#559B37',
+            'TransCanada Keystone Pipeline GP Ltd.':'#FF821E'
+        }
+        
+        var colorsThroughput = {
+            'refined petroleum products': '#5FBEE6',
+            'foreign light': '#FF821E',
+            'domestic heavy':'#871455',
+            'domestic light / ngl':'#8c8c96',
+            'domestic light':'#8c8c96'
+        }
+
+        var yT='Throughput (1000 m3/d)'
+        var yC='Available Capacity (1000 m3/d)'
+
+    } else {
+        
+        var urlPoints = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/keyPointsGas.json'
+        var urlSeries = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/gas_throughcap.json'
+        var colorsCapacity = {
+            'Westcoast Energy Inc.':'#5FBEE6',
+            'TransCanada PipeLines Limited':'#559B37',
+            'NOVA Gas Transmission Ltd. (NGTL)':'#054169',
+            'Alliance Pipeline Limited Partnership':'#FFBE4B',
+            'Foothills Pipe Lines Ltd. (Foothills)':'#FF821E',
+            'Emera Brunswick Pipeline Company Ltd.':'#8c8c96',
+            'Maritimes & Northeast Pipeline':'#42464B',
+            'Trans Québec & Maritimes Pipeline Inc':'#871455'
+        }
+        var colorsThroughput = {
+            'Natural Gas':'#42464B'
+        }
+        var yT='Throughput (1000 m3/d)'
+        var yC='Capacity (1000 m3/d)'
+
+    }
+    
+    var githubPoints = JSON.parse(JSON.stringify(JSON.parse(getData(urlPoints))));
+    var githubSeries = JSON.parse(JSON.stringify(JSON.parse(getData(urlSeries))));
+    
+    var oilPoints = filterDataPoints(githubPoints,colorsCapacity)
+    var blank = blankChart()
+    throughCapMap(oilPoints,githubSeries,colorsCapacity,colorsThroughput,yT,yC)
+
+}
+
+var commodity = 'gas'
+commodityGraph(commodity)
