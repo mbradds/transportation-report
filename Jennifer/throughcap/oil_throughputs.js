@@ -294,7 +294,7 @@ const throughCapMap = (pointsData,seriesData,colorsCapacity,colorsThroughput,yT,
                             var text = '<b>'+this['Corporate Entity']+' '+this.name+'</b>'+'<br>Direction of flow: ' + this['Direction of Flow']
                                 chart = this.series.chart;
                             if (!chart.clickLabel) {
-                                chart.clickLabel = chart.renderer.label(text, 525, 200)
+                                chart.clickLabel = chart.renderer.label(text, 600, 150)
                                     .css({
                                         width: '180px'
                                     })
@@ -343,7 +343,7 @@ const throughCapMap = (pointsData,seriesData,colorsCapacity,colorsThroughput,yT,
         },
     
         title: {
-            text: 'Crude Oil Throughput and Capacity'
+            text: ''
         },
         
         legend: {
