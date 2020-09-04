@@ -161,7 +161,7 @@ var githubData = JSON.parse(JSON.stringify(JSON.parse(getData(url))));
 var customSeries = createSet(githubData,filterMap,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']);
 yOptions = customSeries[1];
 customSeries = customSeries[0]
-//fillDrop(column='Type',dropName='select_metric',value='Assets',data=githubData)
+fillDrop(column='Type',dropName='select_metric',value='Assets',data=githubData)
 
 
 const createChart = (newData,yOptions) => {
