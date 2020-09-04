@@ -90,7 +90,7 @@ const createChart = (githubData,filterMap,colorsCapacity,colorsThroughput,yT,yC)
                 stacking: 'normal'
             },
             series: {
-                turboThreshold: 5000,
+                turboThreshold: 10000,
                 stickyTracking: false,
                 connectNulls: false,
                 states: {
@@ -115,7 +115,7 @@ const createChart = (githubData,filterMap,colorsCapacity,colorsThroughput,yT,yC)
     
         yAxis: {
             title: {
-                text: 'Throughput and Capacity'
+                text: yT
             },
         }, 
     
@@ -149,6 +149,21 @@ const getData = (Url) => {
     Httpreq.send(null);
     return Httpreq.responseText;
 };
+
+function dynamicDropDown(id,optionsArray){
+
+    function addOption(id,text,select){
+        select.options[select.options.length] = new Option(text);
+    }
+
+    var select = document.getElementById(id);
+    //select.options.length = 0;
+
+    for (var i = 0; i < optionsArray.length; i++) {
+        addOption (id, optionsArray[i],select);
+    }
+
+}
     
 //gets the unique regions to populate the dropdown
 const getUnique = (items, filterColumns) => {
@@ -223,7 +238,7 @@ const groupBy = (itter,column,colorsCapacity,yC) => {
     return completedMetric
 }
     
-const filterDataSeries = (data, fm,colorsCapacity,colorsThroughput,yT,yC) => { 
+const filterDataSeries = (data, fm, colorsCapacity,colorsThroughput,yT,yC) => { 
     //get the specific pipeline
     Object.keys(fm).map((v,i) => {
         data = data.filter(row => row[v] == fm[v]['Value'])
@@ -255,9 +270,14 @@ const filterDataSeries = (data, fm,colorsCapacity,colorsThroughput,yT,yC) => {
     return [throughput,capacity]
 }
         
-const filterDataPoints = (data, colors) => { 
-        
-    //data = data.filter(row => row.Commodity == fm.Commodity.Value)
+const filterDataPoints = (data, colors, pipeline) => { 
+
+    if (!pipeline == 'All'){
+        //filter pipe
+    } else {
+        //dont filter
+    }
+
     const nameChange = [['Longitude','lon'],['Latitude','lat'],['Key Point','name']]
     data = data.map((v,i) => {
         for (var name in nameChange){
@@ -278,7 +298,7 @@ const throughCapMap = (pointsData,seriesData,colorsCapacity,colorsThroughput,yT,
         'Key Point':{'Value':''}
     }
 
-    Highcharts.mapChart('container_map', {
+    const pointMap = Highcharts.mapChart('container_map', {
 
         credits: {
             //enabled:false //gets rid of the "Highcharts logo in the bottom right"
@@ -294,7 +314,7 @@ const throughCapMap = (pointsData,seriesData,colorsCapacity,colorsThroughput,yT,
                             var text = '<b>'+this['Corporate Entity']+' '+this.name+'</b>'+'<br>Direction of flow: ' + this['Direction of Flow']
                                 chart = this.series.chart;
                             if (!chart.clickLabel) {
-                                chart.clickLabel = chart.renderer.label(text, 600, 150)
+                                chart.clickLabel = chart.renderer.label(text, 550, 100)
                                     .css({
                                         width: '180px'
                                     })
@@ -389,9 +409,17 @@ const throughCapMap = (pointsData,seriesData,colorsCapacity,colorsThroughput,yT,
                 },
         }]
             
-    }); 
+    });
     
-    }
+    return pointMap
+    
+}
+
+const fillDrop = (column,dropName,value,data) => {
+    const drop = getUnique(data, filterColumns = column)
+    dynamicDropDown(dropName, drop)
+    document.getElementById(dropName).value = value;
+}
 
 //main program
 const commodityGraph = (commodity) => {
@@ -442,12 +470,20 @@ const commodityGraph = (commodity) => {
     
     var githubPoints = JSON.parse(JSON.stringify(JSON.parse(getData(urlPoints))));
     var githubSeries = JSON.parse(JSON.stringify(JSON.parse(getData(urlSeries))));
-    
-    var oilPoints = filterDataPoints(githubPoints,colorsCapacity)
+    fillDrop(column='Pipeline Name',dropName='select_pipelines',value='All',data=githubSeries)
+
+
+    var oilPoints = filterDataPoints(githubPoints,colorsCapacity,pipeLine='All')
     var blank = blankChart()
-    throughCapMap(oilPoints,githubSeries,colorsCapacity,colorsThroughput,yT,yC)
+    var pointMap = throughCapMap(oilPoints,githubSeries,colorsCapacity,colorsThroughput,yT,yC)
+    console.log(pointMap)
 
 }
 
-var commodity = 'gas'
-commodityGraph(commodity)
+var commodity = 'oil'
+var select_pipelines = document.getElementById('select_pipelines');
+select_pipelines.addEventListener('change', (select_pipelines) => {
+    var pipeLine = select_pipelines.target.value;
+
+});
+commodityGraph(commodity,pipeLine='All')
