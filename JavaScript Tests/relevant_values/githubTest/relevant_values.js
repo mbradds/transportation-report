@@ -238,6 +238,8 @@ const createChart = (newData,yOptions) => {
         series: newData
     });
 
+    return chart
+
 }
 
 const chart = createChart(customSeries,yOptions);
