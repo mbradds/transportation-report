@@ -496,6 +496,7 @@ select_pipelines.addEventListener('change', (select_pipelines) => {
     }
     
     pointMap.update({
+
         series: [{
             name: 'Basemap',
             borderColor: '#606060',
@@ -503,9 +504,9 @@ select_pipelines.addEventListener('change', (select_pipelines) => {
             showInLegend: false
         },{
         type: 'mappoint',
-            name: 'Key Points',
-            data : pointDataPipe,
-            dataLabels: {
+        name: 'Key Points',
+        data: pointDataPipe,
+        dataLabels: {
                     enabled: true,
                     borderRadius: 7,
                     padding: 4,
@@ -513,7 +514,10 @@ select_pipelines.addEventListener('change', (select_pipelines) => {
                     allowOverlap: false
                 },
         }]
+
     })
+
+    pointMap.redraw()
 
 });
 
