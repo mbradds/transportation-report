@@ -480,7 +480,7 @@ const commodityGraph = (commodity) => {
 
 }
 
-var commodity = 'oil'
+var commodity = 'gas'
 var select_pipelines = document.getElementById('select_pipelines');
 select_pipelines.addEventListener('change', (select_pipelines) => {
     var pipeLine = select_pipelines.target.value;
