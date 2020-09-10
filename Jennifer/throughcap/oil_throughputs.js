@@ -273,7 +273,7 @@ const filterDataSeries = (data, fm, colorsCapacity,colorsThroughput,yT,yC) => {
 const filterDataPoints = (data, colors, pipeline) => { 
 
     if (!pipeline == 'All'){
-        //filter pipe
+        console.log(pipeline)
     } else {
         //dont filter
     }
@@ -448,8 +448,6 @@ const commodityGraph = (commodity) => {
 
     } else {
         
-        var urlPoints = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/keyPointsGas.json'
-        var urlSeries = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/gas_throughcap.json'
         var colorsCapacity = {
             'Westcoast Energy Inc.':'#5FBEE6',
             'TransCanada PipeLines Limited':'#559B37',
@@ -468,22 +466,54 @@ const commodityGraph = (commodity) => {
 
     }
     
-    var githubPoints = JSON.parse(JSON.stringify(JSON.parse(getData(urlPoints))));
-    var githubSeries = JSON.parse(JSON.stringify(JSON.parse(getData(urlSeries))));
     fillDrop(column='Pipeline Name',dropName='select_pipelines',value='All',data=githubSeries)
 
 
-    var oilPoints = filterDataPoints(githubPoints,colorsCapacity,pipeLine='All')
+    var pointData = filterDataPoints(githubPoints,colorsCapacity,pipeLine='All')
     var blank = blankChart()
-    var pointMap = throughCapMap(oilPoints,githubSeries,colorsCapacity,colorsThroughput,yT,yC)
-    console.log(pointMap)
+    var pointMap = throughCapMap(pointData,githubSeries,colorsCapacity,colorsThroughput,yT,yC)
+    return [pointMap,pointData]
 
 }
 
+var urlPoints = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/keyPointsGas.json'
+var urlSeries = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/gas_throughcap.json'
+var githubPoints = JSON.parse(JSON.stringify(JSON.parse(getData(urlPoints))));
+var githubSeries = JSON.parse(JSON.stringify(JSON.parse(getData(urlSeries))));
 var commodity = 'gas'
+
+var pointMap = commodityGraph(commodity,githubPoints,githubSeries)
+var pointData = pointMap[1]
+var pointMap = pointMap[0]
+
 var select_pipelines = document.getElementById('select_pipelines');
 select_pipelines.addEventListener('change', (select_pipelines) => {
     var pipeLine = select_pipelines.target.value;
+    if (pipeLine !== 'All'){
+        var pointDataPipe = pointData.filter(row => row['Pipeline Name'] == pipeLine)
+    } else {
+        var pointDataPipe = pointData
+    }
+    
+    pointMap.update({
+        series: [{
+            name: 'Basemap',
+            borderColor: '#606060',
+            nullColor: 'rgba(200, 200, 200, 0.2)',
+            showInLegend: false
+        },{
+        type: 'mappoint',
+            name: 'Key Points',
+            data : pointDataPipe,
+            dataLabels: {
+                    enabled: true,
+                    borderRadius: 7,
+                    padding: 4,
+                    format: '{point.name}',
+                    allowOverlap: false
+                },
+        }]
+    })
 
 });
-commodityGraph(commodity,pipeLine='All')
+
