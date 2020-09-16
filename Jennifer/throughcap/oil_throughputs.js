@@ -270,13 +270,7 @@ const filterDataSeries = (data, fm, colorsCapacity,colorsThroughput,yT,yC) => {
     return [throughput,capacity]
 }
         
-const filterDataPoints = (data, colors, pipeline) => { 
-
-    if (!pipeline == 'All'){
-        console.log(pipeline)
-    } else {
-        //dont filter
-    }
+const filterDataPoints = (data, colors) => { 
 
     const nameChange = [['Longitude','lon'],['Latitude','lat'],['Key Point','name']]
     data = data.map((v,i) => {
@@ -311,7 +305,7 @@ const throughCapMap = (pointsData,seriesData,colorsCapacity,colorsThroughput,yT,
               point: {
                     events: {
                         click: function () {
-                            var text = '<b>'+this['Corporate Entity']+' '+this.name+'</b>'+'<br>Direction of flow: ' + this['Direction of Flow']
+                            var text = `<b> ${this['Corporate Entity']} ${this.name} </b> <br>Direction of flow: ${this['Direction of Flow']}`
                                 chart = this.series.chart;
                             if (!chart.clickLabel) {
                                 chart.clickLabel = chart.renderer.label(text, 550, 100)
@@ -383,11 +377,9 @@ const throughCapMap = (pointsData,seriesData,colorsCapacity,colorsThroughput,yT,
         
         tooltip: {
             snap: 0,
-            //headerFormat: '<b>{point.name}</b>',
-            //pointFormat: '<b>{point.name}</b><br>Lat: {point.lat}, Lon: {point.lon}'
             formatter: function() {
-              return '<b>'+this.point['Corporate Entity']+'-'+this.point.name +' key point'+'</b><br>'
-              +'Click on key point to view throughput & capacity'
+                return `<b> ${this.point['Corporate Entity']} - ${this.point.name} key point </b><br>
+                Click point to view throughput & capacity`
             }
         },
         
@@ -469,7 +461,7 @@ const commodityGraph = (commodity) => {
     fillDrop(column='Pipeline Name',dropName='select_pipelines',value='All',data=githubSeries)
 
 
-    var pointData = filterDataPoints(githubPoints,colorsCapacity,pipeLine='All')
+    var pointData = filterDataPoints(githubPoints,colorsCapacity)
     var blank = blankChart()
     var pointMap = throughCapMap(pointData,githubSeries,colorsCapacity,colorsThroughput,yT,yC)
     return [pointMap,pointData]
@@ -482,9 +474,7 @@ var githubPoints = JSON.parse(JSON.stringify(JSON.parse(getData(urlPoints))));
 var githubSeries = JSON.parse(JSON.stringify(JSON.parse(getData(urlSeries))));
 var commodity = 'gas'
 
-var pointMap = commodityGraph(commodity,githubPoints,githubSeries)
-var pointData = pointMap[1]
-var pointMap = pointMap[0]
+var [pointMap,pointData] = commodityGraph(commodity,githubPoints,githubSeries) //this is called destructive assignment
 
 var select_pipelines = document.getElementById('select_pipelines');
 select_pipelines.addEventListener('change', (select_pipelines) => {
