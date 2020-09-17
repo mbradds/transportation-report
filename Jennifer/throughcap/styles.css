@@ -1,3 +1,5 @@
+/* TODO: change selectors to select based on id: https://www.w3schools.com/cssref/css_selectors.asp */
+
 /* #container_map {
   height: 500px; 
   min-width: 310px; 
@@ -30,6 +32,7 @@
 .my-container {
   border: 5px solid grey;
 }
+/* This is useful for looking at the grid structure */
 /* .my-row {
   border: 3px solid red;
 }
@@ -46,4 +49,10 @@
   font-family: Arial;
   font-weight: bold;
   color:#871455
-} 
+}
+
+#traffic_title{
+  font-family: Arial;
+  font-weight: bold;
+  font-size: large;
+}
