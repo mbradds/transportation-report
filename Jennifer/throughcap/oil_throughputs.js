@@ -73,29 +73,26 @@ const getUnique = (items, filterColumns) => {
 const groupBy = (itter,column,colorsCapacity,yC) => {
     //get the appropriate color
     var capColor = colorsCapacity[itter[0]['Corporate Entity']]
-    
     result = {}
     grouped = itter.reduce((result,current) => {
         result[current[column]] = result[current[column]] || [];
         result[current[column]].push(current[yC]);
         return result
     })
-    
     const arrAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length
-    
     hcGroup = []
     
     for (const [key, value] of Object.entries(grouped)) {
         if (Array.isArray(value)){
             hcGroup.push(
-                {'x':key,
+                {'x':parseInt(key), //TODO: why doesnt this default to an integer value?
                  'y': arrAvg(grouped[key])}
             )
         } else {
             delete grouped[key]
         }
     }
-        
+    
     var completedMetric = {
         name: yC,
         data: hcGroup,
@@ -228,27 +225,6 @@ const throughCapMap = (pointsData,seriesData,colorsCapacity,colorsThroughput,yT,
                         }
                     }
                 }},
-    /* 					mappoint: {
-                                        cluster: {
-                                            enabled: true,
-                                            allowOverlap: false,
-                                            animation: {
-                                                duration: 450
-                                            },
-                                            layoutAlgorithm: {
-                                                type: 'grid',
-                                                gridSize: 7
-                                            },
-                                            zones: [{
-                                                from: 1,
-                                                to: 4,
-                                                marker: {
-                                                    radius: 13
-                                                }}
-                                                ]
-                                       }
-                              } */
-          
         },
 
         mapNavigation: {
@@ -356,7 +332,7 @@ const createChart = (githubData,filterMap,colorsCapacity,colorsThroughput,yT,yC)
             },
             series: {
                 turboThreshold: 10000,
-                stickyTracking: false,
+                //stickyTracking: false,
                 connectNulls: false,
                 states: {
                     inactive: {
@@ -370,6 +346,13 @@ const createChart = (githubData,filterMap,colorsCapacity,colorsThroughput,yT,yC)
         },
     
         tooltip: {
+            xDateFormat: '%Y-%m-%d',
+            // formatter: function () {
+            //     return this.points.reduce(function (s, point) {
+            //         return s + '<br/>' + point.series.name + ': ' +
+            //             point.y + 'm';
+            //     }, '<b>' + this.x + '</b>');
+            // },
             animation: true,
             shared: true
         },
@@ -387,18 +370,6 @@ const createChart = (githubData,filterMap,colorsCapacity,colorsThroughput,yT,yC)
         xAxis: {
             type: 'datetime'
         },
-    
-        lang: {
-            noData: "Click on a key point"
-        },
-
-        noData: {
-            style: {
-                fontWeight: 'bold',
-                fontSize: '15px',
-                color: '#303030'
-            }
-        },
 
         series: data
 
@@ -413,7 +384,6 @@ const fillDrop = (column,dropName,value,data) => {
     document.getElementById(dropName).value = value;
 }
 
-//main program
 
 class TrafficDashboard {
 
@@ -461,7 +431,7 @@ class TrafficDashboard {
                 'Natural Gas':'#42464B'
             }
             this.params.yT = 'Throughput (1000 m3/d)'
-            this.params.yC = 'Available Capacity (1000 m3/d)'
+            this.params.yC = 'Capacity (1000 m3/d)'
 
         } else {
             console.log('Enter a valid commodity')
@@ -480,68 +450,15 @@ class TrafficDashboard {
 
 }
 
-dash = new TrafficDashboard('oil')
-console.log(dash.graphStructure)
 
 const commodityGraph = (commodity) => {
     
-    // //TODO: make all of these chart variable properties into an object, or a class that takes in the commodity and creates a custom object
-    // if (commodity == 'oil'){
-
-    //     var urlPoints = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/keyPointsOil.json'
-    //     var urlSeries = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/oil_throughcap.json'
-    //     var titleText = 'Crude oil Throughput and Capacity'
-
-    //     var colorsCapacity = {
-    //         'Trans Mountain Pipeline ULC': '#FFBE4B',
-    //         'Enbridge Pipelines (NW) Inc.': '#054169',
-    //         'Enbridge Pipelines Inc.':'#5FBEE6',
-    //         'PKM Cochin ULC':'#559B37',
-    //         'TransCanada Keystone Pipeline GP Ltd.':'#FF821E'
-    //     }
-        
-    //     var colorsThroughput = {
-    //         'refined petroleum products': '#5FBEE6',
-    //         'foreign light': '#FF821E',
-    //         'domestic heavy':'#871455',
-    //         'domestic light / ngl':'#8c8c96',
-    //         'domestic light':'#8c8c96'
-    //     }
-
-    //     var yT='Throughput (1000 m3/d)'
-    //     var yC='Capacity (1000 m3/d)'
-
-    // } else {
-
-    //     var urlPoints = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/keyPointsGas.json'
-    //     var urlSeries = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/gas_throughcap.json'
-    //     var titleText = 'Natural gas Throughput and Capacity'
-        
-    //     var colorsCapacity = {
-    //         'Westcoast Energy Inc.':'#5FBEE6',
-    //         'TransCanada PipeLines Limited':'#559B37',
-    //         'NOVA Gas Transmission Ltd. (NGTL)':'#054169',
-    //         'Alliance Pipeline Limited Partnership':'#FFBE4B',
-    //         'Foothills Pipe Lines Ltd. (Foothills)':'#FF821E',
-    //         'Emera Brunswick Pipeline Company Ltd.':'#8c8c96',
-    //         'Maritimes & Northeast Pipeline':'#42464B',
-    //         'Trans Québec & Maritimes Pipeline Inc':'#871455'
-    //     }
-    //     var colorsThroughput = {
-    //         'Natural Gas':'#42464B'
-    //     }
-    //     var yT='Throughput (1000 m3/d)'
-    //     var yC='Capacity (1000 m3/d)'
-
-    // }
-
     const dash = new TrafficDashboard(commodity)
     const graphParams = dash.graphStructure
+    dash.setTitle(graphParams.titleText,"traffic_title")
 
-    var title = document.getElementById("traffic_title").innerText = graphParams.titleText
     var githubPoints = JSON.parse(JSON.stringify(JSON.parse(getData(graphParams.urlPoints))));
     var githubSeries = JSON.parse(JSON.stringify(JSON.parse(getData(graphParams.urlSeries))));
-    
     fillDrop(column='Pipeline Name',dropName='select_pipelines',value='All',data=githubSeries)
 
     var pointData = filterDataPoints(githubPoints,graphParams.colorsCapacity)
