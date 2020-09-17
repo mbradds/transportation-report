@@ -338,21 +338,20 @@ const createChart = (githubData,filterMap,colorsCapacity,colorsThroughput,yT,yC)
                     inactive: {
                         opacity: 1
                     },
-                    hover: {
-                        enabled: false
-                    }
+                    // hover: {
+                    //     enabled: false
+                    // }
                 }
             }
         },
     
         tooltip: {
             xDateFormat: '%Y-%m-%d',
-            // formatter: function () {
-            //     return this.points.reduce(function (s, point) {
-            //         return s + '<br/>' + point.series.name + ': ' +
-            //             point.y + 'm';
-            //     }, '<b>' + this.x + '</b>');
-            // },
+            formatter: function () {
+                return this.points.reduce(function (s, point) {
+                    return s + '<br/>'+ point.series.name+': '+point.y;
+                }, '<b>'+ Highcharts.dateFormat('%e - %b - %Y',this.x) + '</b>');
+            },
             animation: true,
             shared: true
         },
