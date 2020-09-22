@@ -234,6 +234,7 @@ const graphEvent = (metric,pipeGroup, filterMap) => {
     var customSeries = createSet(githubData,filterMap,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']);
     yOptions = customSeries[1];
     customSeries = customSeries[0]
+    console.log(customSeries)
     createChart(customSeries,yOptions)
 }
 
