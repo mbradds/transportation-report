@@ -95,7 +95,9 @@ const prepareSeries = (data,units) => {
 }
 
 
-const githubData = JSON.parse(JSON.stringify(JSON.parse(getData('https://raw.githubusercontent.com/mbradds/HighchartsData/master/crude-oil-exports-by-destination-annual.json'))));
+//const githubData = JSON.parse(JSON.stringify(JSON.parse(getData('https://raw.githubusercontent.com/mbradds/HighchartsData/master/crude-oil-exports-by-destination-annual.json'))));
+const githubData = JSON.parse(JSON.stringify(JSON.parse(getData('/crude-oil-exports-by-destination-annual.json'))));
+
 fillDrop('Unit','select_units','bbl/d',githubData)
 var seriesData = prepareSeries(githubData,'bbl/d')
 console.log(seriesData)
