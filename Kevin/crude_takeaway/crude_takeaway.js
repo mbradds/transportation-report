@@ -86,7 +86,7 @@ const prepareSeries = (data) => {
 }
 
 
-const githubData = JSON.parse(JSON.stringify(JSON.parse(getData('https://raw.githubusercontent.com/mbradds/HighchartsData/master/fgrs-eng.json'))));
+const githubData = JSON.parse(JSON.stringify(JSON.parse(getData('/fgrs-eng.json'))));
 var seriesData = prepareSeries(githubData)
 console.log(seriesData)
 const createChart = (seriesData) => {
