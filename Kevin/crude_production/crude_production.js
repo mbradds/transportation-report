@@ -94,7 +94,7 @@ const prepareSeries = (data,region) => {
 }
 
 
-const githubData = JSON.parse(JSON.stringify(JSON.parse(getData('https://raw.githubusercontent.com/mbradds/HighchartsData/master/Crude_Oil_Production.json'))));
+const githubData = JSON.parse(JSON.stringify(JSON.parse(getData('/Crude_Oil_Production.json'))));
 fillDrop('Region','select_region','Canada',githubData)
 var seriesData = prepareSeries(githubData,'Canada')
 
