@@ -1,0 +1,14 @@
+*.txt
+*.log
+*.twb
+*.twbx
+*.twbr
+*.DOCX
+.ipynb_checkpoints\
+connection.py
+/__pycache__
+/.vscode
+.vscode
+CER.py
+CER_CONN.py
+NEB_DM_PROD - 1240480 - Pipeline Transportation System report  Outline.DOCX

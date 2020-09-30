@@ -1,9 +1,8 @@
-
 select 
 rail.Date,
 rail.Units,
-rail.Volume,
-wcs.[WCS Differential]
+rail.Volume as [Crude by Rail],
+wcs.[WCS Differential] as [WCS-WTI Differential]
 
 from
 (
@@ -35,5 +34,7 @@ group by year([SettlementDate]),month([SettlementDate])
 ) as wcs
 
 on year(rail.Date) = wcs.Year and month(rail.Date) = wcs.Month
+
+where year(rail.Date) >= 2015
 
 order by rail.Units, rail.Date

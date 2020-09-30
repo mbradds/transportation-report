@@ -31,12 +31,12 @@ const prepareSeriesExports = (data,units) => {
 
 const crudeExportsData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/crude_exports/crude-oil-exports-by-destination-annual.json'))));
 
-fillDrop('Unit','select_units','bbl/d',crudeExportsData)
+fillDrop('Unit','select_units_crude_exports','bbl/d',crudeExportsData)
 var seriesData = prepareSeriesExports(crudeExportsData,'bbl/d')
 const createCrudeExportsChart = (seriesData) => {
 
 
-var chart = new Highcharts.chart('container_crude_exports', {
+const chartCrudeExports = new Highcharts.chart('container_crude_exports', {
 
     chart: {
         type: 'column', //line,bar,scatter,area,areaspline
@@ -113,13 +113,13 @@ var chart = new Highcharts.chart('container_crude_exports', {
 return chart
 }
 
-chart = createCrudeExportsChart(seriesData)
+var chartCrudeExports = createCrudeExportsChart(seriesData)
 
-var select_units = document.getElementById('select_units');
-select_units.addEventListener('change', (select_units) => {
-    var units = select_units.target.value;
-    var seriesData = prepareSeries(crudeExportsData,units)
-    chart = createCrudeExportsChart(seriesData)
+var selectUnitsCrudeExports = document.getElementById('select_units_crude_exports');
+selectUnitsCrudeExports.addEventListener('change', (selectUnitsCrudeExports) => {
+    var units = selectUnitsCrudeExports.target.value;
+    var seriesData = prepareSeriesExports(crudeExportsData,units)
+    chartCrudeExports = createCrudeExportsChart(seriesData)
 });
 
 
