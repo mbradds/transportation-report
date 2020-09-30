@@ -1,61 +1,3 @@
-const getData = (Url) => {
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET", Url, false);
-    Httpreq.send(null);
-    return Httpreq.responseText;
-};
-
-const dynamicDropDown = (id, optionsArray) => {
-
-    function addOption(id, text, select) {
-        select.options[select.options.length] = new Option(text);
-    }
-
-    const select = document.getElementById(id);
-    select.options.length = 0;
-
-    optionsArray.map((v, i) => {
-        addOption(id, optionsArray[i], select);
-    })
-
-}
-
-//gets the unique regions to populate the dropdown
-const getUnique = (items, filterColumns) => {
-    if (Array.isArray(filterColumns)) {
-        var lookup = [];
-        var result = {};
-
-        for (f in filterColumns) {
-            lookup.push({})
-            result[filterColumns[f]] = []
-        }
-
-        for (var item, i = 0; item = items[i++];) {
-            for (f in filterColumns) {
-                var name = item[filterColumns[f]];
-                if (!(name in lookup[f])) {
-                    lookup[f][name] = 1;
-                    result[filterColumns[f]].push(name);
-                }
-            }
-        }
-        return result
-
-    } else {
-        var lookup = {};
-        var result = [];
-        for (var item, i = 0; item = items[i++];) {
-            var name = item[filterColumns];
-            if (!(name in lookup)) {
-                lookup[name] = 1;
-                result.push(name);
-            }
-        }
-        return result
-    }
-}
-
 const filterData = (data, fm) => { 
     //get the specific pipeline
     data = data.filter(row => row.Type == fm['Type']['Value'])
@@ -97,8 +39,8 @@ const filterData = (data, fm) => {
     return [hcData,[yFormat,yLabel]]
 }
 
-const createSet = (githubData,filterMap,colors) => {
-    hcData = filterData(githubData,filterMap)
+const createSet = (financialData,filterMap,colors) => {
+    hcData = filterData(financialData,filterMap)
     yOptions = hcData[1]
     hcData = hcData[0]
 
@@ -113,12 +55,6 @@ const createSet = (githubData,filterMap,colors) => {
     return [hcData,yOptions]
 }
 
-const fillDrop = (column,dropName,value,data) => {
-    const drop = getUnique(data, filterColumns = column)
-    dynamicDropDown(dropName, drop.sort())
-    document.getElementById(dropName).value = value;
-}
-
 var filterMap = {
     'Type': {'Value': 'Assets', 'Dependent': false},
     'Pipeline':{'Value':'All','Dependent':false}
@@ -128,17 +64,16 @@ const pipeCategory = {'Oil':['Aurora Pipeline','Enbridge Mainline','Enbridge Nor
 }
 
 
-const url = '/PipelineProfileTables.json'
-var githubData = JSON.parse(JSON.stringify(JSON.parse(getData(url))));
-var customSeries = createSet(githubData,filterMap,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']);
+var financialData = JSON.parse(JSON.stringify(JSON.parse(getData('Cassandra/all_pipes/PipelineProfileTables.json'))));
+var customSeries = createSet(financialData,filterMap,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']);
 yOptions = customSeries[1];
 customSeries = customSeries[0]
-fillDrop(column='Type',dropName='select_metric',value='Assets',data=githubData)
+fillDrop(column='Type',dropName='select_metric_financial',value='Assets',data=financialData)
 
 
-const createChart = (newData,yOptions) => {
+const createFinancialChart = (newData,yOptions) => {
 
-    const chart = new Highcharts.chart('container', {
+    const chart = new Highcharts.chart('container_financial_metrics', {
 
         chart: {
             type: 'line', //line,bar,scatter,area,areaspline
@@ -212,18 +147,18 @@ const createChart = (newData,yOptions) => {
 
 }
 
-const chart = createChart(customSeries,yOptions);
+const chart = createFinancialChart(customSeries,yOptions);
 
-var select_metric = document.getElementById('select_metric');
-select_metric.addEventListener('change', (select_metric) => {
-    var metric = select_metric.target.value;
+var selectMetricFinancial = document.getElementById('select_metric_financial');
+selectMetricFinancial.addEventListener('change', (selectMetricFinancial) => {
+    var metric = selectMetricFinancial.target.value;
     var pipeGroup = filterMap.Pipeline.Value
     graphEvent(metric, pipeGroup, filterMap)
 });
 
-var select_pipes = document.getElementById('select_pipelines');
-select_pipes.addEventListener('change', (select_pipes) => {
-    var pipeGroup = select_pipes.target.value;
+var selectPipeFinancial = document.getElementById('select_pipelines_financial');
+selectPipeFinancial.addEventListener('change', (selectPipeFinancial) => {
+    var pipeGroup = selectPipeFinancial.target.value;
     var metric = filterMap.Type.Value
     graphEvent(metric, pipeGroup, filterMap)
 });
@@ -231,11 +166,10 @@ select_pipes.addEventListener('change', (select_pipes) => {
 const graphEvent = (metric,pipeGroup, filterMap) => {
     filterMap['Type']['Value'] = metric
     filterMap['Pipeline']['Value'] = pipeGroup
-    var customSeries = createSet(githubData,filterMap,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']);
+    var customSeries = createSet(financialData,filterMap,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']);
     yOptions = customSeries[1];
     customSeries = customSeries[0]
-    console.log(customSeries)
-    createChart(customSeries,yOptions)
+    createFinancialChart(customSeries,yOptions)
 }
 
 
