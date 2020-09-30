@@ -8,6 +8,7 @@
 connection.py
 /__pycache__
 /.vscode
+/Data
 .vscode
 CER.py
 CER_CONN.py
