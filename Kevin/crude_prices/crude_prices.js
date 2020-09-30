@@ -1,49 +1,4 @@
-const getData = (Url) => {
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET", Url, false);
-    Httpreq.send(null);
-    return Httpreq.responseText;
-};
-
-
-const getUnique = (items, filterColumns) => {
-    if (Array.isArray(filterColumns)) {
-        var lookup = [];
-        var result = {};
-    
-        for (var f in filterColumns) {
-            lookup.push({})
-            result[filterColumns[f]] = []
-        }
-    
-        for (var item, i = 0; item = items[i++];) {
-            for (f in filterColumns) {
-                var name = item[filterColumns[f]];
-                if (!(name in lookup[f])) {
-                    lookup[f][name] = 1;
-                    result[filterColumns[f]].push(name);
-                }
-            }
-        }
-
-        return result
-    
-    } else {
-        var lookup = {};
-        var result = [];
-        for (var item, i = 0; item = items[i++];) {
-            var name = item[filterColumns];
-            if (!(name in lookup)) {
-                lookup[name] = 1;
-                result.push(name);
-            }
-        }
-        return result
-    }
-}
-
-
-const prepareSeries = (data) => {
+const prepareSeriesCrudePrices = (data) => {
 
     const colors = ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']
     seriesData = []
@@ -88,14 +43,12 @@ const prepareSeries = (data) => {
 }
 
 
-const githubData = JSON.parse(JSON.stringify(JSON.parse(getData('/oil_prices.json'))));
+const crudePriceData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/crude_prices/oil_prices.json'))));
 
-var seriesData = prepareSeries(githubData)
-console.log(seriesData)
-const createChart = (seriesData) => {
+var seriesData = prepareSeriesCrudePrices(crudePriceData)
+const createCrudePriceChart = (seriesData) => {
 
-
-var chart = new Highcharts.chart('container', {
+var chart = new Highcharts.chart('container_crude_prices', {
 
     chart: {
         zoomType: 'x', //allows the user to focus in on the x or y (x,y,xy)
@@ -169,7 +122,7 @@ var chart = new Highcharts.chart('container', {
 return chart
 }
 
-chart = createChart(seriesData)
+chart = createCrudePriceChart(seriesData)
 
 
 

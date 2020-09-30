@@ -1,49 +1,4 @@
-const getData = (Url) => {
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET", Url, false);
-    Httpreq.send(null);
-    return Httpreq.responseText;
-};
-
-
-const getUnique = (items, filterColumns) => {
-    if (Array.isArray(filterColumns)) {
-        var lookup = [];
-        var result = {};
-    
-        for (var f in filterColumns) {
-            lookup.push({})
-            result[filterColumns[f]] = []
-        }
-    
-        for (var item, i = 0; item = items[i++];) {
-            for (f in filterColumns) {
-                var name = item[filterColumns[f]];
-                if (!(name in lookup[f])) {
-                    lookup[f][name] = 1;
-                    result[filterColumns[f]].push(name);
-                }
-            }
-        }
-
-        return result
-    
-    } else {
-        var lookup = {};
-        var result = [];
-        for (var item, i = 0; item = items[i++];) {
-            var name = item[filterColumns];
-            if (!(name in lookup)) {
-                lookup[name] = 1;
-                result.push(name);
-            }
-        }
-        return result
-    }
-}
-
-
-const prepareSeries = (data) => {
+const prepareSeriesImports = (data) => {
 
     const colors = ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']
     seriesData = []
@@ -82,13 +37,12 @@ const prepareSeries = (data) => {
 }
 
 
-const githubData = JSON.parse(JSON.stringify(JSON.parse(getData('/UScrudeoilimports.json'))));
-var seriesData = prepareSeries(githubData)
-console.log(seriesData)
-const createChart = (seriesData) => {
+const crudeImportsData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/us_imports/UScrudeoilimports.json'))));
+var seriesData = prepareSeriesImports(crudeImportsData)
+const createCrudeImportsChart = (seriesData) => {
 
 
-var chart = new Highcharts.chart('container', {
+var chart = new Highcharts.chart('container_crude_imports', {
 
     chart: {
         type: 'column', //line,bar,scatter,area,areaspline
@@ -165,7 +119,7 @@ var chart = new Highcharts.chart('container', {
 return chart
 }
 
-chart = createChart(seriesData)
+chart = createCrudeImportsChart(seriesData)
 
 
 
