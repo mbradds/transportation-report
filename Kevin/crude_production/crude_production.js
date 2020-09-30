@@ -1,69 +1,4 @@
-const getData = (Url) => {
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET", Url, false);
-    Httpreq.send(null);
-    return Httpreq.responseText;
-};
-
-const dynamicDropDown = (id,optionsArray) => {
-
-    function addOption(id,text,select){
-        select.options[select.options.length] = new Option(text);
-    }
-
-    var select = document.getElementById(id);
-    //select.options.length = 0;
-
-    for (var i = 0; i < optionsArray.length; i++) {
-        addOption (id, optionsArray[i],select);
-    }
-
-}
-
-const fillDrop = (column,dropName,value,data) => {
-    const drop = getUnique(data, filterColumns = column)
-    dynamicDropDown(dropName, drop)
-    document.getElementById(dropName).value = value;
-}
-
-const getUnique = (items, filterColumns) => {
-    if (Array.isArray(filterColumns)) {
-        var lookup = [];
-        var result = {};
-    
-        for (var f in filterColumns) {
-            lookup.push({})
-            result[filterColumns[f]] = []
-        }
-    
-        for (var item, i = 0; item = items[i++];) {
-            for (f in filterColumns) {
-                var name = item[filterColumns[f]];
-                if (!(name in lookup[f])) {
-                    lookup[f][name] = 1;
-                    result[filterColumns[f]].push(name);
-                }
-            }
-        }
-
-        return result
-    
-    } else {
-        var lookup = {};
-        var result = [];
-        for (var item, i = 0; item = items[i++];) {
-            var name = item[filterColumns];
-            if (!(name in lookup)) {
-                lookup[name] = 1;
-                result.push(name);
-            }
-        }
-        return result
-    }
-}
-
-
-const prepareSeries = (data,region) => {
+const prepareSeriesProd = (data,region) => {
 
     const colors = ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']
     seriesData = []
@@ -94,14 +29,14 @@ const prepareSeries = (data,region) => {
 }
 
 
-const githubData = JSON.parse(JSON.stringify(JSON.parse(getData('/Crude_Oil_Production.json'))));
-fillDrop('Region','select_region','Canada',githubData)
-var seriesData = prepareSeries(githubData,'Canada')
+const crudeProdData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/crude_production/Crude_Oil_Production.json'))));
+fillDrop('Region','select_region','Canada',crudeProdData)
+var seriesData = prepareSeriesProd(crudeProdData,'Canada')
 
-const createChart = (seriesData) => {
+const createCrudeProdChart = (seriesData) => {
 
 
-var chart = new Highcharts.chart('container', {
+var chart = new Highcharts.chart('container_crude_production', {
 
     chart: {
         type: 'column', //line,bar,scatter,area,areaspline
@@ -178,13 +113,13 @@ var chart = new Highcharts.chart('container', {
 return chart
 }
 
-chart = createChart(seriesData)
+chart = createCrudeProdChart(seriesData)
 
 var select_region = document.getElementById('select_region');
 select_region.addEventListener('change', (select_region) => {
     var region = select_region.target.value;
-    var seriesData = prepareSeries(githubData,region)
-    chart = createChart(seriesData)
+    var seriesData = prepareSeriesProd(crudeProdData,region)
+    chart = createCrudeProdChart(seriesData)
 });
 
 

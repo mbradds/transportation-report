@@ -128,7 +128,7 @@ const pipeCategory = {'Oil':['Aurora Pipeline','Enbridge Mainline','Enbridge Nor
 }
 
 
-const url = 'https://raw.githubusercontent.com/mbradds/HighchartsData/master/PipelineProfileTables.json'
+const url = '/PipelineProfileTables.json'
 var githubData = JSON.parse(JSON.stringify(JSON.parse(getData(url))));
 var customSeries = createSet(githubData,filterMap,colors= ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']);
 yOptions = customSeries[1];
