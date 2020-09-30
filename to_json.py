@@ -116,18 +116,19 @@ def nglHighcharts(name):
     return df
 
 def readExcel(name,sheet='pq'):
-    
-    df = pd.read_excel(name,sheet_name=sheet)
+    read_path = os.path.join(os.getcwd(),'Data/',name)
+    df = pd.read_excel(read_path,sheet_name=sheet)
     
     if name == 'Crude_Oil_Production.xlsx':
         df['Year'] = pd.to_numeric(df['Year'])
         df['Value'] = pd.to_numeric(df['Value'])
+        write_path = os.path.join(os.getcwd(),'Kevin/crude_production/',name.split('.')[0]+'.json')
     if name == 'UScrudeoilimports.xlsx':
         df['Attribute'] = [x.strip() for x in df['Attribute']]
         
     #df['Period'] = pd.to_datetime(df['Period'])
     df = df.astype(object).where(pd.notnull(df), None)
-    df.to_json(name.split('.')[0]+'.json',orient='records',force_ascii=False)
+    df.to_json(write_path,orient='records',force_ascii=False)
     return df
 
 def readExcelPipeline(name,sheet='Data'):
