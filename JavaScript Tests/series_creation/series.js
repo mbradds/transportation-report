@@ -77,9 +77,10 @@ const prepareSeriesTidy = (data,filters) => {
 }
 
 
-const prepareSeriesNonTidy = (data,filters,valueVars,colors) => {
-
+const prepareSeriesNonTidy = (data,filters,valueVars,xCol,colors) => {
+    
     seriesData = {}
+    colTotals = {}
 
     for (const [key, value] of Object.entries(filters)) {
         data = data.filter(row => row[key] == value )
@@ -88,25 +89,97 @@ const prepareSeriesNonTidy = (data,filters,valueVars,colors) => {
     //initialize each series with an empty list
     valueVars.map((col,colNum) => {
         seriesData[col] = []
+        colTotals[col] = 0
     })
 
     data.map((row,rowNum) => {
         valueVars.map((col,colNum) => {
             seriesData[col].push({
-                x: row.Period,
+                x: row[xCol],
                 y: row[col]
             })
+            colTotals[col] = colTotals[col]+row[col]
         })
     })
 
     seriesResult = []
 
     for (const [key, value] of Object.entries(seriesData)) {
-        seriesResult.push({
-            name: key,
-            data: value,
-            color: colors[key]
+        if (colTotals[key]>0) {
+            seriesResult.push({
+                name: key,
+                data: value,
+                color: colors[key]
+            })
+        }
+    }
+
+    return seriesResult
+}
+
+const prepareSeriesNonTidyUnits = (data,filters,unitsCurrent,baseUnits,conversion,convType,valueVars,colors) => {
+
+    seriesData = {}
+    colTotals = {}
+
+    for (const [key, value] of Object.entries(filters)) {
+        data = data.filter(row => row[key] == value )
+    }
+
+    //initialize each series with an empty list
+    valueVars.map((col,colNum) => {
+        seriesData[col] = []
+        colTotals[col] = 0
+    })
+
+    if (unitsCurrent == baseUnits) {
+
+        data.map((row,rowNum) => {
+            valueVars.map((col,colNum) => {
+                seriesData[col].push({
+                    x: row.Period,
+                    y: row[col]
+                })
+                colTotals[col] = colTotals[col]+row[col]
+            })
         })
+
+    } else if (unitsCurrent !== baseUnits && convType == '/') {
+
+        data.map((row,rowNum) => {
+            valueVars.map((col,colNum) => {
+                seriesData[col].push({
+                    x: row.Period,
+                    y: (row[col]/conversion).toFixed(1)
+                })
+                colTotals[col] = colTotals[col]+row[col]
+            })
+        })
+
+    } else if (unitsCurrent !== baseUnits && convType == '*') {
+
+        data.map((row,rowNum) => {
+            valueVars.map((col,colNum) => {
+                seriesData[col].push({
+                    x: row.Period,
+                    y: (row[col]*conversion).toFixed(1)
+                })
+                colTotals[col] = colTotals[col]+row[col]
+            })
+        })
+        
+    }
+
+    seriesResult = []
+
+    for (const [key, value] of Object.entries(seriesData)) {
+        if (colTotals[key]>0) {
+            seriesResult.push({
+                name: key,
+                data: value,
+                color: colors[key]
+            })
+        }
     }
 
 
@@ -115,17 +188,30 @@ const prepareSeriesNonTidy = (data,filters,valueVars,colors) => {
 
 
 const nonTidy = '/natural-gas-liquids-exports-monthly.json'
+const nonTidyBbl = '/natural-gas-liquids-exports-monthly_bbl.json'
 const tidy = 'natural-gas-liquids-exports-monthly_flat.json'
-const region = 'Canada'
-const units = 'bbl'
-const product = 'Propane'
 const nglColors = {'Pipeline':'#054169',
 'Marine':'#FFBE4B',
 'Railway':'#5FBEE6',
 'Truck':'#559B37'}
 
-nglFilter = {'Product':'Propane','Units':'bbl','Product':'Propane'}
+nglFilter = {'Product':'Propane','Units':'bbl','Region':'Canada'}
 
+
+var t0NonTidy = performance.now()
+const data2 = getData(nonTidy)
+const seriesNonTidy = prepareSeriesNonTidy(data2,nglFilter,valueVars=['Pipeline','Marine','Railway','Truck'],xCol='Period',nglColors)
+var t1NonTidy = performance.now()
+console.log("Non Tidy processing: " + (t1NonTidy - t0NonTidy) + " milliseconds.")
+console.log(seriesNonTidy)
+
+var t0NonTidyUnits = performance.now()
+var units = 'm3'
+const data3 = getData(nonTidyBbl)
+const seriesNonTidyUnits = prepareSeriesNonTidyUnits(data3,nglFilter,unitsCurrent=units,baseUnit='bbl',conversion=6.2898,convType='/',valueVars=['Pipeline','Marine','Railway','Truck'],nglColors)
+var t1NonTidyUnits = performance.now()
+console.log("Non Tidy processing with one unit: " + (t1NonTidyUnits - t0NonTidyUnits) + " milliseconds.")
+console.log(seriesNonTidy)
 
 var t0Tidy = performance.now()
 const data1 = getData(tidy)
@@ -133,11 +219,4 @@ const seriesTidy = prepareSeriesTidy(data1,nglFilter)
 var t1Tidy = performance.now()
 console.log("Tidy processing: " + (t1Tidy - t0Tidy) + " milliseconds.")
 console.log(seriesTidy)
-
-var t0NonTidy = performance.now()
-const data2 = getData(nonTidy)
-const seriesNonTidy = prepareSeriesNonTidy(data2,nglFilter,valueVars=['Pipeline','Marine','Railway','Truck'],nglColors)
-var t1NonTidy = performance.now()
-console.log("Non Tidy processing: " + (t1NonTidy - t0NonTidy) + " milliseconds.")
-console.log(seriesNonTidy)
 

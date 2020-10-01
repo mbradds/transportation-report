@@ -116,7 +116,7 @@ def readExcel(name,sheet='pq',flatten=False):
     
     if name == 'Crude_Oil_Production.xlsx':
         df['Year'] = pd.to_numeric(df['Year'])
-        df['Value'] = pd.to_numeric(df['Value'])
+        #df['Value'] = pd.to_numeric(df['Value'])
         write_path = os.path.join(os.getcwd(),'Kevin/crude_production/',name.split('.')[0]+'.json')
     if name == 'UScrudeoilimports.xlsx':
         df['Attribute'] = [x.strip() for x in df['Attribute']]
@@ -124,6 +124,10 @@ def readExcel(name,sheet='pq',flatten=False):
     if name == 'natural-gas-liquids-exports-monthly.xlsx':
         df['Period'] = pd.to_datetime(df['Period'])
         write_path = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'.json')
+        df_bbl = df[df['Units']=='bbl'].copy()
+        write_path_bbl = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'_bbl.json')
+        df_bbl.to_json(write_path_bbl,orient='records',force_ascii=False)
+        
         if flatten:
             df = pd.melt(df,id_vars=['Period','Product','Region','Units'])
             write_path = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'_flat.json')
@@ -131,6 +135,9 @@ def readExcel(name,sheet='pq',flatten=False):
             df = df[df['variable']!='Total']
             df.to_json(write_path,orient='records',force_ascii=False)
     
+    if name == 'crude-oil-exports-by-destination-annual.xlsx':
+        write_path = os.path.join(os.getcwd(),'Kevin/crude_exports/',name.split('.')[0]+'.json')
+        
     df = df.astype(object).where(pd.notnull(df), None)
     df.to_json(write_path,orient='records',force_ascii=False)
     return df
@@ -407,9 +414,9 @@ if __name__ == '__main__':
     #df = readCersei(query_gas_capacity,'gas_capacity.json')
     #df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
     #df = readCsv('ngl_exports.csv')
-    df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=True)
+    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
     #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
-    #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
+    df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = readExcel('fgrs-eng.xlsx',sheet='pq')
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')

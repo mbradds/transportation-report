@@ -62,3 +62,112 @@ const fillDrop = (column,dropName,value,data) => {
     dynamicDropDown(dropName, drop.sort())
     document.getElementById(dropName).value = value;
 }
+
+const prepareSeriesNonTidy = (data,filters,valueVars,xCol,colors) => {
+    
+    seriesData = {}
+    colTotals = {}
+
+    for (const [key, value] of Object.entries(filters)) {
+        data = data.filter(row => row[key] == value )
+    }
+
+    //initialize each series with an empty list
+    valueVars.map((col,colNum) => {
+        seriesData[col] = []
+        colTotals[col] = 0
+    })
+
+    data.map((row,rowNum) => {
+        valueVars.map((col,colNum) => {
+            seriesData[col].push({
+                x: row[xCol],
+                y: row[col]
+            })
+            colTotals[col] = colTotals[col]+row[col]
+        })
+    })
+
+    seriesResult = []
+
+    for (const [key, value] of Object.entries(seriesData)) {
+        if (colTotals[key]>0) {
+            seriesResult.push({
+                name: key,
+                data: value,
+                color: colors[key]
+            })
+        }
+    }
+
+    return seriesResult
+}
+
+const prepareSeriesNonTidyUnits = (data,filters,unitsCurrent,baseUnits,conversion,convType,valueVars,xCol,colors) => {
+
+    seriesData = {}
+    colTotals = {}
+
+    for (const [key, value] of Object.entries(filters)) {
+        data = data.filter(row => row[key] == value )
+    }
+
+    //initialize each series with an empty list
+    valueVars.map((col,colNum) => {
+        seriesData[col] = []
+        colTotals[col] = 0
+    })
+
+    if (unitsCurrent == baseUnits) {
+
+        data.map((row,rowNum) => {
+            valueVars.map((col,colNum) => {
+                seriesData[col].push({
+                    x: row[xCol],
+                    y: row[col]
+                })
+                colTotals[col] = colTotals[col]+row[col]
+            })
+        })
+
+    } else if (unitsCurrent !== baseUnits && convType == '/') {
+
+        data.map((row,rowNum) => {
+            valueVars.map((col,colNum) => {
+                seriesData[col].push({
+                    x: row[xCol],
+                    y: +(row[col]/conversion).toFixed(1)
+                })
+                colTotals[col] = colTotals[col]+row[col]
+            })
+        })
+
+    } else if (unitsCurrent !== baseUnits && convType == '*') {
+
+        data.map((row,rowNum) => {
+            valueVars.map((col,colNum) => {
+                seriesData[col].push({
+                    x: row[xCol],
+                    y: +(row[col]*conversion).toFixed(1)
+                })
+                colTotals[col] = colTotals[col]+row[col]
+            })
+        })
+        
+    }
+
+    seriesResult = []
+
+    for (const [key, value] of Object.entries(seriesData)) {
+        if (colTotals[key]>0) {
+            seriesResult.push({
+                name: key,
+                data: value,
+                color: colors[key]
+            })
+        }
+    }
+
+    console.log(seriesResult)
+    return seriesResult
+}

@@ -1,37 +1,26 @@
-const prepareSeriesProd = (data,region) => {
+const crudeProdColors = {'Conventional Light':'#FFBE4B',
+'Conventional Heavy':'#054169',
+'C5+':'#5FBEE6',
+'Field Condensate':'#559B37',
+'Mined Bitumen':'#42464B',
+'In Situ Bitumen':'#8c8c96'}
 
-    const colors = ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']
-    seriesData = []
-    data = data.filter(row => row.Region == region)
-    const products = getUnique(data,'Product')
-    
-    products.map((v,iProducts) => {
-        hcData = []
-        const product = data.filter(row => row.Product == v)
-        product.map((r,i) => {
-            hcRow = {
-                x: r.Year,
-                y: r.Value
-            }
-            hcData.push(hcRow)
-        })
-
-        seriesData.push({
-            name: v,
-            data: hcData,
-            color: colors[iProducts]
-        })
-
-    })
-
-    return seriesData
-
-}
-
-
+var crudeProdFilters = {'Region':'Canada'}
+var units = '1000 bbl/day'
+const crudeProdColumns=['Conventional Light','Conventional Heavy','C5+','Field Condensate','Mined Bitumen','In Situ Bitumen']
 const crudeProdData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/crude_production/Crude_Oil_Production.json'))));
-fillDrop('Region','select_region','Canada',crudeProdData)
-var seriesData = prepareSeriesProd(crudeProdData,'Canada')
+fillDrop('Region','select_region_crude_prod','Canada',crudeProdData)
+
+//var seriesData = prepareSeriesNonTidy(crudeProdData,crudeProdFilters,valueVars=crudeProdColumns,xCol='Year',crudeProdColors)
+var seriesData = prepareSeriesNonTidyUnits(crudeProdData,
+    crudeProdFilters,
+    unitsCurrent=units,
+    baseUnits=units,
+    conversion=6.2898,
+    convType='/',
+    valueVars=crudeProdColumns,
+    xCol='Year',
+    colors=crudeProdColors)
 
 const createCrudeProdChart = (seriesData) => {
 
@@ -111,15 +100,45 @@ var chart = new Highcharts.chart('container_crude_production', {
 });
 
 return chart
+
 }
 
-chart = createCrudeProdChart(seriesData)
+var chartCrude = createCrudeProdChart(seriesData) //do I need to have each chart variable with a different name?
 
-var select_region = document.getElementById('select_region');
+//recreate the chart when the region changes
+var select_region = document.getElementById('select_region_crude_prod');
 select_region.addEventListener('change', (select_region) => {
     var region = select_region.target.value;
-    var seriesData = prepareSeriesProd(crudeProdData,region)
-    chart = createCrudeProdChart(seriesData)
+    crudeProdFilters['Region'] = region
+    var seriesData = prepareSeriesNonTidyUnits(crudeProdData,
+        crudeProdFilters,
+        unitsCurrent=units,
+        baseUnits='1000 bbl/day',
+        conversion=6.2898,
+        convType='/',
+        valueVars=crudeProdColumns,
+        xCol='Year',
+        colors=crudeProdColors)
+    chartCrude = createCrudeProdChart(seriesData)
+});
+
+//update existing chart when the units change
+var select_units = document.getElementById('select_units_crude_prod');
+select_units.addEventListener('change', (select_units) => {
+    units = select_units.target.value;
+    var seriesData = prepareSeriesNonTidyUnits(crudeProdData,
+        crudeProdFilters,
+        unitsCurrent=units,
+        baseUnits='1000 bbl/day',
+        conversion=6.2898,
+        convType='/',
+        valueVars=crudeProdColumns,
+        xCol='Year',
+        colors=crudeProdColors)
+    
+    chartCrude.update({
+        series:seriesData
+    })
 });
 
 
