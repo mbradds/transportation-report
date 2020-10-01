@@ -103,19 +103,14 @@ def readCersei(query,name):
 
 
 def readCsv(name):
-    
-    df = pd.read_csv(name)
+    read_path = os.path.join(os.getcwd(),'Data/',name)
+    df = pd.read_csv(read_path)
     df['Period'] = pd.to_datetime(df['Period'])
     df.to_json(name.split('.')[0]+'.json',orient='records')
     return df
 
-def nglHighcharts(name):
-    
-    df = readCsv(name)
-    
-    return df
 
-def readExcel(name,sheet='pq'):
+def readExcel(name,sheet='pq',flatten=False):
     read_path = os.path.join(os.getcwd(),'Data/',name)
     df = pd.read_excel(read_path,sheet_name=sheet)
     
@@ -125,8 +120,17 @@ def readExcel(name,sheet='pq'):
         write_path = os.path.join(os.getcwd(),'Kevin/crude_production/',name.split('.')[0]+'.json')
     if name == 'UScrudeoilimports.xlsx':
         df['Attribute'] = [x.strip() for x in df['Attribute']]
-        
-    #df['Period'] = pd.to_datetime(df['Period'])
+        write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
+    if name == 'natural-gas-liquids-exports-monthly.xlsx':
+        df['Period'] = pd.to_datetime(df['Period'])
+        write_path = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'.json')
+        if flatten:
+            df = pd.melt(df,id_vars=['Period','Product','Region','Units'])
+            write_path = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'_flat.json')
+            df = df[df['value'].notnull()]
+            df = df[df['variable']!='Total']
+            df.to_json(write_path,orient='records',force_ascii=False)
+    
     df = df.astype(object).where(pd.notnull(df), None)
     df.to_json(write_path,orient='records',force_ascii=False)
     return df
@@ -399,13 +403,12 @@ def ne2_wcs_wti(query):
 
 if __name__ == '__main__':
     
-    df = readCersei(query_gas_throughput,'gas_throughput.json')
-    df = readCersei(query_gas_capacity,'gas_capacity.json')
-    df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
+    #df = readCersei(query_gas_throughput,'gas_throughput.json')
+    #df = readCersei(query_gas_capacity,'gas_capacity.json')
+    #df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
     #df = readCsv('ngl_exports.csv')
-    #df = nglHighcharts('ngl_exports.csv')
-    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx')
-    df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
+    df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=True)
+    #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
     #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = readExcel('fgrs-eng.xlsx',sheet='pq')
