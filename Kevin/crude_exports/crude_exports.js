@@ -28,9 +28,14 @@ const prepareSeriesExports = (data,units) => {
     return seriesData
 
 }
+const crudeExportColors = {'PADD 1':'#FFBE4B',
+'PADD 2':'#054169',
+'PADD 3':'#5FBEE6',
+'PADD 4':'#559B37',
+'PADD 5':'#42464B'}
 
 const crudeExportsData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/crude_exports/crude-oil-exports-by-destination-annual.json'))));
-
+console.log(crudeExportsData)
 fillDrop('Unit','select_units_crude_exports','bbl/d',crudeExportsData)
 var seriesData = prepareSeriesExports(crudeExportsData,'bbl/d')
 const createCrudeExportsChart = (seriesData) => {
