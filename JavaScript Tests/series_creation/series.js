@@ -42,37 +42,76 @@ const getUnique = (items, filterColumns) => {
 }
 
 
-const prepareSeriesTidy = (data,filters) => {
+const prepareSeriesTidy = (data,filters,variableCol,xCol,yCol,colors) => {
 
-    const colors = ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']
     seriesData = []
 
     for (const [key, value] of Object.entries(filters)) {
         data = data.filter(row => row[key] == value )
     }
 
-    const variableColumn = getUnique(data,'variable')
+    const variableColumn = getUnique(data,variableCol)
     
     variableColumn.map((v,iVar) => {
         hcData = []
-        const variableSeries = data.filter(row => row.variable == v)
+        const variableSeries = data.filter(row => row[variableCol] == v)
         variableSeries.map((r,i) => {
             hcRow = {
-                x: r.Period,
-                y: r.value
+                x: r[xCol],
+                y: r[yCol]
             }
             hcData.push(hcRow)
         })
-
+        
         seriesData.push({
             name: v,
             data: hcData,
-            color: colors[iVar]
+            color: colors[v]
         })
 
     })
 
     return seriesData
+
+}
+
+
+const prepareSeriesTidy1Pass = (data,filters,variableCol,xCol,yCol,colors) => {
+
+    seriesData = {}
+    colTotals = {}
+
+    for (const [key, value] of Object.entries(filters)) {
+        data = data.filter(row => row[key] == value )
+    }
+
+    const valueVars = getUnique(data,variableCol)
+
+    valueVars.map((col,colNum) => {
+        seriesData[col] = []
+        colTotals[col] = 0
+    })
+
+    data.map((row,rowNum) => {
+        seriesData[row[variableCol]].push({
+            x: row[xCol],
+            y: row[yCol]
+        })
+    })
+
+    var seriesResult = []
+
+    for (const [key, value] of Object.entries(seriesData)) {
+      
+        seriesResult.push({
+            name: key,
+            data: value,
+            color: colors[key]
+        })
+        
+    }
+    
+    return seriesResult
 
 }
 
@@ -102,7 +141,7 @@ const prepareSeriesNonTidy = (data,filters,valueVars,xCol,colors) => {
         })
     })
 
-    seriesResult = []
+    var seriesResult = []
 
     for (const [key, value] of Object.entries(seriesData)) {
         if (colTotals[key]>0) {
@@ -116,6 +155,7 @@ const prepareSeriesNonTidy = (data,filters,valueVars,xCol,colors) => {
 
     return seriesResult
 }
+
 
 const prepareSeriesNonTidyUnits = (data,filters,unitsCurrent,baseUnits,conversion,convType,valueVars,colors) => {
 
@@ -198,6 +238,20 @@ const nglColors = {'Pipeline':'#054169',
 nglFilter = {'Product':'Propane','Units':'bbl','Region':'Canada'}
 
 
+var t0Tidy = performance.now()
+const data1 = getData(tidy)
+const seriesTidy = prepareSeriesTidy(data1,nglFilter,variableCol='variable',xCol='Period',yCol='value',nglColors)
+var t1Tidy = performance.now()
+console.log("Tidy processing: " + (t1Tidy - t0Tidy) + " milliseconds.")
+console.log(seriesTidy)
+
+var t0Tidy1Pass = performance.now()
+const data11 = getData(tidy)
+const seriesTidy1Pass = prepareSeriesTidy1Pass(data11,nglFilter,variableCol='variable',xCol='Period',yCol='value',nglColors)
+var t1Tidy1Pass = performance.now()
+console.log("Tidy processing 1 pass: " + (t1Tidy1Pass - t0Tidy1Pass) + " milliseconds.")
+console.log(seriesTidy1Pass)
+
 var t0NonTidy = performance.now()
 const data2 = getData(nonTidy)
 const seriesNonTidy = prepareSeriesNonTidy(data2,nglFilter,valueVars=['Pipeline','Marine','Railway','Truck'],xCol='Period',nglColors)
@@ -213,10 +267,5 @@ var t1NonTidyUnits = performance.now()
 console.log("Non Tidy processing with one unit: " + (t1NonTidyUnits - t0NonTidyUnits) + " milliseconds.")
 console.log(seriesNonTidy)
 
-var t0Tidy = performance.now()
-const data1 = getData(tidy)
-const seriesTidy = prepareSeriesTidy(data1,nglFilter)
-var t1Tidy = performance.now()
-console.log("Tidy processing: " + (t1Tidy - t0Tidy) + " milliseconds.")
-console.log(seriesTidy)
+
 

@@ -1,51 +1,32 @@
-const prepareSeriesImports = (data) => {
+const crudeImportsChartTypes = (series) => {
 
-    const colors = ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']
-    seriesData = []
-    const attributes = getUnique(data,'Attribute')
-    
-    attributes.map((v,iattr) => {
-        hcData = []
-        const attr = data.filter(row => row.Attribute == v)
-        attr.map((r,i) => {
-            hcRow = {
-                x: r.Year,
-                y: r.Value
-            }
-            hcData.push(hcRow)
-        })
-
-
-        var chartType = ''
-        if (v=='U.S crude oil exports') {
-            chartType = 'line'
+    series.map((data,seriesNum) => {
+        if (data.name == 'U.S crude oil exports'){
+            data.type = 'line'
+            data.zIndex = 1
         } else {
-            chartType = 'column'
+            data.type = 'column'
+            data.zIndex = 0
         }
-
-        seriesData.push({
-            name: v,
-            type: chartType,
-            data: hcData,
-            color: colors[iattr]
-        })
-
     })
 
-    return seriesData
+    return series
 
 }
 
+const crudeImportColors = {'ROW imports':'#054169',
+'U.S crude oil exports':'#5FBEE6',
+'Canadian imports':'#FFBE4B'}
 
 const crudeImportsData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/us_imports/UScrudeoilimports.json'))));
-var seriesData = prepareSeriesImports(crudeImportsData)
+var crudeImportsFilters = {'Units':'MMb/d'}
+var seriesData = crudeImportsChartTypes(prepareSeriesTidy(crudeImportsData,crudeImportsFilters,variableCol='Attribute',xCol='Year',yCol='Value',colors=crudeImportColors))
 const createCrudeImportsChart = (seriesData) => {
 
 
-var chart = new Highcharts.chart('container_crude_imports', {
+var chartCrudeImports = new Highcharts.chart('container_crude_imports', {
 
     chart: {
-        type: 'column', //line,bar,scatter,area,areaspline
         zoomType: 'x', //allows the user to focus in on the x or y (x,y,xy)
         borderColor: 'black',
         borderWidth: 1,
@@ -83,7 +64,7 @@ var chart = new Highcharts.chart('container_crude_imports', {
 
     tooltip: {
         animation: true,
-        //shared: true,
+        shared: true,
     },
 
     // title: { text: 'Canada Propane Exports' },
@@ -93,13 +74,6 @@ var chart = new Highcharts.chart('container_crude_imports', {
 
     yAxis: {
         title: { text: 'Million bbl/day' },
-        stackLabels: {
-            enabled: true,
-            style: {
-                fontWeight: 'bold',
-                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-            }
-        }
     },
 
     lang: {
@@ -113,13 +87,24 @@ var chart = new Highcharts.chart('container_crude_imports', {
             color: '#303030'
         }
     },
+
     series: seriesData
 });
 
-return chart
+return chartCrudeImports
 }
 
-chart = createCrudeImportsChart(seriesData)
+var chartCrudeImports = createCrudeImportsChart(seriesData)
+
+var selectUnitsCrudeImports = document.getElementById('select_units_crude_imports');
+selectUnitsCrudeImports.addEventListener('change', (selectUnitsCrudeImports) => {
+    var units = selectUnitsCrudeImports.target.value;
+    crudeImportsFilters['Units'] = units
+    var seriesData = crudeImportsChartTypes(prepareSeriesTidy(crudeImportsData,crudeImportsFilters,variableCol='Attribute',xCol='Year',yCol='Value',colors=crudeImportColors))
+    chartCrudeImports.update({
+        series:seriesData
+    })
+});
 
 
 
