@@ -188,9 +188,9 @@ def readExcel(name,sheet='pq',flatten=False):
     df.to_json(write_path,orient='records',force_ascii=False)
     return df
 
-def readExcelPipeline(name,sheet='Data'):
-    
-    df = pd.read_excel(name,sheet_name=sheet)
+def readExcelPipeline(name,sheet='Data',sql=False):
+    read_path = os.path.join(os.getcwd(),'Data/',name)
+    df = pd.read_excel(read_path,sheet_name=sheet)
     text = ['Table','Owner','Pipeline','Category','Type','Unit']
     capital = ['Table','Owner','Pipeline','Category','Type']
     for t in text:
@@ -217,11 +217,17 @@ def readExcelPipeline(name,sheet='Data'):
                    'Return On Rate Base':'Return on Rate Base'}
     
     df['Type'] = df['Type'].replace(type_switch)
-    df.to_json(name.split('.')[0]+'.json',orient='records',force_ascii=False)
-    df.to_csv(name.split('.')[0]+'.csv',index=False)
-    conn,engine = cer_connection()
-    df.to_sql('Pipeline_Financial_Metrics',con=conn,index=False,if_exists='replace')
-    conn.close()
+    
+    oil_lines = ['Aurora Pipeline','Enbridge Mainline','Enbridge Norman Wells Pipeline','Express Pipeline','Cochin Pipeline','Milk River Pipeline','Montreal Pipeline','Southern Lights Pipeline','Trans Mountain Pipeline','Keystone Pipeline System','Trans-Northern Pipeline','Wascana','Westspur Pipeline']
+    df['Category'] = ['Oil' if x in oil_lines else 'Gas' for x in df['Pipeline']]
+    
+    write_path = os.path.join(os.getcwd(),'Cassandra/all_pipes/',name.split('.')[0]+'.json')
+    df.to_json(write_path,orient='records',force_ascii=False)
+   
+    if sql:
+        conn,engine = cer_connection()
+        df.to_sql('Pipeline_Financial_Metrics',con=conn,index=False,if_exists='replace')
+        conn.close()
     return df
 
 
@@ -468,12 +474,14 @@ if __name__ == '__main__':
     #df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
     
     #sara
-    df = readCersei(query_gas_traffic,'gas_traffic.json')
+    #df = readCersei(query_gas_traffic,'gas_traffic.json')
     
+    #cassandra
+    df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     
+    #other
     #df = readCsv('ngl_exports.csv')
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
-    #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df = readExcelCredit(name='CreditTables.xlsx')
     #df = crudeThroughput(name='oil_throughput.sql')
     #df = crudeCapacity(name='oil_capacity.sql')
