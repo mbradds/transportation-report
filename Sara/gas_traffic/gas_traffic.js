@@ -1,61 +1,38 @@
-const prepareSeriesGasTraffic = (data,dataColumn) => {
+const gasTrafficChartTypes = (series) => {
+    series.map((data,seriesNum) => {
+        if (data.name == 'Capacity') {
+            data.type = 'line'
+        } else {
+            data.type = 'area'
+        }
+    })
 
-    const colors = ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']
-    seriesData = []
-
-    if (dataColumn == 'throughput') {
-        const pipes = getUnique(data,'Point')
-        pipes.map((v,iPipes) => {
-            hcData = []
-            const pipe = data.filter(row => row['Point'] == v)
-            pipe.map((r,i) => {
-                hcRow = {
-                    x: r.Date,
-                    y: r['Throughput (1000 m3/d)']
-                }
-                hcData.push(hcRow)
-            })
-
-            seriesData.push({
-                name: v,
-                data: hcData,
-                color: colors[iPipes],
-                type: 'area'
-            })
-
-        })
-    } else {
-
-        hcData = []
-        data.map((v,iCap) => {
-            hcRow = {
-                x: v.Date,
-                y: v['Capacity (1000 m3/d)']
-            }
-            hcData.push(hcRow)
-        })
-
-        seriesData.push({
-            name: 'Capacity (1000 m3/d)',
-            data: hcData,
-            color: '#42464B',
-            type: 'line'
-        })
-    }
-
-    return seriesData
-
+    return series
 }
 
-const gasTrafficSeries = (gasThroughput,gasCapacity) => {
-    const throughput = prepareSeriesGasTraffic(gasThroughput,dataColumn='throughput')
-    const capacity = prepareSeriesGasTraffic(gasCapacity,dataColumn='capacity')
-    return throughput.concat(capacity)
+const gasColors = {
+    'Alliance Pipeline Limited Partnership - Alliance Pipeline - Border':cerPalette['Night Sky'],
+    'Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate':cerPalette['Sun'],
+    'Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy':cerPalette['Flame'],
+    'TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line':cerPalette['Forest'],
+    'Capacity':cerPalette['Cool Grey']
 }
+const gasData = JSON.parse(JSON.stringify(JSON.parse(getData('Sara/gas_traffic/gas_traffic.json'))));
 
-const gasThroughput = JSON.parse(JSON.stringify(JSON.parse(getData('Sara/gas_traffic/gas_throughput.json'))));
-const gasCapacity = JSON.parse(JSON.stringify(JSON.parse(getData('Sara/gas_traffic/gas_capacity.json'))));
-const gasSeries = gasTrafficSeries(gasThroughput,gasCapacity)
+var seriesData = gasTrafficChartTypes(prepareSeriesNonTidyUnits(gasData,
+    filters=false,
+    unitsCurrent='BCf/d',
+    baseUnits='1000 m3/d',
+    conversion=0.0000353,
+    convType='*',
+    valueVars=['Alliance Pipeline Limited Partnership - Alliance Pipeline - Border',
+    'Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate',
+    'Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy',
+    'TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line',
+    'Capacity'],
+    xCol='Date',
+    colors=gasColors))
+
 
 const createChartGasTraffic = (seriesData) => {
 
@@ -135,4 +112,26 @@ const createChartGasTraffic = (seriesData) => {
 
     }
     
-chart = createChartGasTraffic(gasSeries)
+var chartGasTraffic = createChartGasTraffic(seriesData)
+
+var selectUnitsGasTraffic = document.getElementById('select_units_gas_traffic');
+selectUnitsGasTraffic.addEventListener('change', (selectUnitsGasTraffic) => {
+    var units = selectUnitsGasTraffic.target.value;
+    var seriesData = gasTrafficChartTypes(prepareSeriesNonTidyUnits(gasData,
+        filters=false,
+        unitsCurrent=units,
+        baseUnits='1000 m3/d',
+        conversion=0.0000353,
+        convType='*',
+        valueVars=['Alliance Pipeline Limited Partnership - Alliance Pipeline - Border',
+        'Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate',
+        'Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy',
+        'TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line',
+        'Capacity'],
+        xCol='Date',
+        colors=gasColors))
+
+    chartGasTraffic.update({
+        series:seriesData
+    })
+});

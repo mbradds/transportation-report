@@ -4,10 +4,18 @@ import os
 from connection import cer_connection
 #TODO: add in the dataframe sorting before conversion to json
 
-query_gas_throughput = "SELECT \
+query_gas_traffic = "select [Date], \
+[Alliance Pipeline Limited Partnership - Alliance Pipeline - Border], \
+[Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate], \
+[Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy], \
+[TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line], \
+[Capacity (1000 m3/d)] as [Capacity] \
+from \
+( \
+SELECT \
 cast(str([Month])+'-'+'1'+'-'+str([Year]) as date) as [Date], \
 [Corporate Entity]+' - '+[Pipeline Name]+' - '+[Key Point] as [Point], \
-round(avg([Throughput (1000 m3/d)]),1) as [Throughput (1000 m3/d)] \
+round(avg([Throughput (1000 m3/d)]),1) as [value] \
 FROM [EnergyData].[dbo].[Pipelines_Gas] \
 where \
 ([Year] >= '2010') and \
@@ -16,11 +24,11 @@ where \
 ([Corporate Entity] = 'Foothills Pipe Lines Ltd. (Foothills)' and [Key Point] in ('Kingsgate','Monchy')) or \
 ([Corporate Entity] = 'TransCanada PipeLines Limited' and [Key Point] = 'Northern Ontario Line') \
 group by [Year], [Month], [Corporate Entity], [Pipeline Name], [Key Point], [Trade Type] \
-order by [Corporate Entity],[Pipeline Name],[Key Point],cast(str([Month])+'-'+'1'+'-'+str([Year]) as date)"
-
-query_gas_capacity = "select \
+union all \
+select \
 [Date], \
-sum([Capacity (1000 m3/d)]) as [Capacity (1000 m3/d)] \
+'Capacity (1000 m3/d)' as [Point], \
+sum([Capacity (1000 m3/d)]) as [value] \
 from \
 ( \
 SELECT \
@@ -36,8 +44,18 @@ where \
 ([Corporate Entity] = 'TransCanada PipeLines Limited' and [Key Point] = 'Northern Ontario Line') \
 group by [Year],[Month],[Corporate Entity],[Pipeline Name], [Key Point] \
 ) as gas_cap \
-where year([Date]) >= '2015' \
 group by [Date] \
+) as SourceTable \
+pivot \
+( \
+avg([value]) \
+for Point in ([Alliance Pipeline Limited Partnership - Alliance Pipeline - Border], \
+[Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate], \
+[Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy], \
+[TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line], \
+[Capacity (1000 m3/d)]) \
+) as PivotTable \
+where year([Date]) >= '2015' \
 order by [Date]"
 
 query_rail_wcs = "select \
@@ -91,15 +109,14 @@ def readCersei(query,name=None):
     conn,engine = cer_connection()
     df = pd.read_sql_query(query,con=conn)
     if name == 'crude_by_rail_wcs.json':
-        df = pd.melt(df,id_vars=['Date','Units'])
-        path = os.path.join(os.getcwd(),'Colette/crude_by_rail/',name)
-    if name == 'gas_throughput.json' or name == 'gas_capacity.json':
+        #df = pd.melt(df,id_vars=['Date','Units'])
+        write_path = os.path.join(os.getcwd(),'Colette/crude_by_rail/',name)
+    if name == 'gas_traffic.json':
         df['Date'] = pd.to_datetime(df['Date'])
-        df = df[df['Date'].dt.year>=2015]
-        path = os.path.join(os.getcwd(),'Sara/gas_traffic/',name)
+        write_path = os.path.join(os.getcwd(),'Sara/gas_traffic/',name)
     
     if name != None:
-        df.to_json(path,orient='records')
+        df.to_json(write_path,orient='records')
     conn.close()
     return df
 
@@ -111,6 +128,27 @@ def readCsv(name):
     df.to_json(name.split('.')[0]+'.json',orient='records')
     return df
 
+def jsTest(name,sheet='pq',flatten=False):
+    read_path = os.path.join(os.getcwd(),'Data/',name)
+    df = pd.read_excel(read_path,sheet_name=sheet)
+    
+    if name == 'natural-gas-liquids-exports-monthly.xlsx':
+        df['Period'] = pd.to_datetime(df['Period'])
+        write_path = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'.json')
+        df_bbl = df[df['Units']=='bbl'].copy()
+        write_path_bbl = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'_bbl.json')
+        df_bbl.to_json(write_path_bbl,orient='records',force_ascii=False)
+        
+        if flatten:
+            df = pd.melt(df,id_vars=['Period','Product','Region','Units'])
+            write_path = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'_flat.json')
+            df = df[df['value'].notnull()]
+            df = df[df['variable']!='Total']
+            df.to_json(write_path,orient='records',force_ascii=False)
+    
+    df = df.astype(object).where(pd.notnull(df), None)
+    df.to_json(write_path,orient='records',force_ascii=False)
+    return df
 
 def readExcel(name,sheet='pq',flatten=False):
     read_path = os.path.join(os.getcwd(),'Data/',name)
@@ -423,12 +461,16 @@ if __name__ == '__main__':
     #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
     #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
-    df = ne2_wcs_wti(query_ne2)
+    #df = ne2_wcs_wti(query_ne2)
     #df = readExcel('fgrs-eng.xlsx',sheet='pq')
     
-    #df = readCersei(query_gas_throughput,'gas_throughput.json')
-    #df = readCersei(query_gas_capacity,'gas_capacity.json')
+    #colette
     #df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
+    
+    #sara
+    df = readCersei(query_gas_traffic,'gas_traffic.json')
+    
+    
     #df = readCsv('ngl_exports.csv')
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
