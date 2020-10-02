@@ -68,8 +68,12 @@ const prepareSeriesNonTidy = (data,filters,valueVars,xCol,colors) => {
     seriesData = {}
     colTotals = {}
 
-    for (const [key, value] of Object.entries(filters)) {
-        data = data.filter(row => row[key] == value )
+    if (filters !== false){
+
+        for (const [key, value] of Object.entries(filters)) {
+            data = data.filter(row => row[key] == value )
+        }
+
     }
 
     //initialize each series with an empty list
@@ -91,7 +95,7 @@ const prepareSeriesNonTidy = (data,filters,valueVars,xCol,colors) => {
     seriesResult = []
 
     for (const [key, value] of Object.entries(seriesData)) {
-        if (colTotals[key]>0) {
+        if (colTotals[key] !== 0) {
             seriesResult.push({
                 name: key,
                 data: value,
@@ -168,6 +172,38 @@ const prepareSeriesNonTidyUnits = (data,filters,unitsCurrent,baseUnits,conversio
         }
     }
 
-    console.log(seriesResult)
     return seriesResult
+}
+
+const prepareSeriesTidy = (data,filters,variableCol,xCol,yCol,colors) => {
+
+    seriesData = []
+
+    for (const [key, value] of Object.entries(filters)) {
+        data = data.filter(row => row[key] == value )
+    }
+
+    const variableColumn = getUnique(data,variableCol)
+    
+    variableColumn.map((v,iVar) => {
+        hcData = []
+        const variableSeries = data.filter(row => row[variableCol] == v)
+        variableSeries.map((r,i) => {
+            hcRow = {
+                x: r[xCol],
+                y: r[yCol]
+            }
+            hcData.push(hcRow)
+        })
+        
+        seriesData.push({
+            name: v,
+            data: hcData,
+            color: colors[v]
+        })
+
+    })
+
+    return seriesData
+
 }

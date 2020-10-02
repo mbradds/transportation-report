@@ -42,10 +42,26 @@ const prepareSeriesCrudePrices = (data) => {
 
 }
 
+const crudePriceChartTypes = (series) => {
+    series.map((data,seriesNum) => {
+        if (data.name == 'Differential'){
+            data.type = 'area'
+        } else {
+            data.type = 'line'
+        }
+    })
+
+    return series
+}
 
 const crudePriceData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/crude_prices/oil_prices.json'))));
+const crudePriceColors = {'WCS':'#054169',
+'WTI':'#FFBE4B',
+'Differential':'#5FBEE5'}
 
-var seriesData = prepareSeriesCrudePrices(crudePriceData)
+var seriesData = crudePriceChartTypes(prepareSeriesNonTidy(crudePriceData,filters=false,valueVars=['WCS','WTI','Differential'],xCol='Date',colors=crudePriceColors))
+
+
 const createCrudePriceChart = (seriesData) => {
 
 var chart = new Highcharts.chart('container_crude_prices', {

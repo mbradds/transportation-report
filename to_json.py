@@ -2,6 +2,7 @@ import pandas as pd
 import json
 import os
 from connection import cer_connection
+#TODO: add in the dataframe sorting before conversion to json
 
 query_gas_throughput = "SELECT \
 cast(str([Month])+'-'+'1'+'-'+str([Year]) as date) as [Date], \
@@ -86,7 +87,7 @@ where Market = 'WCS' and year([SettlementDate]) >= 2015\
 group by year([SettlementDate]), month([SettlementDate])\
 order by cast(str(month([SettlementDate]))+'-'+'1'+'-'+str(year([SettlementDate])) as date)"
 
-def readCersei(query,name):
+def readCersei(query,name=None):
     conn,engine = cer_connection()
     df = pd.read_sql_query(query,con=conn)
     if name == 'crude_by_rail_wcs.json':
@@ -97,7 +98,8 @@ def readCersei(query,name):
         df = df[df['Date'].dt.year>=2015]
         path = os.path.join(os.getcwd(),'Sara/gas_traffic/',name)
     
-    df.to_json(path,orient='records')
+    if name != None:
+        df.to_json(path,orient='records')
     conn.close()
     return df
 
@@ -136,7 +138,13 @@ def readExcel(name,sheet='pq',flatten=False):
             df.to_json(write_path,orient='records',force_ascii=False)
     
     if name == 'crude-oil-exports-by-destination-annual.xlsx':
+        df = df[df['PADD'] != 'Total']
         write_path = os.path.join(os.getcwd(),'Kevin/crude_exports/',name.split('.')[0]+'.json')
+    
+    if name == 'UScrudeoilimports.xlsx':
+        write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
+        df['Value'] = [round(x,2) for x in df['Value']]
+        
         
     df = df.astype(object).where(pd.notnull(df), None)
     df.to_json(write_path,orient='records',force_ascii=False)
@@ -402,23 +410,27 @@ def ne2_wcs_wti(query):
     conn,engine = cer_connection()
     df = readCersei(query)
     conn.close()
-    df['Differential'] = df['WTI'] - df['WCS']
-    df = pd.melt(df,id_vars=['Date'])
-    df.to_json('oil_prices.json',orient='records')
+    df['Differential'] = (df['WTI'] - df['WCS'])*-1
+    #df = pd.melt(df,id_vars=['Date'])
+    write_path = os.path.join(os.getcwd(),'Kevin/crude_prices/','oil_prices.json')
+    df.to_json(write_path,orient='records')
     
     return df
 
 if __name__ == '__main__':
+    
+    #kevin
+    #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
+    #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
+    #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
+    df = ne2_wcs_wti(query_ne2)
+    #df = readExcel('fgrs-eng.xlsx',sheet='pq')
     
     #df = readCersei(query_gas_throughput,'gas_throughput.json')
     #df = readCersei(query_gas_capacity,'gas_capacity.json')
     #df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
     #df = readCsv('ngl_exports.csv')
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
-    #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
-    df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
-    #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
-    #df = readExcel('fgrs-eng.xlsx',sheet='pq')
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df = readExcelCredit(name='CreditTables.xlsx')
     #df = crudeThroughput(name='oil_throughput.sql')
@@ -427,7 +439,7 @@ if __name__ == '__main__':
     #df = oilThroughcap(name='oil_throughcap.csv')
     #df = gasThroughcap(name='gas_throughcap.json')
     #df = financialResources()
-    #df = ne2_wcs_wti(query_ne2)
+    
 
 #%%
 

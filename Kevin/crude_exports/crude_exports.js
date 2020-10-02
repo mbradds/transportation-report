@@ -1,47 +1,19 @@
-const prepareSeriesExports = (data,units) => {
+const crudeExportColors = {'PADD I':'#FFBE4B',
+'PADD II':'#054169',
+'PADD III':'#5FBEE6',
+'PADD IV':'#559B37',
+'PADD V':'#42464B',
+'Other':'#FF821E'}
 
-    const colors = ['#054169', '#FFBE4B', '#5FBEE6', '#559B37', '#FF821E', '#871455', '#8c8c96', '#42464B']
-    seriesData = []
-    data = data.filter(row => row.Unit == units)
-    data = data.filter(row => row.PADD !== 'Total')
-    const padds = getUnique(data,'PADD')
-    
-    padds.map((v,iPadds) => {
-        hcData = []
-        const padd = data.filter(row => row.PADD == v)
-        padd.map((r,i) => {
-            hcRow = {
-                x: r.Year,
-                y: r.Value
-            }
-            hcData.push(hcRow)
-        })
-
-        seriesData.push({
-            name: v,
-            data: hcData,
-            color: colors[iPadds]
-        })
-
-    })
-
-    return seriesData
-
-}
-const crudeExportColors = {'PADD 1':'#FFBE4B',
-'PADD 2':'#054169',
-'PADD 3':'#5FBEE6',
-'PADD 4':'#559B37',
-'PADD 5':'#42464B'}
+var crudeExportFilters = {'Unit':'bbl/d'}
 
 const crudeExportsData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/crude_exports/crude-oil-exports-by-destination-annual.json'))));
-console.log(crudeExportsData)
 fillDrop('Unit','select_units_crude_exports','bbl/d',crudeExportsData)
-var seriesData = prepareSeriesExports(crudeExportsData,'bbl/d')
+var seriesData = prepareSeriesTidy(crudeExportsData,crudeExportFilters,'PADD',xCol='Year',yCol='Value',crudeExportColors)
 const createCrudeExportsChart = (seriesData) => {
 
 
-const chartCrudeExports = new Highcharts.chart('container_crude_exports', {
+var chartCrudeExports = new Highcharts.chart('container_crude_exports', {
 
     chart: {
         type: 'column', //line,bar,scatter,area,areaspline
@@ -115,7 +87,8 @@ const chartCrudeExports = new Highcharts.chart('container_crude_exports', {
     series: seriesData
 });
 
-return chart
+return chartCrudeExports
+
 }
 
 var chartCrudeExports = createCrudeExportsChart(seriesData)
@@ -123,8 +96,12 @@ var chartCrudeExports = createCrudeExportsChart(seriesData)
 var selectUnitsCrudeExports = document.getElementById('select_units_crude_exports');
 selectUnitsCrudeExports.addEventListener('change', (selectUnitsCrudeExports) => {
     var units = selectUnitsCrudeExports.target.value;
-    var seriesData = prepareSeriesExports(crudeExportsData,units)
-    chartCrudeExports = createCrudeExportsChart(seriesData)
+    crudeExportFilters['Unit'] = units
+    var seriesData = prepareSeriesTidy(crudeExportsData,crudeExportFilters,'PADD',xCol='Year',yCol='Value',crudeExportColors)
+    //chartCrudeExports = createCrudeExportsChart(seriesData)
+    chartCrudeExports.update({
+        series:seriesData
+    })
 });
 
 
