@@ -1,3 +1,15 @@
+const cerPalette = {
+    'Night Sky':'#054169',
+    'Sun':'#FFBE4B',
+    'Ocean':'#5FBEE6',
+    'Forest':'#559B37',
+    'Flame':'#FF821E',
+    'Aubergine':'#871455',
+    'Dim Grey':'#8c8c96',
+    'Cool Grey':'#42464B',
+    'White':'#FFFFFF'
+}
+
 const getData = (Url) => {
     var Httpreq = new XMLHttpRequest(); // a new request
     Httpreq.open("GET", Url, false);
@@ -112,8 +124,10 @@ const prepareSeriesNonTidyUnits = (data,filters,unitsCurrent,baseUnits,conversio
     seriesData = {}
     colTotals = {}
 
-    for (const [key, value] of Object.entries(filters)) {
-        data = data.filter(row => row[key] == value )
+    if (filters !== false){
+        for (const [key, value] of Object.entries(filters)) {
+            data = data.filter(row => row[key] == value )
+        }
     }
 
     //initialize each series with an empty list
