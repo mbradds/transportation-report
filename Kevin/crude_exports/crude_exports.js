@@ -25,7 +25,7 @@ const createCrudeExportsChart = (seriesData) => {
                 load: function () {
                     this.credits.element.onclick = function () {
                         window.open(
-                            'https://www.cer-rec.gc.ca/index-eng.html',
+                            'https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english',
                             '_blank' // <- This is what makes it open in a new window.
                         );
                     }
@@ -38,9 +38,7 @@ const createCrudeExportsChart = (seriesData) => {
         },
 
         credits: {
-            //enabled:false //gets rid of the "Highcharts logo in the bottom right"
-            text: 'Canada Energy Regulator',
-            href: 'https://www.cer-rec.gc.ca/index-eng.html'
+            text: 'Source: CER Commodity Tracking System'
         },
 
         plotOptions: {
@@ -63,7 +61,7 @@ const createCrudeExportsChart = (seriesData) => {
         // },
 
         yAxis: {
-            title: { text: 'Thousand bbl/day' },
+            title: {text: 'bbl/d'},
             stackLabels: {
                 enabled: true,
                 style: {
@@ -98,9 +96,12 @@ selectUnitsCrudeExports.addEventListener('change', (selectUnitsCrudeExports) => 
     var units = selectUnitsCrudeExports.target.value;
     crudeExportFilters['Unit'] = units
     var seriesData = prepareSeriesTidy(crudeExportsData,crudeExportFilters,'PADD',xCol='Year',yCol='Value',crudeExportColors)
-    //chartCrudeExports = createCrudeExportsChart(seriesData)
+    
     chartCrudeExports.update({
-        series:seriesData
+        series:seriesData,
+        yAxis: {
+            title:{text:units}
+        }
     })
 });
 

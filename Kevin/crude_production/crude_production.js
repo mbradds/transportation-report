@@ -37,7 +37,7 @@ var chart = new Highcharts.chart('container_crude_production', {
             load: function () {
                 this.credits.element.onclick = function () {
                     window.open(
-                        'https://www.cer-rec.gc.ca/index-eng.html',
+                        'https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html',
                         '_blank' // <- This is what makes it open in a new window.
                     );
                 }
@@ -50,9 +50,7 @@ var chart = new Highcharts.chart('container_crude_production', {
     },
 
     credits: {
-        //enabled:false //gets rid of the "Highcharts logo in the bottom right"
-        text: 'Canada Energy Regulator',
-        href: 'https://www.cer-rec.gc.ca/index-eng.html'
+        text: 'Source: Energy Futures'
     },
 
     plotOptions: {
@@ -75,7 +73,7 @@ var chart = new Highcharts.chart('container_crude_production', {
     // },
 
     yAxis: {
-        title: { text: 'Thousand bbl/day' },
+        title: { text: '1000 bbl/day' },
         stackLabels: {
             enabled: true,
             style: {
@@ -137,7 +135,10 @@ selectUnitsCrudeProd.addEventListener('change', (selectUnitsCrudeProd) => {
         colors=crudeProdColors)
     
     chartCrude.update({
-        series:seriesData
+        series:seriesData,
+        yAxis: {
+            title: {text:units}
+        }
     })
 });
 

@@ -48,7 +48,7 @@ const createChartGasTraffic = (seriesData) => {
                 load: function () {
                     this.credits.element.onclick = function () {
                         window.open(
-                            'https://www.cer-rec.gc.ca/index-eng.html',
+                            'https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34',
                             '_blank' // <- This is what makes it open in a new window.
                         );
                     }
@@ -61,9 +61,7 @@ const createChartGasTraffic = (seriesData) => {
         },
     
         credits: {
-            //enabled:false //gets rid of the "Highcharts logo in the bottom right"
-            text: 'Canada Energy Regulator',
-            href: 'https://www.cer-rec.gc.ca/index-eng.html'
+            text: 'Source: Open Government Throughput and Capacity Data'
         },
     
         plotOptions: {
@@ -88,7 +86,7 @@ const createChartGasTraffic = (seriesData) => {
         },
     
         yAxis: {
-            title: { text: 'Million bbl/day' },
+            title: {text: 'Bcf/d'},
             stackLabels: {
                 enabled: false
             }
@@ -132,6 +130,9 @@ selectUnitsGasTraffic.addEventListener('change', (selectUnitsGasTraffic) => {
         colors=gasColors))
 
     chartGasTraffic.update({
-        series:seriesData
+        series:seriesData,
+        yAxis: {
+            title:{text:units}
+        }
     })
 });

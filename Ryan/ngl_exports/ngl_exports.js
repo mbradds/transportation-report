@@ -10,7 +10,6 @@ const nglColors = {
     'Marine':cerPalette['Ocean']
 }
 
-
 var seriesData = prepareSeriesNonTidyUnits(nglData,
     nglFilters,
     unitsCurrent='bbl',
@@ -40,7 +39,7 @@ const createNglChart = (seriesData) => {
                 load: function () {
                     this.credits.element.onclick = function () {
                         window.open(
-                            'https://www.cer-rec.gc.ca/index-eng.html',
+                            'https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english',
                             '_blank' // <- This is what makes it open in a new window.
                         );
                     }
@@ -49,9 +48,7 @@ const createNglChart = (seriesData) => {
         },
 
         credits: {
-            //enabled:false //gets rid of the "Highcharts logo in the bottom right"
-            text: 'Canada Energy Regulator',
-            href: 'https://www.cer-rec.gc.ca/index-eng.html'
+            text: 'Source: CER Commodity Tracking System'
         },
 
         plotOptions: {
@@ -85,7 +82,7 @@ const createNglChart = (seriesData) => {
         },
 
         yAxis: {
-            title: { text: 'bbl' }
+            title: {text: 'bbl'}
         },
 
         lang: {
@@ -159,7 +156,10 @@ selectUnitsNgl.addEventListener('change', (selectUnitsNgl) => {
         )
     
     nglChart.update({
-        series:seriesData
+        series:seriesData,
+        yAxis: {
+            title:{text:units}
+        }
     })
 });
 

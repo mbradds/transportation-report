@@ -35,7 +35,7 @@ var chartCrudeImports = new Highcharts.chart('container_crude_imports', {
             load: function () {
                 this.credits.element.onclick = function () {
                     window.open(
-                        'https://www.cer-rec.gc.ca/index-eng.html',
+                        'https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english',
                         '_blank' // <- This is what makes it open in a new window.
                     );
                 }
@@ -48,9 +48,7 @@ var chartCrudeImports = new Highcharts.chart('container_crude_imports', {
     },
 
     credits: {
-        //enabled:false //gets rid of the "Highcharts logo in the bottom right"
-        text: 'Canada Energy Regulator',
-        href: 'https://www.cer-rec.gc.ca/index-eng.html'
+        text: 'Source: CER Commodity Tracking System & EIA'
     },
 
     plotOptions: {
@@ -67,13 +65,8 @@ var chartCrudeImports = new Highcharts.chart('container_crude_imports', {
         shared: true,
     },
 
-    // title: { text: 'Canada Propane Exports' },
-
-    // xAxis: {
-    // },
-
     yAxis: {
-        title: { text: 'Million bbl/day' },
+        title: {text: 'MMb/d'},
     },
 
     lang: {
@@ -102,7 +95,10 @@ selectUnitsCrudeImports.addEventListener('change', (selectUnitsCrudeImports) => 
     crudeImportsFilters['Units'] = units
     var seriesData = crudeImportsChartTypes(prepareSeriesTidy(crudeImportsData,crudeImportsFilters,variableCol='Attribute',xCol='Year',yCol='Value',colors=crudeImportColors))
     chartCrudeImports.update({
-        series:seriesData
+        series:seriesData,
+        yAxis: {
+            title:{text:units}
+        }
     })
 });
 
