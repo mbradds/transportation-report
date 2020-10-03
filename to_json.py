@@ -189,6 +189,9 @@ def readExcel(name,sheet='pq',flatten=False):
     if name == 'UScrudeoilimports.xlsx':
         write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
         df['Value'] = [round(x,2) for x in df['Value']]
+    
+    if name == 'fgrs-eng.xlsx':
+        write_path = os.path.join(os.getcwd(),'Colette/crude_takeaway/',name.split('.')[0]+'.json')
         
         
     #df = df.astype(object).where(pd.notnull(df), None)
@@ -475,10 +478,10 @@ if __name__ == '__main__':
     #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = ne2_wcs_wti(query_ne2)
-    #df = readExcel('fgrs-eng.xlsx',sheet='pq')
     
     #colette
     #df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
+    df = readExcel('fgrs-eng.xlsx',sheet='pq')
     
     #sara
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
@@ -487,7 +490,7 @@ if __name__ == '__main__':
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     
     #ryan
-    df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
+    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
     
     
     #other

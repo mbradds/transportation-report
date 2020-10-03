@@ -14,9 +14,9 @@ const crudeImportsChartTypes = (series) => {
 
 }
 
-const crudeImportColors = {'ROW imports':'#054169',
-'U.S crude oil exports':'#5FBEE6',
-'Canadian imports':'#FFBE4B'}
+const crudeImportColors = {'ROW imports':cerPalette['Night Sky'],
+'U.S crude oil exports':cerPalette['Ocean'],
+'Canadian imports':cerPalette['Sun']}
 
 const crudeImportsData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/us_imports/UScrudeoilimports.json'))));
 var crudeImportsFilters = {'Units':'MMb/d'}

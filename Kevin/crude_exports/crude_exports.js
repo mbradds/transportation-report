@@ -1,9 +1,9 @@
-const crudeExportColors = {'PADD I':'#FFBE4B',
-'PADD II':'#054169',
-'PADD III':'#5FBEE6',
-'PADD IV':'#559B37',
-'PADD V':'#42464B',
-'Other':'#FF821E'}
+const crudeExportColors = {'PADD I':cerPalette['Sun'],
+'PADD II':cerPalette['Night Sky'],
+'PADD III':cerPalette['Ocean'],
+'PADD IV':cerPalette['Forest'],
+'PADD V':cerPalette['Cool Grey'],
+'Other':cerPalette['Flame']}
 
 var crudeExportFilters = {'Unit':'bbl/d'}
 
