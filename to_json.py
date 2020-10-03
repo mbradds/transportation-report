@@ -3,6 +3,7 @@ import json
 import os
 from connection import cer_connection
 #TODO: add in the dataframe sorting before conversion to json
+#TODO: remove the minute/second date precision. This should improve performance
 
 query_gas_traffic = "select [Date], \
 [Alliance Pipeline Limited Partnership - Alliance Pipeline - Border], \
@@ -163,14 +164,20 @@ def readExcel(name,sheet='pq',flatten=False):
         write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
     if name == 'natural-gas-liquids-exports-monthly.xlsx':
         df['Period'] = pd.to_datetime(df['Period'])
-        write_path = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'.json')
-        df_bbl = df[df['Units']=='bbl'].copy()
-        write_path_bbl = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'_bbl.json')
-        df_bbl.to_json(write_path_bbl,orient='records',force_ascii=False)
+        df = df[df['Period'].dt.year >= 2010]
+        df = df[df['Units']=='bbl'].copy()
+        for delete in ['Units','Total']:
+            del df[delete]
+        
+        for col in ['Pipeline','Railway','Truck','Marine']:
+            df[col] = df[col].round(1)
+            
+        write_path = os.path.join(os.getcwd(),'Ryan/ngl_exports/',name.split('.')[0]+'.json')
+        df.to_json(write_path,orient='records',force_ascii=False)
         
         if flatten:
             df = pd.melt(df,id_vars=['Period','Product','Region','Units'])
-            write_path = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'_flat.json')
+            write_path = os.path.join(os.getcwd(),'Ryan/ngl_exports/',name.split('.')[0]+'_flat.json')
             df = df[df['value'].notnull()]
             df = df[df['variable']!='Total']
             df.to_json(write_path,orient='records',force_ascii=False)
@@ -184,7 +191,7 @@ def readExcel(name,sheet='pq',flatten=False):
         df['Value'] = [round(x,2) for x in df['Value']]
         
         
-    df = df.astype(object).where(pd.notnull(df), None)
+    #df = df.astype(object).where(pd.notnull(df), None)
     df.to_json(write_path,orient='records',force_ascii=False)
     return df
 
@@ -477,11 +484,14 @@ if __name__ == '__main__':
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
     
     #cassandra
-    df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
+    #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
+    
+    #ryan
+    df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
+    
     
     #other
     #df = readCsv('ngl_exports.csv')
-    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
     #df = readExcelCredit(name='CreditTables.xlsx')
     #df = crudeThroughput(name='oil_throughput.sql')
     #df = crudeCapacity(name='oil_capacity.sql')
