@@ -34,7 +34,7 @@ const chartRail = new Highcharts.chart('container_crude_by_rail', {
                 load: function() {
                     this.credits.element.onclick = function() {
                         window.open(
-                            'https://www.cer-rec.gc.ca/index-eng.html',
+                            'https://www.cer-rec.gc.ca/en/data-analysis/energy-commodities/crude-oil-petroleum-products/statistics/canadian-crude-oil-exports-rail-monthly-data.html',
                             '_blank' // <- This is what makes it open in a new window.
                         );
                      }
@@ -44,8 +44,7 @@ const chartRail = new Highcharts.chart('container_crude_by_rail', {
     
         credits:{
             //enabled:false //gets rid of the "Highcharts logo in the bottom right"
-            text:'Canada Energy Regulator',
-            href:'https://www.cer-rec.gc.ca/index-eng.html'
+            text:'Source: CER Crude by Rail Exports & Net Energy Group'
         },
 
         legend: {
@@ -74,7 +73,7 @@ const chartRail = new Highcharts.chart('container_crude_by_rail', {
                 }
             },
             title: {
-                text: 'Rail Exports - '+units,
+                text: 'Rail Exports - bbl per day',
                 style: {
                     color: 'black'
                 }
@@ -110,6 +109,9 @@ selectUnitsRail.addEventListener('change', (selectUnitsRail) => {
     railFilters['Units'] = units
     var seriesData = railChartTypes(prepareSeriesNonTidy(railData,railFilters,valueVars=['Crude by Rail','WCS-WTI Differential'],xCol='Date',railColors))
     chartRail.update({
-        series:seriesData
+        series:seriesData,
+        yAxis: {
+            title: {text: 'Rail Exports - '+units}
+        }
     })
 });

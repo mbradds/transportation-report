@@ -83,7 +83,7 @@ const createFinancialChart = (newData, yFormat, yLabel) => {
         load: function () {
           this.credits.element.onclick = function () {
             window.open(
-              "https://www.cer-rec.gc.ca/index-eng.html",
+              "https://apps.cer-rec.gc.ca/REGDOCS/Home/Index",
               "_blank" // <- This is what makes it open in a new window.
             );
           };
@@ -93,8 +93,7 @@ const createFinancialChart = (newData, yFormat, yLabel) => {
 
     credits: {
       //enabled:false //gets rid of the "Highcharts logo in the bottom right"
-      text: "Canada Energy Regulator",
-      href: "https://www.cer-rec.gc.ca/index-eng.html",
+      text: "Source: CER REGDOCS"
     },
 
     plotOptions: {
