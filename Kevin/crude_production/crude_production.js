@@ -1,9 +1,9 @@
-const crudeProdColors = {'Conventional Light':'#FFBE4B',
-'Conventional Heavy':'#054169',
-'C5+':'#5FBEE6',
-'Field Condensate':'#559B37',
-'Mined Bitumen':'#42464B',
-'In Situ Bitumen':'#8c8c96'}
+const crudeProdColors = {'Conventional Light':cerPalette['Sun'],
+'Conventional Heavy':cerPalette['Night Sky'],
+'C5+':cerPalette['Ocean'],
+'Field Condensate':cerPalette['Forest'],
+'Mined Bitumen':cerPalette['Cool Grey'],
+'In Situ Bitumen':cerPalette['Dim Grey']}
 
 var crudeProdFilters = {'Region':'Canada'}
 var units = '1000 bbl/day'

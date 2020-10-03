@@ -11,9 +11,9 @@ const crudePriceChartTypes = (series) => {
 }
 
 const crudePriceData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/crude_prices/oil_prices.json'))));
-const crudePriceColors = {'WCS':'#054169',
-'WTI':'#FFBE4B',
-'Differential':'#5FBEE5'}
+const crudePriceColors = {'WCS':cerPalette['Night Sky'],
+'WTI':cerPalette['Sun'],
+'Differential':cerPalette['Ocean']}
 
 var seriesData = crudePriceChartTypes(prepareSeriesNonTidy(crudePriceData,filters=false,valueVars=['WCS','WTI','Differential'],xCol='Date',colors=crudePriceColors))
 
