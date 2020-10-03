@@ -106,9 +106,9 @@ return chart
 var chartCrude = createCrudeProdChart(seriesData) //do I need to have each chart variable with a different name?
 
 //recreate the chart when the region changes
-var select_region = document.getElementById('select_region_crude_prod');
-select_region.addEventListener('change', (select_region) => {
-    var region = select_region.target.value;
+var selectRegionCrudeProd = document.getElementById('select_region_crude_prod');
+selectRegionCrudeProd.addEventListener('change', (selectRegionCrudeProd) => {
+    var region = selectRegionCrudeProd.target.value;
     crudeProdFilters['Region'] = region
     var seriesData = prepareSeriesNonTidyUnits(crudeProdData,
         crudeProdFilters,
@@ -123,9 +123,9 @@ select_region.addEventListener('change', (select_region) => {
 });
 
 //update existing chart when the units change
-var select_units = document.getElementById('select_units_crude_prod');
-select_units.addEventListener('change', (select_units) => {
-    units = select_units.target.value;
+var selectUnitsCrudeProd = document.getElementById('select_units_crude_prod');
+selectUnitsCrudeProd.addEventListener('change', (selectUnitsCrudeProd) => {
+    var units = selectUnitsCrudeProd.target.value;
     var seriesData = prepareSeriesNonTidyUnits(crudeProdData,
         crudeProdFilters,
         unitsCurrent=units,
