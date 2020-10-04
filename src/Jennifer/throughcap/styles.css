@@ -1,0 +1,58 @@
+/* TODO: change selectors to select based on id: https://www.w3schools.com/cssref/css_selectors.asp */
+
+/* #container_map {
+  height: 500px; 
+  min-width: 310px; 
+  max-width: 800px; 
+  margin: 0 auto; 
+}
+#container_chart {
+  height: 500px; 
+  min-width: 310px; 
+  max-width: 800px; 
+  margin: 0 auto; 
+} */
+/* .cerlabel {
+  position: center;
+  font-family: Arial;
+  font-weight: bold;
+  color:#871455
+}
+.select_product{
+  position: absolute;
+  left: 200;
+  right: 200;
+  bottom: 200;
+} */
+
+/* .container {
+  width: 50%;
+} */
+
+.my-container {
+  border: 5px solid grey;
+}
+/* This is useful for looking at the grid structure */
+/* .my-row {
+  border: 3px solid red;
+}
+.my-col {
+  border: 3px solid blue;
+} */
+.loading {
+  margin-top: 10em;
+  text-align: center;
+  color: gray;
+}
+.cerlabel {
+  position: center;
+  font-family: Arial;
+  font-weight: bold;
+  color:#871455
+}
+
+#traffic_title{
+  font-family: Arial;
+  font-weight: bold;
+  font-size: large;
+}
