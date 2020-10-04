@@ -1,3 +1,5 @@
+import {cerPalette,getData, getUnique, fillDrop, prepareSeriesNonTidyUnits} from '../../modules/util.js'
+
 const prepareSeriesFinance = (data, filters) => {
   for (const [key, value] of Object.entries(filters)) {
     if (key == "Category") {
@@ -11,7 +13,7 @@ const prepareSeriesFinance = (data, filters) => {
     }
   }
 
-  var finPipes = getUnique((items = data), (filterColumns = "Pipeline"));
+  var finPipes = getUnique((data), ("Pipeline"));
   var colors = [
     "#054169",
     "#FFBE4B",
@@ -24,11 +26,11 @@ const prepareSeriesFinance = (data, filters) => {
   ];
   var hcData = [];
 
-  for (pipe in finPipes) {
-    dataPipe = data.filter((row) => row.Pipeline == finPipes[pipe]);
+  for (const pipe in finPipes) {
+    var dataPipe = data.filter((row) => row.Pipeline == finPipes[pipe]);
     var unit = dataPipe[0]["Unit"];
     dataPipe = dataPipe.map((v, i) => {
-      hcRow = {
+      var hcRow = {
         x: v["Year"],
         y: v["Value"],
       };
@@ -55,21 +57,14 @@ const prepareSeriesFinance = (data, filters) => {
 };
 
 var financeFilters = { Type: "Assets", Category: "All" };
-var financialData = JSON.parse(
-  JSON.stringify(
-    JSON.parse(getData("Cassandra/all_pipes/PipelineProfileTables.json"))
-  )
-);
+const financialData = JSON.parse(getData("Cassandra/all_pipes/PipelineProfileTables.json"));
+
+var seriesData, yFormat,yLabel;
 [seriesData, yFormat, yLabel] = prepareSeriesFinance(
   financialData,
   financeFilters
 );
-fillDrop(
-  (column = "Type"),
-  (dropName = "select_metric_financial"),
-  (value = "Assets"),
-  (data = financialData)
-);
+fillDrop("Type", "select_metric_financial","Assets",financialData);
 
 const createFinancialChart = (newData, yFormat, yLabel) => {
   const chart = new Highcharts.chart("container_financial_metrics", {
@@ -152,6 +147,7 @@ const createFinancialChart = (newData, yFormat, yLabel) => {
     },
     series: newData,
   });
+  return chart
 };
 
 const chartFinance = createFinancialChart(seriesData, yFormat, yLabel);

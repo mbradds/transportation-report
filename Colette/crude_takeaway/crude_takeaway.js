@@ -1,3 +1,5 @@
+import {cerPalette,getData,prepareSeriesNonTidyUnits} from '../../modules/util.js'
+
 const crudeTakeawayChartTypes = (series) => {
     series.map((data,seriesNum)=>{
         if (data.name == 'Total Supply Available for Export'){
@@ -13,7 +15,7 @@ const crudeTakeawayChartTypes = (series) => {
 }
 
 
-const crudeTakeawayData = JSON.parse(JSON.stringify(JSON.parse(getData('/Colette/crude_takeaway/fgrs-eng.json'))));
+const crudeTakeawayData = JSON.parse(getData('/Colette/crude_takeaway/fgrs-eng.json'));
 const crudeTakeawayColors = {
     'Total Supply Available for Export': cerPalette['Cool Grey'],
     'Express':cerPalette['Dim Grey'],
@@ -29,16 +31,16 @@ const crudeTakeawayColors = {
     'Variable Rail':cerPalette['Ocean']
 }
 
-var seriesData = crudeTakeawayChartTypes(prepareSeriesNonTidyUnits(
+const seriesData = crudeTakeawayChartTypes(prepareSeriesNonTidyUnits(
     crudeTakeawayData,
-    filters = false,
-    unitsCurrent = 'MMb/d',
-    baseUnits = 'MMb/d',
-    conversion = 0.0062898,
-    convType = '/',
-    valueVars = ['Total Supply Available for Export','Express','Milk River','Aurora/Rangeland','TransMountain','Enbridge Mainline','Keystone','Enbridge Line 3','TMX','Keystone XL','Structural Rail','Variable Rail'],
-    xCol = 'Year',
-    colors = crudeTakeawayColors
+    false,
+    'MMb/d',
+    'MMb/d',
+    0.0062898,
+    '/',
+    ['Total Supply Available for Export','Express','Milk River','Aurora/Rangeland','TransMountain','Enbridge Mainline','Keystone','Enbridge Line 3','TMX','Keystone XL','Structural Rail','Variable Rail'],
+    'Year',
+    crudeTakeawayColors
     ))
 
 const createChartCrudeTakeaway = (seriesData) => {
@@ -111,22 +113,21 @@ const createChartCrudeTakeaway = (seriesData) => {
 
 }
 
-var crudeTakeawayChart = createChartCrudeTakeaway(seriesData)
-
+const crudeTakeawayChart = createChartCrudeTakeaway(seriesData)
 
 var selectUnitsCrudeTakeaway = document.getElementById('select_units_crude_takeaway');
 selectUnitsCrudeTakeaway.addEventListener('change', (selectUnitsCrudeTakeaway) => {
     var units = selectUnitsCrudeTakeaway.target.value;
     var seriesData = crudeTakeawayChartTypes(prepareSeriesNonTidyUnits(
         crudeTakeawayData,
-        filters = false,
-        unitsCurrent = units,
-        baseUnits = 'MMb/d',
-        conversion = 0.0062898,
-        convType = '/',
-        valueVars = ['Total Supply Available for Export','Express','Milk River','Aurora/Rangeland','TransMountain','Enbridge Mainline','Keystone','Enbridge Line 3','TMX','Keystone XL','Structural Rail','Variable Rail'],
-        xCol = 'Year',
-        colors = crudeTakeawayColors
+        false,
+        units,
+        'MMb/d',
+        0.0062898,
+        '/',
+        ['Total Supply Available for Export','Express','Milk River','Aurora/Rangeland','TransMountain','Enbridge Mainline','Keystone','Enbridge Line 3','TMX','Keystone XL','Structural Rail','Variable Rail'],
+        'Year',
+        crudeTakeawayColors
         ))
     
     crudeTakeawayChart.update({

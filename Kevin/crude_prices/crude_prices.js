@@ -1,3 +1,5 @@
+import {cerPalette,getData,prepareSeriesNonTidy} from '../../modules/util.js'
+
 const crudePriceChartTypes = (series) => {
     series.map((data,seriesNum) => {
         if (data.name == 'Differential'){
@@ -10,89 +12,89 @@ const crudePriceChartTypes = (series) => {
     return series
 }
 
-const crudePriceData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/crude_prices/oil_prices.json'))));
+const crudePriceData = JSON.parse(getData('Kevin/crude_prices/oil_prices.json'));
 const crudePriceColors = {'WCS':cerPalette['Night Sky'],
 'WTI':cerPalette['Sun'],
 'Differential':cerPalette['Ocean']}
 
-var seriesData = crudePriceChartTypes(prepareSeriesNonTidy(crudePriceData,filters=false,valueVars=['WCS','WTI','Differential'],xCol='Date',colors=crudePriceColors))
+var seriesData = crudePriceChartTypes(prepareSeriesNonTidy(crudePriceData,false,['WCS','WTI','Differential'],'Date',crudePriceColors))
 
 
 const createCrudePriceChart = (seriesData) => {
 
-var chart = new Highcharts.chart('container_crude_prices', {
+    const chart = new Highcharts.chart('container_crude_prices', {
 
-    chart: {
-        zoomType: 'x', //allows the user to focus in on the x or y (x,y,xy)
-        borderColor: 'black',
-        borderWidth: 1,
-        animation: true,
-        events: {
-            load: function () {
-                this.credits.element.onclick = function () {
-                    window.open(
-                        'https://www.ne2group.com/',
-                        '_blank' // <- This is what makes it open in a new window.
-                    );
+        chart: {
+            zoomType: 'x', //allows the user to focus in on the x or y (x,y,xy)
+            borderColor: 'black',
+            borderWidth: 1,
+            animation: true,
+            events: {
+                load: function () {
+                    this.credits.element.onclick = function () {
+                        window.open(
+                            'https://www.ne2group.com/',
+                            '_blank' // <- This is what makes it open in a new window.
+                        );
+                    }
                 }
             }
-        }
-    },
+        },
 
-    title: {
-        text: null
-    },
+        title: {
+            text: null
+        },
 
-    credits: {
-        text: 'Source: Net Energy Group'
-    },
+        credits: {
+            text: 'Source: Net Energy Group'
+        },
 
-    plotOptions: {
-        area: {
-            stacking: 'normal',
-            marker: false,
-            dataLabels: {
+        plotOptions: {
+            area: {
+                stacking: 'normal',
+                marker: false,
+                dataLabels: {
+                    enabled: false
+                }
+            }
+        },
+
+        tooltip: {
+            animation: true,
+            shared: true,
+        },
+
+        // title: { text: 'Canada Propane Exports' },
+
+        xAxis: {
+            type: 'datetime'
+        },
+
+        yAxis: {
+            title: { text: 'USD/bbl' },
+            stackLabels: {
                 enabled: false
             }
-        }
-    },
+        },
 
-    tooltip: {
-        animation: true,
-        shared: true,
-    },
+        lang: {
+            noData: "No Exports"
+        },
 
-    // title: { text: 'Canada Propane Exports' },
+        noData: {
+            style: {
+                fontWeight: 'bold',
+                fontSize: '15px',
+                color: '#303030'
+            }
+        },
+        series: seriesData
+    });
 
-    xAxis: {
-        type: 'datetime'
-    },
-
-    yAxis: {
-        title: { text: 'USD/bbl' },
-        stackLabels: {
-            enabled: false
-        }
-    },
-
-    lang: {
-        noData: "No Exports"
-    },
-
-    noData: {
-        style: {
-            fontWeight: 'bold',
-            fontSize: '15px',
-            color: '#303030'
-        }
-    },
-    series: seriesData
-});
-
-return chart
+    return chart
 }
 
-chart = createCrudePriceChart(seriesData)
+const chart = createCrudePriceChart(seriesData)
 
 
 

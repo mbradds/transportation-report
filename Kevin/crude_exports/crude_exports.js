@@ -1,3 +1,5 @@
+import {cerPalette,getData,fillDrop,prepareSeriesTidy} from '../../modules/util.js'
+
 const crudeExportColors = {'PADD I':cerPalette['Sun'],
 'PADD II':cerPalette['Night Sky'],
 'PADD III':cerPalette['Ocean'],
@@ -7,13 +9,11 @@ const crudeExportColors = {'PADD I':cerPalette['Sun'],
 
 var crudeExportFilters = {'Unit':'bbl/d'}
 
+
 const crudeExportsData = JSON.parse(getData('Kevin/crude_exports/crude-oil-exports-by-destination-annual.json'));
 
-// const crudeExportsData = require('Kevin/crude_exports/crude-oil-exports-by-destination-annual.json');
-
-
 fillDrop('Unit','select_units_crude_exports','bbl/d',crudeExportsData)
-var seriesData = prepareSeriesTidy(crudeExportsData,crudeExportFilters,'PADD',xCol='Year',yCol='Value',crudeExportColors)
+var seriesData = prepareSeriesTidy(crudeExportsData,crudeExportFilters,'PADD','Year','Value',crudeExportColors)
 
 const createCrudeExportsChart = (seriesData) => {
 
@@ -59,11 +59,6 @@ const createCrudeExportsChart = (seriesData) => {
             //shared: true,
         },
 
-        // title: { text: 'Canada Propane Exports' },
-
-        // xAxis: {
-        // },
-
         yAxis: {
             title: {text: 'bbl/d'},
             stackLabels: {
@@ -102,7 +97,7 @@ var selectUnitsCrudeExports = document.getElementById('select_units_crude_export
 selectUnitsCrudeExports.addEventListener('change', (selectUnitsCrudeExports) => {
     var units = selectUnitsCrudeExports.target.value;
     crudeExportFilters['Unit'] = units
-    var seriesData = prepareSeriesTidy(crudeExportsData,crudeExportFilters,'PADD',xCol='Year',yCol='Value',crudeExportColors)
+    var seriesData = prepareSeriesTidy(crudeExportsData,crudeExportFilters,'PADD','Year','Value',crudeExportColors)
     
     chartCrudeExports.update({
         series:seriesData,

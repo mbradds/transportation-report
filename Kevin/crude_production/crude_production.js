@@ -1,3 +1,5 @@
+import {cerPalette,getData,fillDrop,prepareSeriesNonTidyUnits} from '../../modules/util.js'
+
 const crudeProdColors = {'Conventional Light':cerPalette['Sun'],
 'Conventional Heavy':cerPalette['Night Sky'],
 'C5+':cerPalette['Ocean'],
@@ -8,19 +10,19 @@ const crudeProdColors = {'Conventional Light':cerPalette['Sun'],
 var crudeProdFilters = {'Region':'Canada'}
 var units = '1000 bbl/day'
 const crudeProdColumns=['Conventional Light','Conventional Heavy','C5+','Field Condensate','Mined Bitumen','In Situ Bitumen']
-const crudeProdData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/crude_production/Crude_Oil_Production.json'))));
+const crudeProdData = JSON.parse(getData('Kevin/crude_production/Crude_Oil_Production.json'));
 fillDrop('Region','select_region_crude_prod','Canada',crudeProdData)
 
-//var seriesData = prepareSeriesNonTidy(crudeProdData,crudeProdFilters,valueVars=crudeProdColumns,xCol='Year',crudeProdColors)
+
 var seriesData = prepareSeriesNonTidyUnits(crudeProdData,
     crudeProdFilters,
-    unitsCurrent=units,
-    baseUnits=units,
-    conversion=6.2898,
-    convType='/',
-    valueVars=crudeProdColumns,
-    xCol='Year',
-    colors=crudeProdColors)
+    units,
+    units,
+    6.2898,
+    '/',
+    crudeProdColumns,
+    'Year',
+    crudeProdColors)
 
 const createCrudeProdChart = (seriesData) => {
 
@@ -67,10 +69,6 @@ var chart = new Highcharts.chart('container_crude_production', {
         //shared: true,
     },
 
-    // title: { text: 'Canada Propane Exports' },
-
-    // xAxis: {
-    // },
 
     yAxis: {
         title: { text: '1000 bbl/day' },
@@ -110,13 +108,13 @@ selectRegionCrudeProd.addEventListener('change', (selectRegionCrudeProd) => {
     crudeProdFilters['Region'] = region
     var seriesData = prepareSeriesNonTidyUnits(crudeProdData,
         crudeProdFilters,
-        unitsCurrent=units,
-        baseUnits='1000 bbl/day',
-        conversion=6.2898,
-        convType='/',
-        valueVars=crudeProdColumns,
-        xCol='Year',
-        colors=crudeProdColors)
+        units,
+        '1000 bbl/day',
+        6.2898,
+        '/',
+        crudeProdColumns,
+        'Year',
+        crudeProdColors)
     chartCrude = createCrudeProdChart(seriesData)
 });
 
@@ -126,13 +124,13 @@ selectUnitsCrudeProd.addEventListener('change', (selectUnitsCrudeProd) => {
     var units = selectUnitsCrudeProd.target.value;
     var seriesData = prepareSeriesNonTidyUnits(crudeProdData,
         crudeProdFilters,
-        unitsCurrent=units,
-        baseUnits='1000 bbl/day',
-        conversion=6.2898,
-        convType='/',
-        valueVars=crudeProdColumns,
-        xCol='Year',
-        colors=crudeProdColors)
+        units,
+        '1000 bbl/day',
+        6.2898,
+        '/',
+        crudeProdColumns,
+        'Year',
+        crudeProdColors)
     
     chartCrude.update({
         series:seriesData,
