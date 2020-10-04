@@ -7,7 +7,11 @@ const crudeExportColors = {'PADD I':cerPalette['Sun'],
 
 var crudeExportFilters = {'Unit':'bbl/d'}
 
-const crudeExportsData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/crude_exports/crude-oil-exports-by-destination-annual.json'))));
+const crudeExportsData = JSON.parse(getData('Kevin/crude_exports/crude-oil-exports-by-destination-annual.json'));
+
+// const crudeExportsData = require('Kevin/crude_exports/crude-oil-exports-by-destination-annual.json');
+
+
 fillDrop('Unit','select_units_crude_exports','bbl/d',crudeExportsData)
 var seriesData = prepareSeriesTidy(crudeExportsData,crudeExportFilters,'PADD',xCol='Year',yCol='Value',crudeExportColors)
 
@@ -91,6 +95,9 @@ const createCrudeExportsChart = (seriesData) => {
 
 var chartCrudeExports = createCrudeExportsChart(seriesData)
 
+/**
+ * @description Method description
+ */
 var selectUnitsCrudeExports = document.getElementById('select_units_crude_exports');
 selectUnitsCrudeExports.addEventListener('change', (selectUnitsCrudeExports) => {
     var units = selectUnitsCrudeExports.target.value;
