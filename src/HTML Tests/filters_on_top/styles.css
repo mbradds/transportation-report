@@ -1,0 +1,15 @@
+.my-container {
+    border: 1px solid green;
+}
+.my-row {
+    border: 3px solid red;
+}
+.my-col {
+    border: 3px solid blue;
+}
+.cerlabel {
+    position: center;
+    font-family: Arial;
+    font-weight: bold;
+    color:#871455
+  } 
