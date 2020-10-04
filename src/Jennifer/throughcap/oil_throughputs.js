@@ -523,43 +523,4 @@ const commodityGraph = (commodity) => {
   return [pointMap, pointData];
 };
 
-var commodity = "oil";
 
-var [pointMap, pointData] = commodityGraph(commodity); //this is called destructive assignment
-
-var select_pipelines = document.getElementById("select_pipelines");
-select_pipelines.addEventListener("change", (select_pipelines) => {
-  var pipeLine = select_pipelines.target.value;
-  if (pipeLine !== "All") {
-    var pointDataPipe = pointData.filter(
-      (row) => row["Pipeline Name"] == pipeLine
-    );
-  } else {
-    var pointDataPipe = pointData;
-  }
-
-  pointMap.update({
-    series: [
-      {
-        name: "Basemap",
-        borderColor: "#606060",
-        nullColor: "rgba(200, 200, 200, 0.2)",
-        showInLegend: false,
-      },
-      {
-        type: "mappoint",
-        name: "Key Points",
-        data: pointDataPipe,
-        dataLabels: {
-          enabled: true,
-          borderRadius: 7,
-          padding: 4,
-          format: "{point.name}",
-          allowOverlap: false,
-        },
-      },
-    ],
-  });
-
-  pointMap.redraw();
-});
