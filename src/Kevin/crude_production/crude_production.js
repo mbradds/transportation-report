@@ -115,15 +115,7 @@ selectRegionCrudeProd.addEventListener('change', (selectRegionCrudeProd) => {
         crudeProdColumns,
         'Year',
         crudeProdColors)
-    //chartCrude = createCrudeProdChart(seriesData)
-    while (chartCrude.series.length) {
-        chartCrude.series[0].remove();
-      }
-    chartCrude.update({
-        series: seriesData
-    },true)
-
-    console.log(chartCrude.series)
+    chartCrude = createCrudeProdChart(seriesData)
 });
 
 //update existing chart when the units change
