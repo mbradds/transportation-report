@@ -1,3 +1,5 @@
+import {cerPalette,getData,prepareSeriesNonTidyUnits} from '../../modules/util.js'
+
 const gasTrafficChartTypes = (series) => {
     series.map((data,seriesNum) => {
         if (data.name == 'Capacity') {
@@ -17,27 +19,26 @@ const gasColors = {
     'TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line':cerPalette['Forest'],
     'Capacity':cerPalette['Cool Grey']
 }
-const gasData = JSON.parse(JSON.stringify(JSON.parse(getData('Sara/gas_traffic/gas_traffic.json'))));
+const gasData = JSON.parse(getData('Sara/gas_traffic/gas_traffic.json'));
 
-var seriesData = gasTrafficChartTypes(prepareSeriesNonTidyUnits(gasData,
-    filters=false,
-    unitsCurrent='BCf/d',
-    baseUnits='1000 m3/d',
-    conversion=0.0000353,
-    convType='*',
-    valueVars=['Alliance Pipeline Limited Partnership - Alliance Pipeline - Border',
+const seriesData = gasTrafficChartTypes(prepareSeriesNonTidyUnits(gasData,
+    false,
+    'BCf/d',
+    '1000 m3/d',
+    0.0000353,
+    '*',
+    ['Alliance Pipeline Limited Partnership - Alliance Pipeline - Border',
     'Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate',
     'Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy',
     'TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line',
     'Capacity'],
-    xCol='Date',
-    colors=gasColors))
+    'Date',
+    gasColors))
 
 
 const createChartGasTraffic = (seriesData) => {
 
-
-    var chart = new Highcharts.chart('container_gas_traffic', {
+    const chart = new Highcharts.chart('container_gas_traffic', {
     
         chart: {
             zoomType: 'x', //allows the user to focus in on the x or y (x,y,xy)
@@ -110,24 +111,24 @@ const createChartGasTraffic = (seriesData) => {
 
     }
     
-var chartGasTraffic = createChartGasTraffic(seriesData)
+const chartGasTraffic = createChartGasTraffic(seriesData)
 
 var selectUnitsGasTraffic = document.getElementById('select_units_gas_traffic');
 selectUnitsGasTraffic.addEventListener('change', (selectUnitsGasTraffic) => {
     var units = selectUnitsGasTraffic.target.value;
-    var seriesData = gasTrafficChartTypes(prepareSeriesNonTidyUnits(gasData,
-        filters=false,
-        unitsCurrent=units,
-        baseUnits='1000 m3/d',
-        conversion=0.0000353,
-        convType='*',
-        valueVars=['Alliance Pipeline Limited Partnership - Alliance Pipeline - Border',
+    const seriesData = gasTrafficChartTypes(prepareSeriesNonTidyUnits(gasData,
+        false,
+        units,
+        '1000 m3/d',
+        0.0000353,
+        '*',
+        ['Alliance Pipeline Limited Partnership - Alliance Pipeline - Border',
         'Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate',
         'Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy',
         'TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line',
         'Capacity'],
-        xCol='Date',
-        colors=gasColors))
+        'Date',
+        gasColors))
 
     chartGasTraffic.update({
         series:seriesData,

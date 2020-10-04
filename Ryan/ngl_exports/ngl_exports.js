@@ -1,4 +1,6 @@
-var nglData = JSON.parse(JSON.stringify(JSON.parse(getData('Ryan/ngl_exports/natural-gas-liquids-exports-monthly.json'))));
+import {cerPalette,getData, fillDrop, prepareSeriesNonTidyUnits} from '../../modules/util.js'
+
+const nglData = JSON.parse(getData('Ryan/ngl_exports/natural-gas-liquids-exports-monthly.json'));
 const nglFilters = {
     'Product':'Propane',
     'Region':'Canada'
@@ -12,13 +14,13 @@ const nglColors = {
 
 var seriesData = prepareSeriesNonTidyUnits(nglData,
     nglFilters,
-    unitsCurrent='bbl',
-    baseUnits='bbl',
-    conversion=6.2898,
-    convType='/',
-    valueVars=['Pipeline','Railway','Truck','Marine'],
-    xCol='Period',
-    colors = nglColors
+    'bbl',
+    'bbl',
+    6.2898,
+    '/',
+    ['Pipeline','Railway','Truck','Marine'],
+    'Period',
+    nglColors
     )
 
 
@@ -27,7 +29,7 @@ fillDrop('Region','select_region_ngl','Canada',nglData)
 
 const createNglChart = (seriesData) => {
 
-    var chart = new Highcharts.chart('container_ngl', {
+    const chart = new Highcharts.chart('container_ngl', {
 
         chart: {
             type: 'line', //line,bar,scatter,area,areaspline
@@ -104,20 +106,19 @@ const createNglChart = (seriesData) => {
 
 var nglChart = createNglChart(seriesData)
 
-
 var selectProductNgl = document.getElementById('select_product_ngl');
 selectProductNgl.addEventListener('change', (selectProductNgl) => {
     var product = selectProductNgl.target.value;
     nglFilters.Product = product
     var seriesData = prepareSeriesNonTidyUnits(nglData,
         nglFilters,
-        unitsCurrent='bbl',
-        baseUnits='bbl',
-        conversion=6.2898,
-        convType='/',
-        valueVars=['Pipeline','Railway','Truck','Marine'],
-        xCol='Period',
-        colors = nglColors
+        'bbl',
+        'bbl',
+        6.2898,
+        '/',
+        ['Pipeline','Railway','Truck','Marine'],
+        'Period',
+        nglColors
         )
 
     nglChart = createNglChart(seriesData)
@@ -129,13 +130,13 @@ selectRegionNgl.addEventListener('change', (selectRegionNgl) => {
     nglFilters.Region = region
     var seriesData = prepareSeriesNonTidyUnits(nglData,
         nglFilters,
-        unitsCurrent='bbl',
-        baseUnits='bbl',
-        conversion=6.2898,
-        convType='/',
-        valueVars=['Pipeline','Railway','Truck','Marine'],
-        xCol='Period',
-        colors = nglColors
+        'bbl',
+        'bbl',
+        6.2898,
+        '/',
+        ['Pipeline','Railway','Truck','Marine'],
+        'Period',
+        nglColors
         )
     
     nglChart = createNglChart(seriesData)
@@ -143,16 +144,16 @@ selectRegionNgl.addEventListener('change', (selectRegionNgl) => {
 
 var selectUnitsNgl = document.getElementById('select_units_ngl');
 selectUnitsNgl.addEventListener('change', (selectUnitsNgl) => {
-    units = selectUnitsNgl.target.value;
+    var units = selectUnitsNgl.target.value;
     var seriesData = prepareSeriesNonTidyUnits(nglData,
         nglFilters,
-        unitsCurrent=units,
-        baseUnits='bbl',
-        conversion=6.2898,
-        convType='/',
-        valueVars=['Pipeline','Railway','Truck','Marine'],
-        xCol='Period',
-        colors = nglColors
+        units,
+        'bbl',
+        6.2898,
+        '/',
+        ['Pipeline','Railway','Truck','Marine'],
+        'Period',
+        nglColors
         )
     
     nglChart.update({

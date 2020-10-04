@@ -1,3 +1,5 @@
+import {cerPalette,getData,prepareSeriesTidy} from '../../modules/util.js'
+
 const crudeImportsChartTypes = (series) => {
 
     series.map((data,seriesNum) => {
@@ -18,9 +20,9 @@ const crudeImportColors = {'ROW imports':cerPalette['Night Sky'],
 'U.S crude oil exports':cerPalette['Ocean'],
 'Canadian imports':cerPalette['Sun']}
 
-const crudeImportsData = JSON.parse(JSON.stringify(JSON.parse(getData('Kevin/us_imports/UScrudeoilimports.json'))));
+const crudeImportsData = JSON.parse(getData('Kevin/us_imports/UScrudeoilimports.json'));
 var crudeImportsFilters = {'Units':'MMb/d'}
-var seriesData = crudeImportsChartTypes(prepareSeriesTidy(crudeImportsData,crudeImportsFilters,variableCol='Attribute',xCol='Year',yCol='Value',colors=crudeImportColors))
+var seriesData = crudeImportsChartTypes(prepareSeriesTidy(crudeImportsData,crudeImportsFilters,'Attribute','Year','Value',crudeImportColors))
 const createCrudeImportsChart = (seriesData) => {
 
 
@@ -93,7 +95,7 @@ var selectUnitsCrudeImports = document.getElementById('select_units_crude_import
 selectUnitsCrudeImports.addEventListener('change', (selectUnitsCrudeImports) => {
     var units = selectUnitsCrudeImports.target.value;
     crudeImportsFilters['Units'] = units
-    var seriesData = crudeImportsChartTypes(prepareSeriesTidy(crudeImportsData,crudeImportsFilters,variableCol='Attribute',xCol='Year',yCol='Value',colors=crudeImportColors))
+    var seriesData = crudeImportsChartTypes(prepareSeriesTidy(crudeImportsData,crudeImportsFilters,'Attribute','Year','Value',crudeImportColors))
     chartCrudeImports.update({
         series:seriesData,
         yAxis: {
