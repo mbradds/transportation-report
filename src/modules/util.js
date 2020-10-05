@@ -32,6 +32,18 @@ export const dynamicDropDown = (id,optionsArray) => {
 
 }
 
+//takes in a json object and checks if the column has data
+export const checkIfValid = (data) => {
+    let valid = false;
+    for (var t = 0; t < data.length; t++) {
+      if (data[t]["y"] != null && data[t]["y"] != 0) {
+        valid = true;
+        break;
+      }
+    }
+    return valid;
+  };
+
 //gets the unique regions to populate the dropdown
 export const getUnique = (items, filterColumns) => {
 
@@ -104,6 +116,12 @@ export const prepareSeriesNonTidy = (dataRaw,filters,valueVars,xCol,colors) => {
     return seriesResult
 }
 
+export const y = (convType, row, col, conversion) => {
+    return convType === "*"
+      ? +(row[col] * conversion).toFixed(1)
+      : +(row[col] / conversion).toFixed(1);
+};
+
 export const prepareSeriesNonTidyUnits = (dataRaw,filters,unitsCurrent,baseUnits,conversion,convType,valueVars,xCol,colors) => {
 
     const seriesData = {}
@@ -116,12 +134,6 @@ export const prepareSeriesNonTidyUnits = (dataRaw,filters,unitsCurrent,baseUnits
         seriesData[col] = []
         colTotals[col] = 0
     })
-
-    const y = (convType, row, col, conversion) => {
-        return convType === "*"
-          ? +(row[col] * conversion).toFixed(1)
-          : +(row[col] / conversion).toFixed(1);
-    };
 
     if (unitsCurrent == baseUnits) {
         dataFiltered.map((row, rowNum) => {

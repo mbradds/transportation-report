@@ -106,6 +106,69 @@ where Market = 'WCS' and year([SettlementDate]) >= 2015\
 group by year([SettlementDate]), month([SettlementDate])\
 order by cast(str(month([SettlementDate]))+'-'+'1'+'-'+str(year([SettlementDate])) as date)"
 
+query_oil_throughcap = "select \
+cast(str([Month])+'-'+'1'+'-'+str([Year]) as date) as [Date], \
+[Corporate Entity], \
+[Pipeline Name], \
+[Key Point], \
+[Direction of Flow], \
+[Trade Type], \
+Product, \
+round([Throughput (1000 m3/d)],2) as [Throughput (1000 m3/d)], \
+round([Available Capacity (1000 m3/d)],2) as [Available Capacity (1000 m3/d)] \
+from ( \
+SELECT \
+throughput.[Month], \
+throughput.[Year], \
+throughput.[Corporate Entity], \
+throughput.[Pipeline Name], \
+throughput.[Key Point], \
+[Direction of Flow], \
+[Trade Type], \
+[Product], \
+[Throughput (1000 m3/d)], \
+capacity.[Available Capacity (1000 m3/d)] \
+FROM [EnergyData].[dbo].[Pipelines_Throughput_Oil] as throughput \
+left join [EnergyData].[dbo].[Pipelines_Capacity_Oil] as capacity on \
+throughput.Year = capacity.Year and throughput.Month = capacity.Month \
+and throughput.[Corporate Entity] = capacity.[Corporate Entity] \
+and throughput.[Pipeline Name] = capacity.[Pipeline Name] \
+and throughput.[Key Point] = capacity.[Key Point] \
+where throughput.[Corporate Entity] <> 'Trans Mountain Pipeline ULC' \
+union all \
+SELECT \
+throughput.[Month], \
+throughput.[Year], \
+throughput.[Corporate Entity], \
+throughput.[Pipeline Name], \
+throughput.[Key Point], \
+[Direction of Flow], \
+[Trade Type], \
+[Product], \
+[Throughput (1000 m3/d)], \
+capacity.[Available Capacity (1000 m3/d)] \
+FROM [EnergyData].[dbo].[Pipelines_Throughput_Oil] as throughput \
+left join [EnergyData].[dbo].[Pipelines_Capacity_Oil] as capacity on \
+throughput.Year = capacity.Year and throughput.Month = capacity.Month and throughput.[Corporate Entity] = capacity.[Corporate Entity] \
+and throughput.[Pipeline Name] = capacity.[Pipeline Name] \
+where throughput.[Corporate Entity] = 'Trans Mountain Pipeline ULC' \
+) as hc \
+order by [Corporate Entity], [Pipeline Name], [Key Point], cast(str([Month])+'-'+'1'+'-'+str([Year]) as date)"
+
+query_gas_throughcap = "SELECT \
+cast(str([Month])+'-'+str([Date])+'-'+str([Year]) as date) as [Date], \
+[Corporate Entity], \
+[Pipeline Name], \
+[Key Point], \
+[Direction of Flow], \
+[Trade Type], \
+'Natural Gas' as [Product], \
+[Capacity (1000 m3/d)], \
+[Throughput (1000 m3/d)] \
+FROM [EnergyData].[dbo].[Pipelines_Gas] \
+where cast(str([Month])+'-'+str([Date])+'-'+str([Year]) as date) >= '2015-01-01' \
+order by [Corporate Entity],[Pipeline Name],[Key Point],[Date]"
+
 def readCersei(query,name=None):
     conn,engine = cer_connection()
     df = pd.read_sql_query(query,con=conn)
@@ -256,55 +319,55 @@ def readExcelCredit(name,sheet='Credit Ratings'):
     return df
 
 
-def crudeThroughput(name):
-    query = "select [Date],[Corporate Entity],[Pipeline Name],[Key Point],[Direction of Flow],[Trade Type],[Product],[Units],[Throughput] \
-    from \
-    ( \
-    SELECT \
-    cast(cast([Month] as nvarchar(2))+'-'+'1'+'-'+cast([Year] as nvarchar(4)) as date) as [Date],[Corporate Entity],[Pipeline Name],[Key Point],[Direction of Flow],[Trade Type],[Product], \
-    round([Throughput (1000 m3/d)],2) as [1000 m3/d], \
-    round([Throughput (1000 m3/d)]*6.2898,2) as [1000 b/d] \
-    FROM [EnergyData].[dbo].[Pipelines_Throughput_Oil] \
-    ) as unTidy \
-    unpivot \
-    (Throughput FOR Units in ([1000 m3/d],[1000 b/d]) \
-    ) as tidy \
-    order by [Pipeline Name],[Corporate Entity],Product,[Date]"
+# def crudeThroughput(name):
+#     query = "select [Date],[Corporate Entity],[Pipeline Name],[Key Point],[Direction of Flow],[Trade Type],[Product],[Units],[Throughput] \
+#     from \
+#     ( \
+#     SELECT \
+#     cast(cast([Month] as nvarchar(2))+'-'+'1'+'-'+cast([Year] as nvarchar(4)) as date) as [Date],[Corporate Entity],[Pipeline Name],[Key Point],[Direction of Flow],[Trade Type],[Product], \
+#     round([Throughput (1000 m3/d)],2) as [1000 m3/d], \
+#     round([Throughput (1000 m3/d)]*6.2898,2) as [1000 b/d] \
+#     FROM [EnergyData].[dbo].[Pipelines_Throughput_Oil] \
+#     ) as unTidy \
+#     unpivot \
+#     (Throughput FOR Units in ([1000 m3/d],[1000 b/d]) \
+#     ) as tidy \
+#     order by [Pipeline Name],[Corporate Entity],Product,[Date]"
 
-    conn,engine = cer_connection()
-    df = pd.read_sql_query(query,con=conn)
-    df.to_json(name.split('.')[0]+'.json',orient='records')
-    conn.close()
+#     conn,engine = cer_connection()
+#     df = pd.read_sql_query(query,con=conn)
+#     df.to_json(name.split('.')[0]+'.json',orient='records')
+#     conn.close()
     
-    return df
+#     return df
 
 
-def crudeCapacity(name):
-    query = "select [Date],[Corporate Entity],[Pipeline Name],[Key Point], \
-    rtrim(ltrim(LEFT([Units], Charindex('(', [Units]) - 1))) as [Capacity Type], \
-    ltrim(Right([Units], Charindex('(', [Units]))) as [Units], \
-    [Capacity] \
-    from( \
-    SELECT \
-    cast(cast([Month] as nvarchar(2))+'-'+'1'+'-'+cast([Year] as nvarchar(4)) as date) as [Date],[Corporate Entity],[Pipeline Name],[Key Point], \
-    round([Nameplate Capacity (1000 m3/d)],2) as [Nameplate Capacity (1000 m3/d)], \
-    round([Available Capacity (1000 m3/d)],2) as [Available Capacity (1000 m3/d)], \
-    round([Nameplate Capacity (1000 m3/d)]*6.2898,2) as [Nameplate Capacity (1000 b/d)], \
-    round([Available Capacity (1000 m3/d)]*6.2898,2) as [Available Capacity (1000 b/d)] \
-    FROM [EnergyData].[dbo].[Pipelines_Capacity_Oil] \
-    where ([Pipeline Name] = 'Canadian Mainline' and [Key Point] in ('ex-Gretna','Into-Sarnia')) or ([Pipeline Name] <> 'Canadian Mainline') \
-    ) as unTidy \
-    unpivot \
-    (Capacity FOR Units in ([Nameplate Capacity (1000 m3/d)],[Available Capacity (1000 m3/d)],[Nameplate Capacity (1000 b/d)],[Available Capacity (1000 b/d)]) \
-    ) as tidy \
-    order by [Pipeline Name],[Corporate Entity],[Key Point],[Date]"
+# def crudeCapacity(name):
+#     query = "select [Date],[Corporate Entity],[Pipeline Name],[Key Point], \
+#     rtrim(ltrim(LEFT([Units], Charindex('(', [Units]) - 1))) as [Capacity Type], \
+#     ltrim(Right([Units], Charindex('(', [Units]))) as [Units], \
+#     [Capacity] \
+#     from( \
+#     SELECT \
+#     cast(cast([Month] as nvarchar(2))+'-'+'1'+'-'+cast([Year] as nvarchar(4)) as date) as [Date],[Corporate Entity],[Pipeline Name],[Key Point], \
+#     round([Nameplate Capacity (1000 m3/d)],2) as [Nameplate Capacity (1000 m3/d)], \
+#     round([Available Capacity (1000 m3/d)],2) as [Available Capacity (1000 m3/d)], \
+#     round([Nameplate Capacity (1000 m3/d)]*6.2898,2) as [Nameplate Capacity (1000 b/d)], \
+#     round([Available Capacity (1000 m3/d)]*6.2898,2) as [Available Capacity (1000 b/d)] \
+#     FROM [EnergyData].[dbo].[Pipelines_Capacity_Oil] \
+#     where ([Pipeline Name] = 'Canadian Mainline' and [Key Point] in ('ex-Gretna','Into-Sarnia')) or ([Pipeline Name] <> 'Canadian Mainline') \
+#     ) as unTidy \
+#     unpivot \
+#     (Capacity FOR Units in ([Nameplate Capacity (1000 m3/d)],[Available Capacity (1000 m3/d)],[Nameplate Capacity (1000 b/d)],[Available Capacity (1000 b/d)]) \
+#     ) as tidy \
+#     order by [Pipeline Name],[Corporate Entity],[Key Point],[Date]"
 
-    conn,engine = cer_connection()
-    df = pd.read_sql_query(query,con=conn)
-    df.to_json(name.split('.')[0]+'.json',orient='records')
-    conn.close()
+#     conn,engine = cer_connection()
+#     df = pd.read_sql_query(query,con=conn)
+#     df.to_json(name.split('.')[0]+'.json',orient='records')
+#     conn.close()
     
-    return df
+#     return df
 
 
 def keyPoints():
@@ -358,39 +421,34 @@ def keyPoints():
         df = pd.read_sql_query(query[0],con=conn)
         for num in ['Latitude','Longitude']:
             df[num] = pd.to_numeric(df[num])
-            
-        df.to_json(query[-1],orient='records')
+    
+        write_path = os.path.join(os.getcwd(),'Jennifer/throughcap/',query[-1])
+        df.to_json(write_path,orient='records')
+        
     conn.close()
     return df
 
-def oilThroughcap(name):
-    
-    df = pd.read_csv(name)
-    df['Date'] = pd.to_datetime(df['Date'])
-    df['Date'] = df['Date'].dt.date
-    df.to_json(name.split('.')[0]+'.json',orient='records')
-    
-    return df
 
-def gasThroughcap(name):
-    query = "SELECT\
-    cast(str([Month])+'-'+str([Date])+'-'+str([Year]) as date) as [Date],\
-    [Corporate Entity],\
-    [Pipeline Name],\
-    [Key Point],\
-    [Direction of Flow],\
-    [Trade Type],\
-    'Natural Gas' as [Product],\
-    [Capacity (1000 m3/d)],\
-    [Throughput (1000 m3/d)]\
-    FROM [EnergyData].[dbo].[Pipelines_Gas]\
-    where cast(str([Month])+'-'+str([Date])+'-'+str([Year]) as date) >= '2016-01-01'\
-    order by [Corporate Entity],[Pipeline Name],[Key Point],[Date]"
+def throughcap(query,name):
     
+    #TODO: look into grouping this by year/month to reduce the file size
     conn,engine = cer_connection()
     df = pd.read_sql_query(query,con=conn)
-    df.to_json(name,orient='records')
+    df['Date'] = pd.to_datetime(df['Date'])
+    
+    if name == 'gas_throughcap.json':
+        numeric_cols = ['Capacity (1000 m3/d)','Throughput (1000 m3/d)']
+    elif name == 'oil_throughcap.json':
+        numeric_cols = ['Available Capacity (1000 m3/d)','Throughput (1000 m3/d)']
+    
+    for numeric in numeric_cols:
+        df[numeric] = pd.to_numeric(df[numeric])
+        df[numeric] = df[numeric].round(1)
+    
+    write_path = os.path.join(os.getcwd(),'Jennifer/throughcap/',name)
+    df.to_json(write_path,orient='records')
     conn.close()
+    return df
 
 def financialResources(name='NEB_DM_PROD - 1267261 - Financial Resource Types - Data.XLSX'):
     
@@ -492,6 +550,11 @@ if __name__ == '__main__':
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
     
+    #jennifer
+    df_oil = throughcap(query=query_oil_throughcap, name='oil_throughcap.json')
+    df_gas = throughcap(query=query_gas_throughcap, name='gas_throughcap.json')
+    df_point = keyPoints()
+    
     
     #other
     #df = readCsv('ngl_exports.csv')
@@ -499,8 +562,6 @@ if __name__ == '__main__':
     #df = crudeThroughput(name='oil_throughput.sql')
     #df = crudeCapacity(name='oil_capacity.sql')
     #df = keyPoints()
-    #df = oilThroughcap(name='oil_throughcap.csv')
-    #df = gasThroughcap(name='gas_throughcap.json')
     #df = financialResources()
     
 
