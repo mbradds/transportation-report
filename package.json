@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "prebuild":"rm -rf dist",
+    "prebuild": "rm -rf dist",
     "start": "webpack-dev-server"
   },
   "repository": {

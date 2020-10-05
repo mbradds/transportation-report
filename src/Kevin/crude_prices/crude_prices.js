@@ -1,105 +1,110 @@
-import {cerPalette,getData,prepareSeriesNonTidy} from '../../modules/util.js'
+import {
+  cerPalette,
+  getData,
+  prepareSeriesNonTidy,
+} from "../../modules/util.js";
 
 const crudePriceChartTypes = (series) => {
-    series.map((data,seriesNum) => {
-        if (data.name == 'Differential'){
-            data.type = 'area'
-        } else {
-            data.type = 'line'
-        }
-    })
+  series.map((data, seriesNum) => {
+    if (data.name == "Differential") {
+      data.type = "area";
+    } else {
+      data.type = "line";
+    }
+  });
 
-    return series
-}
+  return series;
+};
 
-const crudePriceData = JSON.parse(getData('/src/Kevin/crude_prices/oil_prices.json'));
-const crudePriceColors = {'WCS':cerPalette['Night Sky'],
-'WTI':cerPalette['Sun'],
-'Differential':cerPalette['Ocean']}
+const crudePriceData = JSON.parse(
+  getData("/src/Kevin/crude_prices/oil_prices.json")
+);
+const crudePriceColors = {
+  WCS: cerPalette["Night Sky"],
+  WTI: cerPalette["Sun"],
+  Differential: cerPalette["Ocean"],
+};
 
-var seriesData = crudePriceChartTypes(prepareSeriesNonTidy(crudePriceData,false,['WCS','WTI','Differential'],'Date',crudePriceColors))
-
+var seriesData = crudePriceChartTypes(
+  prepareSeriesNonTidy(
+    crudePriceData,
+    false,
+    ["WCS", "WTI", "Differential"],
+    "Date",
+    crudePriceColors
+  )
+);
 
 const createCrudePriceChart = (seriesData) => {
-
-    const chart = new Highcharts.chart('container_crude_prices', {
-
-        chart: {
-            zoomType: 'x', //allows the user to focus in on the x or y (x,y,xy)
-            borderColor: 'black',
-            borderWidth: 1,
-            animation: true,
-            events: {
-                load: function () {
-                    this.credits.element.onclick = function () {
-                        window.open(
-                            'https://www.ne2group.com/',
-                            '_blank' // <- This is what makes it open in a new window.
-                        );
-                    }
-                }
-            }
+  const chart = new Highcharts.chart("container_crude_prices", {
+    chart: {
+      zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
+      borderColor: "black",
+      borderWidth: 1,
+      animation: true,
+      events: {
+        load: function () {
+          this.credits.element.onclick = function () {
+            window.open(
+              "https://www.ne2group.com/",
+              "_blank" // <- This is what makes it open in a new window.
+            );
+          };
         },
+      },
+    },
 
-        title: {
-            text: null
+    title: {
+      text: null,
+    },
+
+    credits: {
+      text: "Source: Net Energy Group",
+    },
+
+    plotOptions: {
+      area: {
+        stacking: "normal",
+        marker: false,
+        dataLabels: {
+          enabled: false,
         },
+      },
+    },
 
-        credits: {
-            text: 'Source: Net Energy Group'
-        },
+    tooltip: {
+      animation: true,
+      shared: true,
+    },
 
-        plotOptions: {
-            area: {
-                stacking: 'normal',
-                marker: false,
-                dataLabels: {
-                    enabled: false
-                }
-            }
-        },
+    // title: { text: 'Canada Propane Exports' },
 
-        tooltip: {
-            animation: true,
-            shared: true,
-        },
+    xAxis: {
+      type: "datetime",
+    },
 
-        // title: { text: 'Canada Propane Exports' },
+    yAxis: {
+      title: { text: "USD/bbl" },
+      stackLabels: {
+        enabled: false,
+      },
+    },
 
-        xAxis: {
-            type: 'datetime'
-        },
+    lang: {
+      noData: "No Exports",
+    },
 
-        yAxis: {
-            title: { text: 'USD/bbl' },
-            stackLabels: {
-                enabled: false
-            }
-        },
+    noData: {
+      style: {
+        fontWeight: "bold",
+        fontSize: "15px",
+        color: "#303030",
+      },
+    },
+    series: seriesData,
+  });
 
-        lang: {
-            noData: "No Exports"
-        },
+  return chart;
+};
 
-        noData: {
-            style: {
-                fontWeight: 'bold',
-                fontSize: '15px',
-                color: '#303030'
-            }
-        },
-        series: seriesData
-    });
-
-    return chart
-}
-
-const chart = createCrudePriceChart(seriesData)
-
-
-
-
-
-
-
-
+const chart = createCrudePriceChart(seriesData);

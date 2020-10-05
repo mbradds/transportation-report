@@ -522,5 +522,3 @@ const commodityGraph = (commodity) => {
   );
   return [pointMap, pointData];
 };
-
-

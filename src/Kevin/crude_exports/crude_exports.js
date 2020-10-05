@@ -6,14 +6,13 @@ const crudeExportColors = {'PADD I':cerPalette['Sun'],
 'PADD IV':cerPalette['Forest'],
 'PADD V':cerPalette['Cool Grey'],
 'Other':cerPalette['Flame']}
-
 var crudeExportFilters = {'Unit':'bbl/d'}
-
-
 const crudeExportsData = JSON.parse(getData('/src/Kevin/crude_exports/crude-oil-exports-by-destination-annual.json'));
-
-fillDrop('Unit','select_units_crude_exports','bbl/d',crudeExportsData)
 var seriesData = prepareSeriesTidy(crudeExportsData,crudeExportFilters,'PADD','Year','Value',crudeExportColors)
+
+export const kevinCrudeExports = () => {
+    fillDrop('Unit','select_units_crude_exports','bbl/d',crudeExportsData)
+}
 
 const createCrudeExportsChart = (seriesData) => {
 

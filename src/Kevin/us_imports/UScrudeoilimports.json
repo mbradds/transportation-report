@@ -1,1 +1,157 @@
-[{"Year":2015,"Attribute":"Canadian imports","Units":"MMb\/d","Value":3.1},{"Year":2015,"Attribute":"Canadian imports","Units":"Mm3\/d","Value":492.86},{"Year":2015,"Attribute":"ROW imports","Units":"Mm3\/d","Value":666.79},{"Year":2015,"Attribute":"ROW imports","Units":"MMb\/d","Value":4.19},{"Year":2015,"Attribute":"U.S crude oil exports","Units":"Mm3\/d","Value":73.93},{"Year":2015,"Attribute":"U.S crude oil exports","Units":"MMb\/d","Value":0.47},{"Year":2016,"Attribute":"Canadian imports","Units":"Mm3\/d","Value":492.86},{"Year":2016,"Attribute":"Canadian imports","Units":"MMb\/d","Value":3.1},{"Year":2016,"Attribute":"ROW imports","Units":"MMb\/d","Value":4.62},{"Year":2016,"Attribute":"ROW imports","Units":"Mm3\/d","Value":735.0},{"Year":2016,"Attribute":"U.S crude oil exports","Units":"MMb\/d","Value":0.59},{"Year":2016,"Attribute":"U.S crude oil exports","Units":"Mm3\/d","Value":93.96},{"Year":2017,"Attribute":"Canadian imports","Units":"Mm3\/d","Value":524.66},{"Year":2017,"Attribute":"Canadian imports","Units":"MMb\/d","Value":3.3},{"Year":2017,"Attribute":"ROW imports","Units":"MMb\/d","Value":4.52},{"Year":2017,"Attribute":"ROW imports","Units":"Mm3\/d","Value":719.1},{"Year":2017,"Attribute":"U.S crude oil exports","Units":"Mm3\/d","Value":184.11},{"Year":2017,"Attribute":"U.S crude oil exports","Units":"MMb\/d","Value":1.16},{"Year":2018,"Attribute":"Canadian imports","Units":"MMb\/d","Value":3.6},{"Year":2018,"Attribute":"Canadian imports","Units":"Mm3\/d","Value":572.36},{"Year":2018,"Attribute":"ROW imports","Units":"Mm3\/d","Value":645.65},{"Year":2018,"Attribute":"ROW imports","Units":"MMb\/d","Value":4.06},{"Year":2018,"Attribute":"U.S crude oil exports","Units":"MMb\/d","Value":2.05},{"Year":2018,"Attribute":"U.S crude oil exports","Units":"Mm3\/d","Value":325.61},{"Year":2019,"Attribute":"Canadian imports","Units":"Mm3\/d","Value":588.25},{"Year":2019,"Attribute":"Canadian imports","Units":"MMb\/d","Value":3.7},{"Year":2019,"Attribute":"ROW imports","Units":"Mm3\/d","Value":474.9},{"Year":2019,"Attribute":"ROW imports","Units":"MMb\/d","Value":2.99},{"Year":2019,"Attribute":"U.S crude oil exports","Units":"Mm3\/d","Value":474.1},{"Year":2019,"Attribute":"U.S crude oil exports","Units":"MMb\/d","Value":2.98}]
+[
+  {
+    "Year": 2015,
+    "Attribute": "Canadian imports",
+    "Units": "MMb/d",
+    "Value": 3.1
+  },
+  {
+    "Year": 2015,
+    "Attribute": "Canadian imports",
+    "Units": "Mm3/d",
+    "Value": 492.86
+  },
+  {
+    "Year": 2015,
+    "Attribute": "ROW imports",
+    "Units": "Mm3/d",
+    "Value": 666.79
+  },
+  { "Year": 2015, "Attribute": "ROW imports", "Units": "MMb/d", "Value": 4.19 },
+  {
+    "Year": 2015,
+    "Attribute": "U.S crude oil exports",
+    "Units": "Mm3/d",
+    "Value": 73.93
+  },
+  {
+    "Year": 2015,
+    "Attribute": "U.S crude oil exports",
+    "Units": "MMb/d",
+    "Value": 0.47
+  },
+  {
+    "Year": 2016,
+    "Attribute": "Canadian imports",
+    "Units": "Mm3/d",
+    "Value": 492.86
+  },
+  {
+    "Year": 2016,
+    "Attribute": "Canadian imports",
+    "Units": "MMb/d",
+    "Value": 3.1
+  },
+  { "Year": 2016, "Attribute": "ROW imports", "Units": "MMb/d", "Value": 4.62 },
+  {
+    "Year": 2016,
+    "Attribute": "ROW imports",
+    "Units": "Mm3/d",
+    "Value": 735.0
+  },
+  {
+    "Year": 2016,
+    "Attribute": "U.S crude oil exports",
+    "Units": "MMb/d",
+    "Value": 0.59
+  },
+  {
+    "Year": 2016,
+    "Attribute": "U.S crude oil exports",
+    "Units": "Mm3/d",
+    "Value": 93.96
+  },
+  {
+    "Year": 2017,
+    "Attribute": "Canadian imports",
+    "Units": "Mm3/d",
+    "Value": 524.66
+  },
+  {
+    "Year": 2017,
+    "Attribute": "Canadian imports",
+    "Units": "MMb/d",
+    "Value": 3.3
+  },
+  { "Year": 2017, "Attribute": "ROW imports", "Units": "MMb/d", "Value": 4.52 },
+  {
+    "Year": 2017,
+    "Attribute": "ROW imports",
+    "Units": "Mm3/d",
+    "Value": 719.1
+  },
+  {
+    "Year": 2017,
+    "Attribute": "U.S crude oil exports",
+    "Units": "Mm3/d",
+    "Value": 184.11
+  },
+  {
+    "Year": 2017,
+    "Attribute": "U.S crude oil exports",
+    "Units": "MMb/d",
+    "Value": 1.16
+  },
+  {
+    "Year": 2018,
+    "Attribute": "Canadian imports",
+    "Units": "MMb/d",
+    "Value": 3.6
+  },
+  {
+    "Year": 2018,
+    "Attribute": "Canadian imports",
+    "Units": "Mm3/d",
+    "Value": 572.36
+  },
+  {
+    "Year": 2018,
+    "Attribute": "ROW imports",
+    "Units": "Mm3/d",
+    "Value": 645.65
+  },
+  { "Year": 2018, "Attribute": "ROW imports", "Units": "MMb/d", "Value": 4.06 },
+  {
+    "Year": 2018,
+    "Attribute": "U.S crude oil exports",
+    "Units": "MMb/d",
+    "Value": 2.05
+  },
+  {
+    "Year": 2018,
+    "Attribute": "U.S crude oil exports",
+    "Units": "Mm3/d",
+    "Value": 325.61
+  },
+  {
+    "Year": 2019,
+    "Attribute": "Canadian imports",
+    "Units": "Mm3/d",
+    "Value": 588.25
+  },
+  {
+    "Year": 2019,
+    "Attribute": "Canadian imports",
+    "Units": "MMb/d",
+    "Value": 3.7
+  },
+  {
+    "Year": 2019,
+    "Attribute": "ROW imports",
+    "Units": "Mm3/d",
+    "Value": 474.9
+  },
+  { "Year": 2019, "Attribute": "ROW imports", "Units": "MMb/d", "Value": 2.99 },
+  {
+    "Year": 2019,
+    "Attribute": "U.S crude oil exports",
+    "Units": "Mm3/d",
+    "Value": 474.1
+  },
+  {
+    "Year": 2019,
+    "Attribute": "U.S crude oil exports",
+    "Units": "MMb/d",
+    "Value": 2.98
+  }
+]
