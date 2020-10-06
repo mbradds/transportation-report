@@ -7,6 +7,7 @@ import { coletteCrudeTakeaway } from "./Colette/crude_takeaway/crude_takeaway.js
 import { saraGasTraffic } from "./Sara/gas_traffic/gas_traffic.js";
 import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics.js";
 import { ryanNglExports } from "./Ryan/ngl_exports/ngl_exports.js";
+import { jenniferFinResources } from "./Jennifer/financial_instruments/fin_resource.js";
 
 kevinCrudeProduction();
 kevinCrudeExports();
@@ -17,3 +18,4 @@ coletteCrudeTakeaway();
 saraGasTraffic();
 cassandraAllPipes();
 ryanNglExports();
+jenniferFinResources();

@@ -1,7 +1,7 @@
 import {cerPalette, getUnique, checkIfValid, getData,fillDrop,y} from '../../modules/util.js'
 
 
-const groupBy = (itter, column, colorsCapacity, yC) => {
+const groupBy = (itter, column, colorsCapacity, yC,filters) => {
   //get the appropriate color
   var capColor = colorsCapacity[itter[0]["Corporate Entity"]];
   const result = {};
@@ -13,16 +13,32 @@ const groupBy = (itter, column, colorsCapacity, yC) => {
   const arrAvg = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
   const hcGroup = [];
 
-  for (const [key, value] of Object.entries(grouped)) {
-    if (Array.isArray(value)) {
-      hcGroup.push({
-        x: parseInt(key), //TODO: why doesnt this default to an integer value?
-        y: arrAvg(grouped[key]),
-      });
-    } else {
-      delete grouped[key];
+  if (filters.CurrentUnits == filters.BaseUnits){
+
+    for (const [key, value] of Object.entries(grouped)) {
+      if (Array.isArray(value)) {
+        hcGroup.push({
+          x: parseInt(key), //TODO: why doesnt this default to an integer value?
+          y: arrAvg(grouped[key]),
+        });
+      } else {
+        delete grouped[key];
+      }
+    }
+  } else {
+    for (const [key, value] of Object.entries(grouped)) {
+      if (Array.isArray(value)) {
+        hcGroup.push({
+          x: parseInt(key), //TODO: why doesnt this default to an integer value?
+          y: arrAvg(grouped[key]) * 0.0000353,
+        });
+      } else {
+        delete grouped[key];
+      }
     }
   }
+  
+  //console.log(hcGroup)
 
   var completedMetric = {
     name: yC,
@@ -43,7 +59,7 @@ const filterDataSeries = (data,filters,colorsCapacity,colorsThroughput,yT,yC) =>
     }
   });
   
-  const capacity = groupBy(JSON.parse(JSON.stringify(data)), "Date", colorsCapacity, yC);
+  const capacity = groupBy(JSON.parse(JSON.stringify(data)), "Date", colorsCapacity, yC,filters);
   const products = getUnique(data, "Product");
   var throughput = [];
   for (var product in products) {
@@ -80,7 +96,15 @@ const filterDataSeries = (data,filters,colorsCapacity,colorsThroughput,yT,yC) =>
 
     throughput.push(completedMetric);
   }
-  return [throughput, capacity];
+
+  var showCap = checkIfValid(capacity.data);
+  if (showCap) {
+    var data = throughput.concat(capacity);
+  } else {
+    var data = throughput;
+  }
+  return data
+  //return [throughput, capacity];
 };
 
 const filterDataPoints = (data, colors) => {
@@ -139,120 +163,8 @@ const blankChart = () => {
   return chart;
 };
 
-const createPointMap = (pointsData,seriesData,colorsCapacity,colorsThroughput,yT,yC,units) => {
-
-  var filters = {
-    "Corporate Entity": "",
-    "Key Point": "",
-    "CurrentUnits":units,
-    "BaseUnits":'1000 m3/d'
-  };
-
-  const pointMap = Highcharts.mapChart("container_map", {
-    credits: {
-      //enabled:false //gets rid of the "Highcharts logo in the bottom right"
-      text: "",
-    },
-
-    plotOptions: {
-      series: {
-        stickyTracking: false,
-        point: {
-          events: {
-            click: function () {
-              var text = `<b> ${this["Corporate Entity"]} ${this.name} </b> <br>Direction of flow: ${this["Direction of Flow"]}`;
-              const chart = this.series.chart;
-              if (!chart.clickLabel) {
-                chart.clickLabel = chart.renderer
-                  .label(text, 550, 100)
-                  .css({
-                    width: "180px",
-                  })
-                  .add();
-              } else {
-                chart.clickLabel.attr({
-                  text: text,
-                });
-              }
-              filters["Corporate Entity"] = this["Corporate Entity"];
-              filters["Key Point"] = this.name;
-              createThroughcapChart(
-                seriesData,
-                filters,
-                colorsCapacity,
-                colorsThroughput,
-                yT,
-                yC
-              );
-            },
-          },
-        },
-      },
-    },
-
-    mapNavigation: {
-      enabled: true,
-    },
-
-    chart: {
-      map: "countries/ca/ca-all",
-      renderTo: "container_map",
-    },
-
-    title: {
-      text: "",
-    },
-
-    legend: {
-      enabled: false,
-    },
-
-    // subtitle: {
-    //     text: 'Source map: <a href="http://code.highcharts.com/mapdata/countries/ca/ca-all.js">Canada</a>'
-    // },
-
-    mapNavigation: {
-      enabled: true,
-      buttonOptions: {
-        verticalAlign: "bottom",
-      },
-    },
-
-    tooltip: {
-      snap: 0,
-      formatter: function () {
-        return `<b> ${this.point["Corporate Entity"]} - ${this.point.name} key point </b><br>
-                Click point to view throughput & capacity`;
-      },
-    },
-
-    series: [
-      {
-        name: "Basemap",
-        borderColor: "#606060",
-        nullColor: "rgba(200, 200, 200, 0.2)",
-        showInLegend: false,
-      },
-      {
-        type: "mappoint",
-        name: "Key Points",
-        data: pointsData,
-        dataLabels: {
-          enabled: true,
-          borderRadius: 7,
-          padding: 4,
-          format: "{point.name}",
-          allowOverlap: false,
-        },
-      },
-    ],
-  });
-
-  return pointMap;
-};
-
 const createThroughcapChart = (seriesData,filterMap,colorsCapacity,colorsThroughput,yT,yC) => {
-  var throughcap = filterDataSeries(
+  const data = filterDataSeries(
     seriesData,
     filterMap,
     colorsCapacity,
@@ -260,17 +172,6 @@ const createThroughcapChart = (seriesData,filterMap,colorsCapacity,colorsThrough
     yT,
     yC
   );
-
- 
-  var throughput, capacity;
-  [throughput,capacity] = throughcap;
-
-  var showCap = checkIfValid(capacity.data);
-  if (showCap) {
-    var data = throughput.concat(capacity);
-  } else {
-    var data = throughput;
-  }
 
   const chart = new Highcharts.chart("container_chart", {
     chart: {
@@ -345,7 +246,7 @@ const createThroughcapChart = (seriesData,filterMap,colorsCapacity,colorsThrough
 
     yAxis: {
       title: {
-        text: yT,
+        text: `Throughput ${filterMap.CurrentUnits}`,
       },
     },
 
@@ -359,6 +260,111 @@ const createThroughcapChart = (seriesData,filterMap,colorsCapacity,colorsThrough
   return chart;
 };
 
+const createPointMap = (pointsData,seriesData,colorsCapacity,colorsThroughput,yT,yC,filters) => {
+
+  const trafficChart = null
+  const pointMap = Highcharts.mapChart("container_map", {
+    credits: {
+      //enabled:false //gets rid of the "Highcharts logo in the bottom right"
+      text: "",
+    },
+
+    plotOptions: {
+      series: {
+        stickyTracking: false,
+        point: {
+          events: {
+            click: function () {
+              var text = `<b> ${this["Corporate Entity"]} ${this.name} </b> <br>Direction of flow: ${this["Direction of Flow"]}`;
+              const chart = this.series.chart;
+              if (!chart.clickLabel) {
+                chart.clickLabel = chart.renderer
+                  .label(text, 550, 100)
+                  .css({
+                    width: "180px",
+                  })
+                  .add();
+              } else {
+                chart.clickLabel.attr({
+                  text: text,
+                });
+              }
+              filters["Corporate Entity"] = this["Corporate Entity"];
+              filters["Key Point"] = this.name;
+              const trafficChart = createThroughcapChart(
+                seriesData,
+                filters,
+                colorsCapacity,
+                colorsThroughput,
+                yT,
+                yC
+              );
+            },
+          },
+        },
+      },
+    },
+
+    mapNavigation: {
+      enabled: true,
+    },
+
+    chart: {
+      map: "countries/ca/ca-all",
+      renderTo: "container_map",
+    },
+
+    title: {
+      text: "",
+    },
+
+    legend: {
+      enabled: false,
+    },
+
+    // subtitle: {
+    //     text: 'Source map: <a href="http://code.highcharts.com/mapdata/countries/ca/ca-all.js">Canada</a>'
+    // },
+
+    mapNavigation: {
+      enabled: true,
+      buttonOptions: {
+        verticalAlign: "bottom",
+      },
+    },
+
+    tooltip: {
+      snap: 0,
+      formatter: function () {
+        return `<b> ${this.point["Corporate Entity"]} - ${this.point.name} key point </b><br>
+                Click point to view throughput & capacity`;
+      },
+    },
+
+    series: [
+      {
+        name: "Basemap",
+        borderColor: "#606060",
+        nullColor: "rgba(200, 200, 200, 0.2)",
+        showInLegend: false,
+      },
+      {
+        type: "mappoint",
+        name: "Key Points",
+        data: pointsData,
+        dataLabels: {
+          enabled: true,
+          borderRadius: 7,
+          padding: 4,
+          format: "{point.name}",
+          allowOverlap: false,
+        },
+      },
+    ],
+  });
+
+  return [pointMap,trafficChart];
+};
 
 class TrafficDashboard {
   constructor(commodity) {
@@ -367,6 +373,7 @@ class TrafficDashboard {
   }
 
   properties() {
+    //TODO: add filters object to this object
     if (this.commodity == "oil") {
       this.params.urlPoints = "/src/Jennifer/throughcap/keyPointsOil.json";
       this.params.urlSeries = "/src/Jennifer/throughcap/oil_throughcap.json";
@@ -387,6 +394,12 @@ class TrafficDashboard {
       };
       this.params.yT = "Throughput (1000 m3/d)";
       this.params.yC = "Available Capacity (1000 m3/d)";
+      this.params.filters = {
+        "Corporate Entity": "",
+        "Key Point": "",
+        "CurrentUnits":'1000 m3/d',
+        "BaseUnits":'1000 m3/d'
+      };
     } else if (this.commodity == "gas") {
       this.params.urlPoints =
         "/src/Jennifer/throughcap/keyPointsGas.json";
@@ -408,6 +421,12 @@ class TrafficDashboard {
       };
       this.params.yT = "Throughput (1000 m3/d)";
       this.params.yC = "Capacity (1000 m3/d)";
+      this.params.filters = {
+        "Corporate Entity": "",
+        "Key Point": "",
+        "CurrentUnits":'1000 m3/d',
+        "BaseUnits":'1000 m3/d'
+      };
     } else {
       console.log("Enter a valid commodity");
     }
@@ -424,10 +443,7 @@ class TrafficDashboard {
   }
 }
 
-const commodityGraph = (commodity,units) => {
-  const dash = new TrafficDashboard(commodity);
-  const graphParams = dash.graphStructure;
-  dash.setTitle(graphParams.titleText, "traffic_title");
+const commodityGraph = (commodity,graphParams) => {
 
   const githubPoints = JSON.parse(getData(graphParams.urlPoints));
   const githubSeries = JSON.parse(getData(graphParams.urlSeries));
@@ -436,22 +452,33 @@ const commodityGraph = (commodity,units) => {
 
   const pointData = filterDataPoints(githubPoints, graphParams.colorsCapacity);
   const blank = blankChart();
-  const pointMap = createPointMap(
+  const [pointMap,pointChart] = createPointMap(
     pointData,
     githubSeries,
     graphParams.colorsCapacity,
     graphParams.colorsThroughput,
     graphParams.yT,
     graphParams.yC,
-    units
+    graphParams.filters
   );
-  return [pointMap, pointData];
+  return [pointMap, pointChart, pointData, githubSeries,graphParams];
 };
 
 const commodity = "gas";
-const units = '1000 m3/d'
 
-var [pointMap, pointData] = commodityGraph(commodity,units); 
+const dash = new TrafficDashboard(commodity);
+var graphParams = dash.graphStructure
+dash.setTitle(graphParams.titleText, "traffic_title");
+const [pointMap, pointChart, pointData, githubSeries,params] = commodityGraph(commodity,graphParams); 
+
+
+var select_units = document.getElementById("select_units");
+select_units.addEventListener("change", (select_units) => {
+  var units = select_units.target.value;
+  graphParams.filters.CurrentUnits = units
+  const [pointMap, pointChart, pointData, githubSeries,params] = commodityGraph(commodity,graphParams); 
+
+})
 
 var select_pipelines = document.getElementById("select_pipelines");
 select_pipelines.addEventListener("change", (select_pipelines) => {
@@ -489,3 +516,4 @@ select_pipelines.addEventListener("change", (select_pipelines) => {
 
   pointMap.redraw();
 });
+
