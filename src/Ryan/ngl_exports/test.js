@@ -5,10 +5,15 @@ import {
   prepareSeriesNonTidyUnits,
 } from "../../modules/util.js";
 
+import nglData from "./natural-gas-liquids-exports-monthly.json"
+
+/**
+ * TODO: Factor out functions
+ */
 export const ryanNglExports = () => {
-  const nglData = JSON.parse(
-    getData("/src/Ryan/ngl_exports/natural-gas-liquids-exports-monthly.json")
-  );
+//   const nglData = JSON.parse(
+//     getData("/src/Ryan/ngl_exports/natural-gas-liquids-exports-monthly.json")
+//   );
   const nglFilters = {
     Product: "Propane",
     Region: "Canada",
