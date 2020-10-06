@@ -1,8 +1,3 @@
-var path = require('path');
-var webpack = require('webpack');
-var glob = require("glob");
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-
 module.exports = {
     mode: 'production',
     entry: './src/index.js',
@@ -24,15 +19,7 @@ module.exports = {
         filename: 'bundle.js'
     },
     devServer: {
-        contentBase: path.join(__dirname, 'dist'),
         compress: true,
         port: 8080
     },
-    // plugins: [
-    //     new CopyWebpackPlugin({
-    //         patterns: [
-    //             { from: './' }
-    //         ]
-    //     })
-    // ]
 };
