@@ -1,203 +1,216 @@
+//TODO: add parameter into series creating methods that defines what "x" should be called. For column graphs it needs to be called "name"
 export const cerPalette = {
-    'Night Sky':'#054169',
-    'Sun':'#FFBE4B',
-    'Ocean':'#5FBEE6',
-    'Forest':'#559B37',
-    'Flame':'#FF821E',
-    'Aubergine':'#871455',
-    'Dim Grey':'#8c8c96',
-    'Cool Grey':'#42464B',
-    'White':'#FFFFFF'
-}
-
-export const getData = (Url) => {
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET", Url, false);
-    Httpreq.send(null);
-    return Httpreq.responseText;
+  "Night Sky": "#054169",
+  Sun: "#FFBE4B",
+  Ocean: "#5FBEE6",
+  Forest: "#559B37",
+  Flame: "#FF821E",
+  Aubergine: "#871455",
+  "Dim Grey": "#8c8c96",
+  "Cool Grey": "#42464B",
+  White: "#FFFFFF",
 };
 
-export const dynamicDropDown = (id,optionsArray) => {
+export const getData = (Url) => {
+  var Httpreq = new XMLHttpRequest(); // a new request
+  Httpreq.open("GET", Url, false);
+  Httpreq.send(null);
+  return Httpreq.responseText;
+};
 
-    function addOption(id,text,select){
-        select.options[select.options.length] = new Option(text);
-    }
+export const dynamicDropDown = (id, optionsArray) => {
+  function addOption(id, text, select) {
+    select.options[select.options.length] = new Option(text);
+  }
 
-    var select = document.getElementById(id);
-    //select.options.length = 0;
+  var select = document.getElementById(id);
+  //select.options.length = 0;
 
-    for (var i = 0; i < optionsArray.length; i++) {
-        addOption (id, optionsArray[i],select);
-    }
-
-}
+  for (var i = 0; i < optionsArray.length; i++) {
+    addOption(id, optionsArray[i], select);
+  }
+};
 
 //takes in a json object and checks if the column has data
 export const checkIfValid = (data) => {
-    let valid = false;
-    for (var t = 0; t < data.length; t++) {
-      if (data[t]["y"] != null && data[t]["y"] != 0) {
-        valid = true;
-        break;
-      }
+  let valid = false;
+  for (var t = 0; t < data.length; t++) {
+    if (data[t]["y"] != null && data[t]["y"] != 0) {
+      valid = true;
+      break;
     }
-    return valid;
-  };
+  }
+  return valid;
+};
 
 //gets the unique regions to populate the dropdown
 export const getUnique = (items, filterColumns) => {
-
-    var lookup = {};
-    var result = [];
-    for (var item, i = 0; item = items[i++];) {
-        var name = item[filterColumns];
-        if (!(name in lookup)) {
-            lookup[name] = 1;
-            result.push(name);
-        }
-     }
-    
-    return result
-    
-}
-
-export const fillDrop = (column,dropName,value,data) => {
-    const drop = getUnique(data, column)
-    dynamicDropDown(dropName, drop.sort())
-    document.getElementById(dropName).value = value;
-}
-
-export const filterData = (data,filters) => {
-
-    if (filters !== false){
-        for (const [key, value] of Object.entries(filters)) {
-            data = data.filter(row => row[key] == value )
-        }
+  var lookup = {};
+  var result = [];
+  for (var item, i = 0; (item = items[i++]); ) {
+    var name = item[filterColumns];
+    if (!(name in lookup)) {
+      lookup[name] = 1;
+      result.push(name);
     }
-    return data
-}
+  }
 
-
-export const prepareSeriesNonTidy = (dataRaw,filters,valueVars,xCol,colors) => {
-    
-    const seriesData = {}
-    const colTotals = {}
-
-    const dataFiltered = filterData(dataRaw,filters)
-
-    //initialize each series with an empty list
-    valueVars.map((col,colNum) => {
-        seriesData[col] = []
-        colTotals[col] = 0
-    })
-
-    dataFiltered.map((row,rowNum) => {
-        valueVars.map((col,colNum) => {
-            seriesData[col].push({
-                x: row[xCol],
-                y: row[col]
-            })
-            colTotals[col] = colTotals[col]+row[col]
-        })
-    })
-
-    const seriesResult = []
-
-    for (const [key, value] of Object.entries(seriesData)) {
-        if (colTotals[key] !== 0) {
-            seriesResult.push({
-                name: key,
-                data: value,
-                color: colors[key]
-            })
-        }
-    }
-
-    return seriesResult
-}
-
-export const y = (convType, row, col, conversion) => {
-    return convType === "*"
-      ? +(row[col] * conversion).toFixed(1)
-      : +(row[col] / conversion).toFixed(1);
+  return result;
 };
 
-export const prepareSeriesNonTidyUnits = (dataRaw,filters,unitsCurrent,baseUnits,conversion,convType,valueVars,xCol,colors) => {
+export const fillDrop = (column, dropName, value, data) => {
+  const drop = getUnique(data, column);
+  dynamicDropDown(dropName, drop.sort());
+  document.getElementById(dropName).value = value;
+};
 
-    const seriesData = {}
-    const colTotals = {}
-
-    const dataFiltered = filterData(dataRaw,filters)
-
-    //initialize each series with an empty list
-    valueVars.map((col,colNum) => {
-        seriesData[col] = []
-        colTotals[col] = 0
-    })
-
-    if (unitsCurrent == baseUnits) {
-        dataFiltered.map((row, rowNum) => {
-          valueVars.map((col, colNum) => {
-            seriesData[col].push({
-              x: row[xCol],
-              y: row[col],
-            });
-            colTotals[col] = colTotals[col] + row[col];
-          });
-        });
-      } else {
-        dataFiltered.map((row, rowNum) => {
-          valueVars.map((col, colNum) => {
-            seriesData[col].push({
-              x: row[xCol],
-              y: y(convType, row, col, conversion),
-            });
-            colTotals[col] = colTotals[col] + row[col];
-          });
-        });
-      }
-
-    const seriesResult = []
-    
-    for (const [key, value] of Object.entries(seriesData)) {
-        if (colTotals[key]>0) {
-            seriesResult.push({
-                name: key,
-                data: value,
-                color: colors[key]
-            })
-        }
+export const filterData = (data, filters) => {
+  if (filters !== false) {
+    for (const [key, value] of Object.entries(filters)) {
+      data = data.filter((row) => row[key] == value);
     }
+  }
+  return data;
+};
 
-    return seriesResult
-}
+export const prepareSeriesNonTidy = (
+  dataRaw,
+  filters,
+  valueVars,
+  xCol,
+  colors
+) => {
+  const seriesData = {};
+  const colTotals = {};
 
-export const prepareSeriesTidy = (dataRaw,filters,variableCol,xCol,yCol,colors) => {
+  const dataFiltered = filterData(dataRaw, filters);
 
-    const seriesData = []
+  //initialize each series with an empty list
+  valueVars.map((col, colNum) => {
+    seriesData[col] = [];
+    colTotals[col] = 0;
+  });
 
-    const dataFiltered = filterData(dataRaw,filters)
-    const variableColumn = getUnique(dataFiltered,variableCol)
+  dataFiltered.map((row, rowNum) => {
+    valueVars.map((col, colNum) => {
+      seriesData[col].push({
+        x: row[xCol],
+        y: row[col],
+      });
+      colTotals[col] = colTotals[col] + row[col];
+    });
+  });
 
-    variableColumn.map((v,iVar) => {
-        const hcData = []
-        const variableSeries = dataFiltered.filter(row => row[variableCol] == v)
-        variableSeries.map((r,i) => {
-            const hcRow = {
-                x: r[xCol],
-                y: r[yCol]
-            }
-            hcData.push(hcRow)
-        })
-        
-        seriesData.push({
-            name: v,
-            data: hcData,
-            color: colors[v]
-        })
+  const seriesResult = [];
 
-    })
+  for (const [key, value] of Object.entries(seriesData)) {
+    if (colTotals[key] !== 0) {
+      seriesResult.push({
+        name: key,
+        data: value,
+        color: colors[key],
+      });
+    }
+  }
 
-    return seriesData
+  return seriesResult;
+};
 
-}
+export const y = (convType, row, col, conversion) => {
+  return convType === "*"
+    ? +(row[col] * conversion).toFixed(2)
+    : +(row[col] / conversion).toFixed(2);
+};
+
+export const prepareSeriesNonTidyUnits = (
+  dataRaw,
+  filters,
+  unitsCurrent,
+  baseUnits,
+  conversion,
+  convType,
+  valueVars,
+  xCol,
+  colors
+) => {
+  const seriesData = {};
+  const colTotals = {};
+
+  const dataFiltered = filterData(dataRaw, filters);
+
+  //initialize each series with an empty list
+  valueVars.map((col, colNum) => {
+    seriesData[col] = [];
+    colTotals[col] = 0;
+  });
+
+  if (unitsCurrent == baseUnits) {
+    dataFiltered.map((row, rowNum) => {
+      valueVars.map((col, colNum) => {
+        seriesData[col].push({
+          x: row[xCol],
+          y: row[col],
+        });
+        colTotals[col] = colTotals[col] + row[col];
+      });
+    });
+  } else {
+    dataFiltered.map((row, rowNum) => {
+      valueVars.map((col, colNum) => {
+        seriesData[col].push({
+          x: row[xCol],
+          y: y(convType, row, col, conversion),
+        });
+        colTotals[col] = colTotals[col] + row[col];
+      });
+    });
+  }
+
+  const seriesResult = [];
+
+  for (const [key, value] of Object.entries(seriesData)) {
+    if (colTotals[key] > 0) {
+      seriesResult.push({
+        name: key,
+        data: value,
+        color: colors[key],
+      });
+    }
+  }
+
+  return seriesResult;
+};
+
+export const prepareSeriesTidy = (
+  dataRaw,
+  filters,
+  variableCol,
+  xCol,
+  yCol,
+  colors
+) => {
+  const seriesData = [];
+
+  const dataFiltered = filterData(dataRaw, filters);
+  const variableColumn = getUnique(dataFiltered, variableCol);
+
+  variableColumn.map((v, iVar) => {
+    const hcData = [];
+    const variableSeries = dataFiltered.filter((row) => row[variableCol] == v);
+    variableSeries.map((r, i) => {
+      const hcRow = {
+        x: r[xCol],
+        y: r[yCol],
+      };
+      hcData.push(hcRow);
+    });
+
+    seriesData.push({
+      name: v,
+      data: hcData,
+      color: colors[v],
+    });
+  });
+
+  return seriesData;
+};

@@ -169,6 +169,26 @@ FROM [EnergyData].[dbo].[Pipelines_Gas] \
 where cast(str([Month])+'-'+str([Date])+'-'+str([Year]) as date) >= '2015-01-01' \
 order by [Corporate Entity],[Pipeline Name],[Key Point],[Date]"
 
+query_fin_resource = "SELECT \
+[variable] as [Financial Instrument], \
+left([All Class], CHARINDEX(' ',[ALL Class])) as [Commodity], \
+count(distinct [Company]) as [Companies using Financial Instrument], \
+sum([values]) as [Financial Instrument Total] \
+FROM [EnergyData].[dbo].[Pipeline_Fin_Resource] \
+where variable <> 'ALL Limit' and left([All Class], CHARINDEX(' ',[ALL Class])) not in ('Commodity','CO2') \
+group by [variable], left([All Class], CHARINDEX(' ',[ALL Class])) \
+union all \
+SELECT \
+[variable] as [Financial Instrument], \
+'All' as [Commodity], \
+count(distinct [Company]) as [Companies using Financial Instrument], \
+sum([values]) as [Financial Instrument Total] \
+FROM [EnergyData].[dbo].[Pipeline_Fin_Resource] \
+where variable <> 'ALL Limit' and left([All Class], CHARINDEX(' ',[ALL Class])) not in ('Commodity','CO2') \
+group by [variable] \
+order by left([All Class], CHARINDEX(' ',[ALL Class])), count(distinct [Company]) desc"
+
+
 def readCersei(query,name=None):
     conn,engine = cer_connection()
     df = pd.read_sql_query(query,con=conn)
@@ -178,7 +198,11 @@ def readCersei(query,name=None):
     if name == 'gas_traffic.json':
         df['Date'] = pd.to_datetime(df['Date'])
         write_path = os.path.join(os.getcwd(),'Sara/gas_traffic/',name)
-    
+    if name == 'fin_resource_totals.json':
+        write_path = os.path.join(os.getcwd(),'Jennifer/financial_instruments/',name)
+        for text_col in ['Financial Instrument','Commodity']:
+            df[text_col] = [x.strip() for x in df[text_col]]
+        
     if name != None:
         df.to_json(write_path,orient='records')
     conn.close()
@@ -450,7 +474,7 @@ def throughcap(query,name):
     conn.close()
     return df
 
-def financialResources(name='NEB_DM_PROD - 1267261 - Financial Resource Types - Data.XLSX'):
+def financialResources(name='NEB_DM_PROD - 1267261 - Financial Resource Types - Data.XLSX',sql=False):
     
     def process_vals(x):
         x = x.split('$')
@@ -466,7 +490,8 @@ def financialResources(name='NEB_DM_PROD - 1267261 - Financial Resource Types - 
             v = v*1000
         return v
     
-    df = pd.read_excel(name,sheet_name='FinRes Types',skiprows=5)
+    read_path = os.path.join(os.getcwd(),'Data/',name)
+    df = pd.read_excel(read_path,sheet_name='FinRes Types',skiprows=5)
     df.columns = [x.strip() for x in df.columns]
     del df['Notes']
     
@@ -512,9 +537,10 @@ def financialResources(name='NEB_DM_PROD - 1267261 - Financial Resource Types - 
     df['values'] = [apply_base(v,b) for v,b in zip(df['values'],df['base'])]
     del df['base']
     df = df[df['Filing']!='Confid']
-    conn,engine = cer_connection()
-    df.to_sql('Pipeline_Fin_Resource',if_exists='replace',index=False,con=conn)
-    conn.close()
+    if sql:
+        conn,engine = cer_connection()
+        df.to_sql('Pipeline_Fin_Resource',if_exists='replace',index=False,con=conn)
+        conn.close()
     return df
 
 def ne2_wcs_wti(query):
@@ -539,7 +565,7 @@ if __name__ == '__main__':
     
     #colette
     #df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
-    df = readExcel('fgrs-eng.xlsx',sheet='pq')
+    #df = readExcel('fgrs-eng.xlsx',sheet='pq')
     
     #sara
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
@@ -551,18 +577,17 @@ if __name__ == '__main__':
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
     
     #jennifer
-    df_oil = throughcap(query=query_oil_throughcap, name='oil_throughcap.json')
-    df_gas = throughcap(query=query_gas_throughcap, name='gas_throughcap.json')
-    df_point = keyPoints()
+    #df_oil = throughcap(query=query_oil_throughcap, name='oil_throughcap.json')
+    #df_gas = throughcap(query=query_gas_throughcap, name='gas_throughcap.json')
+    #df_point = keyPoints()
+    #df_fin_insert = financialResources()
+    df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
     
     
     #other
-    #df = readCsv('ngl_exports.csv')
     #df = readExcelCredit(name='CreditTables.xlsx')
     #df = crudeThroughput(name='oil_throughput.sql')
     #df = crudeCapacity(name='oil_capacity.sql')
-    #df = keyPoints()
-    #df = financialResources()
     
 
 #%%
