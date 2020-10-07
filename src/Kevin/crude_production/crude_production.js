@@ -1,11 +1,11 @@
 import {
   cerPalette,
-  getData,
   fillDrop,
   prepareSeriesNonTidyUnits,
 } from "../../modules/util.js";
 
 import crudeProdData from "./Crude_Oil_Production.json"
+console.log(crudeProdData)
 
 export const kevinCrudeProduction = () => {
   const crudeProdColors = {
