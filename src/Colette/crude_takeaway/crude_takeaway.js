@@ -1,8 +1,6 @@
-import {
-  cerPalette,
-  getData,
-  prepareSeriesNonTidyUnits,
-} from "../../modules/util.js";
+import { cerPalette, prepareSeriesNonTidyUnits } from "../../modules/util.js";
+
+import crudeTakeawayData from "./fgrs-eng.json";
 
 export const coletteCrudeTakeaway = () => {
   const crudeTakeawayChartTypes = (series) => {
@@ -19,9 +17,6 @@ export const coletteCrudeTakeaway = () => {
     return series;
   };
 
-  const crudeTakeawayData = JSON.parse(
-    getData("/src/Colette/crude_takeaway/fgrs-eng.json")
-  );
   const crudeTakeawayColors = {
     "Total Supply Available for Export": cerPalette["Cool Grey"],
     Express: cerPalette["Dim Grey"],

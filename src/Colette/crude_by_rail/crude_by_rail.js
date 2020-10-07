@@ -1,8 +1,6 @@
-import {
-  cerPalette,
-  getData,
-  prepareSeriesNonTidy,
-} from "../../modules/util.js";
+import { cerPalette, prepareSeriesNonTidy } from "../../modules/util.js";
+
+import railData from "./crude_by_rail_wcs.json";
 
 export const coletteCrudeByRail = () => {
   const railChartTypes = (series) => {
@@ -19,9 +17,6 @@ export const coletteCrudeByRail = () => {
     return series;
   };
 
-  const railData = JSON.parse(
-    getData("/src/Colette/crude_by_rail/crude_by_rail_wcs.json")
-  );
   const railFilters = { Units: "bbl per day" };
   const railColors = {
     "Crude by Rail": cerPalette["Night Sky"],

@@ -1,9 +1,6 @@
-import {
-  cerPalette,
-  getData,
-  fillDrop,
-  prepareSeriesNonTidy,
-} from "../../modules/util.js";
+import { cerPalette, prepareSeriesNonTidy } from "../../modules/util.js";
+
+import finResourceData from "./fin_resource_totals.json";
 
 export const jenniferFinResources = () => {
   const finResourceChartTypes = (series) => {
@@ -55,9 +52,6 @@ export const jenniferFinResources = () => {
     "Companies using Financial Instrument": cerPalette["Cool Grey"],
     "Financial Instrument Total": cerPalette["Sun"],
   };
-  const finResourceData = JSON.parse(
-    getData("/src/Jennifer/financial_instruments/fin_resource_totals.json")
-  );
 
   const totals = commodityTotals(finResourceData, commodityColors);
 

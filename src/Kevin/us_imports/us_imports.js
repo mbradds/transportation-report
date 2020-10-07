@@ -1,4 +1,6 @@
-import { cerPalette, getData, prepareSeriesTidy } from "../../modules/util.js";
+import { cerPalette, prepareSeriesTidy } from "../../modules/util.js";
+
+import crudeImportsData from "./UScrudeoilimports.json";
 
 export const kevinUsImports = () => {
   const crudeImportsChartTypes = (series) => {
@@ -21,9 +23,6 @@ export const kevinUsImports = () => {
     "Canadian imports": cerPalette["Sun"],
   };
 
-  const crudeImportsData = JSON.parse(
-    getData("/src/Kevin/us_imports/UScrudeoilimports.json")
-  );
   var crudeImportsFilters = { Units: "MMb/d" };
   var seriesData = crudeImportsChartTypes(
     prepareSeriesTidy(
