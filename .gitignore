@@ -4,6 +4,7 @@
 *.twbx
 *.twbr
 *.DOCX
+*.XLSX
 .ipynb_checkpoints\
 connection.py
 /__pycache__
