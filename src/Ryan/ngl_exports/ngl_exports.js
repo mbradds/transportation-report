@@ -1,14 +1,12 @@
 import {
   cerPalette,
-  getData,
   fillDrop,
   prepareSeriesNonTidyUnits,
 } from "../../modules/util.js";
 
+import nglData from "./natural-gas-liquids-exports-monthly.json";
+
 export const ryanNglExports = () => {
-  const nglData = JSON.parse(
-    getData("/src/Ryan/ngl_exports/natural-gas-liquids-exports-monthly.json")
-  );
   const nglFilters = {
     Product: "Propane",
     Region: "Canada",

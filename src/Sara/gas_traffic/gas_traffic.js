@@ -1,8 +1,6 @@
-import {
-  cerPalette,
-  getData,
-  prepareSeriesNonTidyUnits,
-} from "../../modules/util.js";
+import { cerPalette, prepareSeriesNonTidyUnits } from "../../modules/util.js";
+
+import gasData from "./gas_traffic.json";
 
 export const saraGasTraffic = () => {
   const gasTrafficChartTypes = (series) => {
@@ -28,7 +26,6 @@ export const saraGasTraffic = () => {
       cerPalette["Forest"],
     Capacity: cerPalette["Cool Grey"],
   };
-  const gasData = JSON.parse(getData("/src/Sara/gas_traffic/gas_traffic.json"));
 
   const seriesData = gasTrafficChartTypes(
     prepareSeriesNonTidyUnits(

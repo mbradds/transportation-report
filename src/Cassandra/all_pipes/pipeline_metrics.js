@@ -1,4 +1,6 @@
-import { getData, getUnique, fillDrop } from "../../modules/util.js";
+import { getUnique, fillDrop } from "../../modules/util.js";
+
+import financialData from "./PipelineProfileTables.json";
 
 export const cassandraAllPipes = () => {
   const prepareSeriesFinance = (data, filters) => {
@@ -58,9 +60,6 @@ export const cassandraAllPipes = () => {
   };
 
   var financeFilters = { Type: "Assets", Category: "All" };
-  const financialData = JSON.parse(
-    getData("/src/Cassandra/all_pipes/PipelineProfileTables.json")
-  );
 
   var seriesData, yFormat, yLabel;
   [seriesData, yFormat, yLabel] = prepareSeriesFinance(

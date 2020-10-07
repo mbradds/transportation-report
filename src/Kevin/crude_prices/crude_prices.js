@@ -1,8 +1,6 @@
-import {
-  cerPalette,
-  getData,
-  prepareSeriesNonTidy,
-} from "../../modules/util.js";
+import { cerPalette, prepareSeriesNonTidy } from "../../modules/util.js";
+
+import crudePriceData from "./oil_prices.json";
 
 export const kevinCrudePrices = () => {
   const crudePriceChartTypes = (series) => {
@@ -17,9 +15,6 @@ export const kevinCrudePrices = () => {
     return series;
   };
 
-  const crudePriceData = JSON.parse(
-    getData("/src/Kevin/crude_prices/oil_prices.json")
-  );
   const crudePriceColors = {
     WCS: cerPalette["Night Sky"],
     WTI: cerPalette["Sun"],

@@ -1,9 +1,6 @@
-import {
-  cerPalette,
-  getData,
-  fillDrop,
-  prepareSeriesTidy,
-} from "../../modules/util.js";
+import { cerPalette, fillDrop, prepareSeriesTidy } from "../../modules/util.js";
+
+import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
 
 export const kevinCrudeExports = () => {
   const crudeExportColors = {
@@ -16,12 +13,6 @@ export const kevinCrudeExports = () => {
   };
 
   var crudeExportFilters = { Unit: "bbl/d" };
-
-  const crudeExportsData = JSON.parse(
-    getData(
-      "/src/Kevin/crude_exports/crude-oil-exports-by-destination-annual.json"
-    )
-  );
 
   fillDrop("Unit", "select_units_crude_exports", "bbl/d", crudeExportsData);
   var seriesData = prepareSeriesTidy(

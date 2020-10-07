@@ -4,8 +4,7 @@ import {
   prepareSeriesNonTidyUnits,
 } from "../../modules/util.js";
 
-import crudeProdData from "./Crude_Oil_Production.json"
-console.log(crudeProdData)
+import crudeProdData from "./Crude_Oil_Production.json";
 
 export const kevinCrudeProduction = () => {
   const crudeProdColors = {
@@ -27,9 +26,7 @@ export const kevinCrudeProduction = () => {
     "Mined Bitumen",
     "In Situ Bitumen",
   ];
-  // const crudeProdData = JSON.parse(
-  //   getData("/src/Kevin/crude_production/Crude_Oil_Production.json")
-  // );
+
   fillDrop("Region", "select_region_crude_prod", "Canada", crudeProdData);
 
   var seriesData = prepareSeriesNonTidyUnits(
