@@ -257,7 +257,9 @@ export const jenniferFinResources = () => {
       },
 
       tooltip: {
-        enabled: false,
+        formatter: function () {
+          return `<b> Click to view ${this.series.name} financial resources </B> <br> <em> Double click to return to All </em>`;
+        },
       },
       series: seriesData,
     });

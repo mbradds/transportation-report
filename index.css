@@ -9,3 +9,11 @@
   padding-right: 0;
   padding-left: 0;
 }
+
+.header {
+  font-family: Arial;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
