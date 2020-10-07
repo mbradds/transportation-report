@@ -11,12 +11,12 @@ export const cerPalette = {
   White: "#FFFFFF",
 };
 
-export const getData = (Url) => {
-  var Httpreq = new XMLHttpRequest(); // a new request
-  Httpreq.open("GET", Url, false);
-  Httpreq.send(null);
-  return Httpreq.responseText;
-};
+// export const getData = (Url) => {
+//   var Httpreq = new XMLHttpRequest(); // a new request
+//   Httpreq.open("GET", Url, false);
+//   Httpreq.send(null);
+//   return Httpreq.responseText;
+// };
 
 export const dynamicDropDown = (id, optionsArray) => {
   function addOption(id, text, select) {
