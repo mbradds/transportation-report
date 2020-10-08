@@ -2,8 +2,9 @@ import pandas as pd
 import json
 import os
 from connection import cer_connection
+from datetime import date
 #TODO: add in the dataframe sorting before conversion to json
-#TODO: remove the minute/second date precision. This should improve performance
+#TODO: remove the minute/second date precision. This should improve performance. Use: df[date_col] = df[date_col].dt.date
 
 query_gas_traffic = "select [Date], \
 [Alliance Pipeline Limited Partnership - Alliance Pipeline - Border], \
@@ -189,6 +190,12 @@ group by [variable] \
 order by left([All Class], CHARINDEX(' ',[ALL Class])), count(distinct [Company]) desc"
 
 
+def normalize_dates(df,date_list):
+    for date_col in date_list:
+        df[date_col] = pd.to_datetime(df[date_col])
+        df[date_col] = df[date_col].dt.date
+    return df
+
 def readCersei(query,name=None):
     conn,engine = cer_connection()
     df = pd.read_sql_query(query,con=conn)
@@ -327,7 +334,6 @@ def readExcelPipeline(name,sheet='Data',sql=False):
         conn.close()
     return df
 
-
 def readExcelCredit(name,sheet='Credit Ratings'):
     
     df = pd.read_excel(name,sheet)
@@ -341,58 +347,6 @@ def readExcelCredit(name,sheet='Credit Ratings'):
     conn.close()
     
     return df
-
-
-# def crudeThroughput(name):
-#     query = "select [Date],[Corporate Entity],[Pipeline Name],[Key Point],[Direction of Flow],[Trade Type],[Product],[Units],[Throughput] \
-#     from \
-#     ( \
-#     SELECT \
-#     cast(cast([Month] as nvarchar(2))+'-'+'1'+'-'+cast([Year] as nvarchar(4)) as date) as [Date],[Corporate Entity],[Pipeline Name],[Key Point],[Direction of Flow],[Trade Type],[Product], \
-#     round([Throughput (1000 m3/d)],2) as [1000 m3/d], \
-#     round([Throughput (1000 m3/d)]*6.2898,2) as [1000 b/d] \
-#     FROM [EnergyData].[dbo].[Pipelines_Throughput_Oil] \
-#     ) as unTidy \
-#     unpivot \
-#     (Throughput FOR Units in ([1000 m3/d],[1000 b/d]) \
-#     ) as tidy \
-#     order by [Pipeline Name],[Corporate Entity],Product,[Date]"
-
-#     conn,engine = cer_connection()
-#     df = pd.read_sql_query(query,con=conn)
-#     df.to_json(name.split('.')[0]+'.json',orient='records')
-#     conn.close()
-    
-#     return df
-
-
-# def crudeCapacity(name):
-#     query = "select [Date],[Corporate Entity],[Pipeline Name],[Key Point], \
-#     rtrim(ltrim(LEFT([Units], Charindex('(', [Units]) - 1))) as [Capacity Type], \
-#     ltrim(Right([Units], Charindex('(', [Units]))) as [Units], \
-#     [Capacity] \
-#     from( \
-#     SELECT \
-#     cast(cast([Month] as nvarchar(2))+'-'+'1'+'-'+cast([Year] as nvarchar(4)) as date) as [Date],[Corporate Entity],[Pipeline Name],[Key Point], \
-#     round([Nameplate Capacity (1000 m3/d)],2) as [Nameplate Capacity (1000 m3/d)], \
-#     round([Available Capacity (1000 m3/d)],2) as [Available Capacity (1000 m3/d)], \
-#     round([Nameplate Capacity (1000 m3/d)]*6.2898,2) as [Nameplate Capacity (1000 b/d)], \
-#     round([Available Capacity (1000 m3/d)]*6.2898,2) as [Available Capacity (1000 b/d)] \
-#     FROM [EnergyData].[dbo].[Pipelines_Capacity_Oil] \
-#     where ([Pipeline Name] = 'Canadian Mainline' and [Key Point] in ('ex-Gretna','Into-Sarnia')) or ([Pipeline Name] <> 'Canadian Mainline') \
-#     ) as unTidy \
-#     unpivot \
-#     (Capacity FOR Units in ([Nameplate Capacity (1000 m3/d)],[Available Capacity (1000 m3/d)],[Nameplate Capacity (1000 b/d)],[Available Capacity (1000 b/d)]) \
-#     ) as tidy \
-#     order by [Pipeline Name],[Corporate Entity],[Key Point],[Date]"
-
-#     conn,engine = cer_connection()
-#     df = pd.read_sql_query(query,con=conn)
-#     df.to_json(name.split('.')[0]+'.json',orient='records')
-#     conn.close()
-    
-#     return df
-
 
 def keyPoints():
     
@@ -451,7 +405,6 @@ def keyPoints():
         
     conn.close()
     return df
-
 
 def throughcap(query,name):
     
@@ -555,6 +508,77 @@ def ne2_wcs_wti(query):
     
     return df
 
+def tolls(name):
+    
+    def normalize(sheets,commodity,read_path):
+        normal_list = []
+        for sheet in sheets:
+            try:
+                df = pd.read_excel(read_path,sheet_name=sheet,skiprows=5)
+                df = df[['Rate','Unit','Start','End']]
+                df = df[df['Rate'].notnull()]
+                if 'Current' in list(df['End']):
+                    df['End'] = df['End'].replace('Current',date.today())
+                df = normalize_dates(df, ['Start','End'])
+        
+                df['Rate'] = pd.to_numeric(df['Rate'])
+                df['Pipeline'] = sheet.split('-')[-1].strip()
+                df['Commodity'] = commodity
+                #normalize the tolls
+                normalized = []
+                toll_list = list(df['Rate'])
+                for index,toll in enumerate(toll_list):
+                    if index == 0:
+                        normalized.append(toll/toll)
+                    else:
+                        normalized.append(toll/toll_list[index-1])
+                        
+                df['Rate Normalized'] = normalized
+                normal_list.append(df)
+            except:
+                raise
+        
+        #add in the gdp deflator for oil and gas tolls
+        gdp = pd.read_excel(read_path,sheet_name='GDP Deflator',skiprows=26)
+        gdp = gdp[['Start','End','Pipeline','Rate Normalized']]
+        gdp = normalize_dates(gdp, ['Start','End'])
+        gdp['Commodity'] = commodity
+        normal_list.append(gdp)
+        
+        toll_list = pd.concat(normal_list, axis=0, sort=False, ignore_index=True)
+        for delete in ['Rate','Unit']:
+            del toll_list[delete]
+        
+        return toll_list
+        
+    read_path = os.path.join(os.getcwd(),'Data/',name)
+    oil_sheets = ['Benchmark Toll - TNPI',
+                  'Benchmark Toll - TMPL',
+                  'Benchmark Toll - Keystone',
+                  'Benchmark Toll - Express',
+                  'Benchmark Toll - Enbridge ML']
+    
+    gas_sheets = ['Benchmark Toll - TC Mainline',
+                  'Benchmark Toll - Westcoast',
+                  'Benchmark Toll - TQM',
+                  'Benchmark Toll - M&NP',
+                  'Benchmark Toll - Alliance',
+                  'Benchmark Toll - NGTL']
+    
+    oil = normalize(oil_sheets,'Crude Oil Breakdown',read_path)
+    gas = normalize(gas_sheets,'Natural Gas Breakdown',read_path)
+    
+    #add in the commodity toll averages
+    all_tolls = pd.read_excel(read_path,sheet_name='All Tolls')
+    all_tolls['Commodity'] = 'Oil & Gas'
+    all_tolls = normalize_dates(all_tolls,['Start','End'])
+    
+    df = pd.concat([oil,gas,all_tolls], axis=0, sort=False, ignore_index=True)
+    df['Rate Normalized'] = df['Rate Normalized'].round(2)
+    write_path = os.path.join(os.getcwd(),'Cassandra/tolls/','tolls.json')
+    df.to_json(write_path,orient='records')
+    return df
+
 if __name__ == '__main__':
     
     #kevin
@@ -572,7 +596,7 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    
+    df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
     
@@ -581,7 +605,7 @@ if __name__ == '__main__':
     #df_gas = throughcap(query=query_gas_throughcap, name='gas_throughcap.json')
     #df_point = keyPoints()
     #df_fin_insert = financialResources()
-    df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
+    #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
     
     
     #other
