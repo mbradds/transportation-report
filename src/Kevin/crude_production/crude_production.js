@@ -111,7 +111,7 @@ export const kevinCrudeProduction = () => {
     return chart;
   };
 
-  const chartCrude = createCrudeProdChart(seriesData); //do I need to have each chart variable with a different name?
+  var chartCrude = createCrudeProdChart(seriesData); //do I need to have each chart variable with a different name?
 
   //recreate the chart when the region changes
   var selectRegionCrudeProd = document.getElementById(

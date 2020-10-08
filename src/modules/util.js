@@ -18,35 +18,58 @@ export const cerPalette = {
 //   return Httpreq.responseText;
 // };
 
-export const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
+export const formatMoney = (
+  amount,
+  decimalCount = 2,
+  decimal = ".",
+  thousands = ","
+) => {
   try {
     decimalCount = Math.abs(decimalCount);
     decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
 
     const negativeSign = amount < 0 ? "-" : "";
 
-    let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
-    let j = (i.length > 3) ? i.length % 3 : 0;
+    let i = parseInt(
+      (amount = Math.abs(Number(amount) || 0).toFixed(decimalCount))
+    ).toString();
+    let j = i.length > 3 ? i.length % 3 : 0;
 
-    return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
+    return (
+      negativeSign +
+      (j ? i.substr(0, j) + thousands : "") +
+      i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) +
+      (decimalCount
+        ? decimal +
+          Math.abs(amount - i)
+            .toFixed(decimalCount)
+            .slice(2)
+        : "")
+    );
   } catch (e) {
-    return amount
+    return amount;
   }
 };
 
-
-export const dynamicDropDown = (id, optionsArray) => {
-  function addOption(id, text, select) {
+export const dynamicDropDown = (select, optionsArray) => {
+  function addOption(text, select) {
     select.options[select.options.length] = new Option(text);
   }
 
-  var select = document.getElementById(id);
   //select.options.length = 0;
 
   for (var i = 0; i < optionsArray.length; i++) {
-    addOption(id, optionsArray[i], select);
+    addOption(optionsArray[i], select);
   }
 };
+
+export const fillDrop = (column, dropName, value, data) => {
+  const drop = getUnique(data, column);
+  var select = document.getElementById(dropName);
+  dynamicDropDown(select, drop.sort());
+  select.value = value;
+};
+
 
 //takes in a json object and checks if the column has data
 export const checkIfValid = (data) => {
@@ -75,12 +98,6 @@ export const getUnique = (items, filterColumns) => {
   return result;
 };
 
-export const fillDrop = (column, dropName, value, data) => {
-  const drop = getUnique(data, column);
-  dynamicDropDown(dropName, drop.sort());
-  document.getElementById(dropName).value = value;
-};
-
 export const filterData = (data, filters) => {
   if (filters !== false) {
     for (const [key, value] of Object.entries(filters)) {
@@ -96,7 +113,7 @@ export const prepareSeriesNonTidy = (
   valueVars,
   xCol,
   colors,
-  xName = 'x' //can be changed to "name" when the x data is non numeric
+  xName = "x" //can be changed to "name" when the x data is non numeric
 ) => {
   const seriesData = {};
   const colTotals = {};
@@ -206,7 +223,7 @@ export const prepareSeriesTidy = (
   xCol,
   yCol,
   colors,
-  xName = 'x'
+  xName = "x"
 ) => {
   const seriesData = [];
   const dataFiltered = filterData(dataRaw, filters);
