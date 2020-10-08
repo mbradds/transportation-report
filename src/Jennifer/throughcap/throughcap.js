@@ -1,4 +1,4 @@
-import {cerPalette, getUnique, checkIfValid,fillDrop,y} from '../../modules/util.js'
+import {getUnique, checkIfValid,fillDrop,y,dynamicDropDown} from '../../modules/util.js'
 const getData = (Url) => {
   var Httpreq = new XMLHttpRequest(); // a new request
   Httpreq.open("GET", Url, false);
@@ -410,6 +410,7 @@ class TrafficDashboard {
         "CurrentUnits":'1000 m3/d',
         "BaseUnits":'1000 m3/d'
       };
+      this.params.units = ['1000 m3/d','1000 b/d']
     } else if (this.commodity == "Natural Gas") {
       this.params.urlPoints =
         "/src/Jennifer/throughcap/keyPointsGas.json";
@@ -437,6 +438,7 @@ class TrafficDashboard {
         "CurrentUnits":'1000 m3/d',
         "BaseUnits":'1000 m3/d'
       };
+      this.params.units = ['1000 m3/d','BCF/d']
     } else {
       console.log("Enter a valid commodity");
     }
@@ -444,8 +446,15 @@ class TrafficDashboard {
     return this.params;
   }
 
-  setTitle(titleText, id) {
-    document.getElementById(id).innerText = titleText;
+  //methods
+  setTitle(id) {
+    document.getElementById(id).innerText = this.params.titleText;
+  }
+
+  fillDrops(data) {
+    const drop = getUnique(data, "Pipeline Name");
+    fillDrop("Pipeline Name","select_pipelines","All",data);
+    dynamicDropDown(document.getElementById("select_units"),this.params.units)
   }
 
   get graphStructure() {
@@ -454,12 +463,13 @@ class TrafficDashboard {
 }
 
 const commodityGraph = (commodity) => {
-  const dash = new TrafficDashboard(commodity);
+  var dash = new TrafficDashboard(commodity);
   var graphParams = dash.graphStructure
-  dash.setTitle(graphParams.titleText, "traffic_title");
+  
   const pointsData = JSON.parse(getData(graphParams.urlPoints));
   const seriesData = JSON.parse(getData(graphParams.urlSeries));
-  fillDrop("Pipeline Name","select_pipelines","All",seriesData);
+  dash.setTitle("traffic_title");
+  dash.fillDrops(seriesData)
 
   const pointData = filterDataPoints(pointsData, graphParams.colorsCapacity);
   const blank = createThroughcapChart(seriesData,graphParams.filters,graphParams.colorsCapacity,graphParams.colorsThroughput,graphParams.yT,graphParams.yC)
@@ -475,18 +485,16 @@ const commodityGraph = (commodity) => {
   return [chartMap,pointData,seriesData,graphParams];
 };
 
-
-const [chartMap,pointData,seriesData,graphParams] = commodityGraph('Natural Gas'); 
+//run main graph
+//TODO: pass an update chart (units) method into the map create method
+var [chartMap,pointData,seriesData,graphParams] = commodityGraph('Natural Gas'); 
 
 $(document).ready(function(){
   $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
       var commodity = $(e.target).text(); // get current tab
-      const [chartMap,pointData,seriesData,graphParams] = commodityGraph(commodity); 
-      console.log(graphParams)
+      [chartMap,pointData,seriesData,graphParams] = commodityGraph(commodity); 
   });
 });
-
-
 
 
 var select_units = document.getElementById("select_units");
@@ -531,7 +539,6 @@ select_pipelines.addEventListener("change", (select_pipelines) => {
     ],
   });
 
-  pointMap.redraw();
 });
 
 
