@@ -194,7 +194,7 @@
     <div class="container my-container">
       <div class="row my-row">
         <div class="col-md-3 col-sm-12">
-          <div class="cerlabel">Select Commodity:</div>
+          <div class="cerlabel">Select commodity:</div>
           <select name="" id="select_commodity_tolls" class="selectpicker">
           </select>
         </div>
@@ -238,7 +238,16 @@
 
     Jennifer
     <!-- financial resource chart -->
+
     <div class="container my-container">
+      <div class="col-md-3 col-sm-12">
+        <div class="cerlabel">Select commodity:</div>
+        <select name="" id="select_units_fin_resource" class="selectpicker">
+          <option value="All">All</option>
+          <option value="Oil">Oil</option>
+          <option value="Gas">Gas</option>
+        </select>
+      </div>
       <div class="row my-row">
         <div class="col my-col">
           <div id="container_fin_totals"></div>
@@ -247,6 +256,11 @@
       <div class="row my-row">
         <div class="col my-col">
           <div id="container_fin_resources"></div>
+        </div>
+      </div>
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="container_fin_resources_class"></div>
         </div>
       </div>
     </div>

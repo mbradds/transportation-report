@@ -1,13 +1,17 @@
-import { cerPalette, prepareSeriesNonTidy } from "../../modules/util.js";
+import {
+  cerPalette,
+  prepareSeriesNonTidy,
+  prepareSeriesTidy,
+} from "../../modules/util.js";
 
 import finResourceData from "./fin_resource_totals.json";
+import finResourceClass from "./fin_resource_class.json";
 
 export const jenniferFinResources = () => {
+  var finResourceFilters = { Commodity: "All" };
+
   const finResourceChartTypes = (series) => {
     series.map((data, seriesNum) => {
-      data.data = data.data.map((row, rowNum) => {
-        return { name: row.x, y: row.y };
-      });
       if (data.name == "Companies using Financial Instrument") {
         data.type = "column";
         data.yAxis = 0;
@@ -22,6 +26,7 @@ export const jenniferFinResources = () => {
 
   const commodityTotals = (data, colors) => {
     var totals = {};
+
     data.map((row, rowNum) => {
       if (totals.hasOwnProperty(row.Commodity) && row.Commodity !== "All") {
         totals[row.Commodity] =
@@ -54,116 +59,31 @@ export const jenniferFinResources = () => {
   };
 
   const totals = commodityTotals(finResourceData, commodityColors);
-
-  var finResourceFilters = { Commodity: "All" };
-
   const finResourceSeries = finResourceChartTypes(
     prepareSeriesNonTidy(
       finResourceData,
       finResourceFilters,
       ["Companies using Financial Instrument", "Financial Instrument Total"],
       "Financial Instrument",
-      finResourceColors
+      finResourceColors,
+      "name"
     )
   );
 
-  const createFinResourceChart = (seriesData, finResourceFilters) => {
-    const chart = new Highcharts.chart("container_fin_resources", {
-      chart: {
-        zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-        //borderColor: "black",
-        //borderWidth: 1,
-        animation: true,
-        events: {
-          load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://www.cer-rec.gc.ca/en/index.html",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
-          },
-        },
-      },
+  var finResourceSeriesClass = prepareSeriesTidy(
+    finResourceClass,
+    false,
+    "Commodity",
+    "Pipeline Group",
+    "Financial Resource",
+    commodityColors,
+    "name"
+  );
 
-      title: {
-        text: null,
-      },
-
-      credits: {
-        text: "Source: CER",
-      },
-
-      plotOptions: {
-        column: {
-          stacking: "normal",
-          marker: true,
-          dataLabels: {
-            enabled: false,
-          },
-        },
-      },
-
-      tooltip: {
-        animation: true,
-        shared: true,
-      },
-
-      title: {
-        text: `CER Financial Resource Requirements: ${finResourceFilters.Commodity}`,
-      },
-
-      xAxis: {
-        type: "category",
-      },
-      yAxis: [
-        {
-          // Primary yAxis
-          title: {
-            text: "Number of Companies using Financial Resource",
-          },
-          stackLabels: {
-            enabled: true,
-            style: {
-              fontWeight: "bold",
-              color: (Highcharts.theme && Highcharts.theme.textColor) || "gray",
-            },
-          },
-        },
-        {
-          // Secondary yAxis
-          title: {
-            text: "Total Financial Resource ($)",
-          },
-          opposite: true,
-        },
-      ],
-
-      lang: {
-        noData: "No Exports",
-      },
-
-      noData: {
-        style: {
-          fontWeight: "bold",
-          fontSize: "15px",
-          color: "#303030",
-        },
-      },
-      series: seriesData,
-    });
-
-    return chart;
-  };
-
-  const createFinResourceTotals = (
-    seriesData,
-    finResourceFilters,
-    finResourceColors
-  ) => {
+  const createFinResourceTotals = (seriesData) => {
     const chart = new Highcharts.chart("container_fin_totals", {
       chart: {
-        height: "20%",
+        height: "10%",
         type: "bar",
         gridLineWidth: 0,
       },
@@ -173,6 +93,7 @@ export const jenniferFinResources = () => {
 
       plotOptions: {
         bar: {
+          animation: false,
           stacking: "normal",
           marker: true,
           dataLabels: {
@@ -181,51 +102,14 @@ export const jenniferFinResources = () => {
               //console.log(this.point.series.name)
               return `${
                 this.point.series.name
-              } financial resources: <br> ${this.y.toString()}`;
+              } total financial resources: <br> ${(this.y / 1000000000).toFixed(
+                2
+              )} billion $CAD`;
             },
           },
         },
         series: {
-          point: {
-            events: {
-              click: function () {
-                const newCommodity = this.series.userOptions.name;
-
-                if (newCommodity !== finResourceFilters.Commodity) {
-                  finResourceFilters.Commodity = newCommodity;
-                } else {
-                  finResourceFilters.Commodity = "All";
-                  finResourceColors["Companies using Financial Instrument"] =
-                    cerPalette["Cool Grey"];
-                }
-
-                if (finResourceFilters.Commodity == "Oil") {
-                  finResourceColors["Companies using Financial Instrument"] =
-                    cerPalette["Night Sky"];
-                } else if (finResourceFilters.Commodity == "Gas") {
-                  finResourceColors["Companies using Financial Instrument"] =
-                    cerPalette["Forest"];
-                }
-
-                const finResourceSeries = finResourceChartTypes(
-                  prepareSeriesNonTidy(
-                    finResourceData,
-                    finResourceFilters,
-                    [
-                      "Companies using Financial Instrument",
-                      "Financial Instrument Total",
-                    ],
-                    "Financial Instrument",
-                    finResourceColors
-                  )
-                );
-                const chartFinResource = createFinResourceChart(
-                  finResourceSeries,
-                  finResourceFilters
-                );
-              },
-            },
-          },
+          enableMouseTracking: false,
         },
       },
 
@@ -257,8 +141,92 @@ export const jenniferFinResources = () => {
       },
 
       tooltip: {
-        formatter: function () {
-          return `<b> Click to view ${this.series.name} financial resources </B> <br> <em> Double click to return to All </em>`;
+        enabled: false,
+        // formatter: function () {
+        //   return `<b> Click to view ${this.series.name} financial resources </B> <br> <em> Double click to return to All </em>`;
+        // },
+      },
+
+      series: seriesData,
+    });
+
+    return chart;
+  };
+
+  const createFinResourceChart = (seriesData, finResourceFilters) => {
+    const chart = new Highcharts.chart("container_fin_resources", {
+      chart: {
+        height: "30%",
+        animation: true,
+      },
+
+      credits: {
+        enabled: false,
+      },
+
+      title: {
+        text: null,
+      },
+
+      plotOptions: {
+        column: {
+          stacking: "normal",
+          marker: true,
+          dataLabels: {
+            enabled: false,
+          },
+        },
+      },
+
+      tooltip: {
+        animation: true,
+        shared: true,
+      },
+
+      title: {
+        text: `Number of Companies & Total Financial Resources: ${finResourceFilters.Commodity} Pipelines`,
+      },
+
+      xAxis: {
+        type: "category",
+      },
+      yAxis: [
+        {
+          // Primary yAxis
+          title: {
+            text: "Number of companies using financial resource",
+          },
+          stackLabels: {
+            enabled: true,
+            style: {
+              fontWeight: "bold",
+              color: (Highcharts.theme && Highcharts.theme.textColor) || "gray",
+            },
+          },
+        },
+        {
+          // Secondary yAxis
+          title: {
+            text: "Financial resources (Billion $CAD)",
+          },
+          labels: {
+            formatter: function () {
+              return this.value / 1000000000;
+            },
+          },
+          opposite: true,
+        },
+      ],
+
+      lang: {
+        noData: "No Exports",
+      },
+
+      noData: {
+        style: {
+          fontWeight: "bold",
+          fontSize: "15px",
+          color: "#303030",
         },
       },
       series: seriesData,
@@ -267,13 +235,178 @@ export const jenniferFinResources = () => {
     return chart;
   };
 
-  const chartFinTotals = createFinResourceTotals(
-    totals,
-    finResourceFilters,
-    finResourceColors
-  );
-  const chartFinResource = createFinResourceChart(
-    finResourceSeries,
-    finResourceFilters
-  );
+  const createFinResourceChartClass = (seriesData, finResourceFilters) => {
+    const chart = new Highcharts.chart("container_fin_resources_class", {
+      chart: {
+        height: "30%",
+        type: "column",
+        animation: true,
+        events: {
+          load: function () {
+            this.credits.element.onclick = function () {
+              window.open(
+                "https://www.cer-rec.gc.ca/en/index.html",
+                "_blank" // <- This is what makes it open in a new window.
+              );
+            };
+          },
+        },
+      },
+
+      title: {
+        text: null,
+      },
+
+      credits: {
+        text: "Source: CER",
+      },
+
+      plotOptions: {
+        column: {
+          stacking: "normal",
+          marker: true,
+          dataLabels: {
+            enabled: false,
+          },
+        },
+        series: {
+          events: {
+            legendItemClick: function (e) {
+              e.preventDefault();
+            },
+          },
+        },
+      },
+
+      tooltip: {
+        animation: true,
+        shared: true,
+      },
+
+      title: {
+        text: `Financial Resource Limits by Class: ${finResourceFilters.Commodity} Pipelines`,
+      },
+
+      xAxis: {
+        type: "category",
+      },
+      yAxis: {
+        title: {
+          text: "Financial resource requirement (Billion $CAD)",
+        },
+        labels: {
+          formatter: function () {
+            return this.value / 1000000000;
+          },
+        },
+        stackLabels: {
+          enabled: true,
+          style: {
+            fontWeight: "bold",
+            color: (Highcharts.theme && Highcharts.theme.textColor) || "gray",
+          },
+        },
+      },
+
+      lang: {
+        noData: "No Exports",
+      },
+
+      noData: {
+        style: {
+          fontWeight: "bold",
+          fontSize: "15px",
+          color: "#303030",
+        },
+      },
+      series: seriesData,
+    });
+
+    return chart;
+  };
+
+  const loadInitialCharts = () => {
+    const chartFinTotals = createFinResourceTotals(totals);
+    const chartFinResource = createFinResourceChart(
+      finResourceSeries,
+      finResourceFilters
+    );
+    const chartFinResourceClass = createFinResourceChartClass(
+      finResourceSeriesClass,
+      finResourceFilters
+    );
+  };
+
+  const commodityListener = () => {
+    var selectCommodityFin = document.getElementById(
+      "select_units_fin_resource"
+    );
+    selectCommodityFin.addEventListener("change", (selectCommodityFin) => {
+      var commodity = selectCommodityFin.target.value;
+      finResourceFilters.Commodity = commodity;
+      if (commodity == "Oil") {
+        finResourceColors["Companies using Financial Instrument"] =
+          cerPalette["Night Sky"];
+        finResourceSeriesClass = prepareSeriesTidy(
+          finResourceClass,
+          finResourceFilters,
+          "Commodity",
+          "Pipeline Group",
+          "Financial Resource",
+          commodityColors,
+          "name"
+        );
+      } else if (commodity == "Gas") {
+        finResourceColors["Companies using Financial Instrument"] =
+          cerPalette["Forest"];
+        finResourceSeriesClass = prepareSeriesTidy(
+          finResourceClass,
+          finResourceFilters,
+          "Commodity",
+          "Pipeline Group",
+          "Financial Resource",
+          commodityColors,
+          "name"
+        );
+      } else {
+        finResourceColors["Companies using Financial Instrument"] =
+          cerPalette["Cool Grey"];
+        finResourceSeriesClass = prepareSeriesTidy(
+          finResourceClass,
+          false,
+          "Commodity",
+          "Pipeline Group",
+          "Financial Resource",
+          commodityColors,
+          "name"
+        );
+      }
+      const finResourceSeries = finResourceChartTypes(
+        prepareSeriesNonTidy(
+          finResourceData,
+          finResourceFilters,
+          [
+            "Companies using Financial Instrument",
+            "Financial Instrument Total",
+          ],
+          "Financial Instrument",
+          finResourceColors,
+          "name"
+        )
+      );
+      console.log(finResourceSeriesClass);
+      const chartFinResource = createFinResourceChart(
+        finResourceSeries,
+        finResourceFilters
+      );
+
+      const chartFinResourceClass = createFinResourceChartClass(
+        finResourceSeriesClass,
+        finResourceFilters
+      );
+    });
+  };
+
+  loadInitialCharts();
+  commodityListener();
 };
