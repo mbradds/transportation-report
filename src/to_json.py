@@ -189,6 +189,15 @@ where variable <> 'ALL Limit' and left([All Class], CHARINDEX(' ',[ALL Class])) 
 group by [variable] \
 order by left([All Class], CHARINDEX(' ',[ALL Class])), count(distinct [Company]) desc"
 
+query_fin_resource_class = "SELECT \
+fin.[ALL Class] as [Pipeline Group], \
+left([All Class], CHARINDEX(' ',[ALL Class])) as [Commodity], \
+sum(fin.[values]) as [Financial Resource] \
+FROM [EnergyData].[dbo].[Pipeline_Fin_Resource] as fin \
+where variable = 'ALL Limit' and [ALL Class] not in ('CO2 or Water Class','Commodity class 1') \
+group by fin.[ALL Class] \
+order by left([All Class], CHARINDEX(' ',[ALL Class])) desc, sum(fin.[values]) desc"
+
 
 def normalize_dates(df,date_list):
     for date_col in date_list:
@@ -209,6 +218,11 @@ def readCersei(query,name=None):
         write_path = os.path.join(os.getcwd(),'Jennifer/financial_instruments/',name)
         for text_col in ['Financial Instrument','Commodity']:
             df[text_col] = [x.strip() for x in df[text_col]]
+    if name == 'fin_resource_class.json':
+        write_path = os.path.join(os.getcwd(),'Jennifer/financial_instruments/',name)
+        for text_col in ['Pipeline Group','Commodity']:
+            df[text_col] = [x.strip() for x in df[text_col]]
+        df['Financial Resource'] = pd.to_numeric(df['Financial Resource'])
         
     if name != None:
         df.to_json(write_path,orient='records')
@@ -596,7 +610,8 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    #df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
     
@@ -605,7 +620,8 @@ if __name__ == '__main__':
     #df_gas = throughcap(query=query_gas_throughcap, name='gas_throughcap.json')
     #df_point = keyPoints()
     #df_fin_insert = financialResources()
-    #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
+    df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
+    df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
     
     
     #other

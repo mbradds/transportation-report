@@ -18,6 +18,23 @@ export const cerPalette = {
 //   return Httpreq.responseText;
 // };
 
+export const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
+  try {
+    decimalCount = Math.abs(decimalCount);
+    decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+
+    const negativeSign = amount < 0 ? "-" : "";
+
+    let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+    let j = (i.length > 3) ? i.length % 3 : 0;
+
+    return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
+  } catch (e) {
+    return amount
+  }
+};
+
+
 export const dynamicDropDown = (id, optionsArray) => {
   function addOption(id, text, select) {
     select.options[select.options.length] = new Option(text);
@@ -78,7 +95,8 @@ export const prepareSeriesNonTidy = (
   filters,
   valueVars,
   xCol,
-  colors
+  colors,
+  xName = 'x' //can be changed to "name" when the x data is non numeric
 ) => {
   const seriesData = {};
   const colTotals = {};
@@ -94,7 +112,7 @@ export const prepareSeriesNonTidy = (
   dataFiltered.map((row, rowNum) => {
     valueVars.map((col, colNum) => {
       seriesData[col].push({
-        x: row[xCol],
+        [xName]: row[xCol],
         y: row[col],
       });
       colTotals[col] = colTotals[col] + row[col];
@@ -187,10 +205,10 @@ export const prepareSeriesTidy = (
   variableCol,
   xCol,
   yCol,
-  colors
+  colors,
+  xName = 'x'
 ) => {
   const seriesData = [];
-
   const dataFiltered = filterData(dataRaw, filters);
   const variableColumn = getUnique(dataFiltered, variableCol);
 
@@ -199,7 +217,7 @@ export const prepareSeriesTidy = (
     const variableSeries = dataFiltered.filter((row) => row[variableCol] == v);
     variableSeries.map((r, i) => {
       const hcRow = {
-        x: r[xCol],
+        [xName]: r[xCol],
         y: r[yCol],
       };
       hcData.push(hcRow);
