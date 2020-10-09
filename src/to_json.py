@@ -157,18 +157,19 @@ where throughput.[Corporate Entity] = 'Trans Mountain Pipeline ULC' \
 order by [Corporate Entity], [Pipeline Name], [Key Point], cast(str([Month])+'-'+'1'+'-'+str([Year]) as date)"
 
 query_gas_throughcap = "SELECT \
-cast(str([Month])+'-'+str([Date])+'-'+str([Year]) as date) as [Date], \
+cast(cast([Month] as varchar)+'-'+'1'+'-'+cast([Year] as varchar) as date) as [Date], \
 [Corporate Entity], \
 [Pipeline Name], \
 [Key Point], \
 [Direction of Flow], \
 [Trade Type], \
 'Natural Gas' as [Product], \
-[Capacity (1000 m3/d)], \
-[Throughput (1000 m3/d)] \
+round(avg([Capacity (1000 m3/d)]),1) as [Capacity (1000 m3/d)], \
+round(avg([Throughput (1000 m3/d)]),1) as [Throughput (1000 m3/d)] \
 FROM [EnergyData].[dbo].[Pipelines_Gas] \
 where cast(str([Month])+'-'+str([Date])+'-'+str([Year]) as date) >= '2015-01-01' \
-order by [Corporate Entity],[Pipeline Name],[Key Point],[Date]"
+group by [Year],[Month],[Corporate Entity],[Pipeline Name],[Key Point],[Direction of Flow], [Trade Type] \
+order by [Corporate Entity],[Pipeline Name],[Key Point],cast(cast([Month] as varchar)+'-'+'1'+'-'+cast([Year] as varchar) as date)"
 
 query_fin_resource = "SELECT \
 [variable] as [Financial Instrument], \
@@ -616,12 +617,12 @@ if __name__ == '__main__':
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
     
     #jennifer
-    #df_oil = throughcap(query=query_oil_throughcap, name='oil_throughcap.json')
-    #df_gas = throughcap(query=query_gas_throughcap, name='gas_throughcap.json')
+    df_oil = throughcap(query=query_oil_throughcap, name='oil_throughcap.json')
+    df_gas = throughcap(query=query_gas_throughcap, name='gas_throughcap.json')
     #df_point = keyPoints()
     #df_fin_insert = financialResources()
-    df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
-    df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
+    #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
+    #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
     
     
     #other
