@@ -1,4 +1,10 @@
-import {getUnique, checkIfValid,fillDrop,y,dynamicDropDown,fillDropUpdate} from '../../modules/util.js'
+import {
+  getUnique,
+  checkIfValid,
+  y,
+  fillDropUpdate,
+} from "../../modules/util.js";
+
 const getData = (Url) => {
   var Httpreq = new XMLHttpRequest(); // a new request
   Httpreq.open("GET", Url, false);
@@ -6,7 +12,7 @@ const getData = (Url) => {
   return Httpreq.responseText;
 };
 
-const groupBy = (itter, column, colorsCapacity, yC,filters) => {
+const groupBy = (itter, column, colorsCapacity, yC, filters) => {
   //get the appropriate color
   var capColor = colorsCapacity[itter[0]["Corporate Entity"]];
   const result = {};
@@ -18,8 +24,7 @@ const groupBy = (itter, column, colorsCapacity, yC,filters) => {
   const arrAvg = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
   const hcGroup = [];
 
-  if (filters.CurrentUnits == filters.BaseUnits){
-
+  if (filters.CurrentUnits == filters.BaseUnits) {
     for (const [key, value] of Object.entries(grouped)) {
       if (Array.isArray(value)) {
         hcGroup.push({
@@ -53,42 +58,52 @@ const groupBy = (itter, column, colorsCapacity, yC,filters) => {
   return completedMetric;
 };
 
-const filterDataSeries = (data,filters,colorsCapacity,colorsThroughput,yT,yC) => {
+const filterDataSeries = (
+  data,
+  filters,
+  colorsCapacity,
+  colorsThroughput,
+  yT,
+  yC
+) => {
   //get the specific pipeline
 
   Object.keys(filters).map((v, i) => {
-    if (v !== 'BaseUnits' && v !== 'CurrentUnits'){
+    if (v !== "BaseUnits" && v !== "CurrentUnits") {
       data = data.filter((row) => row[v] == filters[v]);
     }
   });
-  
-  const capacity = groupBy(JSON.parse(JSON.stringify(data)), "Date", colorsCapacity, yC,filters);
+
+  const capacity = groupBy(
+    JSON.parse(JSON.stringify(data)),
+    "Date",
+    colorsCapacity,
+    yC,
+    filters
+  );
   const products = getUnique(data, "Product");
   var throughput = [];
   for (var product in products) {
     var color = colorsThroughput[products[product]];
     var dataProduct = data.filter((row) => row.Product == products[product]);
 
-    if (filters.CurrentUnits == filters.BaseUnits){
+    if (filters.CurrentUnits == filters.BaseUnits) {
       dataProduct = dataProduct.map((v, i) => {
         const hcRow = {
           x: v["Date"],
-          y: v[yT]
+          y: v[yT],
         };
         return hcRow;
       });
-
     } else {
-
       dataProduct = dataProduct.map((v, i) => {
         const hcRow = {
           x: v["Date"],
-          y: y('*', v, yT, 0.0000353)
+          y: y("*", v, yT, 0.0000353),
         };
         return hcRow;
       });
     }
-
 
     var completedMetric = {
       name: products[product],
@@ -106,7 +121,7 @@ const filterDataSeries = (data,filters,colorsCapacity,colorsThroughput,yT,yC) =>
   } else {
     var data = throughput;
   }
-  return data
+  return data;
   //return [throughput, capacity];
 };
 
@@ -166,113 +181,124 @@ const blankChart = () => {
   return chart;
 };
 
-const createThroughcapChart = (seriesData,filterMap,colorsCapacity,colorsThroughput,yT,yC) => {
+const createThroughcapChart = (
+  seriesData,
+  filterMap,
+  colorsCapacity,
+  colorsThroughput,
+  yT,
+  yC
+) => {
   //creates the throughput and capacity graph. Called in create point map
-  if (filterMap['Corporate Entity']==null && filterMap['Key Point'] == null) {
-    const chart = blankChart()
-    return chart
+  if (filterMap["Corporate Entity"] == null && filterMap["Key Point"] == null) {
+    const chart = blankChart();
+    return chart;
   } else {
+    const data = filterDataSeries(
+      seriesData,
+      filterMap,
+      colorsCapacity,
+      colorsThroughput,
+      yT,
+      yC
+    );
 
-  const data = filterDataSeries(
-    seriesData,
-    filterMap,
-    colorsCapacity,
-    colorsThroughput,
-    yT,
-    yC
-  );
-
-  const chart = new Highcharts.chart("container_chart", {
-    chart: {
-      renderTo: "container_chart",
-      //type: 'area', //line,bar,scatter,area,areaspline
-      zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-      //borderColor: 'black',
-      //borderWidth: 1,
-      animation: true,
-      events: {
-        load: function () {
-          this.credits.element.onclick = function () {
-            window.open(
-              "https://www.cer-rec.gc.ca/index-eng.html",
-              "_blank" // <- This is what makes it open in a new window.
-            );
-          };
-        },
-      },
-    },
-
-    credits: {
-      //enabled:false //gets rid of the "Highcharts logo in the bottom right"
-      text: "Canada Energy Regulator",
-      href: "https://www.cer-rec.gc.ca/index-eng.html",
-    },
-
-    plotOptions: {
-      area: {
-        stacking: "normal",
-      },
-      series: {
-        turboThreshold: 10000,
-        //stickyTracking: false,
-        connectNulls: false,
-        states: {
-          inactive: {
-            opacity: 1,
+    const chart = new Highcharts.chart("container_chart", {
+      chart: {
+        renderTo: "container_chart",
+        //type: 'area', //line,bar,scatter,area,areaspline
+        zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
+        //borderColor: 'black',
+        //borderWidth: 1,
+        animation: true,
+        events: {
+          load: function () {
+            this.credits.element.onclick = function () {
+              window.open(
+                "https://www.cer-rec.gc.ca/index-eng.html",
+                "_blank" // <- This is what makes it open in a new window.
+              );
+            };
           },
-          // hover: {
-          //     enabled: false
-          // }
         },
       },
-    },
 
-    tooltip: {
-      xDateFormat: "%Y-%m-%d",
-      formatter: function () {
-        return this.points.reduce(function (s, point) {
-          return s + "<br/>" + point.series.name + ": " + point.y;
-        }, "<b>" + Highcharts.dateFormat("%e - %b - %Y", this.x) + "</b>");
+      credits: {
+        //enabled:false //gets rid of the "Highcharts logo in the bottom right"
+        text: "Canada Energy Regulator",
+        href: "https://www.cer-rec.gc.ca/index-eng.html",
       },
-      animation: true,
-      shared: true,
-    },
 
-    title: {
-      text: `${filterMap["Corporate Entity"]} ${filterMap["Key Point"]}`,
-    },
+      plotOptions: {
+        area: {
+          stacking: "normal",
+        },
+        series: {
+          turboThreshold: 10000,
+          //stickyTracking: false,
+          connectNulls: false,
+          states: {
+            inactive: {
+              opacity: 1,
+            },
+            // hover: {
+            //     enabled: false
+            // }
+          },
+        },
+      },
 
-    colors: [
-      "#054169",
-      "#FFBE4B",
-      "#5FBEE6",
-      "#559B37",
-      "#FF821E",
-      "#871455",
-      "#8c8c96",
-      "#42464B",
-    ],
+      tooltip: {
+        xDateFormat: "%Y-%m-%d",
+        formatter: function () {
+          return this.points.reduce(function (s, point) {
+            return s + "<br/>" + point.series.name + ": " + point.y;
+          }, "<b>" + Highcharts.dateFormat("%e - %b - %Y", this.x) + "</b>");
+        },
+        animation: true,
+        shared: true,
+      },
 
-    yAxis: {
       title: {
-        text: `Throughput ${filterMap.CurrentUnits}`,
+        text: `${filterMap["Corporate Entity"]} ${filterMap["Key Point"]}`,
       },
-    },
 
-    xAxis: {
-      type: "datetime",
-    },
+      colors: [
+        "#054169",
+        "#FFBE4B",
+        "#5FBEE6",
+        "#559B37",
+        "#FF821E",
+        "#871455",
+        "#8c8c96",
+        "#42464B",
+      ],
 
-    series: data,
-  });
-  return chart;
-}
+      yAxis: {
+        title: {
+          text: `Throughput ${filterMap.CurrentUnits}`,
+        },
+      },
 
- 
+      xAxis: {
+        type: "datetime",
+      },
+
+      series: data,
+    });
+    return chart;
+  }
 };
 
-const createPointMap = (pointsData,filters,seriesData,colorsCapacity,colorsThroughput,yT,yC) => {
-
+const createPointMap = (
+  pointsData,
+  filters,
+  seriesData,
+  colorsCapacity,
+  colorsThroughput,
+  yT,
+  yC
+) => {
   const chartMap = Highcharts.mapChart("container_map", {
     credits: {
       //enabled:false //gets rid of the "Highcharts logo in the bottom right"
@@ -331,10 +357,6 @@ const createPointMap = (pointsData,filters,seriesData,colorsCapacity,colorsThrou
     legend: {
       enabled: false,
     },
-
-    // subtitle: {
-    //     text: 'Source map: <a href="http://code.highcharts.com/mapdata/countries/ca/ca-all.js">Canada</a>'
-    // },
 
     mapNavigation: {
       enabled: true,
@@ -407,15 +429,13 @@ class TrafficDashboard {
       this.params.filters = {
         "Corporate Entity": null,
         "Key Point": null,
-        "CurrentUnits":'1000 m3/d',
-        "BaseUnits":'1000 m3/d'
+        CurrentUnits: "1000 m3/d",
+        BaseUnits: "1000 m3/d",
       };
-      this.params.units = ['1000 m3/d','1000 b/d']
+      this.params.units = ["1000 m3/d", "1000 b/d"];
     } else if (this.commodity == "Natural Gas") {
-      this.params.urlPoints =
-        "/src/Jennifer/throughcap/keyPointsGas.json";
-      this.params.urlSeries =
-        "/src/Jennifer/throughcap/gas_throughcap.json";
+      this.params.urlPoints = "/src/Jennifer/throughcap/keyPointsGas.json";
+      this.params.urlSeries = "/src/Jennifer/throughcap/gas_throughcap.json";
       this.params.titleText = "Natural gas Throughput and Capacity";
       this.params.colorsCapacity = {
         "Westcoast Energy Inc.": "#5FBEE6",
@@ -435,10 +455,10 @@ class TrafficDashboard {
       this.params.filters = {
         "Corporate Entity": null,
         "Key Point": null,
-        "CurrentUnits":'1000 m3/d',
-        "BaseUnits":'1000 m3/d'
+        CurrentUnits: "1000 m3/d",
+        BaseUnits: "1000 m3/d",
       };
-      this.params.units = ['1000 m3/d','BCF/d']
+      this.params.units = ["1000 m3/d", "BCF/d"];
     } else {
       console.log("Enter a valid commodity");
     }
@@ -453,9 +473,19 @@ class TrafficDashboard {
 
   fillDrops(data) {
     var pipes = getUnique(data, "Pipeline Name");
-    pipes.unshift('All')
-    fillDropUpdate(document.getElementById("select_pipelines"),pipes,true,'All')
-    fillDropUpdate(document.getElementById("select_units"),this.params.units,true,this.params.units[0])
+    pipes.unshift("All");
+    fillDropUpdate(
+      document.getElementById("select_pipelines"),
+      pipes,
+      true,
+      "All"
+    );
+    fillDropUpdate(
+      document.getElementById("select_units"),
+      this.params.units,
+      true,
+      this.params.units[0]
+    );
   }
 
   get graphStructure() {
@@ -465,15 +495,22 @@ class TrafficDashboard {
 
 const commodityGraph = (commodity) => {
   var dash = new TrafficDashboard(commodity);
-  var graphParams = dash.graphStructure
-  
+  var graphParams = dash.graphStructure;
+
   const pointsData = JSON.parse(getData(graphParams.urlPoints));
   const seriesData = JSON.parse(getData(graphParams.urlSeries));
   dash.setTitle("traffic_title");
-  dash.fillDrops(seriesData)
+  dash.fillDrops(seriesData);
 
   const pointData = filterDataPoints(pointsData, graphParams.colorsCapacity);
-  const blank = createThroughcapChart(seriesData,graphParams.filters,graphParams.colorsCapacity,graphParams.colorsThroughput,graphParams.yT,graphParams.yC)
+  const blank = createThroughcapChart(
+    seriesData,
+    graphParams.filters,
+    graphParams.colorsCapacity,
+    graphParams.colorsThroughput,
+    graphParams.yT,
+    graphParams.yC
+  );
   const chartMap = createPointMap(
     pointsData,
     graphParams.filters,
@@ -483,63 +520,76 @@ const commodityGraph = (commodity) => {
     graphParams.yT,
     graphParams.yC
   );
-  return [chartMap,pointData,seriesData,graphParams];
+  return [chartMap, pointData, seriesData, graphParams];
 };
 
-//run main graph
-//TODO: pass an update chart (units) method into the map create method
-var [chartMap,pointData,seriesData,graphParams] = commodityGraph('Natural Gas'); 
-
-$(document).ready(function(){
-  $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-      var commodity = $(e.target).text(); // get current tab
-      [chartMap,pointData,seriesData,graphParams] = commodityGraph(commodity); 
-  });
-});
-
-
-var select_units = document.getElementById("select_units");
+const unitsListener = (graphParams, seriesData) => {
+  var select_units = document.getElementById("select_units");
   select_units.addEventListener("change", (select_units) => {
     var units = select_units.target.value;
-    graphParams.filters.CurrentUnits = units
-    const chartTraffic = createThroughcapChart(seriesData,graphParams.filters,graphParams.colorsCapacity,graphParams.colorsThroughput,graphParams.yT,graphParams.yC)
-})
-
-
-var select_pipelines = document.getElementById("select_pipelines");
-select_pipelines.addEventListener("change", (select_pipelines) => {
-  var pipeLine = select_pipelines.target.value;
-  if (pipeLine !== "All") {
-    var pointDataPipe = pointData.filter(
-      (row) => row["Pipeline Name"] == pipeLine
+    graphParams.filters.CurrentUnits = units;
+    const chartTraffic = createThroughcapChart(
+      seriesData,
+      graphParams.filters,
+      graphParams.colorsCapacity,
+      graphParams.colorsThroughput,
+      graphParams.yT,
+      graphParams.yC
     );
-  } else {
-    var pointDataPipe = pointData;
-  }
-
-  chartMap.update({
-    series: [
-      {
-        name: "Basemap",
-        borderColor: "#606060",
-        nullColor: "rgba(200, 200, 200, 0.2)",
-        showInLegend: false,
-      },
-      {
-        type: "mappoint",
-        name: "Key Points",
-        data: pointDataPipe,
-        dataLabels: {
-          enabled: true,
-          borderRadius: 7,
-          padding: 4,
-          format: "{point.name}",
-          allowOverlap: false,
-        },
-      },
-    ],
   });
+};
 
-});
+const pipesListener = (pointData, chartMap) => {
+  var select_pipelines = document.getElementById("select_pipelines");
+  select_pipelines.addEventListener("change", (select_pipelines) => {
+    var pipeLine = select_pipelines.target.value;
+    if (pipeLine !== "All") {
+      var pointDataPipe = pointData.filter(
+        (row) => row["Pipeline Name"] == pipeLine
+      );
+    } else {
+      var pointDataPipe = pointData;
+    }
 
+    chartMap.update({
+      series: [
+        {
+          name: "Basemap",
+          borderColor: "#606060",
+          nullColor: "rgba(200, 200, 200, 0.2)",
+          showInLegend: false,
+        },
+        {
+          type: "mappoint",
+          name: "Key Points",
+          data: pointDataPipe,
+          dataLabels: {
+            enabled: true,
+            borderRadius: 7,
+            padding: 4,
+            format: "{point.name}",
+            allowOverlap: false,
+          },
+        },
+      ],
+    });
+  });
+};
 
+const mainThroughcap = () => {
+  var [chartMap, pointData, seriesData, graphParams] = commodityGraph(
+    "Natural Gas"
+  );
+
+  $(document).ready(function () {
+    $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+      var commodity = $(e.target).text(); // get current tab
+      [chartMap, pointData, seriesData, graphParams] = commodityGraph(
+        commodity
+      );
+      unitsListener(graphParams, seriesData);
+      pipesListener(pointData, chartMap);
+    });
+  });
+};
+mainThroughcap();
