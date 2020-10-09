@@ -1,4 +1,4 @@
-import { getUnique, fillDrop } from "../../modules/util.js";
+import { getUnique, fillDrop, fillDropUpdate } from "../../modules/util.js";
 
 import financialData from "./PipelineProfileTables.json";
 
@@ -11,6 +11,8 @@ export const cassandraAllPipes = () => {
         } else if (value == "Gas") {
           data = data.filter((row) => row.Category == "Gas");
         }
+      //var select = document.getElementById('select_metric_financial')
+      //fillDropUpdate(select,getUnique(data,'Type'),true)
       } else {
         data = data.filter((row) => row[key] == value);
       }
@@ -59,7 +61,7 @@ export const cassandraAllPipes = () => {
     return [hcData, yFormat, yLabel];
   };
 
-  var financeFilters = { Type: "Assets", Category: "All" };
+  var financeFilters = {Category: "All" , Type: "Assets"};
 
   var seriesData, yFormat, yLabel;
   [seriesData, yFormat, yLabel] = prepareSeriesFinance(
