@@ -13,7 +13,6 @@ const getData = (Url) => {
 };
 
 const groupBy = (itter, column, colorsCapacity, yC, filters) => {
-  //get the appropriate color
   var capColor = colorsCapacity[itter[0]["Corporate Entity"]];
   const result = {};
   const grouped = itter.reduce((result, current) => {
@@ -122,7 +121,6 @@ const filterDataSeries = (
     var data = throughput;
   }
   return data;
-  //return [throughput, capacity];
 };
 
 const filterDataPoints = (data, colors) => {
@@ -205,11 +203,9 @@ const createThroughcapChart = (
 
     const chart = new Highcharts.chart("container_chart", {
       chart: {
+        height: "45%",
         renderTo: "container_chart",
-        //type: 'area', //line,bar,scatter,area,areaspline
-        zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-        //borderColor: 'black',
-        //borderWidth: 1,
+        zoomType: "x",
         animation: true,
         events: {
           load: function () {
@@ -224,7 +220,6 @@ const createThroughcapChart = (
       },
 
       credits: {
-        //enabled:false //gets rid of the "Highcharts logo in the bottom right"
         text: "Canada Energy Regulator",
         href: "https://www.cer-rec.gc.ca/index-eng.html",
       },
@@ -235,15 +230,11 @@ const createThroughcapChart = (
         },
         series: {
           turboThreshold: 10000,
-          //stickyTracking: false,
           connectNulls: false,
           states: {
             inactive: {
               opacity: 1,
             },
-            // hover: {
-            //     enabled: false
-            // }
           },
         },
       },
@@ -300,9 +291,14 @@ const createPointMap = (
   yC
 ) => {
   const chartMap = Highcharts.mapChart("container_map", {
+    chart: {
+      height: "45%",
+      map: "countries/ca/ca-all",
+      renderTo: "container_map",
+    },
+
     credits: {
-      //enabled:false //gets rid of the "Highcharts logo in the bottom right"
-      text: "",
+      enabled: false,
     },
 
     plotOptions: {
@@ -343,11 +339,6 @@ const createPointMap = (
 
     mapNavigation: {
       enabled: true,
-    },
-
-    chart: {
-      map: "countries/ca/ca-all",
-      renderTo: "container_map",
     },
 
     title: {
@@ -462,7 +453,6 @@ class TrafficDashboard {
     } else {
       console.log("Enter a valid commodity");
     }
-
     return this.params;
   }
 
@@ -496,13 +486,12 @@ class TrafficDashboard {
 const commodityGraph = (commodity) => {
   var dash = new TrafficDashboard(commodity);
   var graphParams = dash.graphStructure;
-
-  const pointsData = JSON.parse(getData(graphParams.urlPoints));
-  const seriesData = JSON.parse(getData(graphParams.urlSeries));
+  var pointData = JSON.parse(getData(graphParams.urlPoints));
+  var seriesData = JSON.parse(getData(graphParams.urlSeries));
   dash.setTitle("traffic_title");
   dash.fillDropsThroughcap(seriesData);
-
-  const pointData = filterDataPoints(pointsData, graphParams.colorsCapacity);
+  //TODO: the commodity needs to be filtered out in pointsData here
+  pointData = filterDataPoints(pointData, graphParams.colorsCapacity);
   const blank = createThroughcapChart(
     seriesData,
     graphParams.filters,
@@ -511,8 +500,8 @@ const commodityGraph = (commodity) => {
     graphParams.yT,
     graphParams.yC
   );
-  const chartMap = createPointMap(
-    pointsData,
+  var chartMap = createPointMap(
+    pointData,
     graphParams.filters,
     seriesData,
     graphParams.colorsCapacity,
@@ -523,12 +512,25 @@ const commodityGraph = (commodity) => {
   return [chartMap, pointData, seriesData, graphParams];
 };
 
-const unitsListener = (graphParams, seriesData) => {
+const mainThroughcap = () => {
+  var [chartMap, pointData, seriesData, graphParams] = commodityGraph(
+    "Natural Gas"
+  );
+
+  $(document).ready(function () {
+    $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+      const commodity = $(e.target).text(); // get current tab
+      [chartMap, pointData, seriesData, graphParams] = commodityGraph(
+        commodity
+      );
+    });
+  });
+
   var select_units = document.getElementById("select_units");
   select_units.addEventListener("change", (select_units) => {
     var units = select_units.target.value;
     graphParams.filters.CurrentUnits = units;
-    const chartTraffic = createThroughcapChart(
+    var chartTraffic = createThroughcapChart(
       seriesData,
       graphParams.filters,
       graphParams.colorsCapacity,
@@ -537,9 +539,7 @@ const unitsListener = (graphParams, seriesData) => {
       graphParams.yC
     );
   });
-};
 
-const pipesListener = (pointData, chartMap) => {
   var select_pipelines = document.getElementById("select_pipelines");
   select_pipelines.addEventListener("change", (select_pipelines) => {
     var pipeLine = select_pipelines.target.value;
@@ -550,46 +550,30 @@ const pipesListener = (pointData, chartMap) => {
     } else {
       var pointDataPipe = pointData;
     }
-
-    chartMap.update({
-      series: [
-        {
-          name: "Basemap",
-          borderColor: "#606060",
-          nullColor: "rgba(200, 200, 200, 0.2)",
-          showInLegend: false,
-        },
-        {
-          type: "mappoint",
-          name: "Key Points",
-          data: pointDataPipe,
-          dataLabels: {
-            enabled: true,
-            borderRadius: 7,
-            padding: 4,
-            format: "{point.name}",
-            allowOverlap: false,
+    if (pointDataPipe.length !== 0) {
+      chartMap.update({
+        series: [
+          {
+            name: "Basemap",
+            borderColor: "#606060",
+            nullColor: "rgba(200, 200, 200, 0.2)",
+            showInLegend: false,
           },
-        },
-      ],
-    });
-  });
-};
-
-export const mainThroughcap = () => {
-  var [chartMap, pointData, seriesData, graphParams] = commodityGraph(
-    "Natural Gas"
-  );
-
-  $(document).ready(function () {
-    $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
-      var commodity = $(e.target).text(); // get current tab
-      [chartMap, pointData, seriesData, graphParams] = commodityGraph(
-        commodity
-      );
-      unitsListener(graphParams, seriesData);
-      pipesListener(pointData, chartMap);
-    });
+          {
+            type: "mappoint",
+            name: "Key Points",
+            data: pointDataPipe,
+            dataLabels: {
+              enabled: true,
+              borderRadius: 7,
+              padding: 4,
+              format: "{point.name}",
+              allowOverlap: false,
+            },
+          },
+        ],
+      });
+    }
   });
 };
 mainThroughcap();

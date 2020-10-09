@@ -80,7 +80,6 @@ export const kevinCrudeProduction = () => {
 
       tooltip: {
         animation: true,
-        //shared: true,
       },
 
       yAxis: {
@@ -111,7 +110,7 @@ export const kevinCrudeProduction = () => {
     return chart;
   };
 
-  var chartCrude = createCrudeProdChart(seriesData); //do I need to have each chart variable with a different name?
+  var chartCrude = createCrudeProdChart(seriesData);
 
   //recreate the chart when the region changes
   var selectRegionCrudeProd = document.getElementById(
