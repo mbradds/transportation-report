@@ -206,6 +206,11 @@ def normalize_dates(df,date_list):
         df[date_col] = df[date_col].dt.date
     return df
 
+def normalize_text(df,text_list):
+    for text_col in text_list:
+        df[text_col] = [x.strip() for x in df[text_col]]
+    return df
+
 def readCersei(query,name=None):
     conn,engine = cer_connection()
     df = pd.read_sql_query(query,con=conn)
@@ -408,18 +413,29 @@ def keyPoints():
             [Direction of Flow]\
             ) as direction\
             on point.[Key Point] = direction.[Key Point] and point.[Corporate Entity] = direction.[Corporate Entity]"
-            
+    
+    replace_oil = {'Trans Mountain':'Trans Mountain Pipeline',
+                   'Canadian Mainline':'Enbridge Canadian Mainline'}
+    
+    points_list = []
     conn,engine = cer_connection()
     for query in [[query_oil,'keyPointsOil.json'],[query_gas,'keyPointsGas.json']]:
         df = pd.read_sql_query(query[0],con=conn)
+        df = normalize_text(df, ['Key Point','Corporate Entity','Pipeline Name','Direction of Flow'])
         for num in ['Latitude','Longitude']:
             df[num] = pd.to_numeric(df[num])
-    
+        if query[-1] == 'keyPointsOil.json':
+            df['Pipeline Name'] = df['Pipeline Name'].replace(replace_oil)
+        else:
+            df.loc[df['Corporate Entity'] == 'Maritimes & Northeast Pipeline', 'Pipeline Name'] = 'M&NP Canadian Mainline'
+            df.loc[df['Corporate Entity'] == 'TransCanada PipeLines Limited', 'Pipeline Name'] = 'TCPL Canadian Mainline'
+            
         write_path = os.path.join(os.getcwd(),'Jennifer/throughcap/',query[-1])
         df.to_json(write_path,orient='records')
+        points_list.append(df)
         
     conn.close()
-    return df
+    return points_list
 
 def throughcap(query,name):
     
@@ -430,9 +446,18 @@ def throughcap(query,name):
     
     if name == 'gas_throughcap.json':
         numeric_cols = ['Capacity (1000 m3/d)','Throughput (1000 m3/d)']
+        no_points_list = ['Brunswick Pipeline']
+        df = df[~df['Pipeline Name'].isin(no_points_list)]
+        df.loc[df['Corporate Entity'] == 'Maritimes & Northeast Pipeline', 'Pipeline Name'] = 'M&NP Canadian Mainline'
+        df.loc[df['Corporate Entity'] == 'TransCanada PipeLines Limited', 'Pipeline Name'] = 'TCPL Canadian Mainline'
+        
     elif name == 'oil_throughcap.json':
         numeric_cols = ['Available Capacity (1000 m3/d)','Throughput (1000 m3/d)']
-    
+        no_points_list = ['Trans-Northern','Westpur Pipeline','Southern Lights Pipeline']
+        df = df[~df['Pipeline Name'].isin(no_points_list)]
+        replace_oil = {'Canadian Mainline':'Enbridge Canadian Mainline'}
+        df['Pipeline Name'] = df['Pipeline Name'].replace(replace_oil)
+        
     for numeric in numeric_cols:
         df[numeric] = pd.to_numeric(df[numeric])
         df[numeric] = df[numeric].round(1)
@@ -619,7 +644,7 @@ if __name__ == '__main__':
     #jennifer
     df_oil = throughcap(query=query_oil_throughcap, name='oil_throughcap.json')
     df_gas = throughcap(query=query_gas_throughcap, name='gas_throughcap.json')
-    #df_point = keyPoints()
+    df_point = keyPoints()
     #df_fin_insert = financialResources()
     #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
     #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
