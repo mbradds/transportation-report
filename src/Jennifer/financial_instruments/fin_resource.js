@@ -99,7 +99,6 @@ export const jenniferFinResources = () => {
           dataLabels: {
             enabled: true,
             formatter: function () {
-              //console.log(this.point.series.name)
               return `${
                 this.point.series.name
               } total financial resources: <br> ${(this.y / 1000000000).toFixed(
@@ -394,7 +393,6 @@ export const jenniferFinResources = () => {
           "name"
         )
       );
-      console.log(finResourceSeriesClass);
       const chartFinResource = createFinResourceChart(
         finResourceSeries,
         finResourceFilters

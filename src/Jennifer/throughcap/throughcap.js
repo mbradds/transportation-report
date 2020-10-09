@@ -471,7 +471,7 @@ class TrafficDashboard {
     document.getElementById(id).innerText = this.params.titleText;
   }
 
-  fillDrops(data) {
+  fillDropsThroughcap(data) {
     var pipes = getUnique(data, "Pipeline Name");
     pipes.unshift("All");
     fillDropUpdate(
@@ -500,7 +500,7 @@ const commodityGraph = (commodity) => {
   const pointsData = JSON.parse(getData(graphParams.urlPoints));
   const seriesData = JSON.parse(getData(graphParams.urlSeries));
   dash.setTitle("traffic_title");
-  dash.fillDrops(seriesData);
+  dash.fillDropsThroughcap(seriesData);
 
   const pointData = filterDataPoints(pointsData, graphParams.colorsCapacity);
   const blank = createThroughcapChart(
@@ -576,7 +576,7 @@ const pipesListener = (pointData, chartMap) => {
   });
 };
 
-const mainThroughcap = () => {
+export const mainThroughcap = () => {
   var [chartMap, pointData, seriesData, graphParams] = commodityGraph(
     "Natural Gas"
   );

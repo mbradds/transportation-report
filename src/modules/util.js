@@ -11,13 +11,6 @@ export const cerPalette = {
   White: "#FFFFFF",
 };
 
-// export const getData = (Url) => {
-//   var Httpreq = new XMLHttpRequest(); // a new request
-//   Httpreq.open("GET", Url, false);
-//   Httpreq.send(null);
-//   return Httpreq.responseText;
-// };
-
 export const formatMoney = (
   amount,
   decimalCount = 2,
