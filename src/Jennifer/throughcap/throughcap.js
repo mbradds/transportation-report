@@ -1,4 +1,4 @@
-import {getUnique, checkIfValid,fillDrop,y,dynamicDropDown} from '../../modules/util.js'
+import {getUnique, checkIfValid,fillDrop,y,dynamicDropDown,fillDropUpdate} from '../../modules/util.js'
 const getData = (Url) => {
   var Httpreq = new XMLHttpRequest(); // a new request
   Httpreq.open("GET", Url, false);
@@ -452,9 +452,10 @@ class TrafficDashboard {
   }
 
   fillDrops(data) {
-    const drop = getUnique(data, "Pipeline Name");
-    fillDrop("Pipeline Name","select_pipelines","All",data);
-    dynamicDropDown(document.getElementById("select_units"),this.params.units)
+    var pipes = getUnique(data, "Pipeline Name");
+    pipes.unshift('All')
+    fillDropUpdate(document.getElementById("select_pipelines"),pipes,true,'All')
+    fillDropUpdate(document.getElementById("select_units"),this.params.units,true,this.params.units[0])
   }
 
   get graphStructure() {

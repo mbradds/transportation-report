@@ -51,11 +51,11 @@ export const formatMoney = (
   }
 };
 
+//TODO: change these dropdown methods to accept a DOM object itentified in outside code
 export const dynamicDropDown = (select, optionsArray) => {
   function addOption(text, select) {
     select.options[select.options.length] = new Option(text);
   }
-
   //select.options.length = 0;
 
   for (var i = 0; i < optionsArray.length; i++) {
@@ -69,6 +69,26 @@ export const fillDrop = (column, dropName, value, data) => {
   dynamicDropDown(select, drop.sort());
   select.value = value;
 };
+
+//TODO: use this method instead of the ones above
+export const fillDropUpdate = (select,options,refresh=false,defaultSelect=false) => {
+  function addOption(text, select) {
+    select.options[select.options.length] = new Option(text);
+  }
+  if (refresh){
+    select.options.length = 0;  
+  }
+  options.map((option,i)=>{
+    addOption(option, select);
+  })
+  if (refresh){
+    $(select).selectpicker('refresh');
+  }
+  if (defaultSelect !== false){
+    $(select).selectpicker('val',defaultSelect)
+  }
+
+}
 
 
 //takes in a json object and checks if the column has data
