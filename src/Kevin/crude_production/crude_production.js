@@ -1,7 +1,8 @@
 import {
   cerPalette,
-  fillDrop,
+  fillDropUpdate,
   prepareSeriesNonTidyUnits,
+  getUnique,
 } from "../../modules/util.js";
 
 import crudeProdData from "./Crude_Oil_Production.json";
@@ -27,7 +28,12 @@ export const kevinCrudeProduction = () => {
     "In Situ Bitumen",
   ];
 
-  fillDrop("Region", "select_region_crude_prod", "Canada", crudeProdData);
+  fillDropUpdate(
+    "select_region_crude_prod",
+    getUnique(crudeProdData, "Region"),
+    false,
+    "Canada"
+  );
 
   var seriesData = prepareSeriesNonTidyUnits(
     crudeProdData,

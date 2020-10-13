@@ -1,4 +1,4 @@
-import { cerPalette, fillDrop, prepareSeriesTidy } from "../../modules/util.js";
+import { cerPalette, fillDrop, fillDropUpdate,getUnique, prepareSeriesTidy } from "../../modules/util.js";
 
 import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
 
@@ -14,7 +14,8 @@ export const kevinCrudeExports = () => {
 
   var crudeExportFilters = { Unit: "bbl/d" };
 
-  fillDrop("Unit", "select_units_crude_exports", "bbl/d", crudeExportsData);
+  fillDropUpdate("select_units_crude_exports",getUnique(crudeExportsData,"Unit"),false,"bbl/d")
+
   var seriesData = prepareSeriesTidy(
     crudeExportsData,
     crudeExportFilters,

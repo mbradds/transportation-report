@@ -1,9 +1,29 @@
 import {
   getUnique,
   checkIfValid,
-  y,
-  fillDropUpdate,
+  y
 } from "../../modules/util.js";
+
+const fillDropUpdate = (select_name,options,refresh=false,defaultSelect=false) => {
+  
+  var select = document.getElementById(select_name)
+  function addOption(text, select) {
+    select.options[select.options.length] = new Option(text);
+  }
+  if (refresh){
+    select.options.length = 0;  
+  }
+  options.map((option,i)=>{
+    addOption(option, select);
+  })
+  if (refresh){
+    $(select).selectpicker('refresh');
+  }
+  if (defaultSelect !== false){
+    $(select).selectpicker('val',defaultSelect)
+  }
+
+}
 
 const getData = (Url) => {
   var Httpreq = new XMLHttpRequest(); // a new request
@@ -465,13 +485,13 @@ class TrafficDashboard {
     var pipes = getUnique(data, "Pipeline Name");
     pipes.unshift("All");
     fillDropUpdate(
-      document.getElementById("select_pipelines"),
+      "select_pipelines",
       pipes,
       true,
       "All"
     );
     fillDropUpdate(
-      document.getElementById("select_units"),
+      "select_units",
       this.params.units,
       true,
       this.params.units[0]

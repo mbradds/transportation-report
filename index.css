@@ -17,3 +17,11 @@
   justify-content: center;
   align-items: center;
 }
+
+#container_fin_resources {
+  min-height: 100%;
+}
+
+#container_fin_resources_class {
+  min-height: 100%;
+}
