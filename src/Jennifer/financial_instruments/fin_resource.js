@@ -341,6 +341,7 @@ export const jenniferFinResources = () => {
       "select_units_fin_resource"
     );
     selectCommodityFin.addEventListener("change", (selectCommodityFin) => {
+      var tempScrollTop = $(window).scrollTop(); //saves the scroll location so that HC doesnt scroll up on chart changes
       var commodity = selectCommodityFin.target.value;
       finResourceFilters.Commodity = commodity;
       if (commodity == "Oil") {
@@ -402,6 +403,7 @@ export const jenniferFinResources = () => {
         finResourceSeriesClass,
         finResourceFilters
       );
+      $(window).scrollTop(tempScrollTop);
     });
   };
 

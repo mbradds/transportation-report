@@ -1,4 +1,4 @@
-import { getUnique, fillDrop, fillDropUpdate } from "../../modules/util.js";
+import { getUnique, fillDropUpdate } from "../../modules/util.js";
 
 import financialData from "./PipelineProfileTables.json";
 
@@ -68,7 +68,8 @@ export const cassandraAllPipes = () => {
     financialData,
     financeFilters
   );
-  fillDrop("Type", "select_metric_financial", "Assets", financialData);
+
+  fillDropUpdate("select_metric_financial",getUnique(financialData,"Type"),false,"Assets")
 
   const createFinancialChart = (newData, yFormat, yLabel) => {
     const chart = new Highcharts.chart("container_financial_metrics", {

@@ -1,9 +1,19 @@
-import { fillDrop, cerPalette, prepareSeriesTidy } from "../../modules/util.js";
+import {
+  fillDropUpdate,
+  getUnique,
+  cerPalette,
+  prepareSeriesTidy,
+} from "../../modules/util.js";
 
 import tollsData from "./tolls.json";
 
 export const cassandraTolls = () => {
-  fillDrop("Commodity", "select_commodity_tolls", "Oil & Gas", tollsData);
+  fillDropUpdate(
+    "select_commodity_tolls",
+    getUnique(tollsData, "Commodity"),
+    false,
+    "Oil & Gas"
+  );
 
   const tollChartTypes = (series) => {
     series.map((data, seriesNum) => {

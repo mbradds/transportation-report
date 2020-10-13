@@ -1,6 +1,8 @@
 import {
   cerPalette,
   fillDrop,
+  fillDropUpdate,
+  getUnique,
   prepareSeriesNonTidyUnits,
 } from "../../modules/util.js";
 
@@ -29,10 +31,15 @@ export const ryanNglExports = () => {
     "Period",
     nglColors
   );
+  fillDropUpdate(
+    "select_region_ngl",
+    getUnique(nglData, "Region"),
+    false,
+    "Canada"
+  );
+  //fillDrop("Region", "select_region_ngl", "Canada", nglData);
 
-  fillDrop("Region", "select_region_ngl", "Canada", nglData);
-
-  const createNglChart = (seriesData) => {
+  const createNglChart = (seriesData, nglFilters) => {
     const chart = new Highcharts.chart("container_ngl", {
       chart: {
         type: "line", //line,bar,scatter,area,areaspline
@@ -76,7 +83,7 @@ export const ryanNglExports = () => {
         shared: true,
       },
 
-      title: { text: "Canada Propane Exports" },
+      title: { text: `${nglFilters.Region} ${nglFilters.Product} Exports` },
 
       xAxis: {
         type: "datetime",
@@ -105,7 +112,7 @@ export const ryanNglExports = () => {
     return chart;
   };
 
-  var nglChart = createNglChart(seriesData);
+  var nglChart = createNglChart(seriesData, nglFilters);
 
   var selectProductNgl = document.getElementById("select_product_ngl");
   selectProductNgl.addEventListener("change", (selectProductNgl) => {
@@ -123,7 +130,7 @@ export const ryanNglExports = () => {
       nglColors
     );
 
-    nglChart = createNglChart(seriesData);
+    nglChart = createNglChart(seriesData, nglFilters);
   });
 
   var selectRegionNgl = document.getElementById("select_region_ngl");
@@ -142,7 +149,7 @@ export const ryanNglExports = () => {
       nglColors
     );
 
-    nglChart = createNglChart(seriesData);
+    nglChart = createNglChart(seriesData, nglFilters);
   });
 
   var selectUnitsNgl = document.getElementById("select_units_ngl");
