@@ -11,8 +11,6 @@ export const cassandraAllPipes = () => {
         } else if (value == "Gas") {
           data = data.filter((row) => row.Category == "Gas");
         }
-      //var select = document.getElementById('select_metric_financial')
-      //fillDropUpdate(select,getUnique(data,'Type'),true)
       } else {
         data = data.filter((row) => row[key] == value);
       }
@@ -61,7 +59,7 @@ export const cassandraAllPipes = () => {
     return [hcData, yFormat, yLabel];
   };
 
-  var financeFilters = {Category: "All" , Type: "Assets"};
+  var financeFilters = { Category: "All", Type: "Assets" };
 
   var seriesData, yFormat, yLabel;
   [seriesData, yFormat, yLabel] = prepareSeriesFinance(
@@ -69,7 +67,12 @@ export const cassandraAllPipes = () => {
     financeFilters
   );
 
-  fillDropUpdate("select_metric_financial",getUnique(financialData,"Type"),false,"Assets")
+  fillDropUpdate(
+    "select_metric_financial",
+    getUnique(financialData, "Type"),
+    false,
+    "Assets"
+  );
 
   const createFinancialChart = (newData, yFormat, yLabel) => {
     const chart = new Highcharts.chart("container_financial_metrics", {
@@ -113,7 +116,6 @@ export const cassandraAllPipes = () => {
 
       tooltip: {
         animation: true,
-        shared: true,
       },
 
       title: {
@@ -156,31 +158,39 @@ export const cassandraAllPipes = () => {
     return chart;
   };
 
-  const chartFinance = createFinancialChart(seriesData, yFormat, yLabel);
+  const mainPipeline = () => {
+    var chartFinance = createFinancialChart(seriesData, yFormat, yLabel);
 
-  var selectMetricFinancial = document.getElementById(
-    "select_metric_financial"
-  );
-  selectMetricFinancial.addEventListener("change", (selectMetricFinancial) => {
-    var metric = selectMetricFinancial.target.value;
-    financeFilters.Type = metric;
-    graphEvent(financeFilters);
-  });
-
-  var selectPipeFinancial = document.getElementById(
-    "select_pipelines_financial"
-  );
-  selectPipeFinancial.addEventListener("change", (selectPipeFinancial) => {
-    var pipeGroup = selectPipeFinancial.target.value;
-    financeFilters.Category = pipeGroup;
-    graphEvent(financeFilters);
-  });
-
-  const graphEvent = (filters) => {
-    [seriesData, yFormat, yLabel] = prepareSeriesFinance(
-      financialData,
-      financeFilters
+    var selectMetricFinancial = document.getElementById(
+      "select_metric_financial"
     );
-    createFinancialChart(seriesData, yFormat, yLabel);
+    selectMetricFinancial.addEventListener(
+      "change",
+      (selectMetricFinancial) => {
+        var metric = selectMetricFinancial.target.value;
+        financeFilters.Type = metric;
+        chartFinance = graphEvent(financeFilters);
+      }
+    );
+
+    var selectPipeFinancial = document.getElementById(
+      "select_pipelines_financial"
+    );
+    selectPipeFinancial.addEventListener("change", (selectPipeFinancial) => {
+      var pipeGroup = selectPipeFinancial.target.value;
+      financeFilters.Category = pipeGroup;
+      chartFinance = graphEvent(financeFilters);
+    });
+
+    const graphEvent = (filters) => {
+      [seriesData, yFormat, yLabel] = prepareSeriesFinance(
+        financialData,
+        filters
+      );
+      chartFinance = createFinancialChart(seriesData, yFormat, yLabel);
+      return chartFinance
+    };
   };
+  mainPipeline();
 };
+
