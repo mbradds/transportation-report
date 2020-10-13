@@ -18,10 +18,16 @@
   align-items: center;
 }
 
-#container_fin_resources {
+/* #container_fin_resources {
   min-height: 100%;
 }
 
 #container_fin_resources_class {
   min-height: 100%;
+} */
+
+#traffic_title{
+  font-family: Arial;
+  font-weight: bold;
+  font-size: large;
 }
