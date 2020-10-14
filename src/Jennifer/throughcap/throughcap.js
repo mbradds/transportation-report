@@ -190,7 +190,8 @@ export const jenniferThroughcap = () => {
     colorsCapacity,
     colorsThroughput,
     yT,
-    yC
+    yC,
+    currentSeries
   ) => {
     //creates the throughput and capacity graph. Called in create point map
     if (
@@ -284,6 +285,7 @@ export const jenniferThroughcap = () => {
 
         series: data,
       });
+      currentSeries = chart
       return chart;
     }
   };
@@ -295,7 +297,8 @@ export const jenniferThroughcap = () => {
     colorsCapacity,
     colorsThroughput,
     yT,
-    yC
+    yC,
+    currentSeries
   ) => {
 
     const chartMap = Highcharts.mapChart("container_map", {
@@ -330,11 +333,11 @@ export const jenniferThroughcap = () => {
                   });
                 }
 
-                // if (filters['Key Point'] !== null && filters['Key Point'] == this.name){
-                //   console.log('Update units')
-                // } else {
-                //   console.log('dont update units')
-                // }
+                if (filters['Key Point'] !== null && filters['Key Point'] == this.name){
+                  console.log('Update units')
+                } else {
+                  console.log('dont update units')
+                }
           
                 filters["Corporate Entity"] = this["Corporate Entity"];
                 filters["Key Point"] = this.name;
@@ -345,7 +348,8 @@ export const jenniferThroughcap = () => {
                   colorsCapacity,
                   colorsThroughput,
                   yT,
-                  yC
+                  yC,
+                  currentSeries
                 );
                 //filters["seriesGraph"] = chartSeries
                 pointSelected = true;
@@ -440,9 +444,11 @@ export const jenniferThroughcap = () => {
           "Key Point": null,
           CurrentUnits: "1000 m3/d",
           BaseUnits: "1000 m3/d",
-          //seriesGraph: null,
         };
         this.params.units = ["1000 m3/d", "1000 b/d"];
+        this.params.currentMap = null
+        this.params.currentPoints = null
+        this.params.currentSeries = null
       } else if (this.commodity == "Natural Gas") {
         this.params.points = gasPoints;
         this.params.series = gasSeries;
@@ -467,9 +473,11 @@ export const jenniferThroughcap = () => {
           "Key Point": null,
           CurrentUnits: "1000 m3/d",
           BaseUnits: "1000 m3/d",
-          //seriesGraph: null,
         };
         this.params.units = ["1000 m3/d", "BCF/d"];
+        this.params.currentMap = null
+        this.params.currentPoints = null
+        this.params.currentSeries = null
       } else {
         console.log("Enter a valid commodity");
       }
@@ -493,6 +501,45 @@ export const jenniferThroughcap = () => {
       );
     }
 
+    getPoints() {
+      const points =  filterDataPoints(JSON.parse(JSON.stringify(this.params.points)),this.params.colorsCapacity)
+      this.params.currentPoints = points
+      return points
+    }
+
+    getSeries() {
+      const chartSeries =  createThroughcapChart(
+        this.params.series,
+        this.params.filters,
+        this.params.colorsCapacity,
+        this.params.colorsThroughput,
+        this.params.yT,
+        this.params.yC,
+        this.params.currentSeries
+      );
+      this.params.currentSeries = chartSeries
+      return chartSeries
+    }
+
+    getMap() {
+      const chartMap = createPointMap(
+        this.getPoints(),
+        this.params.filters,
+        this.params.series,
+        this.params.colorsCapacity,
+        this.params.colorsThroughput,
+        this.params.yT,
+        this.params.yC,
+        this.params.currentSeries,
+      );
+      this.params.currentMap = chartMap
+      return chartMap
+    }
+
+    set units(newUnits){
+      this.params.filters.CurrentUnits = newUnits
+    }
+
     get graphStructure() {
       return this.properties();
     }
@@ -501,44 +548,22 @@ export const jenniferThroughcap = () => {
   const commodityGraph = (commodity) => {
     var dash = new TrafficDashboard(commodity);
     var graphParams = dash.graphStructure;
-    var pointDataRaw = JSON.parse(JSON.stringify(graphParams.points));
     var seriesData = graphParams.series;
     dash.setTitle("traffic_title");
     dash.fillDropsThroughcap(seriesData);
-    //TODO: the commodity needs to be filtered out in pointsData here
-    const pointData = filterDataPoints(
-      pointDataRaw,
-      graphParams.colorsCapacity
-    );
-    const blank = createThroughcapChart(
-      seriesData,
-      graphParams.filters,
-      graphParams.colorsCapacity,
-      graphParams.colorsThroughput,
-      graphParams.yT,
-      graphParams.yC
-    );
-    var chartMap = createPointMap(
-      pointData,
-      graphParams.filters,
-      seriesData,
-      graphParams.colorsCapacity,
-      graphParams.colorsThroughput,
-      graphParams.yT,
-      graphParams.yC
-    );
-    return [chartMap, pointData, seriesData, graphParams];
+    const blank = dash.getSeries()
+    var chartMap = dash.getMap()
+    return dash
   };
 
   const mainThroughcap = () => {
-    var [chartMap, pointData, seriesData, graphParams] = commodityGraph(
-      "Natural Gas"
-    );
+
+    var dash = commodityGraph("Natural Gas")
 
     $(document).ready(function () {
       $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
         const commodity = $(e.target).text(); // get current tab
-        [chartMap, pointData, seriesData, graphParams] = commodityGraph(
+        dash = commodityGraph(
           commodity
         );
       });
@@ -546,19 +571,14 @@ export const jenniferThroughcap = () => {
     var select_units = document.getElementById("select_units");
     select_units.addEventListener("change", (select_units) => {
       var units = select_units.target.value;
-      graphParams.filters.CurrentUnits = units;
-      var chartTraffic = createThroughcapChart(
-        seriesData,
-        graphParams.filters,
-        graphParams.colorsCapacity,
-        graphParams.colorsThroughput,
-        graphParams.yT,
-        graphParams.yC
-      );
+      dash.units = units
+      var chartTraffic = dash.getSeries()
     });
 
     var select_pipelines = document.getElementById("select_pipelines");
     select_pipelines.addEventListener("change", (select_pipelines) => {
+      var pointData = dash.getPoints()
+      var chartMap = dash.params.currentMap
       var pipeLine = select_pipelines.target.value;
       if (pipeLine !== "All") {
         var pointDataPipe = pointData.filter(
