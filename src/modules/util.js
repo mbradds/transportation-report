@@ -163,7 +163,8 @@ export const prepareSeriesNonTidyUnits = (
   convType,
   valueVars,
   xCol,
-  colors
+  colors,
+  xName = "x"
 ) => {
   const seriesData = {};
   const colTotals = {};
@@ -180,7 +181,7 @@ export const prepareSeriesNonTidyUnits = (
     dataFiltered.map((row, rowNum) => {
       valueVars.map((col, colNum) => {
         seriesData[col].push({
-          x: row[xCol],
+          [xName]: row[xCol],
           y: row[col],
         });
         colTotals[col] = colTotals[col] + row[col];
@@ -190,7 +191,7 @@ export const prepareSeriesNonTidyUnits = (
     dataFiltered.map((row, rowNum) => {
       valueVars.map((col, colNum) => {
         seriesData[col].push({
-          x: row[xCol],
+          [xName]: row[xCol],
           y: y(convType, row, col, conversion),
         });
         colTotals[col] = colTotals[col] + row[col];

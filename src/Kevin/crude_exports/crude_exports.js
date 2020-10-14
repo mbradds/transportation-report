@@ -1,4 +1,4 @@
-import { cerPalette, fillDrop, fillDropUpdate,getUnique, prepareSeriesTidy } from "../../modules/util.js";
+import { cerPalette, fillDropUpdate,getUnique, prepareSeriesTidy } from "../../modules/util.js";
 
 import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
 

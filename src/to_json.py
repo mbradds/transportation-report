@@ -199,6 +199,26 @@ where variable = 'ALL Limit' and [ALL Class] not in ('CO2 or Water Class','Commo
 group by fin.[ALL Class] \
 order by left([All Class], CHARINDEX(' ',[ALL Class])) desc, sum(fin.[values]) desc"
 
+query_gas_2019 = "SELECT \
+[Year], \
+[Corporate Entity], \
+[Pipeline Name], \
+[Key Point], \
+[Trade Type], \
+case when [Trade Type] = 'import' then round(avg([Capacity (1000 m3/d)]),2)*-1 else round(avg([Capacity (1000 m3/d)]),2) \
+end as [Capacity], \
+case when [Trade Type] = 'import' then round(avg([Throughput (1000 m3/d)]),2)*-1 else round(avg([Throughput (1000 m3/d)]),2) \
+end as [Throughput] \
+FROM [EnergyData].[dbo].[Pipelines_Gas] \
+where \
+([Year] = 2019 and [Corporate Entity] = 'NOVA Gas Transmission Ltd. (NGTL)' and [Key Point] = 'Upstream of James River') or \
+([Year] = 2019 and [Corporate Entity] = 'NOVA Gas Transmission Ltd. (NGTL)' and [Key Point] = 'West Gate') or \
+([Year] = 2019 and [Corporate Entity] = 'TransCanada PipeLines Limited' and [Key Point] = 'Prairies') or \
+([Year] = 2019 and [Corporate Entity] = 'Westcoast Energy Inc.' and [Key Point] = 'Huntingdon Export') or \
+([Year] = 2019 and [Corporate Entity] = 'Alliance Pipeline Limited Partnership' and [Key Point] = 'Border') or \
+([Year] = 2019 and [Corporate Entity] = 'TransCanada PipeLines Limited' and [Key Point] = 'Niagara' and [Trade Type] = 'import') or \
+([Year] = 2019 and [Corporate Entity] = 'TransCanada PipeLines Limited' and [Key Point] = 'Chippawa' and [Trade Type] = 'import') \
+group by [Year],[Corporate Entity],[Pipeline Name],[Key Point],[Trade Type]"
 
 def normalize_dates(df,date_list):
     for date_col in date_list:
@@ -229,7 +249,12 @@ def readCersei(query,name=None):
         for text_col in ['Pipeline Group','Commodity']:
             df[text_col] = [x.strip() for x in df[text_col]]
         df['Financial Resource'] = pd.to_numeric(df['Financial Resource'])
-        
+    if name == 'gas_2019.json':
+        write_path = os.path.join(os.getcwd(),'Sara/gas_2019/',name)
+        df.loc[df['Corporate Entity'] == 'TransCanada PipeLines Limited', 'Pipeline Name'] = 'TCPL Canadian Mainline'
+        df['Spare Capacity'] = df['Capacity'] - df['Throughput']
+        df['Series Name'] = df['Pipeline Name']+' - '+df['Key Point']+' - '+df['Trade Type']
+        df = df.sort_values(by=['Capacity'], ascending=False)
     if name != None:
         df.to_json(write_path,orient='records')
     conn.close()
@@ -619,6 +644,7 @@ def tolls(name):
     df.to_json(write_path,orient='records')
     return df
 
+
 if __name__ == '__main__':
     
     #kevin
@@ -633,6 +659,7 @@ if __name__ == '__main__':
     
     #sara
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
+    df = readCersei(query_gas_2019,'gas_2019.json')
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
@@ -642,9 +669,9 @@ if __name__ == '__main__':
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
     
     #jennifer
-    df_oil = throughcap(query=query_oil_throughcap, name='oil_throughcap.json')
-    df_gas = throughcap(query=query_gas_throughcap, name='gas_throughcap.json')
-    df_point = keyPoints()
+    #df_oil = throughcap(query=query_oil_throughcap, name='oil_throughcap.json')
+    #df_gas = throughcap(query=query_gas_throughcap, name='gas_throughcap.json')
+    #df_point = keyPoints()
     #df_fin_insert = financialResources()
     #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
     #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
