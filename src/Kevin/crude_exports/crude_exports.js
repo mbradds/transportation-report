@@ -35,7 +35,15 @@ export const kevinCrudeExports = () => {
     crudeExportColors
   );
 
-  var selectedPadd = { padd: null };
+  const mouseOverFunction = (itter,currentSelection) => {
+    itter.forEach(function (s) {
+      if (s.name != currentSelection) {
+        s.setState("inactive");
+      } else {
+        s.setState("hover");
+      }
+    });
+  }
 
   const createPaddMap = () => {
     var paddMap = new Highcharts.mapChart("container_padd_map", {
@@ -78,14 +86,8 @@ export const kevinCrudeExports = () => {
           events: {
             mouseOver: function () {
               var currentSelection = this.name;
-              selectedPadd.padd = currentSelection;
-              this.chart.series.forEach(function (s) {
-                if (s.name != currentSelection) {
-                  s.setState("inactive");
-                } else {
-                  s.setState("hover");
-                }
-              });
+              mouseOverFunction(this.chart.series,currentSelection)
+              mouseOverFunction(chartCrudeExports.series,currentSelection)
             },
             mouseOut: function () {
               this.chart.series.forEach(function (s) {
@@ -180,13 +182,10 @@ export const kevinCrudeExports = () => {
     return paddMap;
   };
 
-  const createCrudeExportsChart = (seriesData, paddMap) => {
+  const createCrudeExportsChart = (seriesData) => {
     var chartCrudeExports = new Highcharts.chart("container_crude_exports", {
       chart: {
-        type: "column", //line,bar,scatter,area,areaspline
-        //zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-        //borderColor: "black",
-        //borderWidth: 1,
+        type: "column", 
         animation: true,
         events: {
           load: function () {
@@ -219,14 +218,7 @@ export const kevinCrudeExports = () => {
           events: {
             mouseOver: function () {
               var currentSelection = this.name;
-              selectedPadd.padd = currentSelection;
-              paddMap.series.forEach(function (s) {
-                if (s.name != currentSelection) {
-                  s.setState("inactive");
-                } else {
-                  s.setState("hover");
-                }
-              });
+              mouseOverFunction(paddMap.series,currentSelection)
             },
             mouseOut: function () {
               paddMap.series.forEach(function (s) {
@@ -239,7 +231,6 @@ export const kevinCrudeExports = () => {
 
       tooltip: {
         animation: true,
-        //shared: true,
       },
 
       yAxis: {
@@ -271,7 +262,7 @@ export const kevinCrudeExports = () => {
   };
 
   var paddMap = createPaddMap();
-  var chartCrudeExports = createCrudeExportsChart(seriesData, paddMap);
+  var chartCrudeExports = createCrudeExportsChart(seriesData);
 
   var selectUnitsCrudeExports = document.getElementById(
     "select_units_crude_exports"
@@ -298,8 +289,4 @@ export const kevinCrudeExports = () => {
       });
     }
   );
-  // var x = true;
-  // while (x == true) {
-  //   console.log(selectedPadd);
-  // }
 };
