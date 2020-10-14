@@ -23,50 +23,45 @@ Highcharts.mapChart("container", {
       allAreas: false,
     },
     series: {
+      states: {
+        inactive: {
+          opacity: 0.5,
+        },
+        hover: {
+          brightness: 0,
+        },
+      },
       point: {
         events: {
           mouseOver: function () {
             var selectedName = this.series.name;
             this.series.chart.series.forEach(function (s, seriesNum) {
               if (s.name != selectedName) {
-                s.setVisible(false);
+                s.points.forEach(function (p) {
+                  p.setState("inactive");
+                });
               } else {
-                s.setVisible(true);
+                s.points.forEach(function (p) {
+                  p.setState("hover");
+                });
               }
             });
-            // this.series.data.forEach(function (p, i) {
-            //   if (p.value == 1) {
-            //     p.setState("hover");
-            //   } else {
-            //     p.setState("inactive");
-            //   }
-            // });
           },
           mouseOut: function () {
-            var selectedName = this.series.name;
             this.series.chart.series.forEach(function (s, seriesNum) {
-              if (s.name != selectedName) {
-                // s.update({
-                //   opacity: 1,
-                // });
-                s.setState('select',false)
-              }
+              s.points.forEach(function (p) {
+                p.setState("");
+              });
             });
-            // this.series.data.forEach(function (p, i) {
-            //   if (p.value == 1) {
-            //     p.setState("");
-            //   }
-            // });
           },
         },
       },
-      borderWidth: 1,
     },
   },
 
   series: [
     {
-      name: "PADD 1",
+      name: "PADD I",
       data: [
         ["us-me", 1],
         ["us-vt", 1],
@@ -89,7 +84,7 @@ Highcharts.mapChart("container", {
       color: "#559B37",
     },
     {
-      name: "PADD 2",
+      name: "PADD II",
       data: [
         ["us-nd", 1],
         ["us-sd", 1],
@@ -110,7 +105,7 @@ Highcharts.mapChart("container", {
       color: "#5FBEE6",
     },
     {
-      name: "PADD 3",
+      name: "PADD III",
       data: [
         ["us-tx", 1],
         ["us-la", 1],
@@ -122,7 +117,7 @@ Highcharts.mapChart("container", {
       color: "#054169",
     },
     {
-      name: "PADD 4",
+      name: "PADD IV",
       data: [
         ["us-mt", 1],
         ["us-id", 1],
@@ -133,7 +128,7 @@ Highcharts.mapChart("container", {
       color: "#FFBE4B",
     },
     {
-      name: "PADD 5",
+      name: "PADD V",
       data: [
         ["us-wa", 1],
         ["us-or", 1],
