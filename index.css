@@ -26,8 +26,14 @@
   min-height: 100%;
 } */
 
-#traffic_title{
+#traffic_title {
   font-family: Arial;
   font-weight: bold;
   font-size: large;
+}
+
+.author {
+  font-family: Arial;
+  font-weight: bold;
+  padding-left: 100px;
 }
