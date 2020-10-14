@@ -45,6 +45,12 @@ export const kevinCrudeExports = () => {
     });
   }
 
+  const mouseOutFunction = (itter) => {
+    itter.forEach(function (s) {
+      s.setState("");
+    });
+  }
+
   const createPaddMap = () => {
     var paddMap = new Highcharts.mapChart("container_padd_map", {
       chart: {
@@ -90,9 +96,8 @@ export const kevinCrudeExports = () => {
               mouseOverFunction(chartCrudeExports.series,currentSelection)
             },
             mouseOut: function () {
-              this.chart.series.forEach(function (s) {
-                s.setState("");
-              });
+              mouseOutFunction(this.chart.series)
+              mouseOutFunction(chartCrudeExports.series)
             },
           },
         },
@@ -221,9 +226,7 @@ export const kevinCrudeExports = () => {
               mouseOverFunction(paddMap.series,currentSelection)
             },
             mouseOut: function () {
-              paddMap.series.forEach(function (s) {
-                s.setState("");
-              });
+              mouseOutFunction(paddMap.series)
             },
           },
         },
