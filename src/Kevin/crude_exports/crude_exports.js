@@ -35,7 +35,7 @@ export const kevinCrudeExports = () => {
     crudeExportColors
   );
 
-  const mouseOverFunction = (itter,currentSelection) => {
+  const mouseOverFunction = (itter, currentSelection) => {
     itter.forEach(function (s) {
       if (s.name != currentSelection) {
         s.setState("inactive");
@@ -43,19 +43,29 @@ export const kevinCrudeExports = () => {
         s.setState("hover");
       }
     });
-  }
+  };
 
   const mouseOutFunction = (itter) => {
     itter.forEach(function (s) {
       s.setState("");
     });
-  }
+  };
 
   const createPaddMap = () => {
     var paddMap = new Highcharts.mapChart("container_padd_map", {
       chart: {
         type: "map",
         map: "countries/us/custom/us-all-mainland",
+        events: {
+          load: function () {
+            this.credits.element.onclick = function () {
+              window.open(
+                "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english",
+                "_blank" // <- This is what makes it open in a new window.
+              );
+            };
+          },
+        },
       },
 
       title: {
@@ -63,7 +73,7 @@ export const kevinCrudeExports = () => {
       },
 
       credits: {
-        enabled: false,
+        text: "Source: CER Commodity Tracking System",
       },
 
       legend: {
@@ -92,12 +102,12 @@ export const kevinCrudeExports = () => {
           events: {
             mouseOver: function () {
               var currentSelection = this.name;
-              mouseOverFunction(this.chart.series,currentSelection)
-              mouseOverFunction(chartCrudeExports.series,currentSelection)
+              mouseOverFunction(this.chart.series, currentSelection);
+              mouseOverFunction(chartCrudeExports.series, currentSelection);
             },
             mouseOut: function () {
-              mouseOutFunction(this.chart.series)
-              mouseOutFunction(chartCrudeExports.series)
+              mouseOutFunction(this.chart.series);
+              mouseOutFunction(chartCrudeExports.series);
             },
           },
         },
@@ -190,18 +200,8 @@ export const kevinCrudeExports = () => {
   const createCrudeExportsChart = (seriesData) => {
     var chartCrudeExports = new Highcharts.chart("container_crude_exports", {
       chart: {
-        type: "column", 
+        type: "column",
         animation: true,
-        events: {
-          load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
-          },
-        },
       },
 
       title: {
@@ -209,7 +209,7 @@ export const kevinCrudeExports = () => {
       },
 
       credits: {
-        text: "Source: CER Commodity Tracking System",
+        enabled: false
       },
 
       plotOptions: {
@@ -223,10 +223,10 @@ export const kevinCrudeExports = () => {
           events: {
             mouseOver: function () {
               var currentSelection = this.name;
-              mouseOverFunction(paddMap.series,currentSelection)
+              mouseOverFunction(paddMap.series, currentSelection);
             },
             mouseOut: function () {
-              mouseOutFunction(paddMap.series)
+              mouseOutFunction(paddMap.series);
             },
           },
         },
