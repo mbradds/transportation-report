@@ -1,4 +1,4 @@
-import { cerPalette, prepareSeriesNonTidyUnits } from "../../modules/util.js";
+import { cerPalette, prepareSeriesNonTidyUnits,creditsClick } from "../../modules/util.js";
 
 import gasData from "./gas_traffic.json";
 
@@ -51,17 +51,10 @@ export const saraGasTraffic = () => {
     const chart = new Highcharts.chart("container_gas_traffic", {
       chart: {
         zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-        borderColor: "black",
         borderWidth: 1,
-        animation: true,
         events: {
           load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
+            creditsClick(this,"https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34")
           },
         },
       },
@@ -89,10 +82,9 @@ export const saraGasTraffic = () => {
         shared: true,
       },
 
-      // title: { text: 'Canada Propane Exports' },
-
       xAxis: {
         type: "datetime",
+        crosshair: true,
       },
 
       yAxis: {
@@ -102,17 +94,6 @@ export const saraGasTraffic = () => {
         },
       },
 
-      lang: {
-        noData: "No Exports",
-      },
-
-      noData: {
-        style: {
-          fontWeight: "bold",
-          fontSize: "15px",
-          color: "#303030",
-        },
-      },
       series: seriesData,
     });
 

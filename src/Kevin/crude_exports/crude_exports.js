@@ -201,7 +201,6 @@ export const kevinCrudeExports = () => {
     var chartCrudeExports = new Highcharts.chart("container_crude_exports", {
       chart: {
         type: "column",
-        animation: true,
       },
 
       title: {
@@ -209,7 +208,7 @@ export const kevinCrudeExports = () => {
       },
 
       credits: {
-        enabled: false
+        enabled: false,
       },
 
       plotOptions: {
@@ -232,18 +231,10 @@ export const kevinCrudeExports = () => {
         },
       },
 
-      tooltip: {
-        animation: true,
-      },
-
       yAxis: {
         title: { text: "bbl/d" },
         stackLabels: {
           enabled: true,
-          style: {
-            fontWeight: "bold",
-            color: (Highcharts.theme && Highcharts.theme.textColor) || "gray",
-          },
         },
       },
 
@@ -251,13 +242,6 @@ export const kevinCrudeExports = () => {
         noData: "No Exports",
       },
 
-      noData: {
-        style: {
-          fontWeight: "bold",
-          fontSize: "15px",
-          color: "#303030",
-        },
-      },
       series: seriesData,
     });
 

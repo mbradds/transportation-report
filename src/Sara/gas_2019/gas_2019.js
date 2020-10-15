@@ -1,4 +1,4 @@
-import { cerPalette, prepareSeriesNonTidyUnits } from "../../modules/util.js";
+import { cerPalette, prepareSeriesNonTidyUnits,creditsClick } from "../../modules/util.js";
 import gas2019Data from "./gas_2019.json";
 
 export const sara2019 = () => {
@@ -24,17 +24,10 @@ export const sara2019 = () => {
     const chartGas2019 = new Highcharts.chart("container_gas_2019", {
       chart: {
         type: "column",
-        borderColor: "black",
         borderWidth: 1,
-        animation: true,
         events: {
           load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
+            creditsClick(this,"https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english")
           },
         },
       },
@@ -50,14 +43,7 @@ export const sara2019 = () => {
       plotOptions: {
         column: {
           stacking: "normal",
-          dataLabels: {
-            enabled: false,
-          },
         },
-      },
-
-      tooltip: {
-        animation: true,
       },
 
       yAxis: {

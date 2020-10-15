@@ -1,4 +1,4 @@
-import { cerPalette, prepareSeriesNonTidy } from "../../modules/util.js";
+import { cerPalette, prepareSeriesNonTidy,creditsClick } from "../../modules/util.js";
 
 import railData from "./crude_by_rail_wcs.json";
 
@@ -37,29 +37,17 @@ export const coletteCrudeByRail = () => {
     const chartRail = new Highcharts.chart("container_crude_by_rail", {
       chart: {
         type: "area", //line,bar,scatter,area,areaspline
-        zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-        borderColor: "black",
+        zoomType: "x", 
         borderWidth: 1,
-        animation: true,
         events: {
           load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://www.cer-rec.gc.ca/en/data-analysis/energy-commodities/crude-oil-petroleum-products/statistics/canadian-crude-oil-exports-rail-monthly-data.html",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
+            creditsClick(this,"https://www.cer-rec.gc.ca/en/data-analysis/energy-commodities/crude-oil-petroleum-products/statistics/canadian-crude-oil-exports-rail-monthly-data.html")
           },
         },
       },
 
       credits: {
-        //enabled:false //gets rid of the "Highcharts logo in the bottom right"
-        text: "Source: CER Crude by Rail Exports & Net Energy Group",
-      },
-
-      legend: {
-        enabled: true,
+        text: "Source: CER Crude by Rail Exports & ne2 Group",
       },
 
       title: { text: null },
@@ -72,6 +60,7 @@ export const coletteCrudeByRail = () => {
 
       xAxis: {
         type: "datetime",
+        crosshair: true,
         dateTimeLabelFormats: {
           day: "%e of %b",
         },
@@ -114,7 +103,7 @@ export const coletteCrudeByRail = () => {
     return chartRail;
   };
 
-  const chartRail = createRailChart(seriesData);
+  var chartRail = createRailChart(seriesData);
 
   var selectUnitsRail = document.getElementById("select_units_rail");
   selectUnitsRail.addEventListener("change", (selectUnitsRail) => {

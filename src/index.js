@@ -1,3 +1,44 @@
+const generalTheme = () => {
+  Highcharts.transportation = {
+    chart: {
+      borderColor: "black",
+      animation: true,
+    },
+    yAxis: {
+      stackLabels: {
+        style: {
+          fontWeight: "bold",
+          color: (Highcharts.theme && Highcharts.theme.textColor) || "gray",
+        },
+      },
+    },
+
+    noData: {
+      style: {
+        fontWeight: "bold",
+        fontSize: "15px",
+        color: "#303030",
+      },
+    },
+
+    title: {
+      style: {
+        color: "#000",
+        font: 'bold 16px "Trebuchet MS", Verdana, sans-serif',
+      },
+    },
+    legend: {
+      itemStyle: {
+        font: "12pt Arial",
+        color: "black",
+      },
+    },
+  };
+  Highcharts.setOptions(Highcharts.transportation);
+};
+
+generalTheme();
+
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
 import { kevinUsImports } from "./Kevin/us_imports/us_imports";

@@ -3,6 +3,7 @@ import json
 import os
 from connection import cer_connection
 from datetime import date
+from calendar import monthrange
 #TODO: add in the dataframe sorting before conversion to json
 #TODO: remove the minute/second date precision. This should improve performance. Use: df[date_col] = df[date_col].dt.date
 
@@ -302,15 +303,17 @@ def readExcel(name,sheet='pq',flatten=False):
         df['Attribute'] = [x.strip() for x in df['Attribute']]
         write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
     if name == 'natural-gas-liquids-exports-monthly.xlsx':
-        df['Period'] = pd.to_datetime(df['Period'])
+        df['Period'] = pd.to_datetime(df['Period'],errors='raise')
+        df['Days in Month'] = [monthrange(x.year,x.month)[-1] for x in df['Period']]
+        df['Region'] = df['Region'].replace({'Québec':'Quebec'})
         df = df[df['Period'].dt.year >= 2010]
         df = df[df['Units']=='bbl'].copy()
         for delete in ['Units','Total']:
             del df[delete]
         
         for col in ['Pipeline','Railway','Truck','Marine']:
-            df[col] = df[col].round(1)
-            
+            df[col] = ((df[col]/df['Days in Month'])/1000).round(1)
+        del df['Days in Month']
         write_path = os.path.join(os.getcwd(),'Ryan/ngl_exports/',name.split('.')[0]+'.json')
         df.to_json(write_path,orient='records',force_ascii=False)
         
@@ -648,7 +651,7 @@ def tolls(name):
 if __name__ == '__main__':
     
     #kevin
-    #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
+    df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
     #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = ne2_wcs_wti(query_ne2)
@@ -659,7 +662,7 @@ if __name__ == '__main__':
     
     #sara
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
-    df = readCersei(query_gas_2019,'gas_2019.json')
+    #df = readCersei(query_gas_2019,'gas_2019.json')
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')

@@ -1,4 +1,4 @@
-import { cerPalette, prepareSeriesNonTidyUnits } from "../../modules/util.js";
+import { cerPalette, prepareSeriesNonTidyUnits,creditsClick } from "../../modules/util.js";
 
 import crudeTakeawayData from "./fgrs-eng.json";
 
@@ -63,17 +63,10 @@ export const coletteCrudeTakeaway = () => {
     var chart = new Highcharts.chart("container_crude_takeaway", {
       chart: {
         zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-        borderColor: "black",
         borderWidth: 1,
-        animation: true,
         events: {
           load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
+            creditsClick(this,"https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html")
           },
         },
       },
@@ -83,23 +76,22 @@ export const coletteCrudeTakeaway = () => {
       },
 
       credits: {
-        //enabled:false //gets rid of the "Highcharts logo in the bottom right"
         text: "Source: Energy Futures",
+      },
+
+      tooltip: {
+        shared: true
       },
 
       plotOptions: {
         area: {
           stacking: "normal",
           marker: false,
-          dataLabels: {
-            enabled: false,
-          },
         },
       },
 
-      tooltip: {
-        animation: true,
-        //shared: true,
+      xAxis: {
+        crosshair: true,
       },
 
       yAxis: {
@@ -109,17 +101,6 @@ export const coletteCrudeTakeaway = () => {
         },
       },
 
-      lang: {
-        noData: "No Exports",
-      },
-
-      noData: {
-        style: {
-          fontWeight: "bold",
-          fontSize: "15px",
-          color: "#303030",
-        },
-      },
       series: seriesData,
     });
 
