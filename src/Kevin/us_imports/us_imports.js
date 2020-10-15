@@ -1,4 +1,8 @@
-import { cerPalette, prepareSeriesTidy } from "../../modules/util.js";
+import {
+  cerPalette,
+  prepareSeriesTidy,
+  creditsClick,
+} from "../../modules/util.js";
 
 import crudeImportsData from "./UScrudeoilimports.json";
 
@@ -38,17 +42,13 @@ export const kevinUsImports = () => {
     var chartCrudeImports = new Highcharts.chart("container_crude_imports", {
       chart: {
         zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-        borderColor: "black",
         borderWidth: 1,
-        animation: true,
         events: {
           load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
+            creditsClick(
+              this,
+              "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english"
+            );
           },
         },
       },
@@ -71,24 +71,11 @@ export const kevinUsImports = () => {
       },
 
       tooltip: {
-        animation: true,
         shared: true,
       },
 
       yAxis: {
         title: { text: "MMb/d" },
-      },
-
-      lang: {
-        noData: "No Exports",
-      },
-
-      noData: {
-        style: {
-          fontWeight: "bold",
-          fontSize: "15px",
-          color: "#303030",
-        },
       },
 
       series: seriesData,

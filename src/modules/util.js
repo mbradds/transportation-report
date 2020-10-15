@@ -1,4 +1,3 @@
-//TODO: add parameter into series creating methods that defines what "x" should be called. For column graphs it needs to be called "name"
 export const cerPalette = {
   "Night Sky": "#054169",
   Sun: "#FFBE4B",
@@ -246,4 +245,10 @@ export const prepareSeriesTidy = (
   });
 
   return seriesData;
+};
+
+export const creditsClick = (chart, link) => {
+  chart.credits.element.onclick = function () {
+    window.open(link, "_blank");
+  };
 };

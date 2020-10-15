@@ -3,6 +3,7 @@ import {
   getUnique,
   cerPalette,
   prepareSeriesTidy,
+  creditsClick
 } from "../../modules/util.js";
 
 import tollsData from "./tolls.json";
@@ -60,17 +61,10 @@ export const cassandraTolls = () => {
     const chart = new Highcharts.chart("container_tolls", {
       chart: {
         zoomType: "x",
-        borderColor: "black",
         borderWidth: 1,
-        animation: true,
         events: {
           load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://www.cer-rec.gc.ca/en/index.html",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
+            creditsClick(this,"https://www.cer-rec.gc.ca/en/index.html")
           },
         },
       },
@@ -83,32 +77,14 @@ export const cassandraTolls = () => {
         text: "Source: CER",
       },
 
-      tooltip: {
-        shared: false,
-      },
-
       xAxis: {
         type: "datetime",
       },
 
       yAxis: {
         title: { text: "Benchmark Toll" },
-        stackLabels: {
-          enabled: false,
-        },
       },
 
-      lang: {
-        noData: "No Exports",
-      },
-
-      noData: {
-        style: {
-          fontWeight: "bold",
-          fontSize: "15px",
-          color: "#303030",
-        },
-      },
       series: seriesData,
     });
 

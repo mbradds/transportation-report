@@ -1,4 +1,8 @@
-import { cerPalette, prepareSeriesNonTidy } from "../../modules/util.js";
+import {
+  cerPalette,
+  prepareSeriesNonTidy,
+  creditsClick,
+} from "../../modules/util.js";
 
 import crudePriceData from "./oil_prices.json";
 
@@ -35,17 +39,10 @@ export const kevinCrudePrices = () => {
     const chart = new Highcharts.chart("container_crude_prices", {
       chart: {
         zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-        borderColor: "black",
         borderWidth: 1,
-        animation: true,
         events: {
           load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://www.ne2group.com/",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
+            creditsClick(this, "https://www.ne2group.com/");
           },
         },
       },
@@ -55,7 +52,7 @@ export const kevinCrudePrices = () => {
       },
 
       credits: {
-        text: "Source: Net Energy Group",
+        text: "Source: ne2 Group",
       },
 
       plotOptions: {
@@ -69,11 +66,8 @@ export const kevinCrudePrices = () => {
       },
 
       tooltip: {
-        animation: true,
         shared: true,
       },
-
-      // title: { text: 'Canada Propane Exports' },
 
       xAxis: {
         type: "datetime",
@@ -83,18 +77,6 @@ export const kevinCrudePrices = () => {
         title: { text: "USD/bbl" },
         stackLabels: {
           enabled: false,
-        },
-      },
-
-      lang: {
-        noData: "No Exports",
-      },
-
-      noData: {
-        style: {
-          fontWeight: "bold",
-          fontSize: "15px",
-          color: "#303030",
         },
       },
       series: seriesData,

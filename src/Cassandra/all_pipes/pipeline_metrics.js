@@ -1,4 +1,4 @@
-import { getUnique, fillDropUpdate } from "../../modules/util.js";
+import { getUnique, fillDropUpdate,creditsClick } from "../../modules/util.js";
 
 import financialData from "./PipelineProfileTables.json";
 
@@ -77,25 +77,17 @@ export const cassandraAllPipes = () => {
   const createFinancialChart = (newData, yFormat, yLabel) => {
     const chart = new Highcharts.chart("container_financial_metrics", {
       chart: {
-        type: "line", //line,bar,scatter,area,areaspline
-        zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-        borderColor: "black",
+        type: "line", 
+        zoomType: "x", 
         borderWidth: 1,
-        animation: true,
         events: {
           load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://apps.cer-rec.gc.ca/REGDOCS/Home/Index",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
+            creditsClick(this,"https://apps.cer-rec.gc.ca/REGDOCS/Home/Index")
           },
         },
       },
 
       credits: {
-        //enabled:false //gets rid of the "Highcharts logo in the bottom right"
         text: "Source: CER REGDOCS",
       },
 
@@ -114,10 +106,6 @@ export const cassandraAllPipes = () => {
         },
       },
 
-      tooltip: {
-        animation: true,
-      },
-
       title: {
         text:
           financeFilters.Type + ": " + financeFilters.Category + " pipelines",
@@ -133,6 +121,10 @@ export const cassandraAllPipes = () => {
         "#8c8c96",
         "#42464B",
       ],
+
+      // xAxis: {
+      //   crosshair: true
+      // },
 
       yAxis: {
         title: {

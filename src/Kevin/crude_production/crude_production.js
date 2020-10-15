@@ -3,6 +3,7 @@ import {
   fillDropUpdate,
   prepareSeriesNonTidyUnits,
   getUnique,
+  creditsClick,
 } from "../../modules/util.js";
 
 import crudeProdData from "./Crude_Oil_Production.json";
@@ -18,7 +19,7 @@ export const kevinCrudeProduction = () => {
   };
 
   var crudeProdFilters = { Region: "Canada" };
-  var units = "1000 bbl/day";
+  var units = "Mb/d";
   const crudeProdColumns = [
     "Conventional Light",
     "Conventional Heavy",
@@ -47,26 +48,21 @@ export const kevinCrudeProduction = () => {
     crudeProdColors
   );
 
-  const createCrudeProdChart = (seriesData) => {
-    var chart = new Highcharts.chart("container_crude_production", {
+  const createCrudeProdChart = (seriesData,units) => {
+    const chart = new Highcharts.chart("container_crude_production", {
       chart: {
-        type: "column", //line,bar,scatter,area,areaspline
-        zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-        borderColor: "black",
+        type: "column",
+        zoomType: "x",
         borderWidth: 1,
-        animation: true,
         events: {
           load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
+            creditsClick(
+              this,
+              "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html"
+            );
           },
         },
       },
-
       title: {
         text: null,
       },
@@ -89,36 +85,22 @@ export const kevinCrudeProduction = () => {
       },
 
       yAxis: {
-        title: { text: "1000 bbl/day" },
+        title: { text: units },
         stackLabels: {
           enabled: true,
-          style: {
-            fontWeight: "bold",
-            color: (Highcharts.theme && Highcharts.theme.textColor) || "gray",
-          },
         },
       },
 
       lang: {
         noData: "No Exports",
       },
-
-      noData: {
-        style: {
-          fontWeight: "bold",
-          fontSize: "15px",
-          color: "#303030",
-        },
-      },
       series: seriesData,
     });
-
     return chart;
   };
 
-  var chartCrude = createCrudeProdChart(seriesData);
+  var chartCrude = createCrudeProdChart(seriesData,units);
 
-  //recreate the chart when the region changes
   var selectRegionCrudeProd = document.getElementById(
     "select_region_crude_prod"
   );
@@ -129,14 +111,14 @@ export const kevinCrudeProduction = () => {
       crudeProdData,
       crudeProdFilters,
       units,
-      "1000 bbl/day",
+      "Mb/d",
       6.2898,
       "/",
       crudeProdColumns,
       "Year",
       crudeProdColors
     );
-    chartCrude = createCrudeProdChart(seriesData);
+    chartCrude = createCrudeProdChart(seriesData,units);
   });
 
   //update existing chart when the units change
@@ -147,7 +129,7 @@ export const kevinCrudeProduction = () => {
       crudeProdData,
       crudeProdFilters,
       units,
-      "1000 bbl/day",
+      "Mb/d",
       6.2898,
       "/",
       crudeProdColumns,

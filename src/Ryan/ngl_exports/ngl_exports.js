@@ -1,14 +1,15 @@
 import {
   cerPalette,
-  fillDrop,
   fillDropUpdate,
   getUnique,
   prepareSeriesNonTidyUnits,
+  creditsClick
 } from "../../modules/util.js";
 
 import nglData from "./natural-gas-liquids-exports-monthly.json";
 
 export const ryanNglExports = () => {
+  const nglUnits = { Units: "Mb/d" };
   const nglFilters = {
     Product: "Propane",
     Region: "Canada",
@@ -23,10 +24,10 @@ export const ryanNglExports = () => {
   var seriesData = prepareSeriesNonTidyUnits(
     nglData,
     nglFilters,
-    "bbl",
-    "bbl",
-    6.2898,
-    "/",
+    nglUnits.Units,
+    "Mb/d",
+    159,
+    "*",
     ["Pipeline", "Railway", "Truck", "Marine"],
     "Period",
     nglColors
@@ -37,24 +38,16 @@ export const ryanNglExports = () => {
     false,
     "Canada"
   );
-  //fillDrop("Region", "select_region_ngl", "Canada", nglData);
 
-  const createNglChart = (seriesData, nglFilters) => {
+  const createNglChart = (seriesData, nglFilters, nglUnits) => {
     const chart = new Highcharts.chart("container_ngl", {
       chart: {
-        type: "line", //line,bar,scatter,area,areaspline
-        zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-        borderColor: "black",
+        type: "line",
+        zoomType: "x", 
         borderWidth: 1,
-        animation: true,
         events: {
           load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
+            creditsClick(this,"https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english")
           },
         },
       },
@@ -65,7 +58,6 @@ export const ryanNglExports = () => {
 
       plotOptions: {
         series: {
-          //stickyTracking: false,
           connectNulls: false,
           states: {
             inactive: {
@@ -79,7 +71,6 @@ export const ryanNglExports = () => {
       },
 
       tooltip: {
-        animation: true,
         shared: true,
       },
 
@@ -90,29 +81,24 @@ export const ryanNglExports = () => {
         dateTimeLabelFormats: {
           day: "%e of %,b",
         },
+        crosshair: true,
       },
 
       yAxis: {
-        title: { text: "bbl" },
+        title: { text: nglUnits.Units },
       },
 
       lang: {
         noData: "No Exports",
       },
-      noData: {
-        style: {
-          fontWeight: "bold",
-          fontSize: "15px",
-          color: "#303030",
-        },
-      },
+
       series: seriesData,
     });
 
     return chart;
   };
 
-  var nglChart = createNglChart(seriesData, nglFilters);
+  var nglChart = createNglChart(seriesData, nglFilters, nglUnits);
 
   var selectProductNgl = document.getElementById("select_product_ngl");
   selectProductNgl.addEventListener("change", (selectProductNgl) => {
@@ -121,16 +107,16 @@ export const ryanNglExports = () => {
     var seriesData = prepareSeriesNonTidyUnits(
       nglData,
       nglFilters,
-      "bbl",
-      "bbl",
-      6.2898,
-      "/",
+      nglUnits.Units,
+      "Mb/d",
+      159,
+      "*",
       ["Pipeline", "Railway", "Truck", "Marine"],
       "Period",
       nglColors
     );
 
-    nglChart = createNglChart(seriesData, nglFilters);
+    nglChart = createNglChart(seriesData, nglFilters, nglUnits);
   });
 
   var selectRegionNgl = document.getElementById("select_region_ngl");
@@ -140,28 +126,29 @@ export const ryanNglExports = () => {
     var seriesData = prepareSeriesNonTidyUnits(
       nglData,
       nglFilters,
-      "bbl",
-      "bbl",
-      6.2898,
-      "/",
+      nglUnits.Units,
+      "Mb/d",
+      159,
+      "*",
       ["Pipeline", "Railway", "Truck", "Marine"],
       "Period",
       nglColors
     );
 
-    nglChart = createNglChart(seriesData, nglFilters);
+    nglChart = createNglChart(seriesData, nglFilters, nglUnits);
   });
 
   var selectUnitsNgl = document.getElementById("select_units_ngl");
   selectUnitsNgl.addEventListener("change", (selectUnitsNgl) => {
     var units = selectUnitsNgl.target.value;
+    nglUnits.Units = units;
     var seriesData = prepareSeriesNonTidyUnits(
       nglData,
       nglFilters,
-      units,
-      "bbl",
-      6.2898,
-      "/",
+      nglUnits.Units,
+      "Mb/d",
+      159,
+      "*",
       ["Pipeline", "Railway", "Truck", "Marine"],
       "Period",
       nglColors
