@@ -32,6 +32,7 @@ export const kevinUsImports = () => {
     prepareSeriesTidy(
       crudeImportsData,
       crudeImportsFilters,
+      false,
       "Attribute",
       "Year",
       "Value",
@@ -98,6 +99,7 @@ export const kevinUsImports = () => {
         prepareSeriesTidy(
           crudeImportsData,
           crudeImportsFilters,
+          false,
           "Attribute",
           "Year",
           "Value",

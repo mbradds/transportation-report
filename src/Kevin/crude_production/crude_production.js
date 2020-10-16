@@ -1,9 +1,10 @@
 import {
   cerPalette,
   fillDropUpdate,
-  prepareSeriesNonTidyUnits,
+  prepareSeriesNonTidy,
   getUnique,
   creditsClick,
+  conversions,
 } from "../../modules/util.js";
 
 import crudeProdData from "./Crude_Oil_Production.json";
@@ -19,7 +20,9 @@ export const kevinCrudeProduction = () => {
   };
 
   var crudeProdFilters = { Region: "Canada" };
-  var units = "Mb/d";
+
+  var units = conversions("Mb/d to m3/d",'Mb/d','Mb/d');
+
   const crudeProdColumns = [
     "Conventional Light",
     "Conventional Heavy",
@@ -36,19 +39,16 @@ export const kevinCrudeProduction = () => {
     "Canada"
   );
 
-  var seriesData = prepareSeriesNonTidyUnits(
+  var seriesData = prepareSeriesNonTidy(
     crudeProdData,
     crudeProdFilters,
     units,
-    units,
-    6.2898,
-    "/",
     crudeProdColumns,
     "Year",
     crudeProdColors
   );
 
-  const createCrudeProdChart = (seriesData,units) => {
+  const createCrudeProdChart = (seriesData, units) => {
     const chart = new Highcharts.chart("container_crude_production", {
       chart: {
         type: "column",
@@ -85,7 +85,7 @@ export const kevinCrudeProduction = () => {
       },
 
       yAxis: {
-        title: { text: units },
+        title: { text: units.unitsCurrent },
         stackLabels: {
           enabled: true,
         },
@@ -99,39 +99,32 @@ export const kevinCrudeProduction = () => {
     return chart;
   };
 
-  var chartCrude = createCrudeProdChart(seriesData,units);
+  var chartCrude = createCrudeProdChart(seriesData, units);
 
   var selectRegionCrudeProd = document.getElementById(
     "select_region_crude_prod"
   );
   selectRegionCrudeProd.addEventListener("change", (selectRegionCrudeProd) => {
-    var region = selectRegionCrudeProd.target.value;
-    crudeProdFilters["Region"] = region;
+    crudeProdFilters["Region"] = selectRegionCrudeProd.target.value;
     var seriesData = prepareSeriesNonTidyUnits(
       crudeProdData,
       crudeProdFilters,
       units,
-      "Mb/d",
-      6.2898,
-      "/",
       crudeProdColumns,
       "Year",
       crudeProdColors
     );
-    chartCrude = createCrudeProdChart(seriesData,units);
+    chartCrude = createCrudeProdChart(seriesData, units);
   });
 
   //update existing chart when the units change
   var selectUnitsCrudeProd = document.getElementById("select_units_crude_prod");
   selectUnitsCrudeProd.addEventListener("change", (selectUnitsCrudeProd) => {
-    var units = selectUnitsCrudeProd.target.value;
-    var seriesData = prepareSeriesNonTidyUnits(
+    units.unitsCurrent = selectUnitsCrudeProd.target.value;
+    var seriesData = prepareSeriesNonTidy(
       crudeProdData,
       crudeProdFilters,
       units,
-      "Mb/d",
-      6.2898,
-      "/",
       crudeProdColumns,
       "Year",
       crudeProdColors
@@ -140,7 +133,7 @@ export const kevinCrudeProduction = () => {
     chartCrude.update({
       series: seriesData,
       yAxis: {
-        title: { text: units },
+        title: { text: units.unitsCurrent },
       },
     });
   });
