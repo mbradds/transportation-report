@@ -5,7 +5,6 @@ from connection import cer_connection
 from datetime import date
 from calendar import monthrange
 #TODO: add in the dataframe sorting before conversion to json
-#TODO: remove the minute/second date precision. This should improve performance. Use: df[date_col] = df[date_col].dt.date
 
 query_gas_traffic = "select [Date], \
 [Alliance Pipeline Limited Partnership - Alliance Pipeline - Border], \
@@ -232,6 +231,12 @@ def normalize_text(df,text_list):
         df[text_col] = [x.strip() for x in df[text_col]]
     return df
 
+def normalize_numeric(df,num_list,decimals):
+    for num_col in num_list:
+        df[num_col] = pd.to_numeric(df[num_col])
+        df[num_col] = df[num_col].round(decimals)
+    return df
+
 def readCersei(query,name=None):
     conn,engine = cer_connection()
     df = pd.read_sql_query(query,con=conn)
@@ -261,34 +266,11 @@ def readCersei(query,name=None):
     conn.close()
     return df
 
-
 def readCsv(name):
     read_path = os.path.join(os.getcwd(),'Data/',name)
     df = pd.read_csv(read_path)
     df['Period'] = pd.to_datetime(df['Period'])
     df.to_json(name.split('.')[0]+'.json',orient='records')
-    return df
-
-def jsTest(name,sheet='pq',flatten=False):
-    read_path = os.path.join(os.getcwd(),'Data/',name)
-    df = pd.read_excel(read_path,sheet_name=sheet)
-    
-    if name == 'natural-gas-liquids-exports-monthly.xlsx':
-        df['Period'] = pd.to_datetime(df['Period'])
-        write_path = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'.json')
-        df_bbl = df[df['Units']=='bbl'].copy()
-        write_path_bbl = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'_bbl.json')
-        df_bbl.to_json(write_path_bbl,orient='records',force_ascii=False)
-        
-        if flatten:
-            df = pd.melt(df,id_vars=['Period','Product','Region','Units'])
-            write_path = os.path.join(os.getcwd(),'JavaScript Tests/series_creation/',name.split('.')[0]+'_flat.json')
-            df = df[df['value'].notnull()]
-            df = df[df['variable']!='Total']
-            df.to_json(write_path,orient='records',force_ascii=False)
-    
-    df = df.astype(object).where(pd.notnull(df), None)
-    df.to_json(write_path,orient='records',force_ascii=False)
     return df
 
 def readExcel(name,sheet='pq',flatten=False):
@@ -297,6 +279,7 @@ def readExcel(name,sheet='pq',flatten=False):
     
     if name == 'Crude_Oil_Production.xlsx':
         df['Year'] = pd.to_numeric(df['Year'])
+        df = normalize_numeric(df, ['Conventional Light','Conventional Heavy','C5+','Field Condensate','Mined Bitumen','In Situ Bitumen'], 1)
         #df['Value'] = pd.to_numeric(df['Value'])
         write_path = os.path.join(os.getcwd(),'Kevin/crude_production/',name.split('.')[0]+'.json')
     if name == 'UScrudeoilimports.xlsx':
@@ -326,6 +309,9 @@ def readExcel(name,sheet='pq',flatten=False):
     
     if name == 'crude-oil-exports-by-destination-annual.xlsx':
         df = df[df['PADD'] != 'Total']
+        df = df[df['Unit']!='m3/d']
+        df['Value'] = (df['Value']/1000).round(1)
+        df['Unit'] = df['Unit'].replace({'bbl/d':'Mb/d'})
         write_path = os.path.join(os.getcwd(),'Kevin/crude_exports/',name.split('.')[0]+'.json')
     
     if name == 'UScrudeoilimports.xlsx':
@@ -334,7 +320,6 @@ def readExcel(name,sheet='pq',flatten=False):
     
     if name == 'fgrs-eng.xlsx':
         write_path = os.path.join(os.getcwd(),'Colette/crude_takeaway/',name.split('.')[0]+'.json')
-        
         
     #df = df.astype(object).where(pd.notnull(df), None)
     df.to_json(write_path,orient='records',force_ascii=False)
@@ -651,8 +636,8 @@ def tolls(name):
 if __name__ == '__main__':
     
     #kevin
-    df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
-    #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
+    #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
+    df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = ne2_wcs_wti(query_ne2)
     

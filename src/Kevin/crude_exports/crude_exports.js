@@ -1,8 +1,9 @@
 import {
   cerPalette,
   fillDropUpdate,
-  getUnique,
   prepareSeriesTidy,
+  prepareSeriesTidyUnits,
+  creditsClick,
 } from "../../modules/util.js";
 
 import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
@@ -17,18 +18,22 @@ export const kevinCrudeExports = () => {
     Other: cerPalette["Flame"],
   };
 
-  var crudeExportFilters = { Unit: "bbl/d" };
+  // var crudeExportFilters = { Unit: "Mb/d" };
 
   fillDropUpdate(
     "select_units_crude_exports",
-    getUnique(crudeExportsData, "Unit"),
+    ['Mb/d','m3/d'],
     false,
-    "bbl/d"
+    "Mb/d"
   );
 
-  var seriesData = prepareSeriesTidy(
+  var seriesData = prepareSeriesTidyUnits(
     crudeExportsData,
-    crudeExportFilters,
+    false,
+    'Mb/d',
+    'Mb/d',
+    159,
+    '*',
     "PADD",
     "Year",
     "Value",
@@ -58,12 +63,10 @@ export const kevinCrudeExports = () => {
         map: "countries/us/custom/us-all-mainland",
         events: {
           load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
+            creditsClick(
+              this,
+              "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english"
+            );
           },
         },
       },
@@ -258,10 +261,13 @@ export const kevinCrudeExports = () => {
     "change",
     (selectUnitsCrudeExports) => {
       var units = selectUnitsCrudeExports.target.value;
-      crudeExportFilters["Unit"] = units;
-      var seriesData = prepareSeriesTidy(
+      var seriesData = prepareSeriesTidyUnits(
         crudeExportsData,
-        crudeExportFilters,
+        false,
+        units,
+        'Mb/d',
+        159,
+        '*',
         "PADD",
         "Year",
         "Value",
