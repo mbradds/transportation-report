@@ -1,4 +1,9 @@
-import { cerPalette, prepareSeriesNonTidyUnits,creditsClick } from "../../modules/util.js";
+import {
+  cerPalette,
+  prepareSeriesNonTidy,
+  creditsClick,
+  conversions,
+} from "../../modules/util.js";
 
 import crudeTakeawayData from "./fgrs-eng.json";
 
@@ -13,7 +18,6 @@ export const coletteCrudeTakeaway = () => {
         data.zIndex = 0;
       }
     });
-
     return series;
   };
 
@@ -32,14 +36,13 @@ export const coletteCrudeTakeaway = () => {
     "Variable Rail": cerPalette["Ocean"],
   };
 
+  var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
+
   const seriesData = crudeTakeawayChartTypes(
-    prepareSeriesNonTidyUnits(
+    prepareSeriesNonTidy(
       crudeTakeawayData,
       false,
-      "MMb/d",
-      "MMb/d",
-      0.0062898,
-      "/",
+      units,
       [
         "Total Supply Available for Export",
         "Express",
@@ -66,7 +69,10 @@ export const coletteCrudeTakeaway = () => {
         borderWidth: 1,
         events: {
           load: function () {
-            creditsClick(this,"https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html")
+            creditsClick(
+              this,
+              "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html"
+            );
           },
         },
       },
@@ -80,7 +86,7 @@ export const coletteCrudeTakeaway = () => {
       },
 
       tooltip: {
-        shared: true
+        shared: true,
       },
 
       plotOptions: {
@@ -115,15 +121,12 @@ export const coletteCrudeTakeaway = () => {
   selectUnitsCrudeTakeaway.addEventListener(
     "change",
     (selectUnitsCrudeTakeaway) => {
-      var units = selectUnitsCrudeTakeaway.target.value;
+      units.unitsCurrent = selectUnitsCrudeTakeaway.target.value;
       var seriesData = crudeTakeawayChartTypes(
-        prepareSeriesNonTidyUnits(
+        prepareSeriesNonTidy(
           crudeTakeawayData,
           false,
           units,
-          "MMb/d",
-          0.0062898,
-          "/",
           [
             "Total Supply Available for Export",
             "Express",
@@ -146,7 +149,7 @@ export const coletteCrudeTakeaway = () => {
       crudeTakeawayChart.update({
         series: seriesData,
         yAxis: {
-          title: { text: units },
+          title: { text: units.unitsCurrent },
         },
       });
     }

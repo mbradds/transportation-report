@@ -1,4 +1,9 @@
-import { cerPalette, prepareSeriesNonTidyUnits,creditsClick } from "../../modules/util.js";
+import {
+  cerPalette,
+  prepareSeriesNonTidy,
+  creditsClick,
+  conversions,
+} from "../../modules/util.js";
 
 import gasData from "./gas_traffic.json";
 
@@ -27,14 +32,13 @@ export const saraGasTraffic = () => {
     Capacity: cerPalette["Cool Grey"],
   };
 
+  var units = conversions("Bcf/d to Mm3/d", "Bcf/d", "Mm3/d");
+
   const seriesData = gasTrafficChartTypes(
-    prepareSeriesNonTidyUnits(
+    prepareSeriesNonTidy(
       gasData,
       false,
-      "BCf/d",
-      "1000 m3/d",
-      0.0000353,
-      "*",
+      units,
       [
         "Alliance Pipeline Limited Partnership - Alliance Pipeline - Border",
         "Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate",
@@ -54,7 +58,10 @@ export const saraGasTraffic = () => {
         borderWidth: 1,
         events: {
           load: function () {
-            creditsClick(this,"https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34")
+            creditsClick(
+              this,
+              "https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34"
+            );
           },
         },
       },
@@ -106,15 +113,12 @@ export const saraGasTraffic = () => {
     "select_units_gas_traffic"
   );
   selectUnitsGasTraffic.addEventListener("change", (selectUnitsGasTraffic) => {
-    var units = selectUnitsGasTraffic.target.value;
+    units.unitsCurrent = selectUnitsGasTraffic.target.value;
     const seriesData = gasTrafficChartTypes(
-      prepareSeriesNonTidyUnits(
+      prepareSeriesNonTidy(
         gasData,
         false,
         units,
-        "1000 m3/d",
-        0.0000353,
-        "*",
         [
           "Alliance Pipeline Limited Partnership - Alliance Pipeline - Border",
           "Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate",
@@ -130,7 +134,7 @@ export const saraGasTraffic = () => {
     chartGasTraffic.update({
       series: seriesData,
       yAxis: {
-        title: { text: units },
+        title: { text: units.unitsCurrent },
       },
     });
   });
