@@ -1,10 +1,8 @@
 const path = require("path");
 
 module.exports = {
-    mode: "production",
-  entry: {
-    app: "./src/index.js",
-  },
+  mode: "production",
+  entry: ["core-js/stable", "regenerator-runtime/runtime", "./src/index.js"],
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
@@ -14,7 +12,9 @@ module.exports = {
       {
         test: /\.(js)$/,
         exclude: /node_modules/,
-        use: ["babel-loader"],
+        use: {
+          loader: "babel-loader",
+        },
       },
     ],
   },
