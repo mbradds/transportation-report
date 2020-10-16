@@ -1,4 +1,8 @@
-import { cerPalette, prepareSeriesNonTidy,creditsClick } from "../../modules/util.js";
+import {
+  cerPalette,
+  prepareSeriesNonTidy,
+  creditsClick,
+} from "../../modules/util.js";
 
 import railData from "./crude_by_rail_wcs.json";
 
@@ -27,6 +31,7 @@ export const coletteCrudeByRail = () => {
     prepareSeriesNonTidy(
       railData,
       railFilters,
+      false,
       ["Crude by Rail", "WCS-WTI Differential"],
       "Date",
       railColors
@@ -37,11 +42,14 @@ export const coletteCrudeByRail = () => {
     const chartRail = new Highcharts.chart("container_crude_by_rail", {
       chart: {
         type: "area", //line,bar,scatter,area,areaspline
-        zoomType: "x", 
+        zoomType: "x",
         borderWidth: 1,
         events: {
           load: function () {
-            creditsClick(this,"https://www.cer-rec.gc.ca/en/data-analysis/energy-commodities/crude-oil-petroleum-products/statistics/canadian-crude-oil-exports-rail-monthly-data.html")
+            creditsClick(
+              this,
+              "https://www.cer-rec.gc.ca/en/data-analysis/energy-commodities/crude-oil-petroleum-products/statistics/canadian-crude-oil-exports-rail-monthly-data.html"
+            );
           },
         },
       },
@@ -107,12 +115,12 @@ export const coletteCrudeByRail = () => {
 
   var selectUnitsRail = document.getElementById("select_units_rail");
   selectUnitsRail.addEventListener("change", (selectUnitsRail) => {
-    var units = selectUnitsRail.target.value;
-    railFilters["Units"] = units;
+    railFilters.Units = selectUnitsRail.target.value;
     const seriesData = railChartTypes(
       prepareSeriesNonTidy(
         railData,
         railFilters,
+        false,
         ["Crude by Rail", "WCS-WTI Differential"],
         "Date",
         railColors
@@ -121,7 +129,7 @@ export const coletteCrudeByRail = () => {
     chartRail.update({
       series: seriesData,
       yAxis: {
-        title: { text: "Rail Exports - " + units },
+        title: { text: `Rail Exports - ${railFilters.Units}` },
       },
     });
   });

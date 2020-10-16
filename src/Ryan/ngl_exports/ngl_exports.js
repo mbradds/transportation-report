@@ -2,14 +2,15 @@ import {
   cerPalette,
   fillDropUpdate,
   getUnique,
-  prepareSeriesNonTidyUnits,
-  creditsClick
+  prepareSeriesNonTidy,
+  creditsClick,
+  conversions,
 } from "../../modules/util.js";
 
 import nglData from "./natural-gas-liquids-exports-monthly.json";
 
 export const ryanNglExports = () => {
-  const nglUnits = { Units: "Mb/d" };
+  var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
   const nglFilters = {
     Product: "Propane",
     Region: "Canada",
@@ -21,13 +22,10 @@ export const ryanNglExports = () => {
     Marine: cerPalette["Ocean"],
   };
 
-  var seriesData = prepareSeriesNonTidyUnits(
+  var seriesData = prepareSeriesNonTidy(
     nglData,
     nglFilters,
-    nglUnits.Units,
-    "Mb/d",
-    159,
-    "*",
+    units,
     ["Pipeline", "Railway", "Truck", "Marine"],
     "Period",
     nglColors
@@ -43,11 +41,14 @@ export const ryanNglExports = () => {
     const chart = new Highcharts.chart("container_ngl", {
       chart: {
         type: "line",
-        zoomType: "x", 
+        zoomType: "x",
         borderWidth: 1,
         events: {
           load: function () {
-            creditsClick(this,"https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english")
+            creditsClick(
+              this,
+              "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english"
+            );
           },
         },
       },
@@ -85,7 +86,7 @@ export const ryanNglExports = () => {
       },
 
       yAxis: {
-        title: { text: nglUnits.Units },
+        title: { text: nglUnits.unitsCurrent },
       },
 
       lang: {
@@ -98,57 +99,45 @@ export const ryanNglExports = () => {
     return chart;
   };
 
-  var nglChart = createNglChart(seriesData, nglFilters, nglUnits);
+  var nglChart = createNglChart(seriesData, nglFilters, units);
 
   var selectProductNgl = document.getElementById("select_product_ngl");
   selectProductNgl.addEventListener("change", (selectProductNgl) => {
     var product = selectProductNgl.target.value;
     nglFilters.Product = product;
-    var seriesData = prepareSeriesNonTidyUnits(
+    var seriesData = prepareSeriesNonTidy(
       nglData,
       nglFilters,
-      nglUnits.Units,
-      "Mb/d",
-      159,
-      "*",
+      units,
       ["Pipeline", "Railway", "Truck", "Marine"],
       "Period",
       nglColors
     );
-
-    nglChart = createNglChart(seriesData, nglFilters, nglUnits);
+    nglChart = createNglChart(seriesData, nglFilters, units);
   });
 
   var selectRegionNgl = document.getElementById("select_region_ngl");
   selectRegionNgl.addEventListener("change", (selectRegionNgl) => {
     var region = selectRegionNgl.target.value;
     nglFilters.Region = region;
-    var seriesData = prepareSeriesNonTidyUnits(
+    var seriesData = prepareSeriesNonTidy(
       nglData,
       nglFilters,
-      nglUnits.Units,
-      "Mb/d",
-      159,
-      "*",
+      units,
       ["Pipeline", "Railway", "Truck", "Marine"],
       "Period",
       nglColors
     );
-
-    nglChart = createNglChart(seriesData, nglFilters, nglUnits);
+    nglChart = createNglChart(seriesData, nglFilters, units);
   });
 
   var selectUnitsNgl = document.getElementById("select_units_ngl");
   selectUnitsNgl.addEventListener("change", (selectUnitsNgl) => {
-    var units = selectUnitsNgl.target.value;
-    nglUnits.Units = units;
-    var seriesData = prepareSeriesNonTidyUnits(
+    units.unitsCurrent = selectUnitsNgl.target.value;
+    var seriesData = prepareSeriesNonTidy(
       nglData,
       nglFilters,
-      nglUnits.Units,
-      "Mb/d",
-      159,
-      "*",
+      units,
       ["Pipeline", "Railway", "Truck", "Marine"],
       "Period",
       nglColors
@@ -157,7 +146,7 @@ export const ryanNglExports = () => {
     nglChart.update({
       series: seriesData,
       yAxis: {
-        title: { text: units },
+        title: { text: units.unitsCurrent },
       },
     });
   });
