@@ -637,7 +637,7 @@ if __name__ == '__main__':
     
     #kevin
     #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
-    df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
+    #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = ne2_wcs_wti(query_ne2)
     
@@ -646,7 +646,7 @@ if __name__ == '__main__':
     #df = readExcel('fgrs-eng.xlsx',sheet='pq')
     
     #sara
-    #df = readCersei(query_gas_traffic,'gas_traffic.json')
+    df = readCersei(query_gas_traffic,'gas_traffic.json')
     #df = readCersei(query_gas_2019,'gas_2019.json')
     
     #cassandra

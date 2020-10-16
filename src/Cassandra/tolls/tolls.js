@@ -50,6 +50,7 @@ export const cassandraTolls = () => {
     prepareSeriesTidy(
       tollsData,
       tollFilters,
+      false,
       "Pipeline",
       "Start",
       "Rate Normalized",
@@ -101,6 +102,7 @@ export const cassandraTolls = () => {
       prepareSeriesTidy(
         tollsData,
         tollFilters,
+        false,
         "Pipeline",
         "Start",
         "Rate Normalized",

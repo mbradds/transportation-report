@@ -2,8 +2,8 @@ import {
   cerPalette,
   fillDropUpdate,
   prepareSeriesTidy,
-  prepareSeriesTidyUnits,
   creditsClick,
+  conversions,
 } from "../../modules/util.js";
 
 import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
@@ -18,22 +18,14 @@ export const kevinCrudeExports = () => {
     Other: cerPalette["Flame"],
   };
 
-  // var crudeExportFilters = { Unit: "Mb/d" };
+  fillDropUpdate("select_units_crude_exports", ["Mb/d", "m3/d"], false, "Mb/d");
 
-  fillDropUpdate(
-    "select_units_crude_exports",
-    ['Mb/d','m3/d'],
-    false,
-    "Mb/d"
-  );
+  var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
 
-  var seriesData = prepareSeriesTidyUnits(
+  var seriesData = prepareSeriesTidy(
     crudeExportsData,
     false,
-    'Mb/d',
-    'Mb/d',
-    159,
-    '*',
+    units,
     "PADD",
     "Year",
     "Value",
@@ -260,14 +252,11 @@ export const kevinCrudeExports = () => {
   selectUnitsCrudeExports.addEventListener(
     "change",
     (selectUnitsCrudeExports) => {
-      var units = selectUnitsCrudeExports.target.value;
-      var seriesData = prepareSeriesTidyUnits(
+      units.unitsCurrent = selectUnitsCrudeExports.target.value;
+      var seriesData = prepareSeriesTidy(
         crudeExportsData,
         false,
         units,
-        'Mb/d',
-        159,
-        '*',
         "PADD",
         "Year",
         "Value",
@@ -277,7 +266,7 @@ export const kevinCrudeExports = () => {
       chartCrudeExports.update({
         series: seriesData,
         yAxis: {
-          title: { text: units },
+          title: { text: units.unitsCurrent },
         },
       });
     }

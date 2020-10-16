@@ -10,10 +10,19 @@ export const cerPalette = {
   White: "#FFFFFF",
 };
 
-export const conversions = {
-  "m3/d to b/d": { number: 6.2898, type: "*" },
-  "b/d to m3/d": { number: 0.159, type: "*" },
-  "Mb/d to m3/d": { number: 159, type: "*" },
+export const conversions = (conv, current, base) => {
+  var cerConversions = {
+    "m3/d to b/d": { conversion: 6.2898, type: "*" },
+    "b/d to m3/d": { conversion: 0.159, type: "*" },
+    "Mb/d to m3/d": { conversion: 159, type: "*" },
+    "MMb/d to Mm3/d": { conversion: 0.0062898, type: "/" },
+    "Bcf/d to Mm3/d": { conversion: 0.0000353, type: "*" },
+  };
+
+  var units = cerConversions[conv];
+  units.unitsCurrent = current;
+  units.unitsBase = base;
+  return units;
 };
 
 export const fillDropUpdate = (
@@ -76,26 +85,31 @@ export const filterData = (data, filters) => {
   return data;
 };
 
-const y = (row, col, convType = false, conversion = false, decimals = 1) => {
-  if (!convType && !conversion) {
-    return row[col];
+const y = (row, col, units, decimals = 1) => {
+  if (row[col] == null) {
+    return null;
   } else {
-    return convType === "*"
-      ? +(row[col] * conversion).toFixed(decimals)
-      : +(row[col] / conversion).toFixed(decimals);
+    if (!units || units.unitsCurrent == units.unitsBase) {
+      return row[col];
+    } else {
+      if (units.type == "*") {
+        return +(row[col] * units.conversion).toFixed(decimals);
+      } else {
+        return +(row[col] / units.conversion).toFixed(decimals);
+      }
+    }
   }
 };
 
 const tidyOperation = (
   dataRaw,
   filters,
+  units,
   variableCol,
   xCol,
   yCol,
   colors,
-  xName,
-  conversion = false,
-  convType = false
+  xName
 ) => {
   const dataFiltered = filterData(dataRaw, filters);
   const variableColumn = getUnique(dataFiltered, variableCol);
@@ -106,7 +120,7 @@ const tidyOperation = (
     variableSeries.map((r, i) => {
       const hcRow = {
         [xName]: r[xCol],
-        y: y(r, yCol, convType, conversion),
+        y: y(r, yCol, units),
       };
       hcData.push(hcRow);
     });
@@ -124,12 +138,11 @@ const tidyOperation = (
 const nonTidyOperation = (
   dataRaw,
   filters,
+  units,
   valueVars,
   xCol,
   colors,
-  xName,
-  conversion = false,
-  convType = false
+  xName
 ) => {
   const seriesData = {};
   const colTotals = {};
@@ -144,7 +157,7 @@ const nonTidyOperation = (
     valueVars.map((col, colNum) => {
       seriesData[col].push({
         [xName]: row[xCol],
-        y: y(row, col, convType, conversion),
+        y: y(row, col, units),
       });
       colTotals[col] = colTotals[col] + row[col];
     });
@@ -168,45 +181,27 @@ const nonTidyOperation = (
 export const prepareSeriesNonTidy = (
   dataRaw,
   filters,
-  valueVars,
-  xCol,
-  colors,
-  xName = "x" //can be changed to "name" when the x data is non numeric
-) => {
-  return nonTidyOperation(dataRaw, filters, valueVars, xCol, colors, xName);
-};
-
-export const prepareSeriesNonTidyUnits = (
-  dataRaw,
-  filters,
-  unitsCurrent,
-  baseUnits,
-  conversion,
-  convType,
+  units,
   valueVars,
   xCol,
   colors,
   xName = "x"
 ) => {
-  if (unitsCurrent == baseUnits) {
-    return nonTidyOperation(dataRaw, filters, valueVars, xCol, colors, xName);
-  } else {
-    return nonTidyOperation(
-      dataRaw,
-      filters,
-      valueVars,
-      xCol,
-      colors,
-      xName,
-      conversion,
-      convType
-    );
-  }
+  return nonTidyOperation(
+    dataRaw,
+    filters,
+    units,
+    valueVars,
+    xCol,
+    colors,
+    xName
+  );
 };
 
 export const prepareSeriesTidy = (
   dataRaw,
   filters,
+  units,
   variableCol,
   xCol,
   yCol,
@@ -216,50 +211,13 @@ export const prepareSeriesTidy = (
   return tidyOperation(
     dataRaw,
     filters,
+    units,
     variableCol,
     xCol,
     yCol,
     colors,
     xName
   );
-};
-
-export const prepareSeriesTidyUnits = (
-  dataRaw,
-  filters,
-  unitsCurrent,
-  baseUnits,
-  conversion,
-  convType,
-  variableCol,
-  xCol,
-  yCol,
-  colors,
-  xName = "x"
-) => {
-  if (unitsCurrent == baseUnits) {
-    return tidyOperation(
-      dataRaw,
-      filters,
-      variableCol,
-      xCol,
-      yCol,
-      colors,
-      xName
-    );
-  } else {
-    return tidyOperation(
-      dataRaw,
-      filters,
-      variableCol,
-      xCol,
-      yCol,
-      colors,
-      xName,
-      conversion,
-      convType
-    );
-  }
 };
 
 export const creditsClick = (chart, link) => {

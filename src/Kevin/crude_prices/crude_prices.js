@@ -24,10 +24,11 @@ export const kevinCrudePrices = () => {
     WTI: cerPalette["Sun"],
     Differential: cerPalette["Ocean"],
   };
-
+  
   var seriesData = crudePriceChartTypes(
     prepareSeriesNonTidy(
       crudePriceData,
+      false,
       false,
       ["WCS", "WTI", "Differential"],
       "Date",

@@ -1,4 +1,4 @@
-import { cerPalette, prepareSeriesNonTidyUnits,creditsClick } from "../../modules/util.js";
+import { cerPalette, prepareSeriesNonTidy,creditsClick,conversions } from "../../modules/util.js";
 import gas2019Data from "./gas_2019.json";
 
 export const sara2019 = () => {
@@ -7,13 +7,12 @@ export const sara2019 = () => {
     "Spare Capacity": cerPalette["Cool Grey"],
   };
 
-  const seriesData = prepareSeriesNonTidyUnits(
+  var units = conversions("Bcf/d to Mm3/d", "Bcf/d", "Mm3/d");
+
+  const seriesData = prepareSeriesNonTidy(
     gas2019Data,
     false,
-    "BCf/d",
-    "1000 m3/d",
-    0.0000353,
-    "*",
+    units,
     ["Spare Capacity", "Throughput"],
     "Series Name",
     gas2019Colors,
@@ -63,14 +62,11 @@ export const sara2019 = () => {
   const chartGas2019 = createGas2019Chart(seriesData);
   var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
   selectUnitsGas2019.addEventListener("change", (selectUnitsGas2019) => {
-    var units = selectUnitsGas2019.target.value;
-    const seriesData = prepareSeriesNonTidyUnits(
+    units.unitsCurrent = selectUnitsGas2019.target.value;
+    const seriesData = prepareSeriesNonTidy(
       gas2019Data,
       false,
       units,
-      "1000 m3/d",
-      0.0000353,
-      "*",
       ["Spare Capacity", "Throughput"],
       "Series Name",
       gas2019Colors,
@@ -79,7 +75,7 @@ export const sara2019 = () => {
     chartGas2019.update({
       series: seriesData,
       yAxis: {
-        title: { text: units },
+        title: { text: units.unitsCurrent },
       },
     });
   });
