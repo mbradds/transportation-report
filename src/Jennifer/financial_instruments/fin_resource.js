@@ -63,6 +63,7 @@ export const jenniferFinResources = () => {
     prepareSeriesNonTidy(
       finResourceData,
       finResourceFilters,
+      false,
       ["Companies using Financial Instrument", "Financial Instrument Total"],
       "Financial Instrument",
       finResourceColors,
@@ -72,6 +73,7 @@ export const jenniferFinResources = () => {
 
   var finResourceSeriesClass = prepareSeriesTidy(
     finResourceClass,
+    false,
     false,
     "Commodity",
     "Pipeline Group",
@@ -350,6 +352,7 @@ export const jenniferFinResources = () => {
         finResourceSeriesClass = prepareSeriesTidy(
           finResourceClass,
           finResourceFilters,
+          false,
           "Commodity",
           "Pipeline Group",
           "Financial Resource",
@@ -362,6 +365,7 @@ export const jenniferFinResources = () => {
         finResourceSeriesClass = prepareSeriesTidy(
           finResourceClass,
           finResourceFilters,
+          false,
           "Commodity",
           "Pipeline Group",
           "Financial Resource",
@@ -374,6 +378,7 @@ export const jenniferFinResources = () => {
         finResourceSeriesClass = prepareSeriesTidy(
           finResourceClass,
           false,
+          false,
           "Commodity",
           "Pipeline Group",
           "Financial Resource",
@@ -385,6 +390,7 @@ export const jenniferFinResources = () => {
         prepareSeriesNonTidy(
           finResourceData,
           finResourceFilters,
+          false,
           [
             "Companies using Financial Instrument",
             "Financial Instrument Total",
