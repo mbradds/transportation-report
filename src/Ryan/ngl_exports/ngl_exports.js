@@ -15,6 +15,9 @@ export const ryanNglExports = () => {
     Product: "Propane",
     Region: "Canada",
   };
+  const setTitle = (figure_title, filters) => {
+    figure_title.innerText = `Figure 11: ${filters.Region} ${filters.Product} Exports`;
+  };
   const nglColors = {
     Pipeline: cerPalette["Sun"],
     Railway: cerPalette["Night Sky"],
@@ -75,8 +78,6 @@ export const ryanNglExports = () => {
         shared: true,
       },
 
-      title: { text: `${nglFilters.Region} ${nglFilters.Product} Exports` },
-
       xAxis: {
         type: "datetime",
         dateTimeLabelFormats: {
@@ -99,55 +100,60 @@ export const ryanNglExports = () => {
     return chart;
   };
 
-  var nglChart = createNglChart(seriesData, nglFilters, units);
+  const mainNglExports = () => {
+    var figure_title = document.getElementById('figure11');
+    setTitle(figure_title,nglFilters)
+    var nglChart = createNglChart(seriesData, nglFilters, units);
 
-  var selectProductNgl = document.getElementById("select_product_ngl");
-  selectProductNgl.addEventListener("change", (selectProductNgl) => {
-    var product = selectProductNgl.target.value;
-    nglFilters.Product = product;
-    var seriesData = prepareSeriesNonTidy(
-      nglData,
-      nglFilters,
-      units,
-      ["Pipeline", "Railway", "Truck", "Marine"],
-      "Period",
-      nglColors
-    );
-    nglChart = createNglChart(seriesData, nglFilters, units);
-  });
-
-  var selectRegionNgl = document.getElementById("select_region_ngl");
-  selectRegionNgl.addEventListener("change", (selectRegionNgl) => {
-    var region = selectRegionNgl.target.value;
-    nglFilters.Region = region;
-    var seriesData = prepareSeriesNonTidy(
-      nglData,
-      nglFilters,
-      units,
-      ["Pipeline", "Railway", "Truck", "Marine"],
-      "Period",
-      nglColors
-    );
-    nglChart = createNglChart(seriesData, nglFilters, units);
-  });
-
-  var selectUnitsNgl = document.getElementById("select_units_ngl");
-  selectUnitsNgl.addEventListener("change", (selectUnitsNgl) => {
-    units.unitsCurrent = selectUnitsNgl.target.value;
-    var seriesData = prepareSeriesNonTidy(
-      nglData,
-      nglFilters,
-      units,
-      ["Pipeline", "Railway", "Truck", "Marine"],
-      "Period",
-      nglColors
-    );
-
-    nglChart.update({
-      series: seriesData,
-      yAxis: {
-        title: { text: units.unitsCurrent },
-      },
+    var selectProductNgl = document.getElementById("select_product_ngl");
+    selectProductNgl.addEventListener("change", (selectProductNgl) => {
+      nglFilters.Product = selectProductNgl.target.value;
+      setTitle(figure_title,nglFilters)
+      var seriesData = prepareSeriesNonTidy(
+        nglData,
+        nglFilters,
+        units,
+        ["Pipeline", "Railway", "Truck", "Marine"],
+        "Period",
+        nglColors
+      );
+      nglChart = createNglChart(seriesData, nglFilters, units);
     });
-  });
+
+    var selectRegionNgl = document.getElementById("select_region_ngl");
+    selectRegionNgl.addEventListener("change", (selectRegionNgl) => {
+      nglFilters.Region = selectRegionNgl.target.value;
+      setTitle(figure_title,nglFilters)
+      var seriesData = prepareSeriesNonTidy(
+        nglData,
+        nglFilters,
+        units,
+        ["Pipeline", "Railway", "Truck", "Marine"],
+        "Period",
+        nglColors
+      );
+      nglChart = createNglChart(seriesData, nglFilters, units);
+    });
+
+    var selectUnitsNgl = document.getElementById("select_units_ngl");
+    selectUnitsNgl.addEventListener("change", (selectUnitsNgl) => {
+      units.unitsCurrent = selectUnitsNgl.target.value;
+      var seriesData = prepareSeriesNonTidy(
+        nglData,
+        nglFilters,
+        units,
+        ["Pipeline", "Railway", "Truck", "Marine"],
+        "Period",
+        nglColors
+      );
+
+      nglChart.update({
+        series: seriesData,
+        yAxis: {
+          title: { text: units.unitsCurrent },
+        },
+      });
+    });
+  };
+  mainNglExports();
 };

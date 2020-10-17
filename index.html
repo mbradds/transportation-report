@@ -52,12 +52,15 @@
     <div class="header">
       <p>For CER internal use. Do not share externally.</p>
     </div>
-    <div class="author">
-      <p>Kevin</p>
-    </div>
+    <div class="author">Kevin</div>
     <!-- crude production graph -->
     <div class="container my-container">
       <div class="row my-row">
+        <div class="col my-col">
+          <div id="figure1" class="figure_title"></div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
         <div class="col-3 my-col">
           <div class="cerlabel">Select region:</div>
           <select
@@ -85,6 +88,13 @@
     <!-- crude exports graph -->
     <div class="container my-container">
       <div class="row my-row">
+        <div class="col my-col">
+          <div id="figure2" class="figure_title">
+            Figure 2: Crude Oil Exports
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
         <div class="col-4 my-col">
           <div class="cerlabel">Select units:</div>
           <select
@@ -107,6 +117,13 @@
     <!-- crude imports graph -->
     <div class="container my-container">
       <div class="row my-row">
+        <div class="col my-col">
+          <div id="figure3" class="figure_title">
+            Figure 3: Canada's Share of U.S. Crude Oil Imports
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
         <div class="col-4 my-col">
           <div class="cerlabel">Select units:</div>
           <select name="" id="select_units_crude_imports" class="selectpicker">
@@ -127,17 +144,29 @@
     <div class="container my-container">
       <div class="row my-row">
         <div class="col my-col">
+          <div id="figure4" class="figure_title">
+            Figure 4: Crude Oil Prices
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
+        <div class="col my-col">
           <div id="container_crude_prices"></div>
         </div>
       </div>
     </div>
 
-    <div class="author">
-      <p>Colette</p>
-    </div>
+    <div class="author">Colette</div>
     <!-- crude by rail -->
     <div class="container my-container">
       <div class="row my-row">
+        <div class="col my-col">
+          <div id="figure5" class="figure_title">
+            Figure 5: Crude by Rail Exports
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
         <div class="col-4 my-col">
           <div class="cerlabel">Select units:</div>
           <select name="" id="select_units_rail" class="selectpicker">
@@ -156,6 +185,13 @@
     <!-- crude takeaway vs supply available for export -->
     <div class="container my-container">
       <div class="row my-row">
+        <div class="col my-col">
+          <div id="figure6" class="figure_title">
+            Figure 6: Pipeline Capacity vs Crude Oil Available for Export
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
         <div class="col-4 my-col">
           <div class="cerlabel">Select units:</div>
           <select name="" id="select_units_crude_takeaway" class="selectpicker">
@@ -171,12 +207,17 @@
       </div>
     </div>
 
-    <div class="author">
-      <p>Sara</p>
-    </div>
+    <div class="author">Sara</div>
     <!-- natural gas traffic -->
     <div class="container my-container">
       <div class="row my-row">
+        <div class="col my-col">
+          <div id="figure7" class="figure_title">
+            Figure 7: Ex-WCSB Pipeline Throughput & Capacity
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
         <div class="col-4 my-col">
           <div class="cerlabel">Select units:</div>
           <select name="" id="select_units_gas_traffic" class="selectpicker">
@@ -195,6 +236,13 @@
     <!-- gas 2019 -->
     <div class="container my-container">
       <div class="row my-row">
+        <div class="col my-col">
+          <div id="figure8" class="figure_title">
+            Figure 8: Pipeline Throughput & Capacity at Key Points
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
         <div class="col-4 my-col">
           <div class="cerlabel">Select units:</div>
           <select name="" id="select_units_gas_2019" class="selectpicker">
@@ -210,12 +258,17 @@
       </div>
     </div>
 
-    <div class="author">
-      <p>Cassandra</p>
-    </div>
+    <div class="author">Cassandra</div>
     <!-- financial metrics (showing one metric at a time for all pipes) -->
     <div class="container my-container">
       <div class="row my-row">
+        <div class="col my-col">
+          <div id="figure9" class="figure_title">
+            Figure 9: Pipeline Financial Metrics
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
         <div class="col-md-3 col-sm-12">
           <div class="cerlabel">Select pipelines:</div>
           <select name="" id="select_pipelines_financial" class="selectpicker">
@@ -243,6 +296,11 @@
     <!-- tolls -->
     <div class="container my-container">
       <div class="row my-row">
+        <div class="col my-col">
+          <div id="figure10" class="figure_title"></div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
         <div class="col-md-3 col-sm-12">
           <div class="cerlabel">Select commodity:</div>
           <select
@@ -259,12 +317,15 @@
       </div>
     </div>
 
-    <div class="author">
-      <p>Ryan/Sophie</p>
-    </div>
+    <div class="author">Ryan/Sophie</div>
     <!-- ngl exports -->
     <div class="container my-container">
       <div class="row my-row">
+        <div class="col my-col">
+          <div id="figure11" class="figure_title"></div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
         <div class="col-md-3 col-sm-12">
           <div class="cerlabel">Select product:</div>
           <select name="" id="select_product_ngl" class="selectpicker">
@@ -291,13 +352,16 @@
       </div>
     </div>
 
-    <div class="author">
-      <p>Jennifer</p>
-    </div>
+    <div class="author">Jennifer</div>
     <!-- throughcap -->
 
-    <div class="container my-container-border w-50">
+    <div class="container my-container w-50">
       <div class="row my-row">
+        <div class="col my-col">
+          <div class="figure_title" id="traffic_title"></div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
         <div class="col my-col">
           <nav class="nav nav-tabs nav-fill" id="commodity_selection">
             <a
@@ -313,11 +377,6 @@
         </div>
       </div>
       <div class="row my-row">
-        <div class="col-4 my-col">
-          <div class="traffic title" id="traffic_title">
-            Natural Gas Traffic
-          </div>
-        </div>
         <div class="col-4 my-col">
           <div class="cerlabel">Select pipelines:</div>
           <select name="" id="select_pipelines" class="selectpicker"></select>
@@ -342,13 +401,22 @@
     <!-- financial resource chart -->
 
     <div class="container my-container">
-      <div class="col-md-3 col-sm-12">
-        <div class="cerlabel">Select commodity:</div>
-        <select name="" id="select_units_fin_resource" class="selectpicker">
-          <option value="All">All</option>
-          <option value="Oil">Oil</option>
-          <option value="Gas">Gas</option>
-        </select>
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="figure12" class="figure_title">
+            Pipeline Financial Resource Requirements
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
+        <div class="col my-col">
+          <div class="cerlabel">Select commodity:</div>
+          <select name="" id="select_units_fin_resource" class="selectpicker">
+            <option value="All">All</option>
+            <option value="Oil">Oil</option>
+            <option value="Gas">Gas</option>
+          </select>
+        </div>
       </div>
       <div class="col my-col-border">
         <div class="row my-row">

@@ -422,7 +422,7 @@ export const jenniferThroughcap = () => {
       if (this.commodity == "Crude Oil") {
         this.params.points = oilPoints;
         this.params.series = oilSeries;
-        this.params.titleText = "Crude oil Throughput and Capacity";
+        this.params.titleText = "Crude Oil Throughput and Capacity";
         this.params.colorsCapacity = {
           "Trans Mountain Pipeline ULC": "#FFBE4B",
           "Enbridge Pipelines (NW) Inc.": "#054169",
@@ -452,7 +452,7 @@ export const jenniferThroughcap = () => {
       } else if (this.commodity == "Natural Gas") {
         this.params.points = gasPoints;
         this.params.series = gasSeries;
-        this.params.titleText = "Natural gas Throughput and Capacity";
+        this.params.titleText = "Natural Gas Throughput and Capacity";
         this.params.colorsCapacity = {
           "Westcoast Energy Inc.": "#5FBEE6",
           "TransCanada PipeLines Limited": "#559B37",

@@ -22,11 +22,9 @@ const generalTheme = () => {
     },
 
     title: {
-      style: {
-        color: "#000",
-        font: 'bold 16px "Trebuchet MS", Verdana, sans-serif',
-      },
+      text: ''
     },
+
     legend: {
       itemStyle: {
         font: "12pt Arial",
