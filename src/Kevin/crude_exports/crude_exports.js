@@ -63,10 +63,6 @@ export const kevinCrudeExports = () => {
         },
       },
 
-      title: {
-        text: null,
-      },
-
       credits: {
         text: "Source: CER Commodity Tracking System",
       },
@@ -198,21 +194,11 @@ export const kevinCrudeExports = () => {
         type: "column",
       },
 
-      title: {
-        text: null,
-      },
-
       credits: {
         enabled: false,
       },
 
       plotOptions: {
-        column: {
-          stacking: "normal",
-          dataLabels: {
-            enabled: false,
-          },
-        },
         series: {
           events: {
             mouseOver: function () {
@@ -231,10 +217,6 @@ export const kevinCrudeExports = () => {
         stackLabels: {
           enabled: true,
         },
-      },
-
-      lang: {
-        noData: "No Exports",
       },
 
       series: seriesData,

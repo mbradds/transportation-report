@@ -48,22 +48,8 @@ export const kevinCrudePrices = () => {
         },
       },
 
-      title: {
-        text: null,
-      },
-
       credits: {
         text: "Source: ne2 Group",
-      },
-
-      plotOptions: {
-        area: {
-          stacking: "normal",
-          marker: false,
-          dataLabels: {
-            enabled: false,
-          },
-        },
       },
 
       tooltip: {

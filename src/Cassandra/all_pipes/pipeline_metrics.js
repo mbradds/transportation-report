@@ -122,10 +122,6 @@ export const cassandraAllPipes = () => {
         "#42464B",
       ],
 
-      // xAxis: {
-      //   crosshair: true
-      // },
-
       yAxis: {
         title: {
           text: yLabel,
@@ -137,13 +133,6 @@ export const cassandraAllPipes = () => {
 
       lang: {
         noData: "No Financial Data",
-      },
-      noData: {
-        style: {
-          fontWeight: "bold",
-          fontSize: "15px",
-          color: "#303030",
-        },
       },
       series: newData,
     });
