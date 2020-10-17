@@ -72,6 +72,7 @@ export const kevinCrudePrices = () => {
 
       xAxis: {
         type: "datetime",
+        crosshair:true,
       },
 
       yAxis: {

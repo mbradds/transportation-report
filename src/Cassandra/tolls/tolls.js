@@ -3,7 +3,7 @@ import {
   getUnique,
   cerPalette,
   prepareSeriesTidy,
-  creditsClick
+  creditsClick,
 } from "../../modules/util.js";
 
 import tollsData from "./tolls.json";
@@ -15,6 +15,17 @@ export const cassandraTolls = () => {
     false,
     "Oil & Gas"
   );
+  const setTitle = (figure_title, filters) => {
+    if (filters.Commodity == "Oil & Gas") {
+      figure_title.innerText =
+        "Figure 10: Crude Oil & Natural Gas Average Tolls Index";
+    } else {
+      figure_title.innerText = `Figure 10: ${filters.Commodity.replace(
+        "Breakdown",
+        ""
+      )} Pipeline Tolls`;
+    }
+  };
 
   const tollChartTypes = (series) => {
     series.map((data, seriesNum) => {
@@ -65,7 +76,7 @@ export const cassandraTolls = () => {
         borderWidth: 1,
         events: {
           load: function () {
-            creditsClick(this,"https://www.cer-rec.gc.ca/en/index.html")
+            creditsClick(this, "https://www.cer-rec.gc.ca/en/index.html");
           },
         },
       },
@@ -80,6 +91,7 @@ export const cassandraTolls = () => {
 
       xAxis: {
         type: "datetime",
+        title: {text: "Toll Start Date"}
       },
 
       yAxis: {
@@ -92,23 +104,28 @@ export const cassandraTolls = () => {
     return chart;
   };
 
-  const chartTolls = createTollsChart(seriesData);
-
-  var selectTolls = document.getElementById("select_commodity_tolls");
-  selectTolls.addEventListener("change", (selectTolls) => {
-    var tollsCommodity = selectTolls.target.value;
-    tollFilters.Commodity = tollsCommodity;
-    const seriesData = tollChartTypes(
-      prepareSeriesTidy(
-        tollsData,
-        tollFilters,
-        false,
-        "Pipeline",
-        "Start",
-        "Rate Normalized",
-        tollColors
-      )
-    );
+  const mainTolls = () => {
+    var figure_title = document.getElementById("figure10");
+    setTitle(figure_title, tollFilters);
     const chartTolls = createTollsChart(seriesData);
-  });
+
+    var selectTolls = document.getElementById("select_commodity_tolls");
+    selectTolls.addEventListener("change", (selectTolls) => {
+      tollFilters.Commodity = selectTolls.target.value;
+      setTitle(figure_title,tollFilters)
+      const seriesData = tollChartTypes(
+        prepareSeriesTidy(
+          tollsData,
+          tollFilters,
+          false,
+          "Pipeline",
+          "Start",
+          "Rate Normalized",
+          tollColors
+        )
+      );
+      const chartTolls = createTollsChart(seriesData);
+    });
+  };
+  mainTolls();
 };
