@@ -4,11 +4,25 @@ const generalTheme = () => {
       borderColor: "black",
       animation: true,
     },
+
+    plotOptions: {
+      column: {
+        stacking: "normal",
+      },
+      area: {
+        stacking: "normal",
+        marker: false,
+        dataLabels: {
+          enabled: false,
+        },
+      },
+    },
+
     yAxis: {
       stackLabels: {
         style: {
           fontWeight: "bold",
-          color: (Highcharts.theme && Highcharts.theme.textColor) || "gray",
+          color: (Highcharts.theme && Highcharts.theme.textColor) || "grey",
         },
       },
     },
@@ -22,7 +36,7 @@ const generalTheme = () => {
     },
 
     title: {
-      text: ''
+      text: "",
     },
 
     legend: {

@@ -54,7 +54,7 @@ export const saraGasTraffic = () => {
   const createChartGasTraffic = (seriesData) => {
     const chart = new Highcharts.chart("container_gas_traffic", {
       chart: {
-        zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
+        zoomType: "x",
         borderWidth: 1,
         events: {
           load: function () {
@@ -66,26 +66,11 @@ export const saraGasTraffic = () => {
         },
       },
 
-      title: {
-        text: null,
-      },
-
       credits: {
         text: "Source: Open Government Throughput and Capacity Data",
       },
 
-      plotOptions: {
-        area: {
-          stacking: "normal",
-          marker: false,
-          dataLabels: {
-            enabled: false,
-          },
-        },
-      },
-
       tooltip: {
-        animation: true,
         shared: true,
       },
 
@@ -96,9 +81,6 @@ export const saraGasTraffic = () => {
 
       yAxis: {
         title: { text: "Bcf/d" },
-        stackLabels: {
-          enabled: false,
-        },
       },
 
       series: seriesData,

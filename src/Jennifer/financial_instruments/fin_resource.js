@@ -2,6 +2,7 @@ import {
   cerPalette,
   prepareSeriesNonTidy,
   prepareSeriesTidy,
+  creditsClick,
 } from "../../modules/util.js";
 
 import finResourceData from "./fin_resource_totals.json";
@@ -114,9 +115,6 @@ export const jenniferFinResources = () => {
         },
       },
 
-      title: {
-        text: null,
-      },
       legend: {
         enabled: false,
       },
@@ -143,9 +141,6 @@ export const jenniferFinResources = () => {
 
       tooltip: {
         enabled: false,
-        // formatter: function () {
-        //   return `<b> Click to view ${this.series.name} financial resources </B> <br> <em> Double click to return to All </em>`;
-        // },
       },
 
       series: seriesData,
@@ -158,29 +153,19 @@ export const jenniferFinResources = () => {
     const chart = new Highcharts.chart("container_fin_resources", {
       chart: {
         height: "30%",
-        animation: true,
       },
 
       credits: {
         enabled: false,
       },
 
-      title: {
-        text: null,
-      },
-
       plotOptions: {
         column: {
-          stacking: "normal",
           marker: true,
-          dataLabels: {
-            enabled: false,
-          },
         },
       },
 
       tooltip: {
-        animation: true,
         shared: true,
       },
 
@@ -193,20 +178,14 @@ export const jenniferFinResources = () => {
       },
       yAxis: [
         {
-          // Primary yAxis
           title: {
             text: "Number of companies using financial resource",
           },
           stackLabels: {
             enabled: true,
-            style: {
-              fontWeight: "bold",
-              color: (Highcharts.theme && Highcharts.theme.textColor) || "gray",
-            },
           },
         },
         {
-          // Secondary yAxis
           title: {
             text: "Financial resources (Billion $CAD)",
           },
@@ -219,17 +198,6 @@ export const jenniferFinResources = () => {
         },
       ],
 
-      lang: {
-        noData: "No Exports",
-      },
-
-      noData: {
-        style: {
-          fontWeight: "bold",
-          fontSize: "15px",
-          color: "#303030",
-        },
-      },
       series: seriesData,
     });
 
@@ -241,21 +209,11 @@ export const jenniferFinResources = () => {
       chart: {
         height: "30%",
         type: "column",
-        animation: true,
         events: {
           load: function () {
-            this.credits.element.onclick = function () {
-              window.open(
-                "https://www.cer-rec.gc.ca/en/index.html",
-                "_blank" // <- This is what makes it open in a new window.
-              );
-            };
+            creditsClick(this,"https://www.cer-rec.gc.ca/en/index.html")
           },
         },
-      },
-
-      title: {
-        text: null,
       },
 
       credits: {
@@ -264,11 +222,7 @@ export const jenniferFinResources = () => {
 
       plotOptions: {
         column: {
-          stacking: "normal",
           marker: true,
-          dataLabels: {
-            enabled: false,
-          },
         },
         series: {
           events: {
@@ -280,7 +234,6 @@ export const jenniferFinResources = () => {
       },
 
       tooltip: {
-        animation: true,
         shared: true,
       },
 
@@ -302,24 +255,9 @@ export const jenniferFinResources = () => {
         },
         stackLabels: {
           enabled: true,
-          style: {
-            fontWeight: "bold",
-            color: (Highcharts.theme && Highcharts.theme.textColor) || "gray",
-          },
         },
       },
 
-      lang: {
-        noData: "No Exports",
-      },
-
-      noData: {
-        style: {
-          fontWeight: "bold",
-          fontSize: "15px",
-          color: "#303030",
-        },
-      },
       series: seriesData,
     });
 
@@ -412,7 +350,6 @@ export const jenniferFinResources = () => {
       $(window).scrollTop(tempScrollTop);
     });
   };
-
   loadInitialCharts();
   commodityListener();
 };

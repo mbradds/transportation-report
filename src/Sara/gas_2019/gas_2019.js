@@ -1,4 +1,9 @@
-import { cerPalette, prepareSeriesNonTidy,creditsClick,conversions } from "../../modules/util.js";
+import {
+  cerPalette,
+  prepareSeriesNonTidy,
+  creditsClick,
+  conversions,
+} from "../../modules/util.js";
 import gas2019Data from "./gas_2019.json";
 
 export const sara2019 = () => {
@@ -26,23 +31,16 @@ export const sara2019 = () => {
         borderWidth: 1,
         events: {
           load: function () {
-            creditsClick(this,"https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english")
+            creditsClick(
+              this,
+              "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english"
+            );
           },
         },
       },
 
-      title: {
-        text: null,
-      },
-
       credits: {
         text: "Source: CER Commodity Tracking System",
-      },
-
-      plotOptions: {
-        column: {
-          stacking: "normal",
-        },
       },
 
       yAxis: {
@@ -59,24 +57,27 @@ export const sara2019 = () => {
     return chartGas2019;
   };
 
-  const chartGas2019 = createGas2019Chart(seriesData);
-  var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
-  selectUnitsGas2019.addEventListener("change", (selectUnitsGas2019) => {
-    units.unitsCurrent = selectUnitsGas2019.target.value;
-    const seriesData = prepareSeriesNonTidy(
-      gas2019Data,
-      false,
-      units,
-      ["Spare Capacity", "Throughput"],
-      "Series Name",
-      gas2019Colors,
-      "name"
-    );
-    chartGas2019.update({
-      series: seriesData,
-      yAxis: {
-        title: { text: units.unitsCurrent },
-      },
+  const mainGas2019 = () => {
+    const chartGas2019 = createGas2019Chart(seriesData);
+    var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
+    selectUnitsGas2019.addEventListener("change", (selectUnitsGas2019) => {
+      units.unitsCurrent = selectUnitsGas2019.target.value;
+      const seriesData = prepareSeriesNonTidy(
+        gas2019Data,
+        false,
+        units,
+        ["Spare Capacity", "Throughput"],
+        "Series Name",
+        gas2019Colors,
+        "name"
+      );
+      chartGas2019.update({
+        series: seriesData,
+        yAxis: {
+          title: { text: units.unitsCurrent },
+        },
+      });
     });
-  });
+  };
+  mainGas2019();
 };

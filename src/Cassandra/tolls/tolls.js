@@ -81,10 +81,6 @@ export const cassandraTolls = () => {
         },
       },
 
-      title: {
-        text: null,
-      },
-
       credits: {
         text: "Source: CER",
       },

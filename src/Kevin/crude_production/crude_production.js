@@ -66,25 +66,9 @@ export const kevinCrudeProduction = () => {
           },
         },
       },
-      title: {
-        text: null,
-      },
 
       credits: {
         text: "Source: Energy Futures",
-      },
-
-      plotOptions: {
-        column: {
-          stacking: "normal",
-          dataLabels: {
-            enabled: false,
-          },
-        },
-      },
-
-      tooltip: {
-        animation: true,
       },
 
       yAxis: {
@@ -94,9 +78,6 @@ export const kevinCrudeProduction = () => {
         },
       },
 
-      lang: {
-        noData: "No Exports",
-      },
       series: seriesData,
     });
     return chart;

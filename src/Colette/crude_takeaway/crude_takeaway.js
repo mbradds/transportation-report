@@ -65,7 +65,7 @@ export const coletteCrudeTakeaway = () => {
   const createChartCrudeTakeaway = (seriesData) => {
     var chart = new Highcharts.chart("container_crude_takeaway", {
       chart: {
-        zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
+        zoomType: "x",
         borderWidth: 1,
         events: {
           load: function () {
@@ -77,10 +77,6 @@ export const coletteCrudeTakeaway = () => {
         },
       },
 
-      title: {
-        text: null,
-      },
-
       credits: {
         text: "Source: Energy Futures",
       },
@@ -89,22 +85,12 @@ export const coletteCrudeTakeaway = () => {
         shared: true,
       },
 
-      plotOptions: {
-        area: {
-          stacking: "normal",
-          marker: false,
-        },
-      },
-
       xAxis: {
         crosshair: true,
       },
 
       yAxis: {
         title: { text: "MMb/d" },
-        stackLabels: {
-          enabled: false,
-        },
       },
 
       series: seriesData,
@@ -113,45 +99,48 @@ export const coletteCrudeTakeaway = () => {
     return chart;
   };
 
-  const crudeTakeawayChart = createChartCrudeTakeaway(seriesData);
+  const mainCrudeTakeaway = () => {
+    const crudeTakeawayChart = createChartCrudeTakeaway(seriesData);
 
-  var selectUnitsCrudeTakeaway = document.getElementById(
-    "select_units_crude_takeaway"
-  );
-  selectUnitsCrudeTakeaway.addEventListener(
-    "change",
-    (selectUnitsCrudeTakeaway) => {
-      units.unitsCurrent = selectUnitsCrudeTakeaway.target.value;
-      var seriesData = crudeTakeawayChartTypes(
-        prepareSeriesNonTidy(
-          crudeTakeawayData,
-          false,
-          units,
-          [
-            "Total Supply Available for Export",
-            "Express",
-            "Milk River",
-            "Aurora/Rangeland",
-            "TransMountain",
-            "Enbridge Mainline",
-            "Keystone",
-            "Enbridge Line 3",
-            "TMX",
-            "Keystone XL",
-            "Structural Rail",
-            "Variable Rail",
-          ],
-          "Year",
-          crudeTakeawayColors
-        )
-      );
+    var selectUnitsCrudeTakeaway = document.getElementById(
+      "select_units_crude_takeaway"
+    );
+    selectUnitsCrudeTakeaway.addEventListener(
+      "change",
+      (selectUnitsCrudeTakeaway) => {
+        units.unitsCurrent = selectUnitsCrudeTakeaway.target.value;
+        var seriesData = crudeTakeawayChartTypes(
+          prepareSeriesNonTidy(
+            crudeTakeawayData,
+            false,
+            units,
+            [
+              "Total Supply Available for Export",
+              "Express",
+              "Milk River",
+              "Aurora/Rangeland",
+              "TransMountain",
+              "Enbridge Mainline",
+              "Keystone",
+              "Enbridge Line 3",
+              "TMX",
+              "Keystone XL",
+              "Structural Rail",
+              "Variable Rail",
+            ],
+            "Year",
+            crudeTakeawayColors
+          )
+        );
 
-      crudeTakeawayChart.update({
-        series: seriesData,
-        yAxis: {
-          title: { text: units.unitsCurrent },
-        },
-      });
-    }
-  );
+        crudeTakeawayChart.update({
+          series: seriesData,
+          yAxis: {
+            title: { text: units.unitsCurrent },
+          },
+        });
+      }
+    );
+  };
+  mainCrudeTakeaway()
 };

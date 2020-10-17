@@ -41,7 +41,7 @@ export const coletteCrudeByRail = () => {
   const createRailChart = () => {
     const chartRail = new Highcharts.chart("container_crude_by_rail", {
       chart: {
-        type: "area", //line,bar,scatter,area,areaspline
+        type: "area",
         zoomType: "x",
         borderWidth: 1,
         events: {
@@ -58,8 +58,6 @@ export const coletteCrudeByRail = () => {
         text: "Source: CER Crude by Rail Exports & ne2 Group",
       },
 
-      title: { text: null },
-
       tooltip: {
         shared: true,
       },
@@ -69,13 +67,9 @@ export const coletteCrudeByRail = () => {
       xAxis: {
         type: "datetime",
         crosshair: true,
-        dateTimeLabelFormats: {
-          day: "%e of %b",
-        },
       },
       yAxis: [
         {
-          // Primary yAxis
           labels: {
             format: "{value}",
             style: {
@@ -90,7 +84,6 @@ export const coletteCrudeByRail = () => {
           },
         },
         {
-          // Secondary yAxis
           title: {
             text: "Differential - USD/bbl",
             style: {
@@ -111,26 +104,29 @@ export const coletteCrudeByRail = () => {
     return chartRail;
   };
 
-  var chartRail = createRailChart(seriesData);
+  const mainChartRail = () => {
+    var chartRail = createRailChart(seriesData);
 
-  var selectUnitsRail = document.getElementById("select_units_rail");
-  selectUnitsRail.addEventListener("change", (selectUnitsRail) => {
-    railFilters.Units = selectUnitsRail.target.value;
-    const seriesData = railChartTypes(
-      prepareSeriesNonTidy(
-        railData,
-        railFilters,
-        false,
-        ["Crude by Rail", "WCS-WTI Differential"],
-        "Date",
-        railColors
-      )
-    );
-    chartRail.update({
-      series: seriesData,
-      yAxis: {
-        title: { text: `Rail Exports - ${railFilters.Units}` },
-      },
+    var selectUnitsRail = document.getElementById("select_units_rail");
+    selectUnitsRail.addEventListener("change", (selectUnitsRail) => {
+      railFilters.Units = selectUnitsRail.target.value;
+      const seriesData = railChartTypes(
+        prepareSeriesNonTidy(
+          railData,
+          railFilters,
+          false,
+          ["Crude by Rail", "WCS-WTI Differential"],
+          "Date",
+          railColors
+        )
+      );
+      chartRail.update({
+        series: seriesData,
+        yAxis: {
+          title: { text: `Rail Exports - ${railFilters.Units}` },
+        },
+      });
     });
-  });
+  };
+  mainChartRail()
 };

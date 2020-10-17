@@ -42,7 +42,7 @@ export const kevinUsImports = () => {
   const createCrudeImportsChart = (seriesData) => {
     var chartCrudeImports = new Highcharts.chart("container_crude_imports", {
       chart: {
-        zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
+        zoomType: "x",
         borderWidth: 1,
         events: {
           load: function () {
@@ -54,21 +54,8 @@ export const kevinUsImports = () => {
         },
       },
 
-      title: {
-        text: null,
-      },
-
       credits: {
         text: "Source: CER Commodity Tracking System & EIA",
-      },
-
-      plotOptions: {
-        column: {
-          stacking: "normal",
-          dataLabels: {
-            enabled: false,
-          },
-        },
       },
 
       tooltip: {
