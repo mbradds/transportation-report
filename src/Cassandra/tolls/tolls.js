@@ -101,7 +101,7 @@ export const cassandraTolls = () => {
   };
 
   const mainTolls = () => {
-    var figure_title = document.getElementById("figure10");
+    var figure_title = document.getElementById("figure11");
     setTitle(figure_title, tollFilters);
     const chartTolls = createTollsChart(seriesData);
 

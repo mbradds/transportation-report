@@ -40,6 +40,7 @@
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/mapdata/countries/ca/ca-all.js"></script>
     <script src="https://code.highcharts.com/mapdata/countries/us/custom/us-all-mainland.js"></script>
+    <script src="https://code.highcharts.com/mapdata/custom/north-america-no-central.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js"></script>
   </head>
 
@@ -256,13 +257,42 @@
       </div>
     </div>
 
+    <div class="author">Rebecca</div>
+    <!-- gas prices -->
+    <div class="container my-container">
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="figure9" class="figure_title">
+            Figure 9: Natural Gas Prices at Key North American Points
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
+        <div class="col-4 my-col">
+          <div class="cerlabel">Select units:</div>
+          <select name="" id="select_units_gas_prices" class="selectpicker">
+            <option value="$CN/GIG">$CN/GIG</option>
+            <option value="$US/MMB">$US/MMB</option>
+          </select>
+        </div>
+      </div>
+      <div class="row my-row-border">
+        <div class="col-9 my-col">
+          <div id="container_gas_prices"></div>
+        </div>
+        <div class="col-3 my-col">
+          <div id="container_gas_map"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="author">Cassandra</div>
     <!-- financial metrics (showing one metric at a time for all pipes) -->
     <div class="container my-container">
       <div class="row my-row">
         <div class="col my-col">
-          <div id="figure9" class="figure_title">
-            Figure 9: Pipeline Financial Metrics
+          <div id="figure10" class="figure_title">
+            Figure 10: Pipeline Financial Metrics
           </div>
         </div>
       </div>
@@ -295,7 +325,7 @@
     <div class="container my-container">
       <div class="row my-row">
         <div class="col my-col">
-          <div id="figure10" class="figure_title"></div>
+          <div id="figure11" class="figure_title"></div>
         </div>
       </div>
       <div class="row py-2 my-row">
@@ -320,7 +350,7 @@
     <div class="container my-container">
       <div class="row my-row">
         <div class="col my-col">
-          <div id="figure11" class="figure_title"></div>
+          <div id="figure12" class="figure_title"></div>
         </div>
       </div>
       <div class="row py-2 my-row">

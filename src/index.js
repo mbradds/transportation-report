@@ -63,6 +63,7 @@ import { coletteCrudeByRail } from "./Colette/crude_by_rail/crude_by_rail";
 import { coletteCrudeTakeaway } from "./Colette/crude_takeaway/crude_takeaway";
 import { saraGasTraffic } from "./Sara/gas_traffic/gas_traffic";
 import { sara2019 } from "./Sara/gas_2019/gas_2019";
+import { rebeccaGasPrices } from "./Rebecca/gas_prices/gas_prices"
 import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
 import { cassandraTolls } from "./Cassandra/tolls/tolls";
 import { ryanNglExports } from "./Ryan/ngl_exports/ngl_exports";
@@ -77,6 +78,7 @@ coletteCrudeByRail();
 coletteCrudeTakeaway();
 saraGasTraffic();
 sara2019();
+rebeccaGasPrices();
 cassandraAllPipes();
 cassandraTolls();
 ryanNglExports();
