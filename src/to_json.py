@@ -220,6 +220,17 @@ where \
 ([Year] = 2019 and [Corporate Entity] = 'TransCanada PipeLines Limited' and [Key Point] = 'Chippawa' and [Trade Type] = 'import') \
 group by [Year],[Corporate Entity],[Pipeline Name],[Key Point],[Trade Type]"
 
+query_gas_prices = "SELECT \
+[Location], \
+cast(str(month(Date))+'-'+'1'+'-'+str(year(Date)) as date) as [Date], \
+round(avg([Price ($CN/GIG)]),2) as [Price ($CN/GIG)], \
+round(avg([Price ($US/MMB)]),2) as [Price ($US/MMB)] \
+FROM [EnergyData].[dbo].[vwPlatts_NextDay_converted] \
+where [Location] in ('Henry Hub TDt Com','Dawn Ontario TDt Com','TC Alb AECO-C TDt Com Dly') \
+group by [Location], year([Date]), month([Date]) \
+having (round(avg([Price ($CN/GIG)]),2) is not null) and (round(avg([Price ($US/MMB)]),2) is not null) \
+order by year([Date]), month([Date]), [Location]" 
+
 def normalize_dates(df,date_list):
     for date_col in date_list:
         df[date_col] = pd.to_datetime(df[date_col])
@@ -261,6 +272,9 @@ def readCersei(query,name=None):
         df['Spare Capacity'] = df['Capacity'] - df['Throughput']
         df['Series Name'] = df['Pipeline Name']+' - '+df['Key Point']+' - '+df['Trade Type']
         df = df.sort_values(by=['Capacity'], ascending=False)
+    if name == 'gas_prices.json':
+        write_path = os.path.join(os.getcwd(),'Rebecca/gas_prices/',name)
+        
     if name != None:
         df.to_json(write_path,orient='records')
     conn.close()
@@ -646,8 +660,11 @@ if __name__ == '__main__':
     #df = readExcel('fgrs-eng.xlsx',sheet='pq')
     
     #sara
-    df = readCersei(query_gas_traffic,'gas_traffic.json')
+    #df = readCersei(query_gas_traffic,'gas_traffic.json')
     #df = readCersei(query_gas_2019,'gas_2019.json')
+    
+    #rebecca
+    df = readCersei(query_gas_prices,'gas_prices.json')
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
