@@ -1,5 +1,7 @@
 const generalTheme = () => {
+
   Highcharts.transportation = {
+    
     chart: {
       borderColor: "black",
       animation: true,
@@ -46,7 +48,9 @@ const generalTheme = () => {
       },
     },
   };
+
   Highcharts.setOptions(Highcharts.transportation);
+
 };
 
 generalTheme();
