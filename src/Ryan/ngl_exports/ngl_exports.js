@@ -101,7 +101,7 @@ export const ryanNglExports = () => {
   };
 
   const mainNglExports = () => {
-    var figure_title = document.getElementById('figure11');
+    var figure_title = document.getElementById('figure12');
     setTitle(figure_title,nglFilters)
     var nglChart = createNglChart(seriesData, nglFilters, units);
 
