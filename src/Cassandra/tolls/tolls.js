@@ -18,9 +18,9 @@ export const cassandraTolls = () => {
   const setTitle = (figure_title, filters) => {
     if (filters.Commodity == "Oil & Gas") {
       figure_title.innerText =
-        "Figure 12: Crude Oil & Natural Gas Average Tolls Index";
+        "Figure 14: Crude Oil & Natural Gas Average Tolls Index";
     } else {
-      figure_title.innerText = `Figure 10: ${filters.Commodity.replace(
+      figure_title.innerText = `Figure 14: ${filters.Commodity.replace(
         "Breakdown",
         ""
       )} Pipeline Tolls`;

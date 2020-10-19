@@ -326,13 +326,47 @@
       </div>
     </div>
 
+    <!-- gas trade graph -->
+    <div class="container my-container">
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="gas_trade_title" class="figure_title">
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
+        <div class="col-3 my-col">
+          <div class="cerlabel">Select units:</div>
+          <select name="" id="select_units_gas_trade" class="selectpicker">
+            <option value="Bcf/d">Bcf/d</option>
+            <option value="Million m3/d">Million m3/d</option>
+          </select>
+        </div>
+        <div class="col-3 my-col">
+          <div class="cerlabel">Select trade type:</div>
+          <select name="" id="select_gas_trade_type" class="selectpicker">
+            <option value="Exports">Exports</option>
+            <option value="Imports">Imports</option>
+          </select>
+        </div>
+      </div>
+      <div class="row my-row-border">
+        <div class="col-8 my-col">
+          <div id="container_gas_trade"></div>
+        </div>
+        <div class="col-4 my-col">
+          <div id="container_gas_trade_map"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="author">Cassandra</div>
     <!-- financial metrics (showing one metric at a time for all pipes) -->
     <div class="container my-container">
       <div class="row my-row">
         <div class="col my-col">
           <div id="figureX" class="figure_title">
-            Figure 11: Pipeline Financial Metrics
+            Figure 13: Pipeline Financial Metrics
           </div>
         </div>
       </div>
@@ -427,7 +461,7 @@
       <div class="row my-row">
         <div class="col my-col">
           <div id="figureX" class="figure_title">
-            Figure 14: Pipeline Financial Resource Requirements
+            Figure 15: Pipeline Financial Resource Requirements
           </div>
         </div>
       </div>

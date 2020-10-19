@@ -35,7 +35,7 @@ export const kevinCrudeExports = () => {
   );
 
   const createPaddMap = () => {
-    var paddMap = new Highcharts.mapChart("container_padd_map", {
+    return paddMap = new Highcharts.mapChart("container_padd_map", {
       chart: {
         type: "map",
         map: "countries/us/custom/us-all-mainland",
@@ -171,11 +171,10 @@ export const kevinCrudeExports = () => {
         },
       ],
     });
-    return paddMap;
   };
 
   const createCrudeExportsChart = (seriesData) => {
-    var chartCrudeExports = new Highcharts.chart("container_crude_exports", {
+    return chartCrudeExports = new Highcharts.chart("container_crude_exports", {
       chart: {
         type: "column",
       },
@@ -207,8 +206,6 @@ export const kevinCrudeExports = () => {
 
       series: seriesData,
     });
-
-    return chartCrudeExports;
   };
 
   var paddMap = createPaddMap();

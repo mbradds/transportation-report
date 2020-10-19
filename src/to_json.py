@@ -4,6 +4,7 @@ import os
 from connection import cer_connection
 from datetime import date
 from calendar import monthrange
+import calendar
 #TODO: add in the dataframe sorting before conversion to json
 
 query_gas_traffic = "select [Date], \
@@ -248,6 +249,11 @@ def normalize_numeric(df,num_list,decimals):
         df[num_col] = df[num_col].round(decimals)
     return df
 
+def daysInYear(year):
+    d1 = date(year, 1, 1)
+    d2 = date(year + 1, 1, 1)
+    return (d2 - d1).days
+
 def readCersei(query,name=None):
     conn,engine = cer_connection()
     df = pd.read_sql_query(query,con=conn)
@@ -344,6 +350,15 @@ def readExcel(name,sheet='pq',flatten=False):
     
     if name == 'Natural_Gas_Production.xlsx':
         write_path = os.path.join(os.getcwd(),'Rebecca/gas_production/',name.split('.')[0]+'.json')
+    if name == 'natural-gas-exports-and-imports-annual.xlsx':
+        cal = calendar.Calendar()
+        df['Days in Year'] = [daysInYear(x) for x in df['Year']]
+        df['Volume (Bcf/d)'] = (df['Volume (MCF)']/1000000)/df['Days in Year']
+        df['Volume (Million m3/d)'] = (df['Volume (Thousand m3)']/1000)/df['Days in Year']
+        for delete in ['Volume (MCF)','Days in Year','Volume (Thousand m3)']:
+            del df[delete]
+        df = normalize_numeric(df,['Volume (Bcf/d)','Volume (Million m3/d)'],2)
+        write_path = os.path.join(os.getcwd(),'Rebecca/gas_trade/',name.split('.')[0]+'.json')
         
     #df = df.astype(object).where(pd.notnull(df), None)
     df.to_json(write_path,orient='records',force_ascii=False)
@@ -676,7 +691,9 @@ if __name__ == '__main__':
     
     #rebecca
     #df = readCersei(query_gas_prices,'gas_prices.json')
-    df = readExcel('Natural_Gas_Production.xlsx')
+    #df = readExcel('Natural_Gas_Production.xlsx')
+    df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade')
+    
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
