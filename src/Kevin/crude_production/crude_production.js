@@ -84,7 +84,7 @@ export const kevinCrudeProduction = () => {
   };
 
   const mainCrudeProduction = () => {
-    var figure_title = document.getElementById('figure1');
+    var figure_title = document.getElementById('crude_prod_title');
     setTitle(figure_title,crudeProdFilters)
 
     var chartCrude = createCrudeProdChart(seriesData, units);

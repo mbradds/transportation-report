@@ -329,8 +329,8 @@ def readExcel(name,sheet='pq',flatten=False):
         write_path = os.path.join(os.getcwd(),'Kevin/crude_exports/',name.split('.')[0]+'.json')
     
     if name == 'UScrudeoilimports.xlsx':
-        write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
         df['Value'] = [round(x,2) for x in df['Value']]
+        write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
     
     if name == 'fgrs-eng.xlsx':
         write_path = os.path.join(os.getcwd(),'Colette/crude_takeaway/',name.split('.')[0]+'.json')
@@ -341,6 +341,9 @@ def readExcel(name,sheet='pq',flatten=False):
             del df[delete]
         df = df[df['Attribute']!='Truck']
         write_path = os.path.join(os.getcwd(),'Colette/crude_export_mode/',name.split('.')[0]+'.json')
+    
+    if name == 'Natural_Gas_Production.xlsx':
+        write_path = os.path.join(os.getcwd(),'Rebecca/gas_production/',name.split('.')[0]+'.json')
         
     #df = df.astype(object).where(pd.notnull(df), None)
     df.to_json(write_path,orient='records',force_ascii=False)
@@ -665,7 +668,7 @@ if __name__ == '__main__':
     #colette
     #df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
     #df = readExcel('fgrs-eng.xlsx',sheet='pq')
-    df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
+    #df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
     
     #sara
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
@@ -673,7 +676,7 @@ if __name__ == '__main__':
     
     #rebecca
     #df = readCersei(query_gas_prices,'gas_prices.json')
-    
+    df = readExcel('Natural_Gas_Production.xlsx')
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
