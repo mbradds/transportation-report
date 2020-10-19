@@ -17,6 +17,7 @@ export const conversions = (conv, current, base) => {
     "Mb/d to m3/d": { conversion: 159, type: "*" },
     "MMb/d to Mm3/d": { conversion: 0.0062898, type: "/" },
     "Bcf/d to Mm3/d": { conversion: 0.0000353, type: "*" },
+    "Bcf/d to Million m3/d": { conversion: 28.32, type: "*" },
   };
 
   var units = cerConversions[conv];

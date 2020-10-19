@@ -16,7 +16,7 @@ export const ryanNglExports = () => {
     Region: "Canada",
   };
   const setTitle = (figure_title, filters) => {
-    figure_title.innerText = `Figure 11: ${filters.Region} ${filters.Product} Exports`;
+    figure_title.innerText = `Figure 13: ${filters.Region} ${filters.Product} Exports`;
   };
   const nglColors = {
     Pipeline: cerPalette["Sun"],
@@ -101,7 +101,7 @@ export const ryanNglExports = () => {
   };
 
   const mainNglExports = () => {
-    var figure_title = document.getElementById('figure12');
+    var figure_title = document.getElementById('ngl_title');
     setTitle(figure_title,nglFilters)
     var nglChart = createNglChart(seriesData, nglFilters, units);
 
