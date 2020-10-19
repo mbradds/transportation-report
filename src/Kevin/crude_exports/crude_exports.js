@@ -4,6 +4,8 @@ import {
   prepareSeriesTidy,
   creditsClick,
   conversions,
+  mouseOverFunction,
+  mouseOutFunction,
 } from "../../modules/util.js";
 
 import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
@@ -31,22 +33,6 @@ export const kevinCrudeExports = () => {
     "Value",
     crudeExportColors
   );
-
-  const mouseOverFunction = (itter, currentSelection) => {
-    itter.forEach(function (s) {
-      if (s.name != currentSelection) {
-        s.setState("inactive");
-      } else {
-        s.setState("hover");
-      }
-    });
-  };
-
-  const mouseOutFunction = (itter) => {
-    itter.forEach(function (s) {
-      s.setState("");
-    });
-  };
 
   const createPaddMap = () => {
     var paddMap = new Highcharts.mapChart("container_padd_map", {
