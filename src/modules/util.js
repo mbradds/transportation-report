@@ -19,7 +19,6 @@ export const conversions = (conv, current, base) => {
     "Bcf/d to Mm3/d": { conversion: 0.0000353, type: "*" },
     "Bcf/d to Million m3/d": { conversion: 28.32, type: "*" },
   };
-
   var units = cerConversions[conv];
   units.unitsCurrent = current;
   units.unitsBase = base;
