@@ -334,6 +334,13 @@ def readExcel(name,sheet='pq',flatten=False):
     
     if name == 'fgrs-eng.xlsx':
         write_path = os.path.join(os.getcwd(),'Colette/crude_takeaway/',name.split('.')[0]+'.json')
+    
+    if name == 'CrudeRawData-2019-01-01-2019-12-01.xlsx':
+        df['Percent'] = df['Percent'].round(2)
+        for delete in ['Value','Total Volume']:
+            del df[delete]
+        df = df[df['Attribute']!='Truck']
+        write_path = os.path.join(os.getcwd(),'Colette/crude_export_mode/',name.split('.')[0]+'.json')
         
     #df = df.astype(object).where(pd.notnull(df), None)
     df.to_json(write_path,orient='records',force_ascii=False)
@@ -658,13 +665,14 @@ if __name__ == '__main__':
     #colette
     #df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
     #df = readExcel('fgrs-eng.xlsx',sheet='pq')
+    df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
     
     #sara
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
     #df = readCersei(query_gas_2019,'gas_2019.json')
     
     #rebecca
-    df = readCersei(query_gas_prices,'gas_prices.json')
+    #df = readCersei(query_gas_prices,'gas_prices.json')
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
@@ -687,10 +695,4 @@ if __name__ == '__main__':
     #df = crudeThroughput(name='oil_throughput.sql')
     #df = crudeCapacity(name='oil_capacity.sql')
     
-
 #%%
-
-
-
-
-

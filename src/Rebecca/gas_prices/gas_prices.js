@@ -2,6 +2,8 @@ import {
   cerPalette,
   prepareSeriesTidy,
   creditsClick,
+  mouseOverFunction,
+  mouseOutFunction,
 } from "../../modules/util.js";
 
 import gasPriceData from "./gas_prices.json";
@@ -25,22 +27,6 @@ export const rebeccaGasPrices = () => {
     gasPriceColors
   );
 
-  const mouseOverFunction = (itter, currentSelection) => {
-    itter.forEach(function (s) {
-      if (s.name != currentSelection) {
-        s.setState("inactive");
-      } else {
-        s.setState("hover");
-      }
-    });
-  };
-
-  const mouseOutFunction = (itter) => {
-    itter.forEach(function (s) {
-      s.setState("");
-    });
-  };
-
   const createGasPriceMap = () => {
     const gasMap = Highcharts.mapChart("container_gas_map", {
       chart: {
@@ -48,10 +34,7 @@ export const rebeccaGasPrices = () => {
         map: "custom/north-america-no-central",
         events: {
           load: function () {
-            creditsClick(
-              this,
-              "https://www.spglobal.com/platts/en"
-            );
+            creditsClick(this, "https://www.spglobal.com/platts/en");
           },
         },
       },
@@ -155,7 +138,7 @@ export const rebeccaGasPrices = () => {
       chart: {
         zoomType: "x",
       },
-      
+
       credits: {
         text: "",
       },

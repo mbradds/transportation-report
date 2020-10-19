@@ -220,8 +220,36 @@ export const prepareSeriesTidy = (
   );
 };
 
+export const prepareSeriesPie = (data, seriesName, nameCol,yCol,colors) => {
+  const series = { name: seriesName, colorByPoint: true };
+  series.data = data.map((row) => {
+    return {
+      name: row[nameCol],
+      y: row[yCol],
+      color: colors[row[nameCol]],
+    };
+  });
+  return [series];
+};
+
 export const creditsClick = (chart, link) => {
   chart.credits.element.onclick = function () {
     window.open(link, "_blank");
   };
+};
+
+export const mouseOverFunction = (itter, currentSelection) => {
+  itter.forEach(function (s) {
+    if (s.name != currentSelection) {
+      s.setState("inactive");
+    } else {
+      s.setState("hover");
+    }
+  });
+};
+
+export const mouseOutFunction = (itter) => {
+  itter.forEach(function (s) {
+    s.setState("");
+  });
 };
