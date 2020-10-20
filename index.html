@@ -32,7 +32,8 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- <script src="https://code.highcharts.com/highcharts.js"></script> -->
+    <script src="https://code.highcharts.com/gantt/highcharts-gantt.js"></script>
     <script src="https://code.highcharts.com/maps/modules/map.js"></script>
     <script src="https://code.highcharts.com/modules/data.js"></script>
     <script src="https://code.highcharts.com/modules/no-data-to-display.js"></script>
@@ -330,8 +331,7 @@
     <div class="container my-container">
       <div class="row my-row">
         <div class="col my-col">
-          <div id="gas_trade_title" class="figure_title">
-          </div>
+          <div id="gas_trade_title" class="figure_title"></div>
         </div>
       </div>
       <div class="row py-2 my-row">
@@ -419,6 +419,21 @@
       </div>
     </div>
 
+    <div class="container my-container">
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="figureX" class="figure_title">
+            Figure 15: Negotiated Settlement Timelines
+          </div>
+        </div>
+      </div>
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="container_settlements"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="author">Ryan/Sophie</div>
     <!-- ngl exports -->
     <div class="container my-container">
@@ -461,7 +476,7 @@
       <div class="row my-row">
         <div class="col my-col">
           <div id="figureX" class="figure_title">
-            Figure 15: Pipeline Financial Resource Requirements
+            Figure 17: Pipeline Financial Resource Requirements
           </div>
         </div>
       </div>

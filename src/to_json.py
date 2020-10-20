@@ -671,6 +671,24 @@ def tolls(name):
     df.to_json(write_path,orient='records')
     return df
 
+def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX'):
+    read_path = os.path.join(os.getcwd(),'Data/',name)
+    df = pd.read_excel(read_path,sheet_name='Settlements Data',skiprows=2)
+    df = df[['Company', 'Group', 'Oil/Gas',
+       'Settlement Name and/or Reference', 'Original Settlement Approval',
+       'Start Date', 'End Date (specified, or effective)',
+       'Toll Design, Revenue Requirment, or Both', 'Notes']]
+    df = df[~df['Start Date'].isnull()]
+    for delete in ['Original Settlement Approval','Toll Design, Revenue Requirment, or Both','Notes']:
+        del df[delete]
+    df = df.rename(columns={'Settlement Name and/or Reference':'Settlement Name','End Date (specified, or effective)':'End Date'})
+    
+    df = normalize_dates(df, ['Start Date','End Date'])
+    write_path = os.path.join(os.getcwd(),'Cassandra/negotiated_settlements/','settlements.json')
+    df.to_json(write_path,orient='records')
+    
+    return df
+
 
 if __name__ == '__main__':
     
@@ -692,11 +710,12 @@ if __name__ == '__main__':
     #rebecca
     #df = readCersei(query_gas_prices,'gas_prices.json')
     #df = readExcel('Natural_Gas_Production.xlsx')
-    df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade')
+    #df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade')
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    df = negotiated_settlements()
     
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
