@@ -30,7 +30,7 @@ export const rebeccaGasProd = () => {
   );
 
   const createGasProdChart = (seriesData, units) => {
-    const chart = new Highcharts.chart("container_gas_production", {
+    return new Highcharts.chart("container_gas_production", {
       chart: {
         type: "column",
         zoomType: "x",
@@ -58,12 +58,10 @@ export const rebeccaGasProd = () => {
 
       series: seriesData,
     });
-    return chart;
   };
 
   const mainGasProducton = () => {
-    const gasProdChart = createGasProdChart(seriesData, units);
-
+    var gasProdChart = createGasProdChart(seriesData, units);
     var selectUnitsGasProd = document.getElementById("select_units_gas_prod");
     selectUnitsGasProd.addEventListener("change", (selectUnitsGasProd) => {
       units.unitsCurrent = selectUnitsGasProd.target.value;

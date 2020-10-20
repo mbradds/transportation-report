@@ -41,7 +41,7 @@ export const ryanNglExports = () => {
   );
 
   const createNglChart = (seriesData, nglFilters, nglUnits) => {
-    const chart = new Highcharts.chart("container_ngl", {
+    return new Highcharts.chart("container_ngl", {
       chart: {
         type: "line",
         zoomType: "x",
@@ -96,8 +96,6 @@ export const ryanNglExports = () => {
 
       series: seriesData,
     });
-
-    return chart;
   };
 
   const mainNglExports = () => {

@@ -52,7 +52,7 @@ export const saraGasTraffic = () => {
   );
 
   const createChartGasTraffic = (seriesData) => {
-    const chart = new Highcharts.chart("container_gas_traffic", {
+    return new Highcharts.chart("container_gas_traffic", {
       chart: {
         zoomType: "x",
         borderWidth: 1,
@@ -85,12 +85,9 @@ export const saraGasTraffic = () => {
 
       series: seriesData,
     });
-
-    return chart;
   };
 
-  const chartGasTraffic = createChartGasTraffic(seriesData);
-
+  var chartGasTraffic = createChartGasTraffic(seriesData);
   var selectUnitsGasTraffic = document.getElementById(
     "select_units_gas_traffic"
   );

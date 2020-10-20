@@ -52,7 +52,7 @@ export const kevinCrudeProduction = () => {
   );
 
   const createCrudeProdChart = (seriesData, units) => {
-    const chart = new Highcharts.chart("container_crude_production", {
+    return new Highcharts.chart("container_crude_production", {
       chart: {
         type: "column",
         zoomType: "x",
@@ -80,7 +80,6 @@ export const kevinCrudeProduction = () => {
 
       series: seriesData,
     });
-    return chart;
   };
 
   const mainCrudeProduction = () => {

@@ -70,7 +70,7 @@ export const cassandraTolls = () => {
   );
 
   const createTollsChart = (seriesData) => {
-    const chart = new Highcharts.chart("container_tolls", {
+    return new Highcharts.chart("container_tolls", {
       chart: {
         zoomType: "x",
         borderWidth: 1,
@@ -96,14 +96,12 @@ export const cassandraTolls = () => {
 
       series: seriesData,
     });
-
-    return chart;
   };
 
   const mainTolls = () => {
     var figure_title = document.getElementById("tolls_title");
     setTitle(figure_title, tollFilters);
-    const chartTolls = createTollsChart(seriesData);
+    var chartTolls = createTollsChart(seriesData);
 
     var selectTolls = document.getElementById("select_commodity_tolls");
     selectTolls.addEventListener("change", (selectTolls) => {
@@ -120,7 +118,7 @@ export const cassandraTolls = () => {
           tollColors
         )
       );
-      const chartTolls = createTollsChart(seriesData);
+      chartTolls = createTollsChart(seriesData);
     });
   };
   mainTolls();

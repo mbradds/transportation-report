@@ -53,10 +53,8 @@ export const rebeccaGasTrade = () => {
             this.series.forEach(function (s) {
               s.data.forEach(function (row) {
                 usedRegions.push(row["hc-key"]);
-                //console.log(row['hc-key'])
               });
             });
-            //console.log(usedRegions)
             const otherData = [];
             this.series[0].mapData.forEach(function (state) {
               if (!usedRegions.includes(state["hc-key"])) {
