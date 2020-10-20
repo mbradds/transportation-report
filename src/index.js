@@ -66,6 +66,7 @@ import { rebeccaGasProd } from "./Rebecca/gas_production/gas_production";
 import { rebeccaGasTrade } from "./Rebecca/gas_trade/gas_trade"
 import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
 import { cassandraTolls } from "./Cassandra/tolls/tolls";
+import { cassandraSettlements } from "./Cassandra/negotiated_settlements/settlements";
 import { ryanNglExports } from "./Ryan/ngl_exports/ngl_exports";
 import { jenniferFinResources } from "./Jennifer/financial_instruments/fin_resource";
 
@@ -83,5 +84,6 @@ rebeccaGasProd();
 rebeccaGasTrade();
 cassandraAllPipes();
 cassandraTolls();
+cassandraSettlements();
 ryanNglExports();
 jenniferFinResources();
