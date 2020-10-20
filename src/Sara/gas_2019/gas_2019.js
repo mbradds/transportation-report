@@ -25,7 +25,7 @@ export const sara2019 = () => {
   );
 
   const createGas2019Chart = (seriesData) => {
-    const chartGas2019 = new Highcharts.chart("container_gas_2019", {
+    return new Highcharts.chart("container_gas_2019", {
       chart: {
         type: "column",
         borderWidth: 1,
@@ -53,12 +53,10 @@ export const sara2019 = () => {
 
       series: seriesData,
     });
-
-    return chartGas2019;
   };
 
   const mainGas2019 = () => {
-    const chartGas2019 = createGas2019Chart(seriesData);
+    var chartGas2019 = createGas2019Chart(seriesData);
     var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
     selectUnitsGas2019.addEventListener("change", (selectUnitsGas2019) => {
       units.unitsCurrent = selectUnitsGas2019.target.value;

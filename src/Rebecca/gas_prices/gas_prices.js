@@ -28,7 +28,7 @@ export const rebeccaGasPrices = () => {
   );
 
   const createGasPriceMap = () => {
-    const gasMap = Highcharts.mapChart("container_gas_map", {
+    return Highcharts.mapChart("container_gas_map", {
       chart: {
         type: "map",
         map: "custom/north-america-no-central",
@@ -130,11 +130,10 @@ export const rebeccaGasPrices = () => {
         },
       ],
     });
-    return gasMap;
   };
 
   const createGasPriceChart = (seriesData) => {
-    const chart = new Highcharts.chart("container_gas_prices", {
+    return new Highcharts.chart("container_gas_prices", {
       chart: {
         zoomType: "x",
       },
@@ -160,11 +159,9 @@ export const rebeccaGasPrices = () => {
       },
       series: seriesData,
     });
-
-    return chart;
   };
 
-  const gasMap = createGasPriceMap();
+  var gasMap = createGasPriceMap();
   var chartGasPrice = createGasPriceChart(seriesData);
 
   var selectUnitsGasPrice = document.getElementById("select_units_gas_prices");

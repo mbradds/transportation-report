@@ -20,7 +20,7 @@ export const coletteCrudeMode = () => {
     crudeModeColors
   );
   const createCrudeModeChart = (seriesData) => {
-    const crudeModeChart = Highcharts.chart("container_crude_mode", {
+    return Highcharts.chart("container_crude_mode", {
       chart: {
         plotBackgroundColor: null,
         plotBorderWidth: null,
@@ -58,7 +58,6 @@ export const coletteCrudeMode = () => {
       },
       series: seriesData,
     });
-    return crudeModeChart;
   };
   createCrudeModeChart(seriesData);
 };

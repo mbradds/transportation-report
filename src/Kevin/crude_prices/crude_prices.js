@@ -37,7 +37,7 @@ export const kevinCrudePrices = () => {
   );
 
   const createCrudePriceChart = (seriesData) => {
-    const chart = new Highcharts.chart("container_crude_prices", {
+    return new Highcharts.chart("container_crude_prices", {
       chart: {
         zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
         borderWidth: 1,
@@ -69,9 +69,6 @@ export const kevinCrudePrices = () => {
       },
       series: seriesData,
     });
-
-    return chart;
   };
-
   const chart = createCrudePriceChart(seriesData);
 };

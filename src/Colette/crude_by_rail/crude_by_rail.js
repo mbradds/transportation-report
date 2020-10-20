@@ -39,7 +39,7 @@ export const coletteCrudeByRail = () => {
   );
 
   const createRailChart = () => {
-    const chartRail = new Highcharts.chart("container_crude_by_rail", {
+    return new Highcharts.chart("container_crude_by_rail", {
       chart: {
         type: "area",
         zoomType: "x",
@@ -100,13 +100,10 @@ export const coletteCrudeByRail = () => {
         },
       ],
     });
-
-    return chartRail;
   };
 
   const mainChartRail = () => {
     var chartRail = createRailChart(seriesData);
-
     var selectUnitsRail = document.getElementById("select_units_rail");
     selectUnitsRail.addEventListener("change", (selectUnitsRail) => {
       railFilters.Units = selectUnitsRail.target.value;

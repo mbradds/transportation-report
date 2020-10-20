@@ -84,7 +84,7 @@ export const jenniferFinResources = () => {
   );
 
   const createFinResourceTotals = (seriesData) => {
-    const chart = new Highcharts.chart("container_fin_totals", {
+    return new Highcharts.chart("container_fin_totals", {
       chart: {
         height: "10%",
         type: "bar",
@@ -145,12 +145,10 @@ export const jenniferFinResources = () => {
 
       series: seriesData,
     });
-
-    return chart;
   };
 
   const createFinResourceChart = (seriesData, finResourceFilters) => {
-    const chart = new Highcharts.chart("container_fin_resources", {
+    return new Highcharts.chart("container_fin_resources", {
       chart: {
         height: "30%",
       },
@@ -200,18 +198,16 @@ export const jenniferFinResources = () => {
 
       series: seriesData,
     });
-
-    return chart;
   };
 
   const createFinResourceChartClass = (seriesData, finResourceFilters) => {
-    const chart = new Highcharts.chart("container_fin_resources_class", {
+    return new Highcharts.chart("container_fin_resources_class", {
       chart: {
         height: "30%",
         type: "column",
         events: {
           load: function () {
-            creditsClick(this,"https://www.cer-rec.gc.ca/en/index.html")
+            creditsClick(this, "https://www.cer-rec.gc.ca/en/index.html");
           },
         },
       },
@@ -260,17 +256,15 @@ export const jenniferFinResources = () => {
 
       series: seriesData,
     });
-
-    return chart;
   };
 
   const loadInitialCharts = () => {
     const chartFinTotals = createFinResourceTotals(totals);
-    const chartFinResource = createFinResourceChart(
+    var chartFinResource = createFinResourceChart(
       finResourceSeries,
       finResourceFilters
     );
-    const chartFinResourceClass = createFinResourceChartClass(
+    var chartFinResourceClass = createFinResourceChartClass(
       finResourceSeriesClass,
       finResourceFilters
     );
@@ -338,12 +332,12 @@ export const jenniferFinResources = () => {
           "name"
         )
       );
-      const chartFinResource = createFinResourceChart(
+      var chartFinResource = createFinResourceChart(
         finResourceSeries,
         finResourceFilters
       );
 
-      const chartFinResourceClass = createFinResourceChartClass(
+      var chartFinResourceClass = createFinResourceChartClass(
         finResourceSeriesClass,
         finResourceFilters
       );

@@ -63,7 +63,7 @@ export const coletteCrudeTakeaway = () => {
   );
 
   const createChartCrudeTakeaway = (seriesData) => {
-    var chart = new Highcharts.chart("container_crude_takeaway", {
+    return new Highcharts.chart("container_crude_takeaway", {
       chart: {
         zoomType: "x",
         borderWidth: 1,
@@ -95,13 +95,10 @@ export const coletteCrudeTakeaway = () => {
 
       series: seriesData,
     });
-
-    return chart;
   };
 
   const mainCrudeTakeaway = () => {
-    const crudeTakeawayChart = createChartCrudeTakeaway(seriesData);
-
+    var crudeTakeawayChart = createChartCrudeTakeaway(seriesData);
     var selectUnitsCrudeTakeaway = document.getElementById(
       "select_units_crude_takeaway"
     );

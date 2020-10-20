@@ -40,7 +40,7 @@ export const kevinUsImports = () => {
     )
   );
   const createCrudeImportsChart = (seriesData) => {
-    var chartCrudeImports = new Highcharts.chart("container_crude_imports", {
+    return new Highcharts.chart("container_crude_imports", {
       chart: {
         zoomType: "x",
         borderWidth: 1,
@@ -68,12 +68,9 @@ export const kevinUsImports = () => {
 
       series: seriesData,
     });
-
-    return chartCrudeImports;
   };
 
   var chartCrudeImports = createCrudeImportsChart(seriesData);
-
   var selectUnitsCrudeImports = document.getElementById(
     "select_units_crude_imports"
   );

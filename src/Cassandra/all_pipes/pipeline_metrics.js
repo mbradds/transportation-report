@@ -75,7 +75,7 @@ export const cassandraAllPipes = () => {
   );
 
   const createFinancialChart = (newData, yFormat, yLabel) => {
-    const chart = new Highcharts.chart("container_financial_metrics", {
+    return new Highcharts.chart("container_financial_metrics", {
       chart: {
         type: "line", 
         zoomType: "x", 
@@ -136,15 +136,14 @@ export const cassandraAllPipes = () => {
       },
       series: newData,
     });
-    return chart;
   };
 
   const mainPipeline = () => {
     var chartFinance = createFinancialChart(seriesData, yFormat, yLabel);
-
     var selectMetricFinancial = document.getElementById(
       "select_metric_financial"
     );
+
     selectMetricFinancial.addEventListener(
       "change",
       (selectMetricFinancial) => {
@@ -157,6 +156,7 @@ export const cassandraAllPipes = () => {
     var selectPipeFinancial = document.getElementById(
       "select_pipelines_financial"
     );
+
     selectPipeFinancial.addEventListener("change", (selectPipeFinancial) => {
       var pipeGroup = selectPipeFinancial.target.value;
       financeFilters.Category = pipeGroup;
@@ -168,10 +168,8 @@ export const cassandraAllPipes = () => {
         financialData,
         filters
       );
-      chartFinance = createFinancialChart(seriesData, yFormat, yLabel);
-      return chartFinance
+      return createFinancialChart(seriesData, yFormat, yLabel);
     };
   };
   mainPipeline();
 };
-
