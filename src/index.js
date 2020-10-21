@@ -61,6 +61,7 @@ import { coletteCrudeTakeaway } from "./Colette/crude_takeaway/crude_takeaway";
 import { coletteCrudeMode } from "./Colette/crude_export_mode/crude_export_mode";
 import { saraGasTraffic } from "./Sara/gas_traffic/gas_traffic";
 import { sara2019 } from "./Sara/gas_2019/gas_2019";
+import { saraMnp } from "./Sara/st_stephen/sync";
 import { rebeccaGasPrices } from "./Rebecca/gas_prices/gas_prices";
 import { rebeccaGasProd } from "./Rebecca/gas_production/gas_production";
 import { rebeccaGasTrade } from "./Rebecca/gas_trade/gas_trade"
@@ -79,6 +80,7 @@ coletteCrudeTakeaway();
 coletteCrudeMode();
 saraGasTraffic();
 sara2019();
+saraMnp();
 rebeccaGasPrices();
 rebeccaGasProd();
 rebeccaGasTrade();
