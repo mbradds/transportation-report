@@ -41,6 +41,8 @@ export const cassandraTolls = () => {
   };
 
   var tollFilters = { Commodity: "Oil & Gas" };
+  var tollDate = { Date: "End" };
+
   const tollColors = {
     "Gas Tolls": cerPalette["Sun"],
     "Oil Tolls": cerPalette["Night Sky"],
@@ -63,13 +65,13 @@ export const cassandraTolls = () => {
       tollFilters,
       false,
       "Pipeline",
-      "Start",
+      tollDate.Date,
       "Rate Normalized",
       tollColors
     )
   );
 
-  const createTollsChart = (seriesData) => {
+  const createTollsChart = (seriesData, tollDate) => {
     return new Highcharts.chart("container_tolls", {
       chart: {
         zoomType: "x",
@@ -87,7 +89,7 @@ export const cassandraTolls = () => {
 
       xAxis: {
         type: "datetime",
-        title: {text: "Toll Start Date"}
+        title: { text: `Toll ${tollDate.Date} date` },
       },
 
       yAxis: {
@@ -101,24 +103,47 @@ export const cassandraTolls = () => {
   const mainTolls = () => {
     var figure_title = document.getElementById("tolls_title");
     setTitle(figure_title, tollFilters);
-    var chartTolls = createTollsChart(seriesData);
+    var chartTolls = createTollsChart(seriesData, tollDate);
 
     var selectTolls = document.getElementById("select_commodity_tolls");
     selectTolls.addEventListener("change", (selectTolls) => {
       tollFilters.Commodity = selectTolls.target.value;
-      setTitle(figure_title,tollFilters)
+      setTitle(figure_title, tollFilters);
       const seriesData = tollChartTypes(
         prepareSeriesTidy(
           tollsData,
           tollFilters,
           false,
           "Pipeline",
-          "Start",
+          tollDate.Date,
           "Rate Normalized",
           tollColors
         )
       );
-      chartTolls = createTollsChart(seriesData);
+      chartTolls = createTollsChart(seriesData, tollDate);
+    });
+
+    var selectDate = document.getElementById("select_toll_date");
+    selectDate.addEventListener("change", (selectDate) => {
+      tollDate.Date = selectDate.target.value;
+      const seriesData = tollChartTypes(
+        prepareSeriesTidy(
+          tollsData,
+          tollFilters,
+          false,
+          "Pipeline",
+          tollDate.Date,
+          "Rate Normalized",
+          tollColors
+        )
+      );
+      chartTolls.update({
+        series: seriesData,
+        xAxis: {
+          type: "datetime",
+          title: { text: `Toll ${tollDate.Date} date` },
+        },
+      });
     });
   };
   mainTolls();

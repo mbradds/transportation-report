@@ -227,7 +227,7 @@ cast(str(month(Date))+'-'+'1'+'-'+str(year(Date)) as date) as [Date], \
 round(avg([Price ($CN/GIG)]),2) as [Price ($CN/GIG)], \
 round(avg([Price ($US/MMB)]),2) as [Price ($US/MMB)] \
 FROM [EnergyData].[dbo].[vwPlatts_NextDay_converted] \
-where [Location] in ('Henry Hub TDt Com','Dawn Ontario TDt Com','TC Alb AECO-C TDt Com Dly') \
+where [Location] in ('Henry Hub TDt Com','Dawn Ontario TDt Com','TC Alb AECO-C TDt Com Dly','Westcoast Stn 2 TDt Com') \
 group by [Location], year([Date]), month([Date]) \
 having (round(avg([Price ($CN/GIG)]),2) is not null) and (round(avg([Price ($US/MMB)]),2) is not null) \
 order by year([Date]), month([Date]), [Location]" 
@@ -716,8 +716,8 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    #df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    df = negotiated_settlements()
+    df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    #df = negotiated_settlements()
     
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
