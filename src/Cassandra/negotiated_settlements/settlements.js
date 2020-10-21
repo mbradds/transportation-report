@@ -3,6 +3,37 @@ import { cerPalette, creditsClick } from "../../modules/util.js";
 import settlementsData from "./settlements.json";
 
 export const cassandraSettlements = () => {
+  const legendNames = {
+    company: {
+      name: "Total Settlement Range",
+      color: cerPalette["Night Sky"],
+    },
+    end: {
+      name: "Settlements with fixed end date",
+      color: cerPalette["Ocean"],
+    },
+    noEnd: {
+      name: "Settlements without fixed end date",
+      color: cerPalette["Cool Grey"],
+    },
+  };
+
+  const legendColors = {
+    "Total Settlement Range": cerPalette["Night Sky"],
+    "Settlements with fixed end date": cerPalette["Ocean"],
+    "Settlements without fixed end date": cerPalette["Cool Grey"],
+  };
+
+  const filters = { Commodity: "All" };
+
+  const setTitle = (figure_title, filters) => {
+    if (filters.Commodity == "All") {
+      figure_title.innerText = "Figure 15: Negotiated Settlement Timelines";
+    } else {
+      figure_title.innerText = `Figure 15: Negotiated Settlement Timelines - ${filters.Commodity} Companies`;
+    }
+  };
+
   const currentDate = () => {
     var today = new Date(),
       day = 1000 * 60 * 60 * 24;
@@ -17,16 +48,20 @@ export const cassandraSettlements = () => {
 
   const getEndDate = (date) => {
     if (date === null) {
-      return [today, cerPalette["Aubergine"]];
+      return [today, cerPalette["Cool Grey"]];
     } else {
       return [date, cerPalette["Ocean"]];
     }
   };
 
-  const settlementSeries = (data) => {
+  const settlementSeries = (data, filters) => {
     var seriesTracker = {};
     var seriesSettle = [];
     var dates = [];
+
+    if (filters.Commodity !== "All") {
+      data = data.filter((row) => row.Commodity == filters.Commodity);
+    }
 
     data.map((row, rowNum) => {
       dates.push(row["Start Date"]);
@@ -91,27 +126,10 @@ export const cassandraSettlements = () => {
 
     return [seriesSettle, seriesTracker, dates];
   };
-  var [seriesSettle, seriesTracker, dates] = settlementSeries(settlementsData);
-
-  const legendNames = {
-    company: {
-      name: "Company Negotiated Settlement",
-      color: cerPalette["Night Sky"],
-    },
-    end: {
-      name: "Negotiated Settlement (fixed end date)",
-      color: cerPalette["Ocean"],
-    },
-    noEnd: {
-      name: "Negotiated Settlement (no fixed end date)",
-      color: cerPalette["Aubergine"],
-    },
-  };
-  const legendColors = {
-    "Company Negotiated Settlement": cerPalette["Night Sky"],
-    "Negotiated Settlement (fixed end date)": cerPalette["Ocean"],
-    "Negotiated Settlement (no fixed end date)": cerPalette["Aubergine"],
-  };
+  var [seriesSettle, seriesTracker, dates] = settlementSeries(
+    settlementsData,
+    filters
+  );
 
   const createSettlements = (seriesSettle) => {
     return Highcharts.ganttChart("container_settlements", {
@@ -138,6 +156,9 @@ export const cassandraSettlements = () => {
             legendItemClick: function (e) {
               e.preventDefault();
             },
+            checkboxClick: function (e) {
+              console.log(e);
+            },
           },
         },
       },
@@ -148,6 +169,13 @@ export const cassandraSettlements = () => {
         symbolHeight: 0,
         squareSymbol: false,
         useHTML: true,
+        title: {
+          text:
+            'Legend: (Click on a company name to view all negotiated settlements)',
+          style: {
+            fontStyle: "italic",
+          },
+        },
         labelFormatter: function () {
           return (
             '<span style="font-weight:bold; color:' +
@@ -177,25 +205,37 @@ export const cassandraSettlements = () => {
       },
       series: [
         {
-          showInLegend: true,
-          color: legendNames["company"].color,
           name: legendNames["company"].name,
           data: seriesSettle,
+          color: legendNames["company"].color,
         },
         {
           name: legendNames["end"].name,
           data: null,
           color: legendNames["end"].color,
-          showInLegend: true,
         },
         {
           name: legendNames["noEnd"].name,
           data: null,
           color: legendNames["noEnd"].color,
-          showInLegend: true,
         },
       ],
     });
   };
-  createSettlements(seriesSettle);
+  const mainSettlements = () => {
+    var figure_title = document.getElementById("settle_title");
+    setTitle(figure_title, filters);
+    var settlementChart = createSettlements(seriesSettle);
+    var selectSettle = document.getElementById("select_commodity_settle");
+    selectSettle.addEventListener("change", (selectSettle) => {
+      filters.Commodity = selectSettle.target.value;
+      setTitle(figure_title, filters);
+      var [seriesSettle, seriesTracker, dates] = settlementSeries(
+        settlementsData,
+        filters
+      );
+      settlementChart = createSettlements(seriesSettle);
+    });
+  };
+  mainSettlements();
 };
