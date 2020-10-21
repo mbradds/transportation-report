@@ -681,7 +681,9 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
     df = df[~df['Start Date'].isnull()]
     for delete in ['Original Settlement Approval','Toll Design, Revenue Requirment, or Both','Notes']:
         del df[delete]
-    df = df.rename(columns={'Settlement Name and/or Reference':'Settlement Name','End Date (specified, or effective)':'End Date'})
+    df = df.rename(columns={'Settlement Name and/or Reference':'Settlement Name',
+                            'End Date (specified, or effective)':'End Date',
+                            'Oil/Gas':'Commodity'})
     
     df = normalize_dates(df, ['Start Date','End Date'])
     write_path = os.path.join(os.getcwd(),'Cassandra/negotiated_settlements/','settlements.json')
