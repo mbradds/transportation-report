@@ -13,6 +13,7 @@ export const rebeccaGasPrices = () => {
     ["Dawn Ontario TDt Com"]: cerPalette["Sun"],
     ["TC Alb AECO-C TDt Com Dly"]: cerPalette["Forest"],
     ["Henry Hub TDt Com"]: cerPalette["Night Sky"],
+    ["Westcoast Stn 2 TDt Com"]: cerPalette["Ocean"]
   };
 
   var gasPriceFilters = { Units: "Price ($CN/GIG)" };
@@ -57,7 +58,7 @@ export const rebeccaGasPrices = () => {
           },
           stickyTracking: false,
           marker: {
-            radius: 12,
+            radius: 10,
           },
           point: {
             events: {
@@ -120,8 +121,22 @@ export const rebeccaGasPrices = () => {
           color: gasPriceColors["TC Alb AECO-C TDt Com Dly"],
           data: [
             {
-              lat: 53.9333,
-              lon: -116.5765,
+              lat: 53.5461,
+              lon: -113.4938,
+            },
+          ],
+          dataLabels: {
+            enabled: false,
+          },
+        },
+        {
+          type: "mappoint",
+          name: "Westcoast Stn 2 TDt Com",
+          color: gasPriceColors["Westcoast Stn 2 TDt Com"],
+          data: [
+            {
+              lat: 55.6977,
+              lon: -121.6297,
             },
           ],
           dataLabels: {
