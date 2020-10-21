@@ -232,6 +232,16 @@ group by [Location], year([Date]), month([Date]) \
 having (round(avg([Price ($CN/GIG)]),2) is not null) and (round(avg([Price ($US/MMB)]),2) is not null) \
 order by year([Date]), month([Date]), [Location]" 
 
+query_st_stephen = "SELECT \
+cast(str(gas.Month)+'-'+'1'+'-'+str(gas.Year) as date) as [Date], \
+gas.[Trade Type], \
+round(avg(gas.[Capacity (1000 m3/d)]/1000),2) as [Capacity (million m3/d)], \
+round(avg(gas.[Throughput (1000 m3/d)]/1000),2) as [Throughput (million m3/d)] \
+FROM [EnergyData].[dbo].[Pipelines_Gas] as gas \
+where  gas.[Corporate Entity]='Maritimes & Northeast Pipeline' and gas.[Pipeline Name] = 'Canadian Mainline' \
+group by gas.Year,gas.Month, gas.[Trade Type] \
+order by cast(str(gas.Month)+'-'+'1'+'-'+str(gas.Year) as date), [Trade Type] "
+
 def normalize_dates(df,date_list):
     for date_col in date_list:
         df[date_col] = pd.to_datetime(df[date_col])
@@ -280,6 +290,8 @@ def readCersei(query,name=None):
         df = df.sort_values(by=['Capacity'], ascending=False)
     if name == 'gas_prices.json':
         write_path = os.path.join(os.getcwd(),'Rebecca/gas_prices/',name)
+    if name == 'st_stephen.json':
+        write_path = os.path.join(os.getcwd(),'Sara/st_stephen/',name)
         
     if name != None:
         df.to_json(write_path,orient='records')
@@ -708,6 +720,7 @@ if __name__ == '__main__':
     #sara
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
     #df = readCersei(query_gas_2019,'gas_2019.json')
+    df = readCersei(query_st_stephen,'st_stephen.json')
     
     #rebecca
     #df = readCersei(query_gas_prices,'gas_prices.json')
@@ -716,7 +729,7 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    #df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     #df = negotiated_settlements()
     
     #ryan
