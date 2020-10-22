@@ -720,17 +720,17 @@ if __name__ == '__main__':
     #sara
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
     #df = readCersei(query_gas_2019,'gas_2019.json')
-    df = readCersei(query_st_stephen,'st_stephen.json')
+    #df = readCersei(query_st_stephen,'st_stephen.json')
     
     #rebecca
     #df = readCersei(query_gas_prices,'gas_prices.json')
     #df = readExcel('Natural_Gas_Production.xlsx')
-    #df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade')
+    #df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    #df = negotiated_settlements()
+    df = negotiated_settlements()
     
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
