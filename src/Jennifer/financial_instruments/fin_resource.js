@@ -7,6 +7,7 @@ import {
 
 import finResourceData from "./fin_resource_totals.json";
 import finResourceClass from "./fin_resource_class.json";
+import finResourceNames from "./fin_resource_class_names.json";
 
 export const jenniferFinResources = () => {
   var finResourceFilters = { Commodity: "All" };
@@ -168,7 +169,7 @@ export const jenniferFinResources = () => {
       },
 
       title: {
-        text: `Number of Companies & Total Financial Resources: ${finResourceFilters.Commodity} Pipelines`,
+        text: `Financial Instruments Utilized in Financial Resource Plan: ${finResourceFilters.Commodity} Pipelines`,
       },
 
       xAxis: {
@@ -230,11 +231,21 @@ export const jenniferFinResources = () => {
       },
 
       tooltip: {
-        shared: true,
+        formatter: function () {
+          return (
+            "<b>" +
+            this.key +
+            "</b><br>" +
+            "<i>Companies in " +
+            this.key +
+            ": </i><br>" +
+            finResourceNames[this.key].join(", ")
+          );
+        },
       },
 
       title: {
-        text: `Financial Resource Limits by Class: ${finResourceFilters.Commodity} Pipelines`,
+        text: `Absolute Liability Limits by Class: ${finResourceFilters.Commodity} Pipelines`,
       },
 
       xAxis: {
