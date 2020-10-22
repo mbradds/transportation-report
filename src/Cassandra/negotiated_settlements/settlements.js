@@ -5,7 +5,7 @@ import settlementsData from "./settlements.json";
 export const cassandraSettlements = () => {
   const legendNames = {
     company: {
-      name: "Total Settlement Range",
+      name: "Active settlement(s)",
       color: cerPalette["Night Sky"],
     },
     end: {
@@ -19,7 +19,7 @@ export const cassandraSettlements = () => {
   };
 
   const legendColors = {
-    "Total Settlement Range": cerPalette["Night Sky"],
+    "Active settlement(s)": cerPalette["Night Sky"],
     "Settlements with fixed end date": cerPalette["Ocean"],
     "Settlements without fixed end date": cerPalette["Cool Grey"],
   };
@@ -171,7 +171,7 @@ export const cassandraSettlements = () => {
         useHTML: true,
         title: {
           text:
-            'Legend: (Click on a company name to view all negotiated settlements)',
+            "Legend: (Click on a company name above to view all negotiated settlements)",
           style: {
             fontStyle: "italic",
           },
@@ -202,6 +202,35 @@ export const cassandraSettlements = () => {
 
       tooltip: {
         xDateFormat: "%Y-%m-%d",
+        formatter: function () {
+          if (this.color == cerPalette["Cool Grey"]) {
+            var endText = "No set end date";
+          } else {
+            var endText = Highcharts.dateFormat("%Y-%m-%d", this.point.end);
+          }
+
+          if (this.point.parent == null) {
+            return (
+              "<b>" +
+              this.key +
+              "</b> <br> Active settlement(s) start: " +
+              Highcharts.dateFormat("%Y-%m-%d", this.point.start) +
+              "<br> Active settlement(s) end: " +
+              Highcharts.dateFormat("%Y-%m-%d", this.point.end)
+            );
+          } else {
+            return (
+              "<b>" +
+              this.point.parent +
+              " - " +
+              this.key +
+              "</b> <br> Start: " +
+              Highcharts.dateFormat("%Y-%m-%d", this.point.start) +
+              "<br> End: " +
+              endText
+            );
+          }
+        },
       },
       series: [
         {

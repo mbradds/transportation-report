@@ -10,9 +10,10 @@ import gasTradeData from "./natural-gas-exports-and-imports-annual.json";
 
 export const rebeccaGasTrade = () => {
   const gasTrafficColors = {
-    ["U.S. West"]: cerPalette["Forest"],
-    ["U.S. Midwest"]: cerPalette["Ocean"],
-    ["U.S. East"]: cerPalette["Night Sky"],
+    Midwest: cerPalette["Sun"],
+    Mountain: cerPalette["Forest"],
+    East: cerPalette["Night Sky"],
+    Pacific: cerPalette["Ocean"],
     Other: cerPalette["Dim Grey"],
   };
   var gasTradeFilters = { Activity: "Exports" };
@@ -114,33 +115,38 @@ export const rebeccaGasTrade = () => {
 
       series: [
         {
-          name: "U.S. West",
-          data: [
-            ["us-wa", 1],
-            ["us-id", 1],
-          ],
-
-          color: gasTrafficColors["U.S. West"],
+          name: "Pacific",
+          data: [["us-wa", 1]],
+          color: gasTrafficColors["Pacific"],
         },
         {
-          name: "U.S. Midwest",
+          name: "Mountain",
           data: [
+            ["us-id", 1],
             ["us-mt", 1],
             ["us-nd", 1],
+          ],
+          color: gasTrafficColors["Mountain"],
+        },
+        {
+          name: "Midwest",
+          data: [
             ["us-mn", 1],
             ["us-mi", 1],
           ],
-          color: gasTrafficColors["U.S. Midwest"],
+          color: gasTrafficColors["Midwest"],
         },
         {
-          name: "U.S. East",
+          name: "East",
           data: [
+            ["us-oh", 1],
+            ["us-pa", 1],
             ["us-ny", 1],
             ["us-vt", 1],
             ["us-nh", 1],
             ["us-me", 1],
           ],
-          color: gasTrafficColors["U.S. East"],
+          color: gasTrafficColors["East"],
         },
       ],
     });
