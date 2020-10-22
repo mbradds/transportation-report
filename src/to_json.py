@@ -200,6 +200,13 @@ where variable = 'ALL Limit' and [ALL Class] not in ('CO2 or Water Class','Commo
 group by fin.[ALL Class] \
 order by left([All Class], CHARINDEX(' ',[ALL Class])) desc, sum(fin.[values]) desc"
 
+query_fin_resource_class_names = "SELECT \
+[ALL Class], \
+[Company] \
+FROM [EnergyData].[dbo].[Pipeline_Fin_Resource] as fin \
+where variable = 'ALL Limit' and [ALL Class] not in ('CO2 or Water Class','Commodity class 1') \
+order by [ALL Class], fin.[values], [Company]"
+
 query_gas_2019 = "SELECT \
 [Year], \
 [Corporate Entity], \
@@ -282,6 +289,20 @@ def readCersei(query,name=None):
         for text_col in ['Pipeline Group','Commodity']:
             df[text_col] = [x.strip() for x in df[text_col]]
         df['Financial Resource'] = pd.to_numeric(df['Financial Resource'])
+    if name == 'fin_resource_class_names.json':
+        write_path = os.path.join(os.getcwd(),'Jennifer/financial_instruments/',name)
+        df = normalize_text(df, ['ALL Class','Company'])
+        classes = list(set(df['ALL Class']))
+        names = {}
+        for group in classes:
+            dfg = df[df['ALL Class']==group].copy()
+            names[group] = sorted(list(set(dfg['Company'])))
+        
+        #names = [names]
+        with open(write_path, 'w') as f:
+            json.dump(names, f)
+        #return names
+        
     if name == 'gas_2019.json':
         write_path = os.path.join(os.getcwd(),'Sara/gas_2019/',name)
         df.loc[df['Corporate Entity'] == 'TransCanada PipeLines Limited', 'Pipeline Name'] = 'TCPL Canadian Mainline'
@@ -292,8 +313,8 @@ def readCersei(query,name=None):
         write_path = os.path.join(os.getcwd(),'Rebecca/gas_prices/',name)
     if name == 'st_stephen.json':
         write_path = os.path.join(os.getcwd(),'Sara/st_stephen/',name)
-        
-    if name != None:
+    
+    if (name != None and name != 'fin_resource_class_names.json'):
         df.to_json(write_path,orient='records')
     conn.close()
     return df
@@ -350,8 +371,13 @@ def readExcel(name,sheet='pq',flatten=False):
         df['Value'] = [round(x,2) for x in df['Value']]
         write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
     
-    if name == 'fgrs-eng.xlsx':
+    if name == 'fgrs-eng.xlsx' and sheet=='pq':
         write_path = os.path.join(os.getcwd(),'Colette/crude_takeaway/',name.split('.')[0]+'.json')
+        
+    if name == 'fgrs-eng.xlsx' and sheet=='ngl production':
+        products = ['Ethane','Propane','Butanes']
+        df = normalize_numeric(df, products, 1)
+        write_path = os.path.join(os.getcwd(),'Ryan/ngl_production/',name.split('.')[0]+'.json')
     
     if name == 'CrudeRawData-2019-01-01-2019-12-01.xlsx':
         df['Percent'] = df['Percent'].round(2)
@@ -730,10 +756,11 @@ if __name__ == '__main__':
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    df = negotiated_settlements()
+    #df = negotiated_settlements()
     
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
+    #df = readExcel('fgrs-eng.xlsx',sheet='ngl production')
     
     #jennifer
     #df_oil = throughcap(query=query_oil_throughcap, name='oil_throughcap.json')
@@ -742,6 +769,7 @@ if __name__ == '__main__':
     #df_fin_insert = financialResources()
     #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
     #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
+    df_fin_class_names = readCersei(query_fin_resource_class_names,'fin_resource_class_names.json')
     
     
     #other

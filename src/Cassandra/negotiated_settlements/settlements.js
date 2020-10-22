@@ -69,7 +69,7 @@ export const cassandraSettlements = () => {
       var [endDate, seriesColor] = getEndDate(row["End Date"]);
 
       if (seriesTracker.hasOwnProperty(row.Company)) {
-        //the parent company is already in the series
+        //the parent company is already in the series, add the sub settlement
         seriesTracker[row.Company].startDate.push(row["Start Date"]);
         seriesTracker[row.Company].endDate.push(endDate);
         seriesSettle.push({
@@ -104,7 +104,7 @@ export const cassandraSettlements = () => {
         });
       }
     });
-
+    
     //get the start and end date for each company across all settlements
     for (const company in seriesTracker) {
       seriesTracker[company].startDate = Math.min(
