@@ -10,6 +10,7 @@ import creditData from "./CreditTables.json";
 import scaleData from "./Scale.json";
 
 export const jenniferRatings = () => {
+
   const defaultCompany = "Enbridge Inc.";
   fillDropUpdate(
     "select_company_credit",
@@ -18,11 +19,17 @@ export const jenniferRatings = () => {
     defaultCompany
   );
 
+  const yRange = (creditData) => {
+    const creditRange = getUnique(creditData,'Level')
+    return [Math.min(...creditRange),26]
+  }
+  const [minY,maxY] = yRange(creditData)
+ 
   const creditFilters = { "Corporate Entity": defaultCompany };
   const creditColors = {
     "S&P": cerPalette["Night Sky"],
     DBRS: cerPalette["Sun"],
-    "Moody's": cerPalette["Ocean"],
+    "Moody's": cerPalette["Forest"],
   };
 
   const createCreditSeries = (creditData, creditFilters, creditColors) => {
@@ -55,7 +62,8 @@ export const jenniferRatings = () => {
     creditColors
   );
 
-  const createCreditChart = (creditSeries, scaleData) => {
+  const createCreditChart = (creditSeries, scaleData,minY,maxY) => {
+
     return Highcharts.chart("container_ratings", {
       chart: {
         type: "line",
@@ -78,10 +86,23 @@ export const jenniferRatings = () => {
       yAxis: {
         title: { text: "Standardized Credit Rating" },
         categories: true,
+        max:maxY,
+        min:minY-1,
         gridLineWidth: 1,
         labels: {
           formatter: function () {
             return scaleData[this.value].creditQuality;
+          },
+        },
+        plotBands: {
+          //color: cerPalette['Ocean'],
+          borderColor: cerPalette['Ocean'],
+          borderWidth: 2,
+          from: 1, 
+          to: 17,
+          label: { 
+            text: 'Non-Investment Grade Level', 
+            align: 'center', 
           },
         },
       },
@@ -116,12 +137,12 @@ export const jenniferRatings = () => {
       series: creditSeries,
     });
   };
-  var creditChart = createCreditChart(creditSeries, scaleData);
+  var creditChart = createCreditChart(creditSeries, scaleData,minY,maxY);
 
   var selectCompanyCredit = document.getElementById("select_company_credit");
   selectCompanyCredit.addEventListener("change", (selectCompanyCredit) => {
     creditFilters["Corporate Entity"] = selectCompanyCredit.target.value;
     creditSeries = createCreditSeries(creditData, creditFilters, creditColors);
-    creditChart = createCreditChart(creditSeries, scaleData);
+    creditChart = createCreditChart(creditSeries, scaleData,minY,maxY);
   });
 };
