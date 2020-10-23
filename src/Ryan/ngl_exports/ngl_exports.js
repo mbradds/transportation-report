@@ -16,7 +16,7 @@ export const ryanNglExports = () => {
     Region: "Canada",
   };
   const setTitle = (figure_title, filters) => {
-    figure_title.innerText = `Figure 17: ${filters.Region} ${filters.Product} Exports`;
+    figure_title.innerText = `Figure 19: ${filters.Region} ${filters.Product} Exports`;
   };
   const nglColors = {
     Pipeline: cerPalette["Sun"],
