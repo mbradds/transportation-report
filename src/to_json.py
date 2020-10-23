@@ -397,6 +397,8 @@ def readExcel(name,sheet='pq',flatten=False):
             del df[delete]
         df = normalize_numeric(df,['Volume (Bcf/d)','Volume (Million m3/d)'],2)
         write_path = os.path.join(os.getcwd(),'Rebecca/gas_trade/',name.split('.')[0]+'.json')
+    if name == 'CreditTables.xlsx':
+        write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',name.split('.')[0]+'.json')
         
     #df = df.astype(object).where(pd.notnull(df), None)
     df.to_json(write_path,orient='records',force_ascii=False)
@@ -444,13 +446,14 @@ def readExcelPipeline(name,sheet='Data',sql=False):
         conn.close()
     return df
 
-def readExcelCredit(name,sheet='Credit Ratings'):
-    
-    df = pd.read_excel(name,sheet)
+def writeExcelCredit(name,sheet='Credit Ratings'):
+    read_path = os.path.join(os.getcwd(),'Data/',name)
+    df = pd.read_excel(read_path,sheet)
     df['Value'] = [str(x).strip() for x in df['Value']]
     df['Value'] = df['Value'].replace({'-':None})
     df = df.rename(columns={'Pipeline':'Corporate Entity'})
-    del df['Table']
+    df = normalize_text(df, ['Corporate Entity','Type','Value'])
+    df['Value'] = df['Value'].replace({'A\xa0(low)':'A (low)','BBB(high)':'BBB (high)'})
     
     conn,engine = cer_connection()
     df.to_sql('Pipeline_Financial_Ratings',con=conn,index=False,if_exists='replace')
@@ -724,6 +727,7 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
                             'Oil/Gas':'Commodity'})
     
     df = normalize_dates(df, ['Start Date','End Date'])
+    df = df.sort_values(by=['Company','Start Date'])
     write_path = os.path.join(os.getcwd(),'Cassandra/negotiated_settlements/','settlements.json')
     df.to_json(write_path,orient='records')
     
@@ -769,11 +773,12 @@ if __name__ == '__main__':
     #df_fin_insert = financialResources()
     #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
     #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
-    df_fin_class_names = readCersei(query_fin_resource_class_names,'fin_resource_class_names.json')
+    #df_fin_class_names = readCersei(query_fin_resource_class_names,'fin_resource_class_names.json')
+    df = readExcel('CreditTables.xlsx',sheet='ratings categories')
     
     
     #other
-    #df = readExcelCredit(name='CreditTables.xlsx')
+    #df = writeExcelCredit(name='CreditTables.xlsx')
     #df = crudeThroughput(name='oil_throughput.sql')
     #df = crudeCapacity(name='oil_capacity.sql')
     
