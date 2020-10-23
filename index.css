@@ -38,6 +38,18 @@
   border: 1px solid black;
 }
 
+#container_ratings {
+  height: 550px;
+}
+
+#container_fin_resources {
+  min-height: 300px;
+}
+
+#container_fin_resources_class {
+  min-height: 300px;
+}
+
 /* .my-row {
   border: 3px solid red;
 }
