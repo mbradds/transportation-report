@@ -112,7 +112,7 @@ const hcRow = (xName, xCol, yCol, row, units, otherName) => {
     return {
       [xName]: row[xCol],
       y: y(row, yCol, units),
-      name: otherName,
+      name: row[otherName],
     };
   }
 };

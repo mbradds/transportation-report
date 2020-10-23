@@ -398,10 +398,28 @@ def readExcel(name,sheet='pq',flatten=False):
         df = normalize_numeric(df,['Volume (Bcf/d)','Volume (Million m3/d)'],2)
         write_path = os.path.join(os.getcwd(),'Rebecca/gas_trade/',name.split('.')[0]+'.json')
     if name == 'CreditTables.xlsx':
-        write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',name.split('.')[0]+'.json')
+        if sheet == 'ratings categories':
+            df = normalize_text(df, ['Corporate Entity','Type','Credit Quality'])
+            write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',name.split('.')[0]+'.json')
+        if sheet == 'Scale':
+            write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',sheet+'.json')
+            del df['Level']
+            df = df.rename(columns={'DBRS Morningstar':'DBRS','Level Inverted':'Level'})
+            df = normalize_text(df, ["Credit Quality","DBRS","S&P","Investment Grade","Moody's"])
+            levels = {}
+            for index,l in enumerate(df['Level']):
+                levels[l] = {"creditQuality":df['Credit Quality'][index],
+                             "S&P":df['S&P'][index],
+                             "DBRS":df['DBRS'][index],
+                             "Moody's":df["Moody's"][index],
+                             "investmentGrade":df['Investment Grade'][index]}
+            with open(write_path, 'w') as f:
+                json.dump(levels, f)
+                
         
     #df = df.astype(object).where(pd.notnull(df), None)
-    df.to_json(write_path,orient='records',force_ascii=False)
+    if sheet != 'Scale':
+        df.to_json(write_path,orient='records',force_ascii=False)
     return df
 
 def readExcelPipeline(name,sheet='Data',sql=False):
@@ -733,6 +751,13 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
     
     return df
 
+def creditRatings():
+    
+    df = readExcel('CreditTables.xlsx',sheet='ratings categories')
+    scale = readExcel('CreditTables.xlsx',sheet='Scale')
+    return df,scale
+    
+
 
 if __name__ == '__main__':
     
@@ -774,7 +799,8 @@ if __name__ == '__main__':
     #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
     #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
     #df_fin_class_names = readCersei(query_fin_resource_class_names,'fin_resource_class_names.json')
-    df = readExcel('CreditTables.xlsx',sheet='ratings categories')
+    df,scale = creditRatings()
+    
     
     
     #other

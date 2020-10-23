@@ -1,74 +1,127 @@
 import {
   cerPalette,
   prepareSeriesTidy,
+  getUnique,
+  fillDropUpdate,
   creditsClick,
 } from "../../modules/util.js";
 
 import creditData from "./CreditTables.json";
+import scaleData from "./Scale.json";
 
 export const jenniferRatings = () => {
+  const defaultCompany = "Enbridge Inc.";
+  fillDropUpdate(
+    "select_company_credit",
+    getUnique(creditData, "Corporate Entity"),
+    false,
+    defaultCompany
+  );
 
-    const creditFilters = {'Company':'Enbridge Inc.'}
-
-  const scale = {
-    "Highest credit quality": { "S&P": "AAA", Moodys: "Aaa" },
-    "Superior/High Quality #1": { "S&P": "AA+", Moodys: "Aa1" },
+  const creditFilters = { "Corporate Entity": defaultCompany };
+  const creditColors = {
+    "S&P": cerPalette["Night Sky"],
+    DBRS: cerPalette["Sun"],
+    "Moody's": cerPalette["Ocean"],
   };
 
-  Highcharts.chart("container_ratings", {
-    chart: {
-      type: "line",
-      plotBorderWidth: 1,
-      inverted: true,
-    },
+  const createCreditSeries = (creditData, creditFilters, creditColors) => {
+    var creditSeriesTidy = prepareSeriesTidy(
+      creditData,
+      creditFilters,
+      false,
+      "Type",
+      "Year",
+      "Level",
+      creditColors
+    );
 
-    legend: {
-      enabled: true,
-    },
+    creditSeriesTidy.map((series, seriesNum) => {
+      series.type = "line";
+      if (series.name == "S&P") {
+        series.zIndex = 3;
+      } else if (series.name == "Moody's") {
+        series.zIndex = 2;
+      } else {
+        series.zIndex = 1;
+      }
+    });
+    return creditSeriesTidy;
+  };
 
-    yAxis: {
-      categories: true,
-      gridLineWidth: 1,
-    },
-    xAxis: {
-      categories: true,
-    },
-    tooltip: {
-      formatter: function () {
-        return this.series.name + " - " + scale[this.key][this.series.name];
+  var creditSeries = createCreditSeries(
+    creditData,
+    creditFilters,
+    creditColors
+  );
+
+  const createCreditChart = (creditSeries, scaleData) => {
+    return Highcharts.chart("container_ratings", {
+      chart: {
+        type: "line",
+        borderWidth: 1,
+        //plotBorderWidth: 1,
       },
-    },
-    series: [
-      {
-        name: "S&P",
-        data: [
-          {
-            y: 2015,
-            x: 1,
-            name: "Highest credit quality",
+
+      plotOptions: {
+        line: {
+          marker: {
+            enabled: true,
           },
-          {
-            y: 2016,
-            x: 2,
-            name: "Superior/High Quality #1",
-          },
-        ],
+        },
       },
-      {
-        name: "Moodys",
-        data: [
-          {
-            y: 2015,
-            x: 1,
-            name: "Highest credit quality",
-          },
-          {
-            y: 2016,
-            x: 2,
-            name: "Superior/High Quality #1",
-          },
-        ],
+
+      legend: {
+        enabled: true,
       },
-    ],
+
+      yAxis: {
+        title: { text: "Standardized Credit Rating" },
+        categories: true,
+        gridLineWidth: 1,
+        labels: {
+          formatter: function () {
+            return scaleData[this.value].creditQuality;
+          },
+        },
+      },
+      xAxis: {
+        categories: true,
+      },
+      tooltip: {
+        formatter: function () {
+          // this.series.chart.series.map((seriesi,i)=>{
+          //   console.log(seriesi.data)
+          // })
+          return (
+            "<b>" +
+            this.series.name +
+            " - " +
+            this.x +
+            " - " +
+            creditFilters["Corporate Entity"] +
+            "</b>" +
+            "<br>" +
+            "Credit Rating: " +
+            scaleData[this.y][this.series.name] +
+            "<br>" +
+            "Credit Quality: " +
+            scaleData[this.y].creditQuality +
+            "<br>" +
+            "Investment Grade?: " +
+            scaleData[this.y].investmentGrade
+          );
+        },
+      },
+      series: creditSeries,
+    });
+  };
+  var creditChart = createCreditChart(creditSeries, scaleData);
+
+  var selectCompanyCredit = document.getElementById("select_company_credit");
+  selectCompanyCredit.addEventListener("change", (selectCompanyCredit) => {
+    creditFilters["Corporate Entity"] = selectCompanyCredit.target.value;
+    creditSeries = createCreditSeries(creditData, creditFilters, creditColors);
+    creditChart = createCreditChart(creditSeries, scaleData);
   });
 };
