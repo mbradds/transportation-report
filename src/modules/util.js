@@ -85,35 +85,37 @@ export const filterData = (data, filters) => {
   return data;
 };
 
-const y = (row, col, units, decimals = 1) => {
-  if (row[col] == null) {
-    return null;
-  } else {
-    if (!units || units.unitsCurrent == units.unitsBase) {
-      return row[col];
-    } else {
-      if (units.type == "*") {
-        return +(row[col] * units.conversion).toFixed(decimals);
+const yHigherOrder = (units) => {
+  if (!units || units.unitsCurrent == units.unitsBase) {
+    //The dataset has no unit conversions, and the data is already rounded
+    const y = (row, col, units, decimals) => {
+      if (row[col] == null) {
+        return null;
       } else {
-        return +(row[col] / units.conversion).toFixed(decimals);
+        return row[col];
       }
-    }
-  }
-};
-
-//TODO: look into higher order function to get around if checking on every row
-const hcRow = (xName, xCol, yCol, row, units, otherName) => {
-  if (otherName == null) {
-    return {
-      [xName]: row[xCol],
-      y: y(row, yCol, units),
     };
+    return y;
   } else {
-    return {
-      [xName]: row[xCol],
-      y: y(row, yCol, units),
-      name: row[otherName],
-    };
+    if (units.type == "*") {
+      const y = (row, col, units, decimals=1) => {
+        if (row[col]==null) {
+          return null
+        } else {
+          return +(row[col] * units.conversion).toFixed(decimals);
+        }
+      };
+      return y;
+    } else if (units.type == "/") {
+      const y = (row, col, units, decimals=1) => {
+        if (row[col]==null) {
+          return null
+        } else {
+          return +(row[col] / units.conversion).toFixed(decimals);
+        }
+      };
+      return y;
+    }
   }
 };
 
@@ -125,21 +127,20 @@ const tidyOperation = (
   xCol,
   yCol,
   colors,
-  xName,
-  otherName
+  xName
 ) => {
   const dataFiltered = filterData(dataRaw, filters);
   const variableColumn = getUnique(dataFiltered, variableCol);
   const seriesData = [];
+  const yH = yHigherOrder(units);
   variableColumn.map((v, iVar) => {
     const hcData = [];
     const variableSeries = dataFiltered.filter((row) => row[variableCol] == v);
     variableSeries.map((r, i) => {
-      // hcData.push({
-      //   [xName]: r[xCol],
-      //   y: y(r, yCol, units),
-      // });
-      hcData.push(hcRow(xName,xCol,yCol,r,units,otherName))
+      hcData.push({
+        [xName]: r[xCol],
+        y: yH(r, yCol,units),
+      });
     });
 
     seriesData.push({
@@ -164,6 +165,7 @@ const nonTidyOperation = (
   const seriesData = {};
   const colTotals = {};
   const dataFiltered = filterData(dataRaw, filters);
+  const yH = yHigherOrder(units);
 
   valueVars.map((col, colNum) => {
     seriesData[col] = [];
@@ -174,7 +176,7 @@ const nonTidyOperation = (
     valueVars.map((col, colNum) => {
       seriesData[col].push({
         [xName]: row[xCol],
-        y: y(row, col, units),
+        y: yH(row, col,units),
       });
       colTotals[col] = colTotals[col] + row[col];
     });
@@ -223,8 +225,7 @@ export const prepareSeriesTidy = (
   xCol,
   yCol,
   colors,
-  xName = "x",
-  otherName = null
+  xName = "x"
 ) => {
   return tidyOperation(
     dataRaw,
@@ -234,8 +235,7 @@ export const prepareSeriesTidy = (
     xCol,
     yCol,
     colors,
-    xName,
-    otherName
+    xName
   );
 };
 

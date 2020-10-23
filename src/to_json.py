@@ -377,6 +377,7 @@ def readExcel(name,sheet='pq',flatten=False):
     if name == 'marine_exports.xlsx':
         write_path = os.path.join(os.getcwd(),'Colette/marine_exports/',name.split('.')[0]+'.json')
         del df['b/d']
+        df['Thousand m3/d'] = df['Mb/d']
         df = normalize_numeric(df, ['Mb/d'], 1)
         df = normalize_dates(df, ['Date'])
         
@@ -763,7 +764,6 @@ def creditRatings():
     scale = readExcel('CreditTables.xlsx',sheet='Scale')
     return df,scale
     
-
 
 if __name__ == '__main__':
     
