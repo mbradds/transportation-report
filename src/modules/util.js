@@ -101,6 +101,22 @@ const y = (row, col, units, decimals = 1) => {
   }
 };
 
+//TODO: look into higher order function to get around if checking on every row
+const hcRow = (xName, xCol, yCol, row, units, otherName) => {
+  if (otherName == null) {
+    return {
+      [xName]: row[xCol],
+      y: y(row, yCol, units),
+    };
+  } else {
+    return {
+      [xName]: row[xCol],
+      y: y(row, yCol, units),
+      name: otherName,
+    };
+  }
+};
+
 const tidyOperation = (
   dataRaw,
   filters,
@@ -109,7 +125,8 @@ const tidyOperation = (
   xCol,
   yCol,
   colors,
-  xName
+  xName,
+  otherName
 ) => {
   const dataFiltered = filterData(dataRaw, filters);
   const variableColumn = getUnique(dataFiltered, variableCol);
@@ -118,11 +135,11 @@ const tidyOperation = (
     const hcData = [];
     const variableSeries = dataFiltered.filter((row) => row[variableCol] == v);
     variableSeries.map((r, i) => {
-      const hcRow = {
-        [xName]: r[xCol],
-        y: y(r, yCol, units),
-      };
-      hcData.push(hcRow);
+      // hcData.push({
+      //   [xName]: r[xCol],
+      //   y: y(r, yCol, units),
+      // });
+      hcData.push(hcRow(xName,xCol,yCol,r,units,otherName))
     });
 
     seriesData.push({
@@ -206,7 +223,8 @@ export const prepareSeriesTidy = (
   xCol,
   yCol,
   colors,
-  xName = "x"
+  xName = "x",
+  otherName = null
 ) => {
   return tidyOperation(
     dataRaw,
@@ -216,11 +234,12 @@ export const prepareSeriesTidy = (
     xCol,
     yCol,
     colors,
-    xName
+    xName,
+    otherName
   );
 };
 
-export const prepareSeriesPie = (data, seriesName, nameCol,yCol,colors) => {
+export const prepareSeriesPie = (data, seriesName, nameCol, yCol, colors) => {
   const series = { name: seriesName, colorByPoint: true };
   series.data = data.map((row) => {
     return {
