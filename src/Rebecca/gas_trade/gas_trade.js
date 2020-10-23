@@ -29,10 +29,10 @@ export const rebeccaGasTrade = () => {
   const setTitle = (figure_title, filters) => {
     if (filters.Activity == "Exports") {
       figure_title.innerText =
-        "Figure 12: Natural Gas Exports from Canada to U.S. Region";
+        "Figure 14: Natural Gas Exports from Canada to U.S. Region";
     } else {
       figure_title.innerText =
-        "Figure 12: Natural Gas Imports from U.S. Region to Canada";
+        "Figure 14: Natural Gas Imports from U.S. Region to Canada";
     }
   };
   const createGasRegionMap = () => {

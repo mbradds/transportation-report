@@ -28,9 +28,9 @@ export const cassandraSettlements = () => {
 
   const setTitle = (figure_title, filters) => {
     if (filters.Commodity == "All") {
-      figure_title.innerText = "Figure 15: Negotiated Settlement Timelines";
+      figure_title.innerText = "Figure 17: Negotiated Settlement Timelines";
     } else {
-      figure_title.innerText = `Figure 15: Negotiated Settlement Timelines - ${filters.Commodity} Companies`;
+      figure_title.innerText = `Figure 17: Negotiated Settlement Timelines - ${filters.Commodity} Companies`;
     }
   };
 
