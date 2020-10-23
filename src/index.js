@@ -57,6 +57,7 @@ import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
 import { kevinUsImports } from "./Kevin/us_imports/us_imports";
 import { kevinCrudePrices } from "./Kevin/crude_prices/crude_prices";
 import { coletteCrudeByRail } from "./Colette/crude_by_rail/crude_by_rail";
+import { coletteMarine } from "./Colette/marine_exports/marine_exports"
 import { coletteCrudeTakeaway } from "./Colette/crude_takeaway/crude_takeaway";
 import { coletteCrudeMode } from "./Colette/crude_export_mode/crude_export_mode";
 import { saraGasTraffic } from "./Sara/gas_traffic/gas_traffic";
@@ -78,6 +79,7 @@ kevinCrudeExports();
 kevinUsImports();
 kevinCrudePrices();
 coletteCrudeByRail();
+coletteMarine();
 coletteCrudeTakeaway();
 coletteCrudeMode();
 saraGasTraffic();
