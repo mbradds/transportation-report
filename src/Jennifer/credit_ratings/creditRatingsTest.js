@@ -127,27 +127,7 @@ export const jenniferRatings = () => {
           for (const agency in overlaps) {
             toolText = toolText+'<br>'+agency+': '+scaleData[overlaps[agency]][agency]
           }
-          //console.log(toolText)
           return toolText
-
-          // return (
-          //   "<b>" +
-          //   this.series.name +
-          //   " - " +
-          //   this.x +
-          //   " - " +
-          //   creditFilters["Corporate Entity"] +
-          //   "</b>" +
-          //   "<br>" +
-          //   "Credit Rating: " +
-          //   scaleData[this.y][this.series.name] +
-          //   "<br>" +
-          //   "Credit Quality: " +
-          //   scaleData[this.y].creditQuality +
-          //   "<br>" +
-          //   "Investment Grade?: " +
-          //   scaleData[this.y].investmentGrade
-          // );
         },
       },
       series: creditSeries,

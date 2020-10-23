@@ -373,6 +373,12 @@ def readExcel(name,sheet='pq',flatten=False):
     
     if name == 'fgrs-eng.xlsx' and sheet=='pq':
         write_path = os.path.join(os.getcwd(),'Colette/crude_takeaway/',name.split('.')[0]+'.json')
+    
+    if name == 'marine_exports.xlsx':
+        write_path = os.path.join(os.getcwd(),'Colette/marine_exports/',name.split('.')[0]+'.json')
+        del df['b/d']
+        df = normalize_numeric(df, ['Mb/d'], 1)
+        df = normalize_dates(df, ['Date'])
         
     if name == 'fgrs-eng.xlsx' and sheet=='ngl production':
         products = ['Ethane','Propane','Butanes']
@@ -771,6 +777,7 @@ if __name__ == '__main__':
     #df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
     #df = readExcel('fgrs-eng.xlsx',sheet='pq')
     #df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
+    df = readExcel('marine_exports.xlsx','marine exports')
     
     #sara
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
@@ -799,10 +806,8 @@ if __name__ == '__main__':
     #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
     #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
     #df_fin_class_names = readCersei(query_fin_resource_class_names,'fin_resource_class_names.json')
-    df,scale = creditRatings()
-    
-    
-    
+    #df,scale = creditRatings()
+
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx')
     #df = crudeThroughput(name='oil_throughput.sql')
