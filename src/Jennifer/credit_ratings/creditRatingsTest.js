@@ -68,7 +68,6 @@ export const jenniferRatings = () => {
       chart: {
         type: "line",
         borderWidth: 1,
-        //plotBorderWidth: 1,
       },
 
       plotOptions: {
