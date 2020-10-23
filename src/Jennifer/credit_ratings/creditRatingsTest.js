@@ -11,7 +11,7 @@ import scaleData from "./Scale.json";
 
 export const jenniferRatings = () => {
 
-  const defaultCompany = "Enbridge Inc.";
+  const defaultCompany = "NOVA Gas Transmission Ltd.";
   fillDropUpdate(
     "select_company_credit",
     getUnique(creditData, "Corporate Entity"),
@@ -95,7 +95,6 @@ export const jenniferRatings = () => {
           },
         },
         plotBands: {
-          //color: cerPalette['Ocean'],
           borderColor: cerPalette['Ocean'],
           borderWidth: 2,
           from: 1, 
@@ -111,27 +110,44 @@ export const jenniferRatings = () => {
       },
       tooltip: {
         formatter: function () {
-          // this.series.chart.series.map((seriesi,i)=>{
-          //   console.log(seriesi.data)
-          // })
-          return (
-            "<b>" +
-            this.series.name +
-            " - " +
-            this.x +
-            " - " +
-            creditFilters["Corporate Entity"] +
-            "</b>" +
-            "<br>" +
-            "Credit Rating: " +
-            scaleData[this.y][this.series.name] +
-            "<br>" +
-            "Credit Quality: " +
-            scaleData[this.y].creditQuality +
-            "<br>" +
-            "Investment Grade?: " +
-            scaleData[this.y].investmentGrade
-          );
+          var selectedYear = this.x
+          var selectedRatings = this.y
+          var selectedScale = scaleData[this.y].creditQuality
+          var overlaps = {}
+          this.series.chart.series.map((seriesi,i)=>{
+            seriesi.data.map((row,rowNum) => {
+              if (row.category == selectedYear && row.y == selectedRatings) {
+                overlaps[seriesi.name] = row.y
+              }
+            })
+          })
+          
+          var toolText = '<br><b>'+selectedYear+' - '+creditFilters["Corporate Entity"]+'</b>'+
+          '<br>'+'Credit Quality: '+selectedScale
+          for (const agency in overlaps) {
+            toolText = toolText+'<br>'+agency+': '+scaleData[overlaps[agency]][agency]
+          }
+          //console.log(toolText)
+          return toolText
+
+          // return (
+          //   "<b>" +
+          //   this.series.name +
+          //   " - " +
+          //   this.x +
+          //   " - " +
+          //   creditFilters["Corporate Entity"] +
+          //   "</b>" +
+          //   "<br>" +
+          //   "Credit Rating: " +
+          //   scaleData[this.y][this.series.name] +
+          //   "<br>" +
+          //   "Credit Quality: " +
+          //   scaleData[this.y].creditQuality +
+          //   "<br>" +
+          //   "Investment Grade?: " +
+          //   scaleData[this.y].investmentGrade
+          // );
         },
       },
       series: creditSeries,
