@@ -151,7 +151,7 @@ export const jenniferFinResources = () => {
   const createFinResourceChart = (seriesData, finResourceFilters) => {
     return new Highcharts.chart("container_fin_resources", {
       chart: {
-        height: "30%",
+        //height: "30%",
       },
 
       credits: {
@@ -204,7 +204,7 @@ export const jenniferFinResources = () => {
   const createFinResourceChartClass = (seriesData, finResourceFilters) => {
     return new Highcharts.chart("container_fin_resources_class", {
       chart: {
-        height: "30%",
+        //height: "30%",
         type: "column",
         events: {
           load: function () {

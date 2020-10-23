@@ -72,7 +72,7 @@ import { cassandraSettlements } from "./Cassandra/negotiated_settlements/settlem
 import { ryanNglProduction } from "./Ryan/ngl_production/ngl_production";
 import { ryanNglExports } from "./Ryan/ngl_exports/ngl_exports";
 import { jenniferFinResources } from "./Jennifer/financial_instruments/fin_resource";
-import { jenniferRatings } from "./Jennifer/credit_ratings/creditRatingsTest"
+import { jenniferRatings } from "./Jennifer/credit_ratings/creditRatings"
 
 kevinCrudeProduction();
 kevinCrudeExports();
