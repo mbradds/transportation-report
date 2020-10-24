@@ -78,6 +78,11 @@ export const jenniferRatings = () => {
         },
       },
 
+      credits: {
+        text: "Source: S&P, DBRS, Moody's",
+      },
+
+
       legend: {
         enabled: true,
       },
