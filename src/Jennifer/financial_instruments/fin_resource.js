@@ -222,6 +222,11 @@ export const jenniferFinResources = () => {
           marker: true,
         },
         series: {
+          states: {
+            inactive: {
+              opacity: 1,
+            },
+          },
           events: {
             legendItemClick: function (e) {
               e.preventDefault();
