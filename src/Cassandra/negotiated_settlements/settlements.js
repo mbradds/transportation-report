@@ -1,5 +1,4 @@
 import { cerPalette, creditsClick } from "../../modules/util.js";
-
 import settlementsData from "./settlements.json";
 
 export const cassandraSettlements = () => {
@@ -7,14 +6,6 @@ export const cassandraSettlements = () => {
     company: {
       name: "Active settlement(s)",
       color: cerPalette["Night Sky"],
-    },
-    end: {
-      name: "Settlements with fixed end date",
-      color: cerPalette["Ocean"],
-    },
-    noEnd: {
-      name: "Settlements without fixed end date",
-      color: cerPalette["Cool Grey"],
     },
   };
 
@@ -53,16 +44,16 @@ export const cassandraSettlements = () => {
       return [date, cerPalette["Ocean"]];
     }
   };
-  
+
   function sortByProperty(property) {
     return function (a, b) {
       if (a[property] > b[property]) return 1;
       else if (a[property] < b[property]) return -1;
-  
+
       return 0;
     };
   }
-  
+
   const applyEndDateColors = (data) => {
     return data.map((row, rowNum) => {
       var [endDate, seriesColor] = getEndDate(row["End Date"]);
@@ -71,23 +62,23 @@ export const cassandraSettlements = () => {
       return row;
     });
   };
-  
+
   const settlementSeries = (data, filters) => {
     var seriesTracker = {};
     var seriesSettle = [];
     var dates = [];
-  
+
     if (filters.Commodity !== "All") {
       data = data.filter((row) => row.Commodity == filters.Commodity);
     }
-  
+
     data = applyEndDateColors(data);
     data = data.sort(sortByProperty("end"));
-  
+
     data.map((row, rowNum) => {
       dates.push(row["Start Date"]);
       dates.push(row["End Date"]);
-  
+
       if (seriesTracker.hasOwnProperty(row.Company)) {
         //the parent company is already in the series, add the sub settlement
         seriesTracker[row.Company].startDate.push(row["Start Date"]);
@@ -116,9 +107,9 @@ export const cassandraSettlements = () => {
         });
       }
     });
-  
+
     const companySettles = [];
-  
+
     const companyCounter = (companyTracker, company) => {
       if (companyTracker.hasOwnProperty(company)) {
         companyTracker[company]++;
@@ -127,7 +118,7 @@ export const cassandraSettlements = () => {
       }
       return companyTracker;
     };
-  
+
     const companyId = (companyTracker, company) => {
       if (companyTracker.hasOwnProperty(company)) {
         return company + "_" + companyTracker[company];
@@ -135,7 +126,7 @@ export const cassandraSettlements = () => {
         return company;
       }
     };
-  
+
     var companyTracker = {}; //checks if a company has already been added so that the ID can be changed for other bars
     for (const company in seriesTracker) {
       var companyStartDates = seriesTracker[company].startDate;
@@ -168,15 +159,14 @@ export const cassandraSettlements = () => {
         }
       });
     }
-  
+
     dates = dates.filter((row) => row !== null);
-  
+    companySettles.sort(sortByProperty("start"));
     return [[...seriesSettle, ...companySettles], dates];
   };
-  
-  
+
   const [seriesData, dates] = settlementSeries(settlementsData, filters);
-  
+
   const createSettlements = (seriesData) => {
     return Highcharts.ganttChart("container_settlements", {
       chart: {
@@ -223,11 +213,18 @@ export const cassandraSettlements = () => {
           },
         },
         labelFormatter: function () {
-          var legendText = ''
-          for (const legendName in legendColors){
-            legendText = legendText+'<span style="font-weight:bold; color:' + legendColors[legendName] +'">' +legendName+'&nbsp &nbsp &nbsp'+"</span>"
+          var legendText = "";
+          for (const legendName in legendColors) {
+            legendText =
+              legendText +
+              '<span style="font-weight:bold; color:' +
+              legendColors[legendName] +
+              '">' +
+              legendName +
+              "&nbsp &nbsp &nbsp" +
+              "</span>";
           }
-          return (legendText);
+          return legendText;
         },
       },
       xAxis: [
@@ -251,12 +248,16 @@ export const cassandraSettlements = () => {
       tooltip: {
         xDateFormat: "%Y-%m-%d",
         formatter: function () {
+          var point = this.point,
+          years = (1000 * 60 * 60 * 24 * 365),
+          number = (point.x2 - point.x) / years;
+          var years =  Math.round(number * 100) / 100;
+
           if (this.color == cerPalette["Cool Grey"]) {
             var endText = "No set end date";
           } else {
             var endText = Highcharts.dateFormat("%Y-%m-%d", this.point.end);
           }
-
           if (this.point.parent == null) {
             return (
               "<b>" +
@@ -264,7 +265,8 @@ export const cassandraSettlements = () => {
               "</b> <br> Active settlement(s) start: " +
               Highcharts.dateFormat("%Y-%m-%d", this.point.start) +
               "<br> Active settlement(s) end: " +
-              Highcharts.dateFormat("%Y-%m-%d", this.point.end)
+              Highcharts.dateFormat("%Y-%m-%d", this.point.end) +
+              "<br> Active settlement(s) duration: "+years+' years'
             );
           } else {
             return (
@@ -275,7 +277,8 @@ export const cassandraSettlements = () => {
               "</b> <br> Start: " +
               Highcharts.dateFormat("%Y-%m-%d", this.point.start) +
               "<br> End: " +
-              endText
+              endText +
+              "<br> Duration: "+years+' years'
             );
           }
         },
