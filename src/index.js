@@ -1,3 +1,4 @@
+import { cerPalatte, cerPalette } from "./modules/util";
 const generalTheme = () => {
   Highcharts.transportation = {
     chart: {
@@ -18,7 +19,38 @@ const generalTheme = () => {
       },
     },
 
+    xAxis: {
+      title: {
+        style: {
+          fontSize: 12,
+          color: cerPalette["Cool Grey"],
+          fontWeight: "bold",
+          fontFamily: "Arial",
+        },
+      },
+      labels: {
+        style: {
+          fontSize: 12,
+          color: cerPalette["Cool Grey"],
+        },
+      },
+    },
+
     yAxis: {
+      title: {
+        style: {
+          fontSize: 12,
+          color: cerPalette["Cool Grey"],
+          fontWeight: "bold",
+          fontFamily: "Arial",
+        },
+      },
+      labels: {
+        style: {
+          fontSize: 12,
+          color: cerPalette["Cool Grey"],
+        },
+      },
       stackLabels: {
         style: {
           fontWeight: "bold",
@@ -57,7 +89,7 @@ import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
 import { kevinUsImports } from "./Kevin/us_imports/us_imports";
 import { kevinCrudePrices } from "./Kevin/crude_prices/crude_prices";
 import { coletteCrudeByRail } from "./Colette/crude_by_rail/crude_by_rail";
-import { coletteMarine } from "./Colette/marine_exports/marine_exports"
+import { coletteMarine } from "./Colette/marine_exports/marine_exports";
 import { coletteCrudeTakeaway } from "./Colette/crude_takeaway/crude_takeaway";
 import { coletteCrudeMode } from "./Colette/crude_export_mode/crude_export_mode";
 import { saraGasTraffic } from "./Sara/gas_traffic/gas_traffic";
@@ -72,7 +104,7 @@ import { cassandraSettlements } from "./Cassandra/negotiated_settlements/settlem
 import { ryanNglProduction } from "./Ryan/ngl_production/ngl_production";
 import { ryanNglExports } from "./Ryan/ngl_exports/ngl_exports";
 import { jenniferFinResources } from "./Jennifer/financial_instruments/fin_resource";
-import { jenniferRatings } from "./Jennifer/credit_ratings/creditRatings"
+import { jenniferRatings } from "./Jennifer/credit_ratings/creditRatings";
 
 kevinCrudeProduction();
 kevinCrudeExports();
