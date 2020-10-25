@@ -89,10 +89,11 @@ export const jenniferRatings = () => {
 
       yAxis: {
         title: { text: "Standardized Credit Rating" },
+        gridLineWidth: 3,
+        gridZIndex: 1,
         categories: true,
         max:maxY,
         min:minY-1,
-        gridLineWidth: 1,
         labels: {
           formatter: function () {
             return scaleData[this.value].creditQuality;
@@ -103,6 +104,7 @@ export const jenniferRatings = () => {
           borderWidth: 2,
           from: 1, 
           to: 17,
+          zIndex: 2,
           label: { 
             text: 'Non-Investment Grade Level', 
             align: 'center', 

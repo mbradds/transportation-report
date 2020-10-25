@@ -192,9 +192,6 @@ export const cassandraSettlements = () => {
             legendItemClick: function (e) {
               e.preventDefault();
             },
-            checkboxClick: function (e) {
-              console.log(e);
-            },
           },
         },
       },
@@ -233,9 +230,12 @@ export const cassandraSettlements = () => {
           max: Math.max(...dates),
           currentDateIndicator: {
             width: 2,
+            zIndex: 2,
             color: "black",
             label: {
-              format: "%Y-%m-%d",
+              formatter: function() {
+                return Highcharts.dateFormat("%Y-%m-%d", this.options.value)+' (today)'
+              }
             },
           },
         },
