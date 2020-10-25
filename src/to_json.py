@@ -752,7 +752,8 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
                             'Oil/Gas':'Commodity'})
     
     df = normalize_dates(df, ['Start Date','End Date'])
-    df = df.sort_values(by=['Company','Start Date'])
+    df = df.sort_values(by=['Company','Start Date','End Date'])
+    #df = df[df['Company']=='NOVA Gas Transmission Ltd.']
     write_path = os.path.join(os.getcwd(),'Cassandra/negotiated_settlements/','settlements.json')
     df.to_json(write_path,orient='records')
     
@@ -777,7 +778,7 @@ if __name__ == '__main__':
     #df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
     #df = readExcel('fgrs-eng.xlsx',sheet='pq')
     #df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
-    df = readExcel('marine_exports.xlsx','marine exports')
+    #df = readExcel('marine_exports.xlsx','marine exports')
     
     #sara
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
@@ -792,7 +793,7 @@ if __name__ == '__main__':
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    #df = negotiated_settlements()
+    df = negotiated_settlements()
     
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
