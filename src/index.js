@@ -108,6 +108,7 @@ import { ryanNglProduction } from "./Ryan/ngl_production/ngl_production";
 import { ryanNglExports } from "./Ryan/ngl_exports/ngl_exports";
 import { jenniferFinResources } from "./Jennifer/financial_instruments/fin_resource";
 import { jenniferRatings } from "./Jennifer/credit_ratings/creditRatings";
+import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
 
 kevinCrudeProduction();
 kevinCrudeExports();
@@ -130,3 +131,4 @@ ryanNglProduction();
 ryanNglExports();
 jenniferFinResources();
 jenniferRatings();
+jenniferRatingsMulti();
