@@ -71,30 +71,21 @@ export const coletteCrudeByRail = () => {
       yAxis: [
         {
           labels: {
-            format: "{value}",
-            style: {
-              color: "black",
+            //format: "{value}",
+            formatter: function () {
+              return Highcharts.numberFormat(this.value, 0, ".", ",");
             },
           },
           title: {
             text: "Rail Exports - bbl per day",
-            style: {
-              color: "black",
-            },
           },
         },
         {
           title: {
             text: "Differential - USD/bbl",
-            style: {
-              color: "black",
-            },
           },
           labels: {
             format: "{value}",
-            style: {
-              color: "black",
-            },
           },
           opposite: true,
         },
@@ -125,5 +116,5 @@ export const coletteCrudeByRail = () => {
       });
     });
   };
-  mainChartRail()
+  mainChartRail();
 };
