@@ -233,9 +233,12 @@ export const cassandraSettlements = () => {
             zIndex: 2,
             color: "black",
             label: {
-              formatter: function() {
-                return Highcharts.dateFormat("%Y-%m-%d", this.options.value)+' (today)'
-              }
+              formatter: function () {
+                return (
+                  Highcharts.dateFormat("%Y-%m-%d", this.options.value) +
+                  " (today)"
+                );
+              },
             },
           },
         },
@@ -243,15 +246,20 @@ export const cassandraSettlements = () => {
 
       yAxis: {
         uniqueNames: true,
+        labels: {
+          formatter: function () {
+            return this.value;
+          },
+        },
       },
 
       tooltip: {
         xDateFormat: "%Y-%m-%d",
         formatter: function () {
           var point = this.point,
-          years = (1000 * 60 * 60 * 24 * 365),
-          number = (point.x2 - point.x) / years;
-          var years =  Math.round(number * 100) / 100;
+            years = 1000 * 60 * 60 * 24 * 365,
+            number = (point.x2 - point.x) / years;
+          var years = Math.round(number * 100) / 100;
 
           if (this.color == cerPalette["Cool Grey"]) {
             var endText = "No set end date";
@@ -266,7 +274,9 @@ export const cassandraSettlements = () => {
               Highcharts.dateFormat("%Y-%m-%d", this.point.start) +
               "<br> Active settlement(s) end: " +
               Highcharts.dateFormat("%Y-%m-%d", this.point.end) +
-              "<br> Active settlement(s) duration: "+years+' years'
+              "<br> Active settlement(s) duration: " +
+              years +
+              " years"
             );
           } else {
             return (
@@ -278,7 +288,9 @@ export const cassandraSettlements = () => {
               Highcharts.dateFormat("%Y-%m-%d", this.point.start) +
               "<br> End: " +
               endText +
-              "<br> Duration: "+years+' years'
+              "<br> Duration: " +
+              years +
+              " years"
             );
           }
         },

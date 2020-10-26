@@ -2,6 +2,7 @@ import {
   cerPalette,
   prepareSeriesTidy,
   creditsClick,
+  conversions,
 } from "../../modules/util.js";
 
 import crudeImportsData from "./UScrudeoilimports.json";
@@ -21,18 +22,19 @@ export const kevinUsImports = () => {
     return series;
   };
 
+  var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
+
   const crudeImportColors = {
     "ROW imports": cerPalette["Night Sky"],
     "U.S crude oil exports": cerPalette["Ocean"],
     "Canadian imports": cerPalette["Sun"],
   };
 
-  var crudeImportsFilters = { Units: "MMb/d" };
   var seriesData = crudeImportsChartTypes(
     prepareSeriesTidy(
       crudeImportsData,
-      crudeImportsFilters,
       false,
+      units,
       "Attribute",
       "Year",
       "Value",
@@ -77,13 +79,12 @@ export const kevinUsImports = () => {
   selectUnitsCrudeImports.addEventListener(
     "change",
     (selectUnitsCrudeImports) => {
-      var units = selectUnitsCrudeImports.target.value;
-      crudeImportsFilters["Units"] = units;
+      units.unitsCurrent = selectUnitsCrudeImports.target.value;
       var seriesData = crudeImportsChartTypes(
         prepareSeriesTidy(
           crudeImportsData,
-          crudeImportsFilters,
           false,
+          units,
           "Attribute",
           "Year",
           "Value",
@@ -93,7 +94,7 @@ export const kevinUsImports = () => {
       chartCrudeImports.update({
         series: seriesData,
         yAxis: {
-          title: { text: units },
+          title: { text: units.unitsCurrent },
         },
       });
     }

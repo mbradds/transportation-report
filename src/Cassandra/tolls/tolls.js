@@ -94,6 +94,11 @@ export const cassandraTolls = () => {
 
       yAxis: {
         title: { text: "Benchmark Toll" },
+        labels: {
+          formatter: function () {
+            return this.value;
+          },
+        },
       },
 
       series: seriesData,

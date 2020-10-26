@@ -21,7 +21,7 @@ export const coletteCrudeByRail = () => {
     return series;
   };
 
-  const railFilters = { Units: "bbl per day" };
+  const railFilters = { Units: "Mb/d" };
   const railColors = {
     "Crude by Rail": cerPalette["Night Sky"],
     "WCS-WTI Differential": cerPalette["Sun"],
@@ -38,7 +38,7 @@ export const coletteCrudeByRail = () => {
     )
   );
 
-  const createRailChart = () => {
+  const createRailChart = (seriesData,railFilters) => {
     return new Highcharts.chart("container_crude_by_rail", {
       chart: {
         type: "area",
@@ -70,14 +70,8 @@ export const coletteCrudeByRail = () => {
       },
       yAxis: [
         {
-          labels: {
-            //format: "{value}",
-            formatter: function () {
-              return Highcharts.numberFormat(this.value, 0, ".", ",");
-            },
-          },
           title: {
-            text: "Rail Exports - bbl per day",
+            text: `Rail Exports - ${railFilters.Units}`,
           },
         },
         {
@@ -94,7 +88,7 @@ export const coletteCrudeByRail = () => {
   };
 
   const mainChartRail = () => {
-    var chartRail = createRailChart(seriesData);
+    var chartRail = createRailChart(seriesData,railFilters);
     var selectUnitsRail = document.getElementById("select_units_rail");
     selectUnitsRail.addEventListener("change", (selectUnitsRail) => {
       railFilters.Units = selectUnitsRail.target.value;

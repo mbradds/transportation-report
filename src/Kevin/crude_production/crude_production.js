@@ -24,7 +24,7 @@ export const kevinCrudeProduction = () => {
 
   var crudeProdFilters = { Region: "Canada" };
 
-  var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
+  var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
   const crudeProdColumns = [
     "Conventional Light",
@@ -48,7 +48,8 @@ export const kevinCrudeProduction = () => {
     units,
     crudeProdColumns,
     "Year",
-    crudeProdColors
+    crudeProdColors,
+    2
   );
 
   const createCrudeProdChart = (seriesData, units) => {
@@ -83,8 +84,8 @@ export const kevinCrudeProduction = () => {
   };
 
   const mainCrudeProduction = () => {
-    var figure_title = document.getElementById('crude_prod_title');
-    setTitle(figure_title,crudeProdFilters)
+    var figure_title = document.getElementById("crude_prod_title");
+    setTitle(figure_title, crudeProdFilters);
 
     var chartCrude = createCrudeProdChart(seriesData, units);
 
@@ -95,7 +96,7 @@ export const kevinCrudeProduction = () => {
       "change",
       (selectRegionCrudeProd) => {
         crudeProdFilters.Region = selectRegionCrudeProd.target.value;
-        setTitle(figure_title,crudeProdFilters)
+        setTitle(figure_title, crudeProdFilters);
         var seriesData = prepareSeriesNonTidy(
           crudeProdData,
           crudeProdFilters,
@@ -120,7 +121,8 @@ export const kevinCrudeProduction = () => {
         units,
         crudeProdColumns,
         "Year",
-        crudeProdColors
+        crudeProdColors,
+        1
       );
 
       chartCrude.update({
@@ -131,5 +133,5 @@ export const kevinCrudeProduction = () => {
       });
     });
   };
-  mainCrudeProduction()
+  mainCrudeProduction();
 };

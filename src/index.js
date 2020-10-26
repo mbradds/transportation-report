@@ -1,4 +1,4 @@
-import { cerPalatte, cerPalette } from "./modules/util";
+import { cerPalette } from "./modules/util";
 const generalTheme = () => {
   Highcharts.transportation = {
     chart: {
@@ -46,7 +46,9 @@ const generalTheme = () => {
         },
       },
       labels: {
-        format: "{value}",
+        formatter: function () {
+          return Highcharts.numberFormat(this.value, 0, ".", ",");
+        },
         style: {
           fontSize: 12,
           color: cerPalette["Cool Grey"],

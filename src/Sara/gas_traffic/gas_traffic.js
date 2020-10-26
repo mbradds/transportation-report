@@ -32,7 +32,7 @@ export const saraGasTraffic = () => {
     Capacity: cerPalette["Cool Grey"],
   };
 
-  var units = conversions("Bcf/d to Mm3/d", "Bcf/d", "Mm3/d");
+  var units = conversions("Million m3/d to Bcf/d", "Bcf/d", "Million m3/d");
 
   const seriesData = gasTrafficChartTypes(
     prepareSeriesNonTidy(
@@ -51,7 +51,7 @@ export const saraGasTraffic = () => {
     )
   );
 
-  const createChartGasTraffic = (seriesData) => {
+  const createChartGasTraffic = (seriesData, units) => {
     return new Highcharts.chart("container_gas_traffic", {
       chart: {
         zoomType: "x",
@@ -80,41 +80,46 @@ export const saraGasTraffic = () => {
       },
 
       yAxis: {
-        title: { text: "Bcf/d" },
+        title: { text: units.unitsCurrent },
       },
 
       series: seriesData,
     });
   };
-
-  var chartGasTraffic = createChartGasTraffic(seriesData);
-  var selectUnitsGasTraffic = document.getElementById(
-    "select_units_gas_traffic"
-  );
-  selectUnitsGasTraffic.addEventListener("change", (selectUnitsGasTraffic) => {
-    units.unitsCurrent = selectUnitsGasTraffic.target.value;
-    const seriesData = gasTrafficChartTypes(
-      prepareSeriesNonTidy(
-        gasData,
-        false,
-        units,
-        [
-          "Alliance Pipeline Limited Partnership - Alliance Pipeline - Border",
-          "Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate",
-          "Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy",
-          "TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line",
-          "Capacity",
-        ],
-        "Date",
-        gasColors
-      )
+  const mainGasTraffic = () => {
+    var chartGasTraffic = createChartGasTraffic(seriesData, units);
+    var selectUnitsGasTraffic = document.getElementById(
+      "select_units_gas_traffic"
     );
+    selectUnitsGasTraffic.addEventListener(
+      "change",
+      (selectUnitsGasTraffic) => {
+        units.unitsCurrent = selectUnitsGasTraffic.target.value;
+        const seriesData = gasTrafficChartTypes(
+          prepareSeriesNonTidy(
+            gasData,
+            false,
+            units,
+            [
+              "Alliance Pipeline Limited Partnership - Alliance Pipeline - Border",
+              "Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate",
+              "Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy",
+              "TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line",
+              "Capacity",
+            ],
+            "Date",
+            gasColors
+          )
+        );
 
-    chartGasTraffic.update({
-      series: seriesData,
-      yAxis: {
-        title: { text: units.unitsCurrent },
-      },
-    });
-  });
+        chartGasTraffic.update({
+          series: seriesData,
+          yAxis: {
+            title: { text: units.unitsCurrent },
+          },
+        });
+      }
+    );
+  };
+  mainGasTraffic();
 };

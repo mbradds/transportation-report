@@ -20,9 +20,9 @@ export const kevinCrudeExports = () => {
     Other: cerPalette["Flame"],
   };
 
-  fillDropUpdate("select_units_crude_exports", ["Mb/d", "m3/d"], false, "Mb/d");
+  fillDropUpdate("select_units_crude_exports", ["MMb/d", "Thousand m3/d"], false, "MMb/d");
 
-  var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
+  var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
   var seriesData = prepareSeriesTidy(
     crudeExportsData,
@@ -173,7 +173,7 @@ export const kevinCrudeExports = () => {
     });
   };
 
-  const createCrudeExportsChart = (seriesData) => {
+  const createCrudeExportsChart = (seriesData,units) => {
     return chartCrudeExports = new Highcharts.chart("container_crude_exports", {
       chart: {
         type: "column",
@@ -198,7 +198,7 @@ export const kevinCrudeExports = () => {
       },
 
       yAxis: {
-        title: { text: "bbl/d" },
+        title: { text: units.unitsCurrent },
         stackLabels: {
           enabled: true,
         },
@@ -209,7 +209,7 @@ export const kevinCrudeExports = () => {
   };
 
   var paddMap = createPaddMap();
-  var chartCrudeExports = createCrudeExportsChart(seriesData);
+  var chartCrudeExports = createCrudeExportsChart(seriesData,units);
 
   var selectUnitsCrudeExports = document.getElementById(
     "select_units_crude_exports"

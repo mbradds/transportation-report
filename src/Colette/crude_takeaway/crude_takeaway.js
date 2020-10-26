@@ -62,7 +62,7 @@ export const coletteCrudeTakeaway = () => {
     )
   );
 
-  const createChartCrudeTakeaway = (seriesData) => {
+  const createChartCrudeTakeaway = (seriesData,units) => {
     return new Highcharts.chart("container_crude_takeaway", {
       chart: {
         zoomType: "x",
@@ -90,7 +90,7 @@ export const coletteCrudeTakeaway = () => {
       },
 
       yAxis: {
-        title: { text: "MMb/d" },
+        title: { text: units.unitsCurrent },
       },
 
       series: seriesData,
@@ -98,7 +98,7 @@ export const coletteCrudeTakeaway = () => {
   };
 
   const mainCrudeTakeaway = () => {
-    var crudeTakeawayChart = createChartCrudeTakeaway(seriesData);
+    var crudeTakeawayChart = createChartCrudeTakeaway(seriesData,units);
     var selectUnitsCrudeTakeaway = document.getElementById(
       "select_units_crude_takeaway"
     );

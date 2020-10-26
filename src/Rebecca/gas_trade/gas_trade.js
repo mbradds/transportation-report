@@ -203,8 +203,8 @@ export const rebeccaGasTrade = () => {
       gasTradeUnits.unitsCol,
       gasTrafficColors
     );
-    chartGasTraffic = createGasTrafficChart(seriesData);
     chartGasTraffic.update({
+      series: seriesData,
       yAxis: { title: { text: units } },
     });
   });

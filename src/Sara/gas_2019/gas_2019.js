@@ -12,7 +12,7 @@ export const sara2019 = () => {
     "Spare Capacity": cerPalette["Cool Grey"],
   };
 
-  var units = conversions("Bcf/d to Mm3/d", "Bcf/d", "Mm3/d");
+  var units = conversions("Million m3/d to Bcf/d", "Bcf/d", "Million m3/d");
 
   const seriesData = prepareSeriesNonTidy(
     gas2019Data,
@@ -21,10 +21,11 @@ export const sara2019 = () => {
     ["Spare Capacity", "Throughput"],
     "Series Name",
     gas2019Colors,
+    2,
     "name"
   );
-
-  const createGas2019Chart = (seriesData) => {
+  
+  const createGas2019Chart = (seriesData,units) => {
     return new Highcharts.chart("container_gas_2019", {
       chart: {
         type: "column",
@@ -44,7 +45,7 @@ export const sara2019 = () => {
       },
 
       yAxis: {
-        title: { text: "BCF/d" },
+        title: { text: units.unitsCurrent},
       },
 
       xAxis: {
@@ -56,7 +57,7 @@ export const sara2019 = () => {
   };
 
   const mainGas2019 = () => {
-    var chartGas2019 = createGas2019Chart(seriesData);
+    var chartGas2019 = createGas2019Chart(seriesData,units);
     var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
     selectUnitsGas2019.addEventListener("change", (selectUnitsGas2019) => {
       units.unitsCurrent = selectUnitsGas2019.target.value;
@@ -67,6 +68,7 @@ export const sara2019 = () => {
         ["Spare Capacity", "Throughput"],
         "Series Name",
         gas2019Colors,
+        1,
         "name"
       );
       chartGas2019.update({
