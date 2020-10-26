@@ -69,6 +69,7 @@ export const jenniferFinResources = () => {
       ["Companies using Financial Instrument", "Financial Instrument Total"],
       "Financial Instrument",
       finResourceColors,
+      1,
       "name"
     )
   );
@@ -81,6 +82,7 @@ export const jenniferFinResources = () => {
     "Pipeline Group",
     "Financial Resource",
     commodityColors,
+    1,
     "name"
   );
 

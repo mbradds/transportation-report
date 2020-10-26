@@ -22,9 +22,7 @@ export const coletteCrudeMode = () => {
   const createCrudeModeChart = (seriesData) => {
     return Highcharts.chart("container_crude_mode", {
       chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
+        borderWidth: 1,
         type: "pie",
         events: {
           load: function () {

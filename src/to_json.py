@@ -13,53 +13,34 @@ query_gas_traffic = "select [Date], \
 [Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy], \
 [TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line], \
 [Capacity (1000 m3/d)] as [Capacity] \
-from \
-( \
-SELECT \
+from (SELECT \
 cast(str([Month])+'-'+'1'+'-'+str([Year]) as date) as [Date], \
 [Corporate Entity]+' - '+[Pipeline Name]+' - '+[Key Point] as [Point], \
-round(avg([Throughput (1000 m3/d)]),1) as [value] \
-FROM [EnergyData].[dbo].[Pipelines_Gas] \
-where \
-([Year] >= '2010') and \
-([Corporate Entity] = 'Alliance Pipeline Limited Partnership' and [Key Point] = 'Border') or \
-([Corporate Entity] = 'Westcoast Energy Inc.' and [Key Point] = 'Kingsvale') or \
-([Corporate Entity] = 'Foothills Pipe Lines Ltd. (Foothills)' and [Key Point] in ('Kingsgate','Monchy')) or \
-([Corporate Entity] = 'TransCanada PipeLines Limited' and [Key Point] = 'Northern Ontario Line') \
+round(avg(([Throughput (1000 m3/d)]/1000)),2) as [value] \
+FROM [EnergyData].[dbo].[Pipelines_Gas] where \
+([Year] >= '2015' and [Corporate Entity] = 'Alliance Pipeline Limited Partnership' and [Key Point] = 'Border') or \
+([Year] >= '2015' and [Corporate Entity] = 'Westcoast Energy Inc.' and [Key Point] = 'Kingsvale') or \
+([Year] >= '2015' and [Corporate Entity] = 'Foothills Pipe Lines Ltd. (Foothills)' and [Key Point] in ('Kingsgate','Monchy')) or \
+([Year] >= '2015' and [Corporate Entity] = 'TransCanada PipeLines Limited' and [Key Point] = 'Northern Ontario Line') \
 group by [Year], [Month], [Corporate Entity], [Pipeline Name], [Key Point], [Trade Type] \
 union all \
-select \
-[Date], \
-'Capacity (1000 m3/d)' as [Point], \
-sum([Capacity (1000 m3/d)]) as [value] \
-from \
-( \
-SELECT \
-cast(str([Month])+'-'+'1'+'-'+str([Year]) as date) as [Date], \
-[Corporate Entity],[Pipeline Name], [Key Point], \
+select [Date], 'Capacity (1000 m3/d)' as [Point], round(sum([Capacity (1000 m3/d)]/1000),2) as [value] \
+from (SELECT cast(str([Month])+'-'+'1'+'-'+str([Year]) as date) as [Date],[Corporate Entity],[Pipeline Name], [Key Point], \
 round(avg([Capacity (1000 m3/d)]),1) as [Capacity (1000 m3/d)] \
-FROM [EnergyData].[dbo].[Pipelines_Gas] \
-where \
-[Year] >= '2015' and \
-([Corporate Entity] = 'Alliance Pipeline Limited Partnership' and [Key Point] = 'Border') or \
-([Corporate Entity] = 'Westcoast Energy Inc.' and [Key Point] = 'Kingsvale') or \
-([Corporate Entity] = 'Foothills Pipe Lines Ltd. (Foothills)' and [Key Point] in ('Kingsgate','Monchy')) or \
-([Corporate Entity] = 'TransCanada PipeLines Limited' and [Key Point] = 'Northern Ontario Line') \
+FROM [EnergyData].[dbo].[Pipelines_Gas] where \
+([Year] >= '2015' and [Corporate Entity] = 'Alliance Pipeline Limited Partnership' and [Key Point] = 'Border') or \
+([Year] >= '2015' and [Corporate Entity] = 'Westcoast Energy Inc.' and [Key Point] = 'Kingsvale') or \
+([Year] >= '2015' and [Corporate Entity] = 'Foothills Pipe Lines Ltd. (Foothills)' and [Key Point] in ('Kingsgate','Monchy')) or \
+([Year] >= '2015' and [Corporate Entity] = 'TransCanada PipeLines Limited' and [Key Point] = 'Northern Ontario Line') \
 group by [Year],[Month],[Corporate Entity],[Pipeline Name], [Key Point] \
-) as gas_cap \
-group by [Date] \
-) as SourceTable \
-pivot \
-( \
-avg([value]) \
+) as gas_cap group by [Date]) as SourceTable \
+pivot (avg([value]) \
 for Point in ([Alliance Pipeline Limited Partnership - Alliance Pipeline - Border], \
 [Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate], \
 [Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy], \
 [TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line], \
 [Capacity (1000 m3/d)]) \
-) as PivotTable \
-where year([Date]) >= '2015' \
-order by [Date]"
+) as PivotTable order by [Date]"
 
 query_rail_wcs = "select \
 rail.Date, \
@@ -191,18 +172,11 @@ FROM [EnergyData].[dbo].[Pipeline_Fin_Resource] as fin \
 where variable = 'ALL Limit' and [ALL Class] not in ('CO2 or Water Class','Commodity class 1') \
 order by [ALL Class], fin.[values], [Company]"
 
-query_gas_2019 = "SELECT \
-[Year], \
-[Corporate Entity], \
-[Pipeline Name], \
-[Key Point], \
-[Trade Type], \
-case when [Trade Type] = 'import' then round(avg([Capacity (1000 m3/d)]),2)*-1 else round(avg([Capacity (1000 m3/d)]),2) \
+query_gas_2019 = "SELECT [Year],[Corporate Entity],[Pipeline Name],[Key Point],[Trade Type], \
+case when [Trade Type] = 'import' then round(avg([Capacity (1000 m3/d)]/1000),2)*-1 else round(avg([Capacity (1000 m3/d)]/1000),2) \
 end as [Capacity], \
-case when [Trade Type] = 'import' then round(avg([Throughput (1000 m3/d)]),2)*-1 else round(avg([Throughput (1000 m3/d)]),2) \
-end as [Throughput] \
-FROM [EnergyData].[dbo].[Pipelines_Gas] \
-where \
+case when [Trade Type] = 'import' then round(avg([Throughput (1000 m3/d)]/1000),2)*-1 else round(avg([Throughput (1000 m3/d)]/1000),2) \
+end as [Throughput] FROM [EnergyData].[dbo].[Pipelines_Gas] where \
 ([Year] = 2019 and [Corporate Entity] = 'NOVA Gas Transmission Ltd. (NGTL)' and [Key Point] = 'Upstream of James River') or \
 ([Year] = 2019 and [Corporate Entity] = 'NOVA Gas Transmission Ltd. (NGTL)' and [Key Point] = 'West Gate') or \
 ([Year] = 2019 and [Corporate Entity] = 'TransCanada PipeLines Limited' and [Key Point] = 'Prairies') or \
@@ -259,7 +233,9 @@ def readCersei(query,name=None):
     conn,engine = cer_connection()
     df = pd.read_sql_query(query,con=conn)
     if name == 'crude_by_rail_wcs.json':
-        #df = pd.melt(df,id_vars=['Date','Units'])
+        df['Crude by Rail'] = [x/1000 if u=='bbl per day' else x for x,u in zip(df['Crude by Rail'],df['Units'])]
+        df['Units'] = df['Units'].replace({'bbl per day':'Mb/d','m3 per day':'m3/d'})
+        df = normalize_numeric(df, ['Crude by Rail'], 1)
         write_path = os.path.join(os.getcwd(),'Colette/crude_by_rail/',name)
     if name == 'gas_traffic.json':
         df['Date'] = pd.to_datetime(df['Date'])
@@ -293,6 +269,9 @@ def readCersei(query,name=None):
         df['Spare Capacity'] = df['Capacity'] - df['Throughput']
         df['Series Name'] = df['Pipeline Name']+' - '+df['Key Point']+' - '+df['Trade Type']
         df = df.sort_values(by=['Capacity'], ascending=False)
+        delete = ['Corporate Entity','Pipeline Name','Key Point','Trade Type','Capacity','Year']
+        for d in delete:
+            del df[d]
     if name == 'gas_prices.json':
         write_path = os.path.join(os.getcwd(),'Rebecca/gas_prices/',name)
     if name == 'st_stephen.json':
@@ -316,7 +295,10 @@ def readExcel(name,sheet='pq',flatten=False):
     
     if name == 'Crude_Oil_Production.xlsx':
         df['Year'] = pd.to_numeric(df['Year'])
-        df = normalize_numeric(df, ['Conventional Light','Conventional Heavy','C5+','Field Condensate','Mined Bitumen','In Situ Bitumen'], 1)
+        products = ['Conventional Light','Conventional Heavy','C5+','Field Condensate','Mined Bitumen','In Situ Bitumen']
+        for crude in products:
+            df[crude] = df[crude]/1000
+        df = normalize_numeric(df, products, 2)
         #df['Value'] = pd.to_numeric(df['Value'])
         write_path = os.path.join(os.getcwd(),'Kevin/crude_production/',name.split('.')[0]+'.json')
     if name == 'UScrudeoilimports.xlsx':
@@ -347,8 +329,8 @@ def readExcel(name,sheet='pq',flatten=False):
     if name == 'crude-oil-exports-by-destination-annual.xlsx':
         df = df[df['PADD'] != 'Total']
         df = df[df['Unit']!='m3/d']
-        df['Value'] = (df['Value']/1000).round(1)
-        df['Unit'] = df['Unit'].replace({'bbl/d':'Mb/d'})
+        df['Value'] = (df['Value']/1000000).round(2)
+        df['Unit'] = df['Unit'].replace({'bbl/d':'MMb/d'})
         write_path = os.path.join(os.getcwd(),'Kevin/crude_exports/',name.split('.')[0]+'.json')
     
     if name == 'UScrudeoilimports.xlsx':
@@ -759,14 +741,14 @@ if __name__ == '__main__':
     #df = ne2_wcs_wti(query_ne2)
     
     #colette
-    df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
+    #df = readCersei(query_rail_wcs,'crude_by_rail_wcs.json')
     #df = readExcel('fgrs-eng.xlsx',sheet='pq')
     #df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
     #df = readExcel('marine_exports.xlsx','marine exports')
     
     #sara
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
-    #df = readCersei(query_gas_2019,'gas_2019.json')
+    df = readCersei(query_gas_2019,'gas_2019.json')
     #df = readCersei(query_st_stephen,'st_stephen.json')
     
     #rebecca
