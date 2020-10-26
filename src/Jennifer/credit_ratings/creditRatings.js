@@ -3,7 +3,6 @@ import {
   prepareSeriesTidy,
   getUnique,
   fillDropUpdate,
-  creditsClick,
 } from "../../modules/util.js";
 
 import creditData from "./CreditTables.json";

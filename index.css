@@ -42,6 +42,10 @@
   height: 550px;
 }
 
+#container_ratings_multi {
+  height: 550px;
+}
+
 #container_fin_resources {
   min-height: 300px;
 }

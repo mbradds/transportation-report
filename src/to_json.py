@@ -373,6 +373,13 @@ def readExcel(name,sheet='pq',flatten=False):
     if name == 'CreditTables.xlsx':
         if sheet == 'ratings categories':
             df = normalize_text(df, ['Corporate Entity','Type','Credit Quality'])
+            #allow for multiselect on company
+            df = df[~df['Corporate Entity'].isin(['MPLL shareholders - Royal Dutch Shell Plc',
+                                                  'MPLL shareholders - Suncor Energy Inc.',
+                                                  'Plains All American Pipeline',
+                                                  'MPLL shareholders - Imperial Oil Limited'])]
+            print(list(set(list(df['Corporate Entity']))))
+            df['series'] = df['Corporate Entity']+' - '+df['Type']
             write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',name.split('.')[0]+'.json')
         if sheet == 'Scale':
             write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',sheet+'.json')
@@ -726,9 +733,9 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
     return df
 
 def creditRatings():
-    
     df = readExcel('CreditTables.xlsx',sheet='ratings categories')
     scale = readExcel('CreditTables.xlsx',sheet='Scale')
+        
     return df,scale
     
 
@@ -748,7 +755,7 @@ if __name__ == '__main__':
     
     #sara
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
-    df = readCersei(query_gas_2019,'gas_2019.json')
+    #df = readCersei(query_gas_2019,'gas_2019.json')
     #df = readCersei(query_st_stephen,'st_stephen.json')
     
     #rebecca
@@ -773,7 +780,7 @@ if __name__ == '__main__':
     #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
     #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
     #df_fin_class_names = readCersei(query_fin_resource_class_names,'fin_resource_class_names.json')
-    #df,scale = creditRatings()
+    df,scale = creditRatings()
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx')
