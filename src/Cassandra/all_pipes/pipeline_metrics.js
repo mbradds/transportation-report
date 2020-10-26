@@ -1,4 +1,4 @@
-import { getUnique, fillDropUpdate,creditsClick } from "../../modules/util.js";
+import { getUnique, fillDropUpdate, creditsClick } from "../../modules/util.js";
 
 import financialData from "./PipelineProfileTables.json";
 
@@ -48,21 +48,28 @@ export const cassandraAllPipes = () => {
       hcData.push(completedMetric);
     }
 
+    var yOptions = {};
+
     if (unit == "%") {
-      var yFormat = "{value}%";
-      var yLabel = "%";
+      yOptions.yFormat = "{value}%";
+      yOptions.yLabel = "%";
+      yOptions.yCall = function () {
+        return this.value + "%";
+      };
     } else {
-      var yFormat = "{value:,.0f}";
-      var yLabel = "CAD ($)";
+      yOptions.yFormat = "{value:,.0f}";
+      yOptions.yLabel = "C$ (Millions)";
+      yOptions.yCall = function () {
+        return this.value / 1000000;
+      };
     }
 
-    return [hcData, yFormat, yLabel];
+    return [hcData, yOptions];
   };
 
   var financeFilters = { Category: "All", Type: "Assets" };
 
-  var seriesData, yFormat, yLabel;
-  [seriesData, yFormat, yLabel] = prepareSeriesFinance(
+  var [seriesData, yOptions] = prepareSeriesFinance(
     financialData,
     financeFilters
   );
@@ -74,15 +81,15 @@ export const cassandraAllPipes = () => {
     "Assets"
   );
 
-  const createFinancialChart = (newData, yFormat, yLabel) => {
+  const createFinancialChart = (newData, yOptions) => {
     return new Highcharts.chart("container_financial_metrics", {
       chart: {
-        type: "line", 
-        zoomType: "x", 
+        type: "line",
+        zoomType: "x",
         borderWidth: 1,
         events: {
           load: function () {
-            creditsClick(this,"https://apps.cer-rec.gc.ca/REGDOCS/Home/Index")
+            creditsClick(this, "https://apps.cer-rec.gc.ca/REGDOCS/Home/Index");
           },
         },
       },
@@ -124,10 +131,11 @@ export const cassandraAllPipes = () => {
 
       yAxis: {
         title: {
-          text: yLabel,
+          text: yOptions.yLabel,
         },
         labels: {
-          format: yFormat,
+          //format: yOptions.yFormat,
+          formatter: yOptions.yCall,
         },
       },
 
@@ -139,7 +147,7 @@ export const cassandraAllPipes = () => {
   };
 
   const mainPipeline = () => {
-    var chartFinance = createFinancialChart(seriesData, yFormat, yLabel);
+    var chartFinance = createFinancialChart(seriesData, yOptions);
     var selectMetricFinancial = document.getElementById(
       "select_metric_financial"
     );
@@ -164,11 +172,8 @@ export const cassandraAllPipes = () => {
     });
 
     const graphEvent = (filters) => {
-      [seriesData, yFormat, yLabel] = prepareSeriesFinance(
-        financialData,
-        filters
-      );
-      return createFinancialChart(seriesData, yFormat, yLabel);
+      [seriesData, yOptions] = prepareSeriesFinance(financialData, filters);
+      return createFinancialChart(seriesData, yOptions);
     };
   };
   mainPipeline();

@@ -46,6 +46,7 @@ const generalTheme = () => {
         },
       },
       labels: {
+        format: "{value}",
         style: {
           fontSize: 12,
           color: cerPalette["Cool Grey"],
