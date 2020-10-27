@@ -54,6 +54,22 @@
   min-height: 300px;
 }
 
+#container_pipeline_legend {
+  text-align: center;
+}
+
+#container_symbol_legend {
+  text-align: center;
+}
+
+#legend_title {
+  text-align: center;
+  font-family: Arial;
+  font-weight: bold;
+  font-size: small;
+  color: #871455;
+}
+
 /* .my-row {
   border: 3px solid red;
 }
