@@ -378,8 +378,9 @@ def readExcel(name,sheet='pq',flatten=False):
                                                   'MPLL shareholders - Suncor Energy Inc.',
                                                   'Plains All American Pipeline',
                                                   'MPLL shareholders - Imperial Oil Limited'])]
-            print(list(set(list(df['Corporate Entity']))))
+            
             df['series'] = df['Corporate Entity']+' - '+df['Type']
+            print(list(set(list(df['Corporate Entity']))))
             write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',name.split('.')[0]+'.json')
         if sheet == 'Scale':
             write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',sheet+'.json')

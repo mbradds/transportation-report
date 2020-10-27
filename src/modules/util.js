@@ -80,7 +80,13 @@ export const getUnique = (items, filterColumns) => {
 export const filterData = (data, filters) => {
   if (filters !== false) {
     for (const [key, value] of Object.entries(filters)) {
-      data = data.filter((row) => row[key] == value);
+      if (!Array.isArray(value)) {
+        data = data.filter((row) => row[key] == value);
+      } else {
+        value.map((filterValue) => {
+          data = data.filter((row) => row[key] == filterValue);
+        });
+      }
     }
   }
   return data;
