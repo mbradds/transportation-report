@@ -50,6 +50,34 @@ export const jenniferAbandonment = () => {
     )
   );
 
+  const tooltipAbandon = (event) => {
+    var selectedCompany = event.key;
+    var toolText = "<b>" + selectedCompany + "<br>";
+    var calc = {};
+    event.series.chart.series.map((series) => {
+      var seriesName = series.name;
+      var seriesColor = series.color;
+      series.data.map((row) => {
+        if (row.name == selectedCompany) {
+          calc[seriesName] = row.y;
+          toolText +=
+            '<br><span style="color:' +
+            seriesColor +
+            '">\u25CF</span>' +
+            seriesName +
+            ": " +
+            row.y;
+        }
+      });
+    });
+    calc["pctRecovered"] = (
+      (calc["Amounts Set Aside"] /
+        (calc["Amount to Recover"] + calc["Amounts Set Aside"])) *
+      100
+    ).toFixed(1);
+    return toolText + `<br> Percent Recovered: ${calc["pctRecovered"]}%`;
+  };
+
   const createAbandonmentTotals = (seriesData) => {
     return new Highcharts.chart("container_abandonment_totals", {
       chart: {
@@ -122,7 +150,9 @@ export const jenniferAbandonment = () => {
       },
 
       tooltip: {
-        enabled: true,
+        formatter: function () {
+          return tooltipAbandon(this);
+        },
       },
 
       series: seriesData,
@@ -154,7 +184,22 @@ export const jenniferAbandonment = () => {
         categories: true,
       },
 
-      yAxis: {},
+      tooltip: {
+        formatter: function () {
+          return tooltipAbandon(this);
+        },
+      },
+
+      yAxis: {
+        title: {
+          text: "Abandonment Costs (Billions)",
+        },
+        labels: {
+          formatter: function (){
+            return this.value/1000000000
+          }
+        }
+      },
 
       series: seriesData,
     });
