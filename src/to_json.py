@@ -380,7 +380,6 @@ def readExcel(name,sheet='pq',flatten=False):
                                                   'MPLL shareholders - Imperial Oil Limited'])]
             
             df['series'] = df['Corporate Entity']+' - '+df['Type']
-            print(list(set(list(df['Corporate Entity']))))
             write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',name.split('.')[0]+'.json')
         if sheet == 'Scale':
             write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',sheet+'.json')
@@ -432,6 +431,8 @@ def readExcelPipeline(name,sheet='Data',sql=False):
                    'Return On Rate Base':'Return on Rate Base'}
     
     df['Type'] = df['Type'].replace(type_switch)
+    df = df[df['Type'].isin(['Deemed Equity Ratio','Actual Return on Equity','Revenue','Rate Base'])]
+    print(list(set(df['Type'])))
     
     oil_lines = ['Aurora Pipeline','Enbridge Mainline','Enbridge Norman Wells Pipeline','Express Pipeline','Cochin Pipeline','Milk River Pipeline','Montreal Pipeline','Southern Lights Pipeline','Trans Mountain Pipeline','Keystone Pipeline System','Trans-Northern Pipeline','Wascana','Westspur Pipeline']
     df['Category'] = ['Oil' if x in oil_lines else 'Gas' for x in df['Pipeline']]
@@ -765,7 +766,7 @@ if __name__ == '__main__':
     #df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
     
     #cassandra
-    #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
+    df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     #df = negotiated_settlements()
     
@@ -781,7 +782,7 @@ if __name__ == '__main__':
     #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
     #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
     #df_fin_class_names = readCersei(query_fin_resource_class_names,'fin_resource_class_names.json')
-    df,scale = creditRatings()
+    #df,scale = creditRatings()
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx')
