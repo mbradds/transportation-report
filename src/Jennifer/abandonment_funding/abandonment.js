@@ -12,60 +12,32 @@ export const jenniferAbandonment = () => {
     "Amount to Recover": cerPalette["Night Sky"],
   };
 
-  const prepareSeriesPie = (
-    data,
-    nameCol,
-    yCols,
-    colors,
-    colorByPoint = true
-  ) => {
-    const series1 = {
-      name: 'Group 1',
-      colorByPoint: colorByPoint,
-      color: colors[0],
-    };
-    series1.data = []
-    yCols.map((yCol) => {
-      data.map((row) => {
-        series1.data.push({
-          name: row[nameCol] + "-" + yCol,
-          y: row[yCol],
-          color: colors[yCol],
-        });
-      });
-    });
-    console.log(series1)
-    return [series1];
-  };
-
   const filterSeries = (seriesData) => {
     var exclude = [
       "Total Group 1 Pipelines",
       "Total Group 2 Pipelines",
       "Total CER Regulated Pipelines",
     ];
-    return seriesData.map((series) => {
+
+    var seriesTotals = [];
+
+    seriesData = seriesData.map((series) => {
+      seriesTotals.push({
+        name: series.name,
+        color: series.color,
+        data: series.data.filter((row) => exclude.includes(row.name)),
+      });
+
       return {
-        data: series.data.filter((row) => !exclude.includes(row.name.split("-")[0])),
+        data: series.data.filter((row) => !exclude.includes(row.name)),
         name: series.name,
         color: series.color,
       };
     });
+    return [seriesData, seriesTotals];
   };
 
-  const seriesPie = filterSeries(
-    prepareSeriesPie(
-      abandonmentData,
-      "Company",
-      ["Amounts Set Aside", "Amount to Recover"],
-      abandonmentColors,
-      false
-    )
-  );
-
-  console.log(seriesPie);
-
-  var seriesData = filterSeries(
+  var [seriesData, seriesTotals] = filterSeries(
     prepareSeriesNonTidy(
       abandonmentData,
       false,
@@ -78,26 +50,71 @@ export const jenniferAbandonment = () => {
     )
   );
 
-  const createPieChart = (seriesData) => {
-    return Highcharts.chart("container_pie_group1", {
+  console.log(seriesData);
+  const createAbandonmentTotals = (seriesData) => {
+    return new Highcharts.chart("container_abandonment_totals", {
       chart: {
-        type: "pie",
+        height: "30%",
+        type: "bar",
+        gridLineWidth: 0,
       },
-      tooltip: {
-        pointFormat: "<b>{point.percentage:.1f}%</b>",
+
+      title: { text: "Abandonment Funding Totals" },
+
+      credits: {
+        enabled: false,
       },
+
+      plotOptions: {
+        bar: {
+          animation: false,
+          stacking: "normal",
+          marker: true,
+          dataLabels: {
+            enabled: true,
+            // formatter: function () {
+            //   return `${
+            //     this.point.series.name
+            //   } total financial resources: <br> ${(this.y / 1000000000).toFixed(
+            //     2
+            //   )} billion $CAD`;
+            // },
+          },
+        },
+        series: {
+          enableMouseTracking: false,
+        },
+      },
+
       legend: {
         enabled: false,
       },
-      plotOptions: {
-        pie: {
-          cursor: "pointer",
-          dataLabels: {
-            enabled: false,
-          },
-          showInLegend: false,
+
+      yAxis: {
+        visible: false,
+        title: {
+          enabled: false,
+        },
+        labels: {
+          enabled: false,
         },
       },
+
+      xAxis: {
+        //visible: false,
+        categories: true,
+        title: {
+          enabled: false,
+        },
+        // labels: {
+        //   enabled: false,
+        // },
+      },
+
+      tooltip: {
+        enabled: false,
+      },
+
       series: seriesData,
     });
   };
@@ -106,8 +123,9 @@ export const jenniferAbandonment = () => {
     return new Highcharts.chart("container_abandonment", {
       chart: {
         type: "column",
-        borderWidth: 1,
       },
+
+      title: { text: "Group 1 Abandonment Breakdown" },
 
       plotOptions: {
         series: {
@@ -131,7 +149,6 @@ export const jenniferAbandonment = () => {
       series: seriesData,
     });
   };
-
-  const pieGroup1 = createPieChart(seriesPie);
+  const abandonTotals = createAbandonmentTotals(seriesTotals);
   const abandonChart = createAbandonmentChart(seriesData);
 };
