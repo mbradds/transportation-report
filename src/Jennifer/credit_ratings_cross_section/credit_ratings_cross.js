@@ -17,6 +17,10 @@ export const jenniferRatingsCross = () => {
 
   const ratingsFilter = { Year: "2019" };
 
+  const setTitle = (figure_title, filters) => {
+    figure_title.innerText = `Figure 22: Company Credit Ratings, ${filters.Year}`;
+  };
+
   var creditSeries = prepareSeriesTidy(
     creditData,
     ratingsFilter,
@@ -79,6 +83,7 @@ export const jenniferRatingsCross = () => {
   const createChartCross = (series) => {
     return Highcharts.chart("container_ratings_cross", {
       chart: {
+        borderWidth: 1,
         type: "column",
       },
 
@@ -92,31 +97,16 @@ export const jenniferRatingsCross = () => {
         },
         column: {
           stacking: null,
-          //   point: {
-          //     events: {
-          //       mouseOver: function () {
-          //         var currentCompany = this.options.name;
-          //         console.log(currentCompany);
-          //         //console.log(this.series.chart.series)
-          //         this.series.chart.series.map((s) => {
-          //           s.points.map((p) => {
-          //             if (p.name == currentCompany) {
-          //               console.log(p.name, s.name);
-          //               p.setState("hover", false);
-          //             } else {
-          //               p.setState("inactive", false);
-          //             }
-          //           });
-          //         });
-          //       },
-          //     },
-          //   },
         },
       },
 
       xAxis: {
         categories: true,
         crosshair: true,
+        title: {
+          text:
+            "CER Regulated Companies (higher average credit rating to the left)",
+        },
       },
       yAxis: {
         title: { text: "Standardized Credit Rating" },
@@ -174,32 +164,39 @@ export const jenniferRatingsCross = () => {
       series: series,
     });
   };
-  var yearChart = createChartCross(sortedSeries);
 
-  $("#credit_years button").on("click", function () {
-    var thisBtn = $(this);
-    thisBtn.addClass("active").siblings().removeClass("active");
-    var btnText = thisBtn.text();
-    var btnValue = thisBtn.val();
-    $("#selectedVal").text(btnValue);
-    ratingsFilter.Year = btnText;
-    var creditSeries = prepareSeriesTidy(
-      creditData,
-      ratingsFilter,
-      false,
-      "Type",
-      "Corporate Entity",
-      "Level",
-      ratingsColors,
-      1,
-      "name"
-    );
-    sortedSeries = createSortedSeries(creditSeries);
-    yearChart.update({
-      series: sortedSeries,
+  const mainCreditYear = () => {
+    var yearChart = createChartCross(sortedSeries);
+    var figure_title = document.getElementById("ratings_year_title");
+    setTitle(figure_title, ratingsFilter);
+
+    $("#credit_years button").on("click", function () {
+      var thisBtn = $(this);
+      thisBtn.addClass("active").siblings().removeClass("active");
+      var btnText = thisBtn.text();
+      var btnValue = thisBtn.val();
+      $("#selectedVal").text(btnValue);
+      ratingsFilter.Year = btnText;
+      setTitle(figure_title, ratingsFilter);
+      var creditSeries = prepareSeriesTidy(
+        creditData,
+        ratingsFilter,
+        false,
+        "Type",
+        "Corporate Entity",
+        "Level",
+        ratingsColors,
+        1,
+        "name"
+      );
+      sortedSeries = createSortedSeries(creditSeries);
+      yearChart.update({
+        series: sortedSeries,
+      });
     });
-  });
 
-  // You can use this to set default value
-  $('#credit_years button[value="2019"]').click();
+    // You can use this to set default value
+    $('#credit_years button[value="2019"]').click();
+  };
+  mainCreditYear();
 };

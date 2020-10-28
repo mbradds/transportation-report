@@ -67,7 +67,7 @@ export const cassandraAllPipes = () => {
     return [hcData, yOptions];
   };
 
-  var financeFilters = { Category: "All", Type: "Assets" };
+  var financeFilters = { Category: "All", Type: "Deemed Equity Ratio" };
 
   var [seriesData, yOptions] = prepareSeriesFinance(
     financialData,
@@ -78,7 +78,7 @@ export const cassandraAllPipes = () => {
     "select_metric_financial",
     getUnique(financialData, "Type"),
     false,
-    "Assets"
+    "Deemed Equity Ratio"
   );
 
   const createFinancialChart = (newData, yOptions) => {
