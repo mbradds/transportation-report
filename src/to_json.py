@@ -395,7 +395,11 @@ def readExcel(name,sheet='pq',flatten=False):
                              "investmentGrade":df['Investment Grade'][index]}
             with open(write_path, 'w') as f:
                 json.dump(levels, f)
-                
+    if name == "abandonment funding data.xlsx":
+        df = normalize_text(df, ['Company'])
+        df['Amount to Recover'] = df['ACE'] - df['Amounts Set Aside']
+        df = df.sort_values(by=['ACE'],ascending=False)
+        write_path = os.path.join(os.getcwd(),'Jennifer/abandonment_funding/',sheet+'.json')
         
     #df = df.astype(object).where(pd.notnull(df), None)
     if sheet != 'Scale':
@@ -766,7 +770,7 @@ if __name__ == '__main__':
     #df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
     
     #cassandra
-    df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
+    #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     #df = negotiated_settlements()
     
@@ -783,6 +787,7 @@ if __name__ == '__main__':
     #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
     #df_fin_class_names = readCersei(query_fin_resource_class_names,'fin_resource_class_names.json')
     #df,scale = creditRatings()
+    df = readExcel("abandonment funding data.xlsx","Modified")
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx')

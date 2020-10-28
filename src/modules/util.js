@@ -252,8 +252,8 @@ export const prepareSeriesTidy = (
   );
 };
 
-export const prepareSeriesPie = (data, seriesName, nameCol, yCol, colors) => {
-  const series = { name: seriesName, colorByPoint: true };
+export const prepareSeriesPie = (data, seriesName, nameCol, yCol, colors,colorByPoint=true) => {
+  const series = { name: seriesName, colorByPoint: colorByPoint };
   series.data = data.map((row) => {
     return {
       name: row[nameCol],
