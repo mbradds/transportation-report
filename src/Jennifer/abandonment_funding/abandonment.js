@@ -50,7 +50,6 @@ export const jenniferAbandonment = () => {
     )
   );
 
-  console.log(seriesData);
   const createAbandonmentTotals = (seriesData) => {
     return new Highcharts.chart("container_abandonment_totals", {
       chart: {
@@ -72,17 +71,21 @@ export const jenniferAbandonment = () => {
           marker: true,
           dataLabels: {
             enabled: true,
-            // formatter: function () {
-            //   return `${
-            //     this.point.series.name
-            //   } total financial resources: <br> ${(this.y / 1000000000).toFixed(
-            //     2
-            //   )} billion $CAD`;
-            // },
+            formatter: function () {
+              if (this.key !== "Total Group 2 Pipelines") {
+                return `${(this.point.y / 1000000000).toFixed(1)} Billion`;
+              } else {
+                return null;
+              }
+            },
           },
         },
         series: {
-          enableMouseTracking: false,
+          states: {
+            inactive: {
+              opacity: 1,
+            },
+          },
         },
       },
 
@@ -91,28 +94,35 @@ export const jenniferAbandonment = () => {
       },
 
       yAxis: {
-        visible: false,
+        //visible: false,
         title: {
           enabled: false,
         },
         labels: {
           enabled: false,
         },
+        stackLabels: {
+          enabled: true,
+          formatter: function () {
+            var [remaining, total] = this.points[0];
+            var recovered = total - remaining;
+            return (recovered / total).toFixed(2) * 100 + "% recovered";
+          },
+        },
       },
 
       xAxis: {
-        //visible: false,
         categories: true,
         title: {
           enabled: false,
         },
-        // labels: {
-        //   enabled: false,
-        // },
+        stackLabels: {
+          enabled: true,
+        },
       },
 
       tooltip: {
-        enabled: false,
+        enabled: true,
       },
 
       series: seriesData,
