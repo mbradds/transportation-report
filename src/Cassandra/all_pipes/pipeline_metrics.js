@@ -5,13 +5,7 @@ import financialData from "./PipelineProfileTables.json";
 export const cassandraAllPipes = () => {
   const prepareSeriesFinance = (data, filters) => {
     for (const [key, value] of Object.entries(filters)) {
-      if (key == "Category") {
-        if (value == "Oil") {
-          data = data.filter((row) => row.Category == "Oil");
-        } else if (value == "Gas") {
-          data = data.filter((row) => row.Category == "Gas");
-        }
-      } else {
+      if (value !== "All") {
         data = data.filter((row) => row[key] == value);
       }
     }
@@ -29,15 +23,41 @@ export const cassandraAllPipes = () => {
     ];
     var hcData = [];
 
+    // //if actual return on equity is selected, then the y axis needs to be set
+    // const rangeFinder = (filters) => {
+    //   if (filters.Type == "Actual Return on Equity") {
+    //     const findMinMax = (y, currentMax, currentMin) => {
+    //       if (y > currentMax) {
+    //         currentMax = y;
+    //       } else if (y < currentMin) {
+    //         currentMin = y;
+    //       }
+    //       return [currentMax, currentMin];
+    //     };
+    //     return findMinMax;
+    //   } else {
+    //     const findMinMax = (y, currentMax, currentMin) => {
+    //       return [null, null];
+    //     };
+    //     return findMinMax;
+    //   }
+    // };
+
+    //var [currentMax, currentMin] = [0, 0];
+    //const findRange = rangeFinder(filters);
     for (const pipe in finPipes) {
       var dataPipe = data.filter((row) => row.Pipeline == finPipes[pipe]);
       var unit = dataPipe[0]["Unit"];
       dataPipe = dataPipe.map((v, i) => {
-        var hcRow = {
+        // [currentMax, currentMin] = findRange(
+        //   v["Value"],
+        //   currentMax,
+        //   currentMin
+        // );
+        return {
           x: v["Year"],
           y: v["Value"],
         };
-        return hcRow;
       });
 
       var completedMetric = {
@@ -49,15 +69,18 @@ export const cassandraAllPipes = () => {
     }
 
     var yOptions = {};
-
     if (unit == "%") {
       yOptions.yFormat = "{value}%";
+      // yOptions.yMax = currentMax;
+      // yOptions.yMin = currentMin;
       yOptions.yLabel = "%";
       yOptions.yCall = function () {
         return this.value + "%";
       };
     } else {
       yOptions.yFormat = "{value:,.0f}";
+      // yOptions.yMax = currentMax;
+      // yOptions.yMin = currentMin;
       yOptions.yLabel = "C$ (Millions)";
       yOptions.yCall = function () {
         return this.value / 1000000;
@@ -67,18 +90,19 @@ export const cassandraAllPipes = () => {
     return [hcData, yOptions];
   };
 
-  var financeFilters = { Category: "All", Type: "Deemed Equity Ratio" };
+  //var defaultMetric = "Deemed Equity Ratio"
+  var defaultMetric = "Actual Return on Equity"
+  var financeFilters = { Category: "All", Type:defaultMetric };
 
   var [seriesData, yOptions] = prepareSeriesFinance(
     financialData,
     financeFilters
   );
-
   fillDropUpdate(
     "select_metric_financial",
     getUnique(financialData, "Type"),
     false,
-    "Deemed Equity Ratio"
+    defaultMetric
   );
 
   const createFinancialChart = (newData, yOptions) => {
@@ -130,11 +154,12 @@ export const cassandraAllPipes = () => {
       ],
 
       yAxis: {
+        startOnTick: false,
+        endOnTick: false,
         title: {
           text: yOptions.yLabel,
         },
         labels: {
-          //format: yOptions.yFormat,
           formatter: yOptions.yCall,
         },
       },
