@@ -46,6 +46,9 @@
   height: 550px;
 }
 
+#container_ratings_cross {
+  height: 550px;
+}
 #container_fin_resources {
   min-height: 300px;
 }
