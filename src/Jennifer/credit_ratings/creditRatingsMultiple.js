@@ -1,3 +1,5 @@
+//TODO: add colors to the tooltip company names
+//https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/column-basic
 import {
   cerPalette,
   prepareSeriesTidy,
@@ -99,10 +101,7 @@ export const jenniferRatingsMulti = () => {
     creditSeries,
     onLoadCompanies,
     false
-    //ratingAgencies
   );
-
-  console.log(seriesSubset);
 
   const createCreditChart = (series, scaleData, minY, maxY) => {
     return Highcharts.chart("container_ratings_multi", {
