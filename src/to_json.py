@@ -432,10 +432,10 @@ def readExcelPipeline(name,sheet='Data',sql=False):
     
     df['Type'] = df['Type'].replace(type_switch)
     df = df[df['Type'].isin(['Deemed Equity Ratio','Actual Return on Equity','Revenue','Rate Base'])]
-    print(list(set(df['Type'])))
-    
+    df['Pipeline'] = df['Pipeline'].replace({'Trans Québec & Maritimes Pipeline':'Trans Quebec & Maritimes Pipeline'})    
     oil_lines = ['Aurora Pipeline','Enbridge Mainline','Enbridge Norman Wells Pipeline','Express Pipeline','Cochin Pipeline','Milk River Pipeline','Montreal Pipeline','Southern Lights Pipeline','Trans Mountain Pipeline','Keystone Pipeline System','Trans-Northern Pipeline','Wascana','Westspur Pipeline']
     df['Category'] = ['Oil' if x in oil_lines else 'Gas' for x in df['Pipeline']]
+    df = df.sort_values(by=['Year', 'Pipeline','Type'])
     
     write_path = os.path.join(os.getcwd(),'Cassandra/all_pipes/',name.split('.')[0]+'.json')
     df.to_json(write_path,orient='records',force_ascii=False)
