@@ -668,7 +668,8 @@ def tolls(name):
                     if index == 0:
                         normalized.append(toll/toll)
                     else:
-                        normalized.append(toll/toll_list[index-1])
+                        #normalized.append(toll/toll_list[index-1]) #this is the old calculation
+                        normalized.append(toll/toll_list[0])
                         
                 df['Rate Normalized'] = normalized
                 normal_list.append(df)
@@ -712,6 +713,7 @@ def tolls(name):
     
     df = pd.concat([oil,gas,all_tolls], axis=0, sort=False, ignore_index=True)
     df['Rate Normalized'] = df['Rate Normalized'].round(2)
+    df = df.sort_values(by=['Commodity','Pipeline','Start','End'])
     write_path = os.path.join(os.getcwd(),'Cassandra/tolls/','tolls.json')
     df.to_json(write_path,orient='records')
     return df
@@ -771,7 +773,7 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    #df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     #df = negotiated_settlements()
     
     #ryan
@@ -787,7 +789,7 @@ if __name__ == '__main__':
     #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
     #df_fin_class_names = readCersei(query_fin_resource_class_names,'fin_resource_class_names.json')
     #df,scale = creditRatings()
-    df = readExcel("abandonment funding data.xlsx","Modified")
+    #df = readExcel("abandonment funding data.xlsx","Modified")
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx')
