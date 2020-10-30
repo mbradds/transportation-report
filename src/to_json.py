@@ -661,6 +661,8 @@ def tolls(name):
                 df['Rate'] = pd.to_numeric(df['Rate'])
                 df['Pipeline'] = sheet.split('-')[-1].strip()
                 df['Commodity'] = commodity
+                df['Start'] = pd.to_datetime(df['Start'])
+                df = df[df['Start'].dt.year>=2015]
                 #normalize the tolls
                 normalized = []
                 toll_list = list(df['Rate'])
