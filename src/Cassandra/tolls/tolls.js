@@ -126,11 +126,6 @@ export const cassandraTolls = () => {
         )
       );
       chartTolls = createTollsChart(seriesData, tollDate);
-      chartTolls.update({
-        yAxis: {
-          title: { text: "Benchmark Toll (first toll start date = 1)" },
-        }
-      })
     });
   };
   mainTolls();
