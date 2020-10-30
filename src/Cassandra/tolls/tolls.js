@@ -41,7 +41,7 @@ export const cassandraTolls = () => {
   };
 
   var tollFilters = { Commodity: "Oil & Gas" };
-  var tollDate = { Date: "End" };
+  var tollDate = { Date: "Start" };
 
   const tollColors = {
     "Gas Tolls": cerPalette["Sun"],
@@ -93,7 +93,7 @@ export const cassandraTolls = () => {
       },
 
       yAxis: {
-        title: { text: "Benchmark Toll" },
+        title: { text: "Benchmark Toll (2015 = 1)" },
         labels: {
           formatter: function () {
             return this.value;
@@ -126,29 +126,11 @@ export const cassandraTolls = () => {
         )
       );
       chartTolls = createTollsChart(seriesData, tollDate);
-    });
-
-    var selectDate = document.getElementById("select_toll_date");
-    selectDate.addEventListener("change", (selectDate) => {
-      tollDate.Date = selectDate.target.value;
-      const seriesData = tollChartTypes(
-        prepareSeriesTidy(
-          tollsData,
-          tollFilters,
-          false,
-          "Pipeline",
-          tollDate.Date,
-          "Rate Normalized",
-          tollColors
-        )
-      );
       chartTolls.update({
-        series: seriesData,
-        xAxis: {
-          type: "datetime",
-          title: { text: `Toll ${tollDate.Date} date` },
-        },
-      });
+        yAxis: {
+          title: { text: "Benchmark Toll (first toll start date = 1)" },
+        }
+      })
     });
   };
   mainTolls();
