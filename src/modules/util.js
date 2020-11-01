@@ -8,6 +8,13 @@ export const cerPalette = {
   "Dim Grey": "#8c8c96",
   "Cool Grey": "#42464B",
   White: "#FFFFFF",
+  hcBlue: "#7cb5ec",
+  hcGreen: "#90ed7d",
+  hcPink: "#f15c80",
+  hcRed: "#f45b5b",
+  hcAqua: "#2b908f",
+  hcPurple: "#8085e9",
+  hcLightBlue: "#91e8e1",
 };
 
 export const conversions = (conv, current, base) => {
@@ -252,7 +259,14 @@ export const prepareSeriesTidy = (
   );
 };
 
-export const prepareSeriesPie = (data, seriesName, nameCol, yCol, colors,colorByPoint=true) => {
+export const prepareSeriesPie = (
+  data,
+  seriesName,
+  nameCol,
+  yCol,
+  colors,
+  colorByPoint = true
+) => {
   const series = { name: seriesName, colorByPoint: colorByPoint };
   series.data = data.map((row) => {
     return {

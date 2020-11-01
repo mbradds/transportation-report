@@ -87,6 +87,7 @@ const generalTheme = () => {
 
 generalTheme();
 
+import { systemMaps } from "./SystemMaps/maps"
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
 import { kevinUsImports } from "./Kevin/us_imports/us_imports";
@@ -112,6 +113,7 @@ import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMul
 import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
 import { jenniferAbandonment } from "./Jennifer/abandonment_funding/abandonment";
 
+systemMaps();
 kevinCrudeProduction();
 kevinCrudeExports();
 kevinUsImports();
