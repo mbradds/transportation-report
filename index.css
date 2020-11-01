@@ -73,6 +73,14 @@
   color: #871455;
 }
 
+#container_map_oil {
+  min-height: 800px;
+}
+
+#container_map_gas {
+  min-height: 800px;
+}
+
 /* .my-row {
   border: 3px solid red;
 }

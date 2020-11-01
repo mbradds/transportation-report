@@ -1,7 +1,6 @@
 import {
   cerPalette,
   prepareSeriesNonTidy,
-  getUnique,
 } from "../../modules/util.js";
 
 import abandonmentData from "./Modified.json";
