@@ -1,4 +1,5 @@
 import geopandas as gpd
+gpd.options.display_precision = 1
 import os
 import pandas as pd
 from os import listdir
@@ -18,27 +19,31 @@ crs_hc2 = "EPSG:102002"
 crs_hc3 = "+proj=lcc +lat_1=50 +lat_2=70 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs"
 #%%
 
-oil_pipelines = ['AURORA PIPE LINE COMPANY LTD',
-                 'ENBRIDGE PIPELINES (NW) INC', 
-                 'ENBRIDGE PIPELINES INC', 
-                 'ENBRIDGE SOUTHERN LIGHTS GP INC ON BEHALF OF ENBRIDGE SOUTHERN LIGHTS LP',
-                 'EXPRESS PIPELINE LTD',
-                 'KINDER MORGAN COCHIN ULC',
-                 'MONTREAL PIPE LINE LIMITED',
-                 'TEML WESTSPUR PIPELINES LIMITED',
-                 'TRANS MOUNTAIN PIPELINE ULC',
-                 'TRANS-NORTHERN PIPELINES INC', 
-                 'TRANSCANADA KEYSTONE PIPELINE GP LTD']
+oil_pipelines = [
+    'AURORA PIPE LINE COMPANY LTD',
+    'ENBRIDGE PIPELINES (NW) INC', 
+    'ENBRIDGE PIPELINES INC', 
+    'ENBRIDGE SOUTHERN LIGHTS GP INC ON BEHALF OF ENBRIDGE SOUTHERN LIGHTS LP',
+    'EXPRESS PIPELINE LTD',
+    'KINDER MORGAN COCHIN ULC',
+    'MONTREAL PIPE LINE LIMITED',
+    'TEML WESTSPUR PIPELINES LIMITED',
+    'TRANS MOUNTAIN PIPELINE ULC',
+    'TRANS-NORTHERN PIPELINES INC', 
+    'TRANSCANADA KEYSTONE PIPELINE GP LTD'
+                 ]
 
-gas_pipelines = ['ALLIANCE PIPELINE LTD',
-                  'EMERA BRUNSWICK PIPELINE COMPANY LTD',
-                  'FOOTHILLS PIPE LINES LTD',
-                  'MARITIMES & NORTHEAST PIPELINE MANAGEMENT LTD',
-                  'NOVA GAS TRANSMISSION LTD',
-                  'TRANS QUEBEC AND MARITIMES PIPELINE INC',
-                  'TRANSCANADA PIPELINES LIMITED',
-                  'VECTOR PIPELINE LIMITED PARTNERSHIP',
-                  'WESTCOAST ENERGY INC, CARRYING ON BUSINESS AS SPECTRA ENERGY TRANSMISSION']
+gas_pipelines = [
+    'ALLIANCE PIPELINE LTD',
+    'EMERA BRUNSWICK PIPELINE COMPANY LTD',
+    'FOOTHILLS PIPE LINES LTD',
+    'MARITIMES & NORTHEAST PIPELINE MANAGEMENT LTD',
+    'NOVA GAS TRANSMISSION LTD',
+    'TRANS QUEBEC AND MARITIMES PIPELINE INC',
+    'TRANSCANADA PIPELINES LIMITED',
+    'VECTOR PIPELINE LIMITED PARTNERSHIP',
+    'WESTCOAST ENERGY INC, CARRYING ON BUSINESS AS SPECTRA ENERGY TRANSMISSION'
+    ]
 
   
 oil_query = "select oil.Year,oil.[Corporate Entity],oil.[Pipeline Name],oil.[Key Point],oil.[Direction of Flow],oil.[Trade Type],oil.Product, \
@@ -157,9 +162,9 @@ def process_cer_files(d_type='pipe'):
     export_files(pipe,folder="pipeline/raw_geojson",name="pipeline.geojson")
     return pipe
 
-def import_cer_files():
-    pipe_path = r'C:\Users\mossgran\Documents\HighchartsMap\src\pipeline\mapshaper_output\pipeline.json'
-    pipe = gpd.read_file(pipe_path)
+def import_cer_files(name='pipeline.json'):
+    read_path = os.path.join(os.getcwd(),'pipeline/mapshaper_output/',name)
+    pipe = gpd.read_file(read_path)
     pipe = pipe.set_geometry('geometry')
     pipe = pipe[pipe.geometry.notnull()]
     pipe['OPERATOR'] = pipe["OPERATOR"].replace({'TRANS QU�BEC AND MARITIMES PIPELINE INC':'TRANS QUEBEC AND MARITIMES PIPELINE INC'})
@@ -168,9 +173,9 @@ def import_cer_files():
     return pipe
     
 
-def import_statsCan_files():
-    path = r'C:\Users\mossgran\Documents\HighchartsMap\src\statsCan\lpr_000b16a_e\lpr_000b16a_e.shp'
-    df = gpd.read_file(path)
+def import_statsCan_files(name='lpr_000b16a_e.shp'):
+    read_path = os.path.join(os.getcwd(),'statsCan/lpr_000b16a_e/',name)
+    df = gpd.read_file(read_path)
     df = df.set_geometry('geometry')
     df['geometry'] = df['geometry'].to_crs(crs_hc3)
     df.crs = crs_hc3
@@ -182,7 +187,7 @@ def import_statsCan_files():
 def filter_shape(pipes,commodity='oil'):
     pipes = pipes[pipes['STATUS']=="Operating"]
     if commodity == 'oil':
-        ranges = params(oil_query,5,25)
+        ranges = params(oil_query,5,30)
         pipelines = oil_pipelines
     if commodity == 'gas':
         ranges = params(gas_query,5,25)
@@ -203,17 +208,18 @@ def filter_shape(pipes,commodity='oil'):
             pipe = pipe.reset_index()
             buffer_meters = (r_buffer * 1000) * 1.60934
             pipe['geometry'] = pipe['geometry'].buffer(buffer_meters)
+            pipe = pipe.dissolve(by='OPERATOR')
+            pipe['geometry'] = pipe['geometry'].simplify(10)
             try:
                 if not r.empty:    
                     pipe = pipe.merge(r,how='left',left_on='OPERATOR',right_on='Corporate Entity')
-                export_files(pipe,folder="pipeline_output/"+commodity,name=pipe_name+'.geojson')
+                export_files(pipe,folder="pipeline_output/"+commodity,name=pipe_name+'.json')
             except:
                 print('failed: '+pipe_name)
                 #raise
                 return pipe
             
-
-        
+    
 def plot_map(map_layer,pipe_layer):
     print('pipe crs '+ str(pipe_layer.crs))
     print('map crs '+ str(map_layer.crs))
@@ -226,6 +232,11 @@ def pipe_file_names(mypath):
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     print(onlyfiles)
     
+def import_one_pipe(name="ENBRIDGE PIPELINES INC.json"):
+    read_path = os.path.join(os.getcwd(),'pipeline_output/oil/',name)
+    df = gpd.read_file(read_path)
+    return df
+
 
 if __name__ == "__main__":
     
@@ -238,16 +249,8 @@ if __name__ == "__main__":
     #print(sorted(pipe_names))
     oil_error = filter_shape(pipe,commodity='oil')
     gas_error = filter_shape(pipe,commodity='gas')
-    #pipe_file_names(r'C:\Users\mossgran\Documents\HighchartsMap\pipeline_output')
+    #pipe_file_names(r'C:\Users\mossgran\Documents\HighchartsMarkets\src\SystemMaps\pipeline_output\oil')
     #plot_map(statsCan,pipe)
-
-#%%
-
-
-
-
-
-
-
+    #enb = import_one_pipe(name="EXPRESS PIPELINE LTD.json")
     
-
+    

@@ -1,89 +1,143 @@
-import {
-  cerPalette,
-} from "../modules/util.js";
+import { cerPalette } from "../modules/util.js";
+import aurora from "./pipeline_output/oil/AURORA PIPELINE COMPANY LTD.json";
+import enbridgeNW from "./pipeline_output/oil/ENBRIDGE PIPELINES (NW) INC.json";
+import enbridgeML from "./pipeline_output/oil/ENBRIDGE PIPELINES INC.json";
+import enbridgeSL from "./pipeline_output/oil/ENBRIDGE SOUTHERN LIGHTS GP INC ON BEHALF OF ENBRIDGE SOUTHERN LIGHTS LP.json";
+import express from "./pipeline_output/oil/EXPRESS PIPELINE LTD.json";
+import cochin from "./pipeline_output/oil/KINDER MORGAN COCHIN ULC.json";
+import montreal from "./pipeline_output/oil/MONTREAL PIPE LINE LIMITED.json";
+import teml from "./pipeline_output/oil/TEML WESTSPUR PIPELINES LIMITED.json";
+import tm from "./pipeline_output/oil/TRANS MOUNTAIN PIPELINE ULC.json";
+import tn from "./pipeline_output/oil/TRANS-NORTHERN PIPELINES INC.json";
+import keystone from "./pipeline_output/oil/TRANSCANADA KEYSTONE PIPELINE GP LTD.json";
+
+import alliance from "./pipeline_output/gas/ALLIANCE PIPELINE LTD.json";
+import emera from "./pipeline_output/gas/EMERA BRUNSWICK PIPELINE COMPANY LTD.json";
+import foothills from "./pipeline_output/gas/FOOTHILLS PIPE LINES LTD.json";
+import mnp from "./pipeline_output/gas/MARITIMES & NORTHEAST PIPELINE MANAGEMENT LTD.json";
+import nova from "./pipeline_output/gas/NOVA GAS TRANSMISSION LTD.json";
+import tqm from "./pipeline_output/gas/TRANS QUEBEC AND MARITIMES PIPELINE INC.json";
+import tcpl from "./pipeline_output/gas/TRANSCANADA PIPELINES LIMITED.json";
+import vector from "./pipeline_output/gas/VECTOR PIPELINE LIMITED PARTNERSHIP.json";
+import westcoast from "./pipeline_output/gas/WESTCOAST ENERGY INC, CARRYING ON BUSINESS AS SPECTRA ENERGY TRANSMISSION.json";
+
+import canadaMap from "./map_output/statsCanFormat.json";
 
 export const systemMaps = () => {
-
-  const getData = (Url) => {
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET", Url, false);
-    Httpreq.send(null);
-    return Httpreq.responseText;
-  };
 
   const oilFileNames = {
     "AURORA PIPE LINE COMPANY LTD": {
       color: cerPalette["Aubergine"],
       zIndex: 9,
+      data: aurora,
     },
-    "ENBRIDGE PIPELINES INC": { color: cerPalette["Sun"], zIndex: 2 },
+    "ENBRIDGE PIPELINES INC": {
+      color: cerPalette["Sun"],
+      zIndex: 2,
+      data: enbridgeML,
+    },
     "ENBRIDGE PIPELINES (NW) INC": {
       color: cerPalette["Cool Grey"],
       zIndex: 9,
+      data: enbridgeNW,
     },
     "ENBRIDGE SOUTHERN LIGHTS GP INC ON BEHALF OF ENBRIDGE SOUTHERN LIGHTS LP": {
       color: cerPalette["Forest"],
       zIndex: 8,
+      data: enbridgeSL,
     },
-    "EXPRESS PIPELINE LTD": { color: cerPalette["Night Sky"], zIndex: 7 },
-    "MONTREAL PIPE LINE LIMITED": { color: cerPalette["hcBlue"], zIndex: 9 },
+    "EXPRESS PIPELINE LTD": {
+      color: cerPalette["Night Sky"],
+      zIndex: 7,
+      data: express,
+    },
+    "MONTREAL PIPE LINE LIMITED": {
+      color: cerPalette["hcBlue"],
+      zIndex: 9,
+      data: montreal,
+    },
     "TEML WESTSPUR PIPELINES LIMITED": {
       color: cerPalette["hcGreen"],
       zIndex: 9,
+      data: teml,
     },
-    "KINDER MORGAN COCHIN ULC": { color: cerPalette["hcLightBlue"], zIndex: 8 },
-    "TRANS MOUNTAIN PIPELINE ULC": { color: cerPalette["Ocean"], zIndex: 6 },
-    "TRANS-NORTHERN PIPELINES INC": { color: cerPalette["Flame"], zIndex: 9 },
+    "KINDER MORGAN COCHIN ULC": {
+      color: cerPalette["hcLightBlue"],
+      zIndex: 8,
+      data: cochin,
+    },
+    "TRANS MOUNTAIN PIPELINE ULC": {
+      color: cerPalette["Ocean"],
+      zIndex: 6,
+      data: tm,
+    },
+    "TRANS-NORTHERN PIPELINES INC": {
+      color: cerPalette["Flame"],
+      zIndex: 9,
+      data: tn,
+    },
     "TRANSCANADA KEYSTONE PIPELINE GP LTD": {
       color: cerPalette["hcRed"],
       zIndex: 6,
+      data: keystone,
     },
   };
 
   const gasFileNames = {
-    "ALLIANCE PIPELINE LTD": { color: cerPalette["Flame"], zIndex: 9 },
+    "ALLIANCE PIPELINE LTD": {
+      color: cerPalette["Flame"],
+      zIndex: 9,
+      data: alliance,
+    },
     "EMERA BRUNSWICK PIPELINE COMPANY LTD": {
       color: cerPalette["hcAqua"],
       zIndex: 8,
+      data: emera,
     },
-    "FOOTHILLS PIPE LINES LTD": { color: cerPalette["Sun"], zIndex: 7 },
+    "FOOTHILLS PIPE LINES LTD": {
+      color: cerPalette["Sun"],
+      zIndex: 7,
+      data: foothills,
+    },
     "MARITIMES & NORTHEAST PIPELINE MANAGEMENT LTD": {
       color: cerPalette["hcRed"],
       zIndex: 6,
+      data: mnp,
     },
-    "NOVA GAS TRANSMISSION LTD": { color: cerPalette["Night Sky"], zIndex: 1 },
-    "TRANS QUÉBEC AND MARITIMES PIPELINE INC": {
+    "NOVA GAS TRANSMISSION LTD": {
+      color: cerPalette["Night Sky"],
+      zIndex: 1,
+      data: nova,
+    },
+    "TRANS QUEBEC AND MARITIMES PIPELINE INC": {
       color: cerPalette["hcPurple"],
       zIndex: 5,
+      data: tqm,
     },
-    "TRANSCANADA PIPELINES LIMITED": { color: cerPalette["Forest"], zIndex: 4 },
+    "TRANSCANADA PIPELINES LIMITED": {
+      color: cerPalette["Forest"],
+      zIndex: 4,
+      data: tcpl,
+    },
     "VECTOR PIPELINE LIMITED PARTNERSHIP": {
       color: cerPalette["Aubergine"],
       zIndex: 3,
+      data: vector,
     },
     "WESTCOAST ENERGY INC, CARRYING ON BUSINESS AS SPECTRA ENERGY TRANSMISSION": {
       color: cerPalette["Ocean"],
       zIndex: 2,
+      data: westcoast,
     },
   };
 
-  const importPipes = (fileNames, commodity) => {
+  const importPipes = (fileNames) => {
     const shapes = [];
 
     for (const [key, value] of Object.entries(fileNames)) {
       shapes.push({
         name: key,
-        // data: Highcharts.geojson(
-        //   JSON.parse(
-        //     getData(
-        //       "/src/SystemMaps/pipeline_output/" +
-        //         commodity +
-        //         "/" +
-        //         key +
-        //         ".geojson"
-        //     )
-        //   )
-        // ),
+        data: Highcharts.geojson(value.data),
         color: value.color,
         type: "map",
         borderWidth: 0.2,
@@ -101,9 +155,7 @@ export const systemMaps = () => {
 
     const baseMap = {
       name: "Pipeline Map",
-      data: Highcharts.geojson(
-        JSON.parse(getData("/src/SystemMaps/map_output/statsCanFormat.json"))
-      ),
+      data: Highcharts.geojson(canadaMap),
       type: "map",
       color: "#F0F0F0",
       borderWidth: 0.5,
@@ -117,8 +169,8 @@ export const systemMaps = () => {
     return shapes;
   };
 
-  const oilShapes = importPipes(oilFileNames, "oil");
-  const gasShapes = importPipes(gasFileNames, "gas");
+  const oilShapes = importPipes(oilFileNames);
+  const gasShapes = importPipes(gasFileNames);
 
   const mapTooltip = (e, container) => {
     var properties = {};
@@ -134,11 +186,6 @@ export const systemMaps = () => {
       "Capacity Utilization",
       "Key Point",
     ];
-    if (container == "container_map_oil") {
-      var units = "1000 b/d";
-    } else {
-      var units = "1000 m3/d";
-    }
     propertiesList.map((prop) => {
       if (e.point.properties.hasOwnProperty(prop)) {
         properties[prop] = e.point.properties[prop];
