@@ -172,7 +172,7 @@ export const systemMaps = () => {
   const oilShapes = importPipes(oilFileNames);
   const gasShapes = importPipes(gasFileNames);
 
-  const mapTooltip = (e, container) => {
+  const mapTooltip = (e) => {
     var properties = {};
     var hasProperties = false;
     var propertiesList = [
@@ -273,7 +273,6 @@ export const systemMaps = () => {
 
       legend: {
         title: { text: "Click on a legend item to add/remove from map" },
-        //layout: "vertical",
         borderColor: cerPalette["Dim Grey"],
         borderWidth: 3,
         itemWidth: 400,
@@ -282,7 +281,7 @@ export const systemMaps = () => {
       tooltip: {
         enabled: true,
         formatter: function () {
-          return mapTooltip(this, container);
+          return mapTooltip(this);
         },
       },
 
@@ -333,7 +332,6 @@ export const systemMaps = () => {
           },
         },
       },
-
       series: shapes,
     });
   };
