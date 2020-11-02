@@ -6,6 +6,7 @@ import {
   conversions,
   mouseOverFunction,
   mouseOutFunction,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
@@ -20,7 +21,12 @@ export const kevinCrudeExports = () => {
     Other: cerPalette["Flame"],
   };
 
-  fillDropUpdate("select_units_crude_exports", ["MMb/d", "Thousand m3/d"], false, "MMb/d");
+  fillDropUpdate(
+    "select_units_crude_exports",
+    ["MMb/d", "Thousand m3/d"],
+    false,
+    "MMb/d"
+  );
 
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
@@ -35,7 +41,7 @@ export const kevinCrudeExports = () => {
   );
 
   const createPaddMap = () => {
-    return paddMap = new Highcharts.mapChart("container_padd_map", {
+    return (paddMap = new Highcharts.mapChart("container_padd_map", {
       chart: {
         type: "map",
         map: "countries/us/custom/us-all-mainland",
@@ -170,46 +176,53 @@ export const kevinCrudeExports = () => {
           color: crudeExportColors["PADD V"],
         },
       ],
-    });
+    }));
   };
 
-  const createCrudeExportsChart = (seriesData,units) => {
-    return chartCrudeExports = new Highcharts.chart("container_crude_exports", {
-      chart: {
-        type: "column",
-      },
+  const createCrudeExportsChart = (seriesData, units) => {
+    return (chartCrudeExports = new Highcharts.chart(
+      "container_crude_exports",
+      {
+        chart: {
+          type: "column",
+        },
 
-      credits: {
-        enabled: false,
-      },
+        credits: {
+          enabled: false,
+        },
 
-      plotOptions: {
-        series: {
-          events: {
-            mouseOver: function () {
-              var currentSelection = this.name;
-              mouseOverFunction(paddMap.series, currentSelection);
-            },
-            mouseOut: function () {
-              mouseOutFunction(paddMap.series);
+        plotOptions: {
+          series: {
+            events: {
+              mouseOver: function () {
+                var currentSelection = this.name;
+                mouseOverFunction(paddMap.series, currentSelection);
+              },
+              mouseOut: function () {
+                mouseOutFunction(paddMap.series);
+              },
             },
           },
         },
-      },
 
-      yAxis: {
-        title: { text: units.unitsCurrent },
-        stackLabels: {
-          enabled: true,
+        tooltip: {
+          pointFormat: tooltipPoint(units.unitsCurrent),
         },
-      },
 
-      series: seriesData,
-    });
+        yAxis: {
+          title: { text: units.unitsCurrent },
+          stackLabels: {
+            enabled: true,
+          },
+        },
+
+        series: seriesData,
+      }
+    ));
   };
 
   var paddMap = createPaddMap();
-  var chartCrudeExports = createCrudeExportsChart(seriesData,units);
+  var chartCrudeExports = createCrudeExportsChart(seriesData, units);
 
   var selectUnitsCrudeExports = document.getElementById(
     "select_units_crude_exports"
@@ -232,6 +245,9 @@ export const kevinCrudeExports = () => {
         series: seriesData,
         yAxis: {
           title: { text: units.unitsCurrent },
+        },
+        tooltip: {
+          pointFormat: tooltipPoint(units.unitsCurrent),
         },
       });
     }

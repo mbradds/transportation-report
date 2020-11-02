@@ -3,6 +3,7 @@ import {
   prepareSeriesNonTidy,
   prepareSeriesTidy,
   creditsClick,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import finResourceData from "./fin_resource_totals.json";
@@ -13,7 +14,7 @@ export const jenniferFinResources = () => {
   var finResourceFilters = { Commodity: "All" };
 
   const finResourceChartTypes = (series) => {
-    series.map((data, seriesNum) => {
+    series.map((data) => {
       if (data.name == "Companies using Financial Instrument") {
         data.type = "column";
         data.yAxis = 0;
@@ -29,7 +30,7 @@ export const jenniferFinResources = () => {
   const commodityTotals = (data, colors) => {
     var totals = {};
 
-    data.map((row, rowNum) => {
+    data.map((row) => {
       if (totals.hasOwnProperty(row.Commodity) && row.Commodity !== "All") {
         totals[row.Commodity] =
           totals[row.Commodity] + row["Financial Instrument Total"];
@@ -168,6 +169,7 @@ export const jenniferFinResources = () => {
 
       tooltip: {
         shared: true,
+        pointFormat: tooltipPoint(''),
       },
 
       title: {

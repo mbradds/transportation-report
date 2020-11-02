@@ -299,3 +299,7 @@ export const mouseOutFunction = (itter) => {
     s.setState("");
   });
 };
+
+export const tooltipPoint = (unitsCurrent) => {
+  return `<tr><td> <span style="color: {series.color}">\u25CF</span> {series.name}: </td><td style="padding:0"><b>{point.y} ${unitsCurrent}</b></td></tr>`
+}

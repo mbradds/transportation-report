@@ -5,6 +5,7 @@ import {
   getUnique,
   creditsClick,
   conversions,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import crudeProdData from "./Crude_Oil_Production.json";
@@ -72,6 +73,10 @@ export const kevinCrudeProduction = () => {
         text: "Source: Energy Futures",
       },
 
+      tooltip: {
+        pointFormat: tooltipPoint(units.unitsCurrent),
+      },
+
       yAxis: {
         title: { text: units.unitsCurrent },
         stackLabels: {
@@ -129,6 +134,9 @@ export const kevinCrudeProduction = () => {
         series: seriesData,
         yAxis: {
           title: { text: units.unitsCurrent },
+        },
+        tooltip: {
+          pointFormat: tooltipPoint(units.unitsCurrent),
         },
       });
     });

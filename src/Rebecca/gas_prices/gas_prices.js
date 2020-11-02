@@ -4,6 +4,7 @@ import {
   creditsClick,
   mouseOverFunction,
   mouseOutFunction,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import gasPriceData from "./gas_prices.json";
@@ -16,7 +17,7 @@ export const rebeccaGasPrices = () => {
     ["Westcoast Stn 2 TDt Com"]: cerPalette["Ocean"]
   };
 
-  var gasPriceFilters = { Units: "Price ($CN/GIG)" };
+  var gasPriceFilters = { Units: "Price ($CN/GIG)",unitsCurrent:"$CN/GIG" };
 
   var seriesData = prepareSeriesTidy(
     gasPriceData,
@@ -147,7 +148,7 @@ export const rebeccaGasPrices = () => {
     });
   };
 
-  const createGasPriceChart = (seriesData) => {
+  const createGasPriceChart = (seriesData,units) => {
     return new Highcharts.chart("container_gas_prices", {
       chart: {
         zoomType: "x",
@@ -159,6 +160,7 @@ export const rebeccaGasPrices = () => {
 
       tooltip: {
         shared: true,
+        pointFormat: tooltipPoint(units.unitsCurrent),
       },
 
       xAxis: {
@@ -167,7 +169,7 @@ export const rebeccaGasPrices = () => {
       },
 
       yAxis: {
-        title: { text: gasPriceFilters.Units },
+        title: { text: units.Units },
         stackLabels: {
           enabled: false,
         },
@@ -177,11 +179,12 @@ export const rebeccaGasPrices = () => {
   };
 
   var gasMap = createGasPriceMap();
-  var chartGasPrice = createGasPriceChart(seriesData);
+  var chartGasPrice = createGasPriceChart(seriesData,gasPriceFilters);
 
   var selectUnitsGasPrice = document.getElementById("select_units_gas_prices");
   selectUnitsGasPrice.addEventListener("change", (selectUnitsGasPrice) => {
     var units = selectUnitsGasPrice.target.value;
+    gasPriceFilters.unitsCurrent = units
     if (units == "$CN/GIG") {
       gasPriceFilters.Units = "Price ($CN/GIG)";
     } else {

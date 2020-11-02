@@ -8,7 +8,7 @@ import railData from "./crude_by_rail_wcs.json";
 
 export const coletteCrudeByRail = () => {
   const railChartTypes = (series) => {
-    series.map((data, seriesNum) => {
+    series.map((data) => {
       if (data.name == "Crude by Rail") {
         data.type = "area";
         data.yAxis = 0;
@@ -38,7 +38,7 @@ export const coletteCrudeByRail = () => {
     )
   );
 
-  const createRailChart = (seriesData,railFilters) => {
+  const createRailChart = (seriesData, railFilters) => {
     return new Highcharts.chart("container_crude_by_rail", {
       chart: {
         type: "area",
@@ -60,6 +60,18 @@ export const coletteCrudeByRail = () => {
 
       tooltip: {
         shared: true,
+        formatter: function () {
+          var toolText = `<b> ${Highcharts.dateFormat("%B-%Y", this.x)} </b><table>`;
+          this.points.map((p)=>{
+            if (p.series.name == 'Crude by Rail'){
+              var unitsTooltip = railFilters.Units
+            } else {
+              var unitsTooltip = "USD/bbl"
+            }
+            toolText += `<tr><td> <span style="color: ${p.color}">\u25CF</span> ${p.series.name}: </td><td style="padding:0"><b>${p.y} ${unitsTooltip}</b></td></tr>`
+          })
+          return toolText + '</table>'
+        },
       },
 
       series: seriesData,
@@ -88,7 +100,7 @@ export const coletteCrudeByRail = () => {
   };
 
   const mainChartRail = () => {
-    var chartRail = createRailChart(seriesData,railFilters);
+    var chartRail = createRailChart(seriesData, railFilters);
     var selectUnitsRail = document.getElementById("select_units_rail");
     selectUnitsRail.addEventListener("change", (selectUnitsRail) => {
       railFilters.Units = selectUnitsRail.target.value;

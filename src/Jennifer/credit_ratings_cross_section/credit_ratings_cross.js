@@ -119,13 +119,13 @@ export const jenniferRatingsCross = () => {
           formatter: function () {
             return (
               scaleData[this.value].creditQuality +
-              " (" +
+              "<br><b>" +
               scaleData[this.value]["S&P"] +
               ", " +
               scaleData[this.value]["Moody's"] +
               ", " +
               scaleData[this.value]["DBRS"] +
-              ")"
+              "</b>"
             );
           },
         },
@@ -143,22 +143,13 @@ export const jenniferRatingsCross = () => {
         ],
       },
       tooltip: {
-        useHTML: true,
+        shared: true,
         formatter: function () {
-          var bodyHTML = "";
-          const selectedCompany = this.key;
-          this.series.chart.series.map((series) => {
-            var agency = series.name;
-            series.data.map((row) => {
-              if (row.name == selectedCompany && row.y !== null) {
-                var rating = row.y;
-                bodyHTML =
-                  bodyHTML + "<br>" + agency + ": " + scaleData[rating][agency];
-              }
-            });
-          });
-          const headerHTML = "<b>" + selectedCompany + "</b>";
-          return headerHTML + bodyHTML;
+          var toolText = `<b> ${this.points[0].key} </b><table>`;
+          this.points.map((p)=>{
+            toolText += `<tr><td> <span style="color: ${p.color}">\u25CF</span> ${p.series.name}: </td><td style="padding:0"><b>${scaleData[p.y][p.series.name]}</b></td></tr>`
+          })
+          return toolText + '</table>'
         },
       },
       series: series,

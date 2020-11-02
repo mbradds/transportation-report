@@ -1,5 +1,3 @@
-//TODO: add colors to the tooltip company names
-//https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/column-basic
 import {
   cerPalette,
   prepareSeriesTidy,
@@ -19,6 +17,7 @@ export const jenniferRatingsMulti = () => {
   );
 
   var ratingAgencies = ["S&P", "Moody's", "DBRS"];
+  var symbols = { DBRS: "&#9650", "Moody's": "&#11044", "S&P": "&#9632" };
 
   fillDropUpdate("select_rating_agency", ratingAgencies, false, false);
 
@@ -97,11 +96,7 @@ export const jenniferRatingsMulti = () => {
     }
   };
 
-  var seriesSubset = creditSeriesSubset(
-    creditSeries,
-    onLoadCompanies,
-    false
-  );
+  var seriesSubset = creditSeriesSubset(creditSeries, onLoadCompanies, false);
 
   const createCreditChart = (series, scaleData, minY, maxY) => {
     return Highcharts.chart("container_ratings_multi", {
@@ -136,13 +131,13 @@ export const jenniferRatingsMulti = () => {
           formatter: function () {
             return (
               scaleData[this.value].creditQuality +
-              " (" +
+              "<br><b>" +
               scaleData[this.value]["S&P"] +
               ", " +
               scaleData[this.value]["Moody's"] +
               ", " +
               scaleData[this.value]["DBRS"] +
-              ")"
+              "</b>"
             );
           },
         },
@@ -167,30 +162,22 @@ export const jenniferRatingsMulti = () => {
           var selectedRatings = this.y;
           var selectedScale = scaleData[this.y].creditQuality;
           var overlaps = {};
-          this.series.chart.series.map((seriesi, i) => {
-            seriesi.data.map((row, rowNum) => {
+          this.series.chart.series.map((s) => {
+            s.data.map((row) => {
               if (row.category == selectedYear && row.y == selectedRatings) {
-                overlaps[seriesi.name] = row.y;
+                overlaps[s.name] = {y:row.y,color:s.color};
               }
             });
           });
-          var toolText =
-            "<br><b>" +
-            selectedYear +
-            "</b>" +
-            "<br>" +
-            "Credit Quality: " +
-            selectedScale;
+          var toolText = `<b>${selectedYear}</b><table>`;
+          toolText += `<tr><td> Credit Quality: </td><td style="padding:0"><b> ${selectedScale} </b></td></tr>`;
           for (var agency in overlaps) {
             var agencyName = agency.split(" - ").slice(-1)[0];
-            toolText =
-              toolText +
-              "<br>" +
-              agency +
-              ": " +
-              scaleData[overlaps[agency]][agencyName];
+            toolText += `<tr><td> <span style="color: ${overlaps[agency].color}">${symbols[agencyName]}</span> ${agency}: </td><td style="padding:0"><b>${
+              scaleData[overlaps[agency].y][agencyName]
+            }</b></td></tr>`;
           }
-          return toolText;
+          return toolText + "</table>";
         },
       },
       lang: {
@@ -250,7 +237,6 @@ export const jenniferRatingsMulti = () => {
         "</span>";
     });
 
-    var symbols = { DBRS: "&#9650", "Moody's": "&#11044", "S&P": "&#9632" };
     var symbolHTML = "";
     agencyNames.map((agency) => {
       symbolHTML =
@@ -263,7 +249,7 @@ export const jenniferRatingsMulti = () => {
   var symbolLegend = document.getElementById("container_symbol_legend");
   var creditChart = createCreditChart(seriesSubset, scaleData, minY, maxY);
 
-  addLegend(getChartSeriesName(creditChart), pipeLegend, symbolLegend);
+  addLegend(getChartSeriesName(creditChart), pipeLegend, symbolLegend,symbols);
   $("#select_company_credit_multi").on("change", function () {
     onLoadCompanies = $(this).val();
     var [chartCompanies, chartAgencies] = getChartSeriesName(creditChart);

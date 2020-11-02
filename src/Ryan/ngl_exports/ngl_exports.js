@@ -5,6 +5,7 @@ import {
   prepareSeriesNonTidy,
   creditsClick,
   conversions,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import nglData from "./natural-gas-liquids-exports-monthly.json";
@@ -40,7 +41,7 @@ export const ryanNglExports = () => {
     "Canada"
   );
 
-  const createNglChart = (seriesData, nglFilters, nglUnits) => {
+  const createNglChart = (seriesData, units) => {
     return new Highcharts.chart("container_ngl", {
       chart: {
         type: "line",
@@ -76,6 +77,7 @@ export const ryanNglExports = () => {
 
       tooltip: {
         shared: true,
+        pointFormat: tooltipPoint(units.unitsCurrent),
       },
 
       xAxis: {
@@ -87,7 +89,7 @@ export const ryanNglExports = () => {
       },
 
       yAxis: {
-        title: { text: nglUnits.unitsCurrent },
+        title: { text: units.unitsCurrent },
       },
 
       lang: {
@@ -101,7 +103,7 @@ export const ryanNglExports = () => {
   const mainNglExports = () => {
     var figure_title = document.getElementById('ngl_title');
     setTitle(figure_title,nglFilters)
-    var nglChart = createNglChart(seriesData, nglFilters, units);
+    var nglChart = createNglChart(seriesData, units);
 
     var selectProductNgl = document.getElementById("select_product_ngl");
     selectProductNgl.addEventListener("change", (selectProductNgl) => {
@@ -115,7 +117,7 @@ export const ryanNglExports = () => {
         "Period",
         nglColors
       );
-      nglChart = createNglChart(seriesData, nglFilters, units);
+      nglChart = createNglChart(seriesData, units);
     });
 
     var selectRegionNgl = document.getElementById("select_region_ngl");
@@ -130,7 +132,7 @@ export const ryanNglExports = () => {
         "Period",
         nglColors
       );
-      nglChart = createNglChart(seriesData, nglFilters, units);
+      nglChart = createNglChart(seriesData, units);
     });
 
     var selectUnitsNgl = document.getElementById("select_units_ngl");
@@ -149,6 +151,9 @@ export const ryanNglExports = () => {
         series: seriesData,
         yAxis: {
           title: { text: units.unitsCurrent },
+        },
+        tooltip: {
+          pointFormat: tooltipPoint(units.unitsCurrent),
         },
       });
     });
