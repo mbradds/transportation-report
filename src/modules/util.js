@@ -7,7 +7,7 @@ export const cerPalette = {
   Aubergine: "#871455",
   "Dim Grey": "#8c8c96",
   "Cool Grey": "#42464B",
-  White: "#FFFFFF",
+  //White: "#FFFFFF",
   hcBlue: "#7cb5ec",
   hcGreen: "#90ed7d",
   hcPink: "#f15c80",

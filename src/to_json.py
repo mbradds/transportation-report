@@ -8,10 +8,10 @@ import calendar
 #TODO: add in the dataframe sorting before conversion to json
 
 query_gas_traffic = "select [Date], \
-[Alliance Pipeline Limited Partnership - Alliance Pipeline - Border], \
-[Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate], \
-[Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy], \
-[TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line], \
+[Alliance Pipeline Limited Partnership - Alliance Pipeline - Border] as [Alliance Pipeline - Border], \
+[Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate] as [Foothills System - Kingsgate], \
+[Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy] as [Foothills System - Monchy], \
+[TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line] as [TransCanada Mainline - Northern Ontario Line], \
 [Capacity (1000 m3/d)] as [Capacity] \
 from (SELECT \
 cast(str([Month])+'-'+'1'+'-'+str([Year]) as date) as [Date], \
@@ -338,6 +338,10 @@ def readExcel(name,sheet='pq',flatten=False):
         write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
     
     if name == 'fgrs-eng.xlsx' and sheet=='pq':
+        df = df.rename(columns={'TransMountain':'Trans Mountain Pipeline',
+                                'Aurora/Rangeland':'Aurora Pipeline',
+                                'Express':'Express Pipeline',
+                                'Milk River':'Milk River Pipeline'})
         write_path = os.path.join(os.getcwd(),'Colette/crude_takeaway/',name.split('.')[0]+'.json')
     
     if name == 'marine_exports.xlsx':
@@ -440,6 +444,10 @@ def readExcelPipeline(name,sheet='Data',sql=False):
     oil_lines = ['Aurora Pipeline','Enbridge Mainline','Enbridge Norman Wells Pipeline','Express Pipeline','Cochin Pipeline','Milk River Pipeline','Montreal Pipeline','Southern Lights Pipeline','Trans Mountain Pipeline','Keystone Pipeline System','Trans-Northern Pipeline','Wascana','Westspur Pipeline']
     df['Category'] = ['Oil' if x in oil_lines else 'Gas' for x in df['Pipeline']]
     df = df.sort_values(by=['Year', 'Pipeline','Type'])
+    df['Pipeline'] = df['Pipeline'].replace({'Canadian Mainline':'TransCanada Mainline',
+                                             'NGTL':'NGTL System',
+                                             'Westcoast Transmission System':'Westcoast System',
+                                             'Foothills Pipeline System':'Foothills System'})
     
     write_path = os.path.join(os.getcwd(),'Cassandra/all_pipes/',name.split('.')[0]+'.json')
     df.to_json(write_path,orient='records',force_ascii=False)
@@ -715,6 +723,17 @@ def tolls(name):
     
     df = pd.concat([oil,gas,all_tolls], axis=0, sort=False, ignore_index=True)
     df['Rate Normalized'] = df['Rate Normalized'].round(2)
+    df['Pipeline'] = df['Pipeline'].replace({'Enbridge ML':'Enbridge Mainline',
+                                             'Express':'Express Pipeline',
+                                             'Keystone':'Keystone Pipeline',
+                                             'TMPL':'Trans Mountain Pipeline',
+                                             'TNPI':'Trans-Northern Pipeline',
+                                             'Alliance':'Alliance Pipeline',
+                                             'M&NP':'M&NP Pipeline',
+                                             'NGTL':'NGTL System',
+                                             'TC Mainline':'TransCanada Mainline',
+                                             'TQM':'TQM Pipeline',
+                                             'Westcoast':'Westcoast System'})
     df = df.sort_values(by=['Commodity','Pipeline','Start','End'])
     write_path = os.path.join(os.getcwd(),'Cassandra/tolls/','tolls.json')
     df.to_json(write_path,orient='records')
@@ -775,7 +794,7 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    df_tolls = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     #df = negotiated_settlements()
     
     #ryan
