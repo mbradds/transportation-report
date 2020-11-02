@@ -28,7 +28,7 @@ export const cassandraTolls = () => {
   };
 
   const tollChartTypes = (series) => {
-    series.map((data, seriesNum) => {
+    series.map((data) => {
       if (data.name == "GDP Deflator") {
         data.type = "line";
         data.dashStyle = "longDash";
@@ -47,16 +47,16 @@ export const cassandraTolls = () => {
     "Gas Tolls": cerPalette["Sun"],
     "Oil Tolls": cerPalette["Night Sky"],
     "GDP Deflator": cerPalette["Cool Grey"],
-    "TC Mainline": cerPalette["Forest"],
-    Westcoast: cerPalette["Aubergine"],
-    TQM: cerPalette["Dim Grey"],
-    Alliance: cerPalette["Ocean"],
-    "M&NP": cerPalette["Sun"],
-    NGTL: cerPalette["Flame"],
-    TNPI: cerPalette["Aubergine"],
-    Keystone: cerPalette["Ocean"],
-    Express: cerPalette["Cool Grey"],
-    "Enbridge ML": cerPalette["Flame"],
+    "TransCanada Mainline": cerPalette["Forest"],
+    "Westcoast System": cerPalette["Aubergine"],
+    "TQM Pipeline": cerPalette["Dim Grey"],
+    "Alliance Pipeline": cerPalette["Ocean"],
+    "M&NP Pipeline": cerPalette["Sun"],
+    "NGTL System": cerPalette["Flame"],
+    "Trans-Northern Pipeline": cerPalette["Aubergine"],
+    "Keystone Pipeline": cerPalette["Ocean"],
+    "Express Pipeline": cerPalette["Cool Grey"],
+    "Enbridge Mainline": cerPalette["Flame"],
   };
 
   const seriesData = tollChartTypes(

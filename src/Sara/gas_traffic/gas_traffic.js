@@ -21,34 +21,25 @@ export const saraGasTraffic = () => {
   };
 
   const gasColors = {
-    "Alliance Pipeline Limited Partnership - Alliance Pipeline - Border":
-      cerPalette["Night Sky"],
-    "Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate":
-      cerPalette["Sun"],
-    "Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy":
-      cerPalette["Flame"],
-    "TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line":
-      cerPalette["Forest"],
+    "Alliance Pipeline - Border": cerPalette["Night Sky"],
+    "Foothills System - Kingsgate": cerPalette["Sun"],
+    "Foothills System - Monchy": cerPalette["Flame"],
+    "TransCanada Mainline - Northern Ontario Line": cerPalette["Forest"],
     Capacity: cerPalette["Cool Grey"],
   };
 
   var units = conversions("Million m3/d to Bcf/d", "Bcf/d", "Million m3/d");
 
+  const columns = [
+    "Alliance Pipeline - Border",
+    "Foothills System - Kingsgate",
+    "Foothills System - Monchy",
+    "TransCanada Mainline - Northern Ontario Line",
+    "Capacity",
+  ];
+
   const seriesData = gasTrafficChartTypes(
-    prepareSeriesNonTidy(
-      gasData,
-      false,
-      units,
-      [
-        "Alliance Pipeline Limited Partnership - Alliance Pipeline - Border",
-        "Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate",
-        "Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy",
-        "TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line",
-        "Capacity",
-      ],
-      "Date",
-      gasColors
-    )
+    prepareSeriesNonTidy(gasData, false, units, columns, "Date", gasColors)
   );
 
   const createChartGasTraffic = (seriesData, units) => {
@@ -100,13 +91,7 @@ export const saraGasTraffic = () => {
             gasData,
             false,
             units,
-            [
-              "Alliance Pipeline Limited Partnership - Alliance Pipeline - Border",
-              "Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Kingsgate",
-              "Foothills Pipe Lines Ltd. (Foothills) - Foothills System - Monchy",
-              "TransCanada PipeLines Limited - Canadian Mainline - Northern Ontario Line",
-              "Capacity",
-            ],
+            columns,
             "Date",
             gasColors
           )

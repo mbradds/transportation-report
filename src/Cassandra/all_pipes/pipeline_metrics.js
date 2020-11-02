@@ -1,4 +1,4 @@
-import { getUnique, fillDropUpdate, creditsClick } from "../../modules/util.js";
+import { getUnique, fillDropUpdate, creditsClick,cerPalette } from "../../modules/util.js";
 
 import financialData from "./PipelineProfileTables.json";
 
@@ -10,17 +10,12 @@ export const cassandraAllPipes = () => {
       }
     }
 
+    const colors = []
+    for (const [key, value] of Object.entries(cerPalette)) {
+      colors.push(value)
+    }
+
     var finPipes = getUnique(data, "Pipeline");
-    var colors = [
-      "#054169",
-      "#FFBE4B",
-      "#5FBEE6",
-      "#559B37",
-      "#FF821E",
-      "#871455",
-      "#8c8c96",
-      "#42464B",
-    ];
     var hcData = [];
 
     for (const pipe in finPipes) {

@@ -23,46 +23,42 @@ export const coletteCrudeTakeaway = () => {
 
   const crudeTakeawayColors = {
     "Total Supply Available for Export": cerPalette["Cool Grey"],
-    Express: cerPalette["Dim Grey"],
-    "Milk River": cerPalette["Dim Grey"],
-    "Aurora/Rangeland": cerPalette["Dim Grey"],
-    TransMountain: cerPalette["Night Sky"],
+    "Express Pipeline": cerPalette["Aubergine"],
+    "Milk River Pipeline": cerPalette["hcRed"],
+    "Aurora Pipeline": cerPalette["Dim Grey"],
+    "Trans Mountain Pipeline": cerPalette["Night Sky"],
     "Enbridge Mainline": cerPalette["Sun"],
     Keystone: cerPalette["Forest"],
-    "Enbridge Line 3": cerPalette["Night Sky"],
-    TMX: cerPalette["Night Sky"],
-    "Keystone XL": cerPalette["Forest"],
     "Structural Rail": cerPalette["Flame"],
     "Variable Rail": cerPalette["Ocean"],
   };
 
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
+  const columns = [
+    "Total Supply Available for Export",
+    "Enbridge Mainline",
+    "Express Pipeline",
+    "Milk River Pipeline",
+    "Aurora Pipeline",
+    "Trans Mountain Pipeline",
+    "Keystone",
+    "Structural Rail",
+    "Variable Rail",
+  ];
+
   const seriesData = crudeTakeawayChartTypes(
     prepareSeriesNonTidy(
       crudeTakeawayData,
       false,
       units,
-      [
-        "Total Supply Available for Export",
-        "Express",
-        "Milk River",
-        "Aurora/Rangeland",
-        "TransMountain",
-        "Enbridge Mainline",
-        "Keystone",
-        "Enbridge Line 3",
-        "TMX",
-        "Keystone XL",
-        "Structural Rail",
-        "Variable Rail",
-      ],
+      columns,
       "Year",
       crudeTakeawayColors
     )
   );
 
-  const createChartCrudeTakeaway = (seriesData,units) => {
+  const createChartCrudeTakeaway = (seriesData, units) => {
     return new Highcharts.chart("container_crude_takeaway", {
       chart: {
         zoomType: "x",
@@ -98,7 +94,7 @@ export const coletteCrudeTakeaway = () => {
   };
 
   const mainCrudeTakeaway = () => {
-    var crudeTakeawayChart = createChartCrudeTakeaway(seriesData,units);
+    var crudeTakeawayChart = createChartCrudeTakeaway(seriesData, units);
     var selectUnitsCrudeTakeaway = document.getElementById(
       "select_units_crude_takeaway"
     );
@@ -111,20 +107,7 @@ export const coletteCrudeTakeaway = () => {
             crudeTakeawayData,
             false,
             units,
-            [
-              "Total Supply Available for Export",
-              "Express",
-              "Milk River",
-              "Aurora/Rangeland",
-              "TransMountain",
-              "Enbridge Mainline",
-              "Keystone",
-              "Enbridge Line 3",
-              "TMX",
-              "Keystone XL",
-              "Structural Rail",
-              "Variable Rail",
-            ],
+            columns,
             "Year",
             crudeTakeawayColors
           )
@@ -139,5 +122,5 @@ export const coletteCrudeTakeaway = () => {
       }
     );
   };
-  mainCrudeTakeaway()
+  mainCrudeTakeaway();
 };
