@@ -19,6 +19,13 @@ const generalTheme = () => {
       },
     },
 
+    tooltip: {
+      useHTML: true,
+      //headerFormat: '<span style="font-size:10px;font-weight:bold">{point.key}</span><br>',
+      headerFormat: '<span style="font-size:10px;font-weight:bold">{point.key}</span><table>',
+      footerFormat: '</table>',
+    },
+
     xAxis: {
       title: {
         style: {
@@ -108,7 +115,7 @@ import { cassandraSettlements } from "./Cassandra/negotiated_settlements/settlem
 import { ryanNglProduction } from "./Ryan/ngl_production/ngl_production";
 import { ryanNglExports } from "./Ryan/ngl_exports/ngl_exports";
 import { jenniferFinResources } from "./Jennifer/financial_instruments/fin_resource";
-import { jenniferRatings } from "./Jennifer/credit_ratings/creditRatings";
+//import { jenniferRatings } from "./Jennifer/credit_ratings/creditRatings";
 import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
 import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
 import { jenniferAbandonment } from "./Jennifer/abandonment_funding/abandonment";
@@ -134,7 +141,7 @@ cassandraSettlements();
 ryanNglProduction();
 ryanNglExports();
 jenniferFinResources();
-jenniferRatings();
+//jenniferRatings();
 jenniferRatingsMulti();
 jenniferRatingsCross();
 jenniferAbandonment();

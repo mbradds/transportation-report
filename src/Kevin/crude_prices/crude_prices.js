@@ -2,6 +2,7 @@ import {
   cerPalette,
   prepareSeriesNonTidy,
   creditsClick,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import crudePriceData from "./oil_prices.json";
@@ -24,7 +25,7 @@ export const kevinCrudePrices = () => {
     WTI: cerPalette["Sun"],
     Differential: cerPalette["Ocean"],
   };
-  
+
   var seriesData = crudePriceChartTypes(
     prepareSeriesNonTidy(
       crudePriceData,
@@ -54,11 +55,12 @@ export const kevinCrudePrices = () => {
 
       tooltip: {
         shared: true,
+        pointFormat: tooltipPoint('USD/bbl'),
       },
 
       xAxis: {
         type: "datetime",
-        crosshair:true,
+        crosshair: true,
       },
 
       yAxis: {

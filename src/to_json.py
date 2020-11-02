@@ -304,6 +304,7 @@ def readExcel(name,sheet='pq',flatten=False):
     if name == 'UScrudeoilimports.xlsx':
         df['Attribute'] = [x.strip() for x in df['Attribute']]
         write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
+        df['Value'] = df['Value'].round(2)
     if name == 'natural-gas-liquids-exports-monthly.xlsx':
         df['Period'] = pd.to_datetime(df['Period'],errors='raise')
         df['Days in Month'] = [monthrange(x.year,x.month)[-1] for x in df['Period']]
@@ -773,7 +774,7 @@ if __name__ == '__main__':
     #kevin
     #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
     #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
-    #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
+    df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = ne2_wcs_wti(query_ne2)
     
     #colette
@@ -794,7 +795,7 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     #df = negotiated_settlements()
     
     #ryan

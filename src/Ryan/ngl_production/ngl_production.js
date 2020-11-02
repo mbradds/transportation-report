@@ -1,10 +1,9 @@
 import {
   cerPalette,
-  fillDropUpdate,
   prepareSeriesNonTidy,
-  getUnique,
   creditsClick,
   conversions,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import nglProdData from "./fgrs-eng.json";
@@ -45,6 +44,10 @@ export const ryanNglProduction = () => {
         text: "Source: Energy Futures",
       },
 
+      tooltip: {
+        pointFormat: tooltipPoint(units.unitsCurrent),
+      },
+
       yAxis: {
         title: { text: units.unitsCurrent },
         stackLabels: {
@@ -73,6 +76,9 @@ export const ryanNglProduction = () => {
         series: seriesData,
         yAxis: {
           title: { text: units.unitsCurrent },
+        },
+        tooltip: {
+          pointFormat: tooltipPoint(units.unitsCurrent),
         },
       });
     });

@@ -1,4 +1,10 @@
-import { getUnique, fillDropUpdate, creditsClick,cerPalette } from "../../modules/util.js";
+import {
+  getUnique,
+  fillDropUpdate,
+  creditsClick,
+  cerPalette,
+  tooltipPoint,
+} from "../../modules/util.js";
 
 import financialData from "./PipelineProfileTables.json";
 
@@ -10,9 +16,9 @@ export const cassandraAllPipes = () => {
       }
     }
 
-    const colors = []
+    const colors = [];
     for (const [key, value] of Object.entries(cerPalette)) {
-      colors.push(value)
+      colors.push(value);
     }
 
     var finPipes = getUnique(data, "Pipeline");
@@ -40,12 +46,14 @@ export const cassandraAllPipes = () => {
     if (unit == "%") {
       yOptions.yFormat = "{value}%";
       yOptions.yLabel = "%";
+      yOptions.tooltip = "%";
       yOptions.yCall = function () {
         return this.value + "%";
       };
     } else {
       yOptions.yFormat = "{value:,.0f}";
       yOptions.yLabel = "C$ (Millions)";
+      yOptions.tooltip = "C$";
       yOptions.yCall = function () {
         return this.value / 1000000;
       };
@@ -54,9 +62,8 @@ export const cassandraAllPipes = () => {
     return [hcData, yOptions];
   };
 
-  var defaultMetric = "Deemed Equity Ratio"
-  //var defaultMetric = "Actual Return on Equity"
-  var financeFilters = { Category: "All", Type:defaultMetric };
+  var defaultMetric = "Deemed Equity Ratio";
+  var financeFilters = { Category: "All", Type: defaultMetric };
 
   var [seriesData, yOptions] = prepareSeriesFinance(
     financialData,
@@ -106,16 +113,9 @@ export const cassandraAllPipes = () => {
           financeFilters.Type + ": " + financeFilters.Category + " pipelines",
       },
 
-      colors: [
-        "#054169",
-        "#FFBE4B",
-        "#5FBEE6",
-        "#559B37",
-        "#FF821E",
-        "#871455",
-        "#8c8c96",
-        "#42464B",
-      ],
+      tooltip: {
+        pointFormat: tooltipPoint(yOptions.tooltip),
+      },
 
       yAxis: {
         startOnTick: false,

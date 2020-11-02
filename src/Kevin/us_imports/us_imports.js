@@ -3,6 +3,7 @@ import {
   prepareSeriesTidy,
   creditsClick,
   conversions,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import crudeImportsData from "./UScrudeoilimports.json";
@@ -41,10 +42,9 @@ export const kevinUsImports = () => {
       crudeImportColors
     )
   );
-  const createCrudeImportsChart = (seriesData) => {
+  const createCrudeImportsChart = (seriesData, units) => {
     return new Highcharts.chart("container_crude_imports", {
       chart: {
-        zoomType: "x",
         borderWidth: 1,
         events: {
           load: function () {
@@ -62,17 +62,18 @@ export const kevinUsImports = () => {
 
       tooltip: {
         shared: true,
+        pointFormat: tooltipPoint(units.unitsCurrent),
       },
 
       yAxis: {
-        title: { text: "MMb/d" },
+        title: { text: units.unitsCurrent },
       },
 
       series: seriesData,
     });
   };
 
-  var chartCrudeImports = createCrudeImportsChart(seriesData);
+  var chartCrudeImports = createCrudeImportsChart(seriesData, units);
   var selectUnitsCrudeImports = document.getElementById(
     "select_units_crude_imports"
   );
@@ -95,6 +96,9 @@ export const kevinUsImports = () => {
         series: seriesData,
         yAxis: {
           title: { text: units.unitsCurrent },
+        },
+        tooltip: {
+          pointFormat: tooltipPoint(units.unitsCurrent),
         },
       });
     }

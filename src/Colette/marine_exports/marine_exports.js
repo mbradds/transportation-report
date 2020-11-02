@@ -3,6 +3,7 @@ import {
   prepareSeriesNonTidy,
   creditsClick,
   conversions,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import marineData from "./marine_exports.json";
@@ -37,6 +38,10 @@ export const coletteMarine = () => {
         },
       },
 
+      credits: {
+        text: "Source: CER Commodity Tracking System",
+      },
+
       plotOptions: {
         series: {
           events: {
@@ -47,13 +52,13 @@ export const coletteMarine = () => {
         },
       },
 
+      tooltip: {
+        pointFormat: tooltipPoint(units.unitsCurrent),
+      },
+
       xAxis: {
         type: "datetime",
         crosshair: true,
-      },
-
-      credits: {
-        text: "Source: CER Commodity Tracking System",
       },
 
       yAxis: {
@@ -84,6 +89,9 @@ export const coletteMarine = () => {
         series: seriesData,
         yAxis: {
           title: { text: units.unitsCurrent },
+        },
+        tooltip: {
+          pointFormat: tooltipPoint(units.unitsCurrent),
         },
       });
     });

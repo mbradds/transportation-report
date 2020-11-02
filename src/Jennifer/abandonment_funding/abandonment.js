@@ -50,31 +50,19 @@ export const jenniferAbandonment = () => {
   );
 
   const tooltipAbandon = (event) => {
-    var selectedCompany = event.key;
-    var toolText = "<b>" + selectedCompany + "<br>";
+    var toolText = `<b>${event.points[0].key}</b><table>`;
     var calc = {};
-    event.series.chart.series.map((series) => {
-      var seriesName = series.name;
-      var seriesColor = series.color;
-      series.data.map((row) => {
-        if (row.name == selectedCompany) {
-          calc[seriesName] = row.y;
-          toolText +=
-            '<br><span style="color:' +
-            seriesColor +
-            '">\u25CF</span>' +
-            seriesName +
-            ": " +
-            row.y;
-        }
-      });
-    });
+    event.points.map((p)=>{
+      calc[p.series.name] = p.y;
+      toolText += `<tr><td> <span style="color: ${p.color}">\u25CF</span> ${p.series.name}: </td><td style="padding:0"><b>${p.y}</b></td></tr>`
+    })
+    
     calc["pctRecovered"] = (
       (calc["Amounts Set Aside"] /
         (calc["Amount to Recover"] + calc["Amounts Set Aside"])) *
       100
     ).toFixed(1);
-    return toolText + `<br> Percent Recovered: ${calc["pctRecovered"]}%`;
+    return toolText + `<tr><td> Percent Recovered: </td><td style="padding:0"> <b>${calc["pctRecovered"]}% </b></td></tr>`;
   };
 
   const createAbandonmentTotals = (seriesData) => {
@@ -149,6 +137,8 @@ export const jenniferAbandonment = () => {
       },
 
       tooltip: {
+        //useHTML: false,
+        shared: true,
         formatter: function () {
           return tooltipAbandon(this);
         },
@@ -184,6 +174,7 @@ export const jenniferAbandonment = () => {
       },
 
       tooltip: {
+        shared: true,
         formatter: function () {
           return tooltipAbandon(this);
         },

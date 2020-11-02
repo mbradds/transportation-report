@@ -3,6 +3,7 @@ import {
   prepareSeriesNonTidy,
   creditsClick,
   conversions,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import gasData from "./gas_traffic.json";
@@ -63,6 +64,7 @@ export const saraGasTraffic = () => {
 
       tooltip: {
         shared: true,
+        pointFormat: tooltipPoint(units.unitsCurrent),
       },
 
       xAxis: {
@@ -101,6 +103,9 @@ export const saraGasTraffic = () => {
           series: seriesData,
           yAxis: {
             title: { text: units.unitsCurrent },
+          },
+          tooltip: {
+            pointFormat: tooltipPoint(units.unitsCurrent),
           },
         });
       }

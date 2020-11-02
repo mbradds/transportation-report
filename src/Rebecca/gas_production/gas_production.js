@@ -1,10 +1,9 @@
 import {
   cerPalette,
-  fillDropUpdate,
   prepareSeriesTidy,
-  getUnique,
   creditsClick,
   conversions,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import gasProdData from "./Natural_Gas_Production.json";
@@ -45,6 +44,10 @@ export const rebeccaGasProd = () => {
         },
       },
 
+      tooltip: {
+        pointFormat: tooltipPoint(units.unitsCurrent)
+      },
+
       credits: {
         text: "Source: Energy Futures",
       },
@@ -78,6 +81,9 @@ export const rebeccaGasProd = () => {
         series: seriesData,
         yAxis: {
           title: { text: units.unitsCurrent },
+        },
+        tooltip: {
+          pointFormat: tooltipPoint(units.unitsCurrent)
         },
       });
     });

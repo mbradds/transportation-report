@@ -37,6 +37,7 @@ export const coletteCrudeMode = () => {
         text: "Source: CER Commodity Tracking System",
       },
       tooltip: {
+        headerFormat: '<table>',
         pointFormat: "<b>{point.percentage:.1f}%</b>",
       },
       accessibility: {

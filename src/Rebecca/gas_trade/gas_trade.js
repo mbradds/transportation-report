@@ -4,6 +4,7 @@ import {
   creditsClick,
   mouseOverFunction,
   mouseOutFunction,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import gasTradeData from "./natural-gas-exports-and-imports-annual.json";
@@ -16,7 +17,7 @@ export const rebeccaGasTrade = () => {
     Other: cerPalette["Dim Grey"],
   };
   var gasTradeFilters = { Activity: "Exports" };
-  var gasTradeUnits = { unitsCol: "Volume (Bcf/d)" };
+  var gasTradeUnits = { unitsCol: "Volume (Bcf/d)", unitsCurrent: "Bcf/d" };
   var seriesData = prepareSeriesTidy(
     gasTradeData,
     gasTradeFilters,
@@ -146,7 +147,7 @@ export const rebeccaGasTrade = () => {
     });
   };
 
-  const createGasTrafficChart = (seriesData) => {
+  const createGasTrafficChart = (seriesData,units) => {
     return new Highcharts.chart("container_gas_trade", {
       chart: {
         type: "column",
@@ -170,8 +171,12 @@ export const rebeccaGasTrade = () => {
         },
       },
 
+      tooltip: {
+        pointFormat: tooltipPoint(units.unitsCurrent),
+      },
+
       yAxis: {
-        title: { text: "Bcf/d" },
+        title: { text: units.unitsCurrent },
         stackLabels: {
           enabled: true,
         },
@@ -182,13 +187,14 @@ export const rebeccaGasTrade = () => {
   };
 
   const mapGasTraffic = createGasRegionMap();
-  var chartGasTraffic = createGasTrafficChart(seriesData);
+  var chartGasTraffic = createGasTrafficChart(seriesData,gasTradeUnits);
   var figure_title = document.getElementById("gas_trade_title");
   setTitle(figure_title, gasTradeFilters);
 
   var selectUnitsGasTrade = document.getElementById("select_units_gas_trade");
   selectUnitsGasTrade.addEventListener("change", (selectUnitsGasTrade) => {
     var units = selectUnitsGasTrade.target.value;
+    gasTradeUnits.unitsCurrent = units
     if (units == "Bcf/d") {
       gasTradeUnits.unitsCol = "Volume (Bcf/d)";
     } else {
@@ -206,6 +212,9 @@ export const rebeccaGasTrade = () => {
     chartGasTraffic.update({
       series: seriesData,
       yAxis: { title: { text: units } },
+      tooltip: {
+        pointFormat: tooltipPoint(units),
+      },
     });
   });
 

@@ -4,6 +4,7 @@ import {
   cerPalette,
   prepareSeriesTidy,
   creditsClick,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import tollsData from "./tolls.json";
@@ -85,6 +86,10 @@ export const cassandraTolls = () => {
 
       credits: {
         text: "Source: CER",
+      },
+
+      tooltip: {
+        pointFormat: tooltipPoint('')
       },
 
       xAxis: {
