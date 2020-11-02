@@ -209,6 +209,7 @@ def filter_shape(pipes,commodity='oil'):
             buffer_meters = (r_buffer * 1000) * 1.60934
             pipe['geometry'] = pipe['geometry'].buffer(buffer_meters)
             pipe = pipe.dissolve(by='OPERATOR')
+            pipe = pipe.reset_index()
             pipe['geometry'] = pipe['geometry'].simplify(10)
             try:
                 if not r.empty:    
