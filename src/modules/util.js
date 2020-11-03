@@ -151,7 +151,7 @@ const tidyOperation = (
   variableColumn.map((v, iVar) => {
     const hcData = [];
     const variableSeries = dataFiltered.filter((row) => row[variableCol] == v);
-    variableSeries.map((r, i) => {
+    variableSeries.map((r) => {
       hcData.push({
         [xName]: r[xCol],
         y: yH(r, yCol, units),
@@ -183,13 +183,13 @@ const nonTidyOperation = (
   const dataFiltered = filterData(dataRaw, filters);
   const yH = yHigherOrder(units, decimals);
 
-  valueVars.map((col, colNum) => {
+  valueVars.map((col) => {
     seriesData[col] = [];
     colTotals[col] = 0;
   });
 
-  dataFiltered.map((row, rowNum) => {
-    valueVars.map((col, colNum) => {
+  dataFiltered.map((row) => {
+    valueVars.map((col) => {
       seriesData[col].push({
         [xName]: row[xCol],
         y: yH(row, col, units),

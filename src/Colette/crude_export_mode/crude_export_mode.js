@@ -10,7 +10,7 @@ export const coletteCrudeMode = () => {
   const crudeModeColors = {
     Pipeline: cerPalette["Night Sky"],
     Marine: cerPalette["Ocean"],
-    Railroad: cerPalette["Sun"],
+    Rail: cerPalette["Sun"],
   };
   const seriesData = prepareSeriesPie(
     crudeModeData,

@@ -2,97 +2,120 @@ import {
   cerPalette,
   prepareSeriesNonTidy,
   creditsClick,
-  conversions,
+  tooltipPoint,
 } from "../../modules/util.js";
 
 import mnpData from "./st_stephen.json";
+import offshoreData from "./ns_offshore.json";
 
 export const saraMnp = () => {
   const mnpColors = {
-    "Throughput (million m3/d)": cerPalette["Night Sky"],
-    "Capacity (million m3/d)": cerPalette["Sun"],
+    Exports: cerPalette["Night Sky"],
+    Imports: cerPalette["Sun"],
+    Capacity: cerPalette["Dim Grey"],
   };
-  const splitData = (data) => {
-    return [
-      data.filter((row) => row["Trade Type"] == "export"),
-      data.filter((row) => row["Trade Type"] == "import"),
-    ];
+
+  const offshoreColors = {
+    "Deep Panuke": cerPalette["Ocean"],
+    "Sable Island": cerPalette["Night Sky"],
   };
 
   const createMnpSeries = (mnpData) => {
-    var [exports, imports] = splitData(mnpData);
-    exports = prepareSeriesNonTidy(
-      exports,
+    const mnpSeries = prepareSeriesNonTidy(
+      mnpData,
       false,
       false,
-      ["Throughput (million m3/d)", "Capacity (million m3/d)"],
+      ["Exports", "Imports", "Capacity"],
       "Date",
       mnpColors
     );
-    imports = prepareSeriesNonTidy(
-      imports,
-      false,
-      false,
-      ["Throughput (million m3/d)", "Capacity (million m3/d)"],
-      "Date",
-      mnpColors
-    );
-
-    [exports, imports].map((tradeSeries, i) => {
-      tradeSeries.map((series, seriesNum) => {
-        if (series.name == "Throughput (million m3/d)") {
-          series.type = "area";
-        } else {
-          series.type = "line";
-        }
-        return series;
-      });
+    return mnpSeries.map((series) => {
+      if (series.name == "Capacity") {
+        series.type = "line";
+      } else {
+        series.type = "area";
+      }
+      return series;
     });
-
-    return [exports, imports];
   };
 
-  var [exports, imports] = createMnpSeries(mnpData);
+  const offshoreSeries = prepareSeriesNonTidy(
+    offshoreData,
+    false,
+    false,
+    ["Deep Panuke", "Sable Island"],
+    "Date",
+    offshoreColors
+  );
 
   const createChartMnp = (seriesData, div) => {
+    if (div == "container_mnp") {
+      var titleText = "M&NP Pipeline Traffic";
+      var sourceText = "";
+    } else {
+      var titleText = "N.S. Offshore Natural Gas Production";
+      var sourceText = "Source: CER, CNSOPB";
+    }
     return new Highcharts.chart(div, {
       chart: {
+        type: "area",
         zoomType: "x",
         height: "45%",
-        borderWidth: 1,
-        events: {
-          load: function () {
-            creditsClick(
-              this,
-              "https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34"
-            );
-          },
-        },
       },
 
       credits: {
-        text: "Source: Open Government Throughput and Capacity Data",
+        text: sourceText,
+      },
+
+      title: {
+        text: titleText,
       },
 
       tooltip: {
         shared: true,
+        pointFormat: tooltipPoint("Million m3/d"),
       },
 
       xAxis: {
         type: "datetime",
         crosshair: true,
-        events: {
-          setExtremes: syncExtremes,
-        },
       },
 
       yAxis: {
-        title: { text: "Bcf/d" },
+        title: { text: "Million m3/d" },
       },
 
       series: seriesData,
     });
   };
-  createChartMnp(exports, "container_mnp_exports");
-  createChartMnp(imports, "container_mnp_imports");
+
+  createChartMnp(createMnpSeries(mnpData), "container_mnp");
+  var offshoreChart = createChartMnp(offshoreSeries, "container_offshore");
+  offshoreChart.update({
+    xAxis: {
+      plotLines: [
+        {
+          color: cerPalette['Ocean'],
+          //dashStyle: "longdashdot",
+          value: Date.UTC(2018, 5, 7),
+          width: 2,
+          zIndex: 5,
+          label: {
+            text: "Production ceases",
+            align: "left",
+          },
+        },
+        {
+          color: cerPalette['Night Sky'],
+          value: Date.UTC(2018, 12, 1),
+          width: 2,
+          zIndex: 5,
+          label: {
+            text: "Production ceases",
+            align: "left",
+          },
+        },
+      ],
+    },
+  });
 };
