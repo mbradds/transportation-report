@@ -5,6 +5,7 @@ from connection import cer_connection
 from datetime import date
 from calendar import monthrange
 import calendar
+from dateutil.relativedelta import relativedelta
 #TODO: add in the dataframe sorting before conversion to json
 
 query_gas_traffic = "select [Date], \
@@ -197,15 +198,30 @@ group by [Location], year([Date]), month([Date]) \
 having (round(avg([Price ($CN/GIG)]),2) is not null) and (round(avg([Price ($US/MMB)]),2) is not null) \
 order by year([Date]), month([Date]), [Location]" 
 
-query_st_stephen = "SELECT \
-cast(str(gas.Month)+'-'+'1'+'-'+str(gas.Year) as date) as [Date], \
-gas.[Trade Type], \
-round(avg(gas.[Capacity (1000 m3/d)]/1000),2) as [Capacity (million m3/d)], \
-round(avg(gas.[Throughput (1000 m3/d)]/1000),2) as [Throughput (million m3/d)] \
+query_st_stephen = "select [Date],[Capacity],[import] as [Imports],[export] as [Exports] \
+from (SELECT cast(str(gas.Month)+'-'+'1'+'-'+str(gas.Year) as date) as [Date],gas.[Trade Type], \
+round(avg(gas.[Capacity (1000 m3/d)]/1000),1) as [Capacity], \
+round(avg(gas.[Throughput (1000 m3/d)]/1000),1) as [Throughput] \
 FROM [EnergyData].[dbo].[Pipelines_Gas] as gas \
 where  gas.[Corporate Entity]='Maritimes & Northeast Pipeline' and gas.[Pipeline Name] = 'Canadian Mainline' \
-group by gas.Year,gas.Month, gas.[Trade Type] \
-order by cast(str(gas.Month)+'-'+'1'+'-'+str(gas.Year) as date), [Trade Type] "
+group by gas.Year,gas.Month, gas.[Trade Type]) as mnp pivot \
+(avg([Throughput]) for [Trade Type] in ([import],[export])) as mnp_untidy order by [Date]"
+
+query_ns_offshore = "select si.Date, \
+round((dp.Volume/si.Days)/1000,1) as [Deep Panuke], \
+round((si.Volume/si.Days)/1000,1) as [Sable Island] \
+from (SELECT [Date],Product,sum(Volume) as [Volume],Units, \
+'Deep Panuke' as [Rig] FROM [EnergyData].[dbo].[CNSOPB_DeepPanuke] as dp \
+where Product = 'Gas Equivalent Volume' group by [Date],[Product],Units) as dp \
+right join ( \
+SELECT [Date], \
+datediff(day, dateadd(day, 1-day([Date]), [Date]), \
+dateadd(month, 1, dateadd(day, 1-day([Date]), [Date]))) as [Days], \
+Product,sum(Volume) as [Volume],Units,'Sable Island' as [Rig] \
+FROM [EnergyData].[dbo].[CNSOPB_SableIsland] as si \
+where Product = 'Gas Equivalent Volume' group by [Date],[Product],Units) as si \
+on dp.Date = si.Date and dp.Product = si.Product and dp.Units = si.Units \
+where year(si.Date)>='2006' order by dp.Date"
 
 def normalize_dates(df,date_list):
     for date_col in date_list:
@@ -274,10 +290,8 @@ def readCersei(query,name=None):
             del df[d]
     if name == 'gas_prices.json':
         write_path = os.path.join(os.getcwd(),'Rebecca/gas_prices/',name)
-    if name == 'st_stephen.json':
-        write_path = os.path.join(os.getcwd(),'Sara/st_stephen/',name)
     
-    if (name != None and name != 'fin_resource_class_names.json'):
+    if (name != None and name not in ['fin_resource_class_names.json','st_stephen.json','ns_offshore.json']):
         df.to_json(write_path,orient='records')
     conn.close()
     return df
@@ -362,6 +376,7 @@ def readExcel(name,sheet='pq',flatten=False):
         for delete in ['Value','Total Volume']:
             del df[delete]
         df = df[df['Attribute']!='Truck']
+        df['Attribute'] = df['Attribute'].replace({'Railroad':'Rail'})
         write_path = os.path.join(os.getcwd(),'Colette/crude_export_mode/',name.split('.')[0]+'.json')
     
     if name == 'Natural_Gas_Production.xlsx':
@@ -473,7 +488,6 @@ def writeExcelCredit(name,sheet='Credit Ratings'):
     conn,engine = cer_connection()
     df.to_sql('Pipeline_Financial_Ratings',con=conn,index=False,if_exists='replace')
     conn.close()
-    
     return df
 
 def keyPoints():
@@ -653,7 +667,6 @@ def ne2_wcs_wti(query):
     #df = pd.melt(df,id_vars=['Date'])
     write_path = os.path.join(os.getcwd(),'Kevin/crude_prices/','oil_prices.json')
     df.to_json(write_path,orient='records')
-    
     return df
 
 def tolls(name):
@@ -761,14 +774,34 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
     #df = df[df['Company']=='NOVA Gas Transmission Ltd.']
     write_path = os.path.join(os.getcwd(),'Cassandra/negotiated_settlements/','settlements.json')
     df.to_json(write_path,orient='records')
-    
     return df
 
 def creditRatings():
     df = readExcel('CreditTables.xlsx',sheet='ratings categories')
     scale = readExcel('CreditTables.xlsx',sheet='Scale')
-        
     return df,scale
+
+def st_stephen():
+    df_traffic = readCersei(query_st_stephen,'st_stephen.json')
+    df_traffic = df_traffic[~df_traffic['Imports'].isnull()]
+    df_prod = readCersei(query_ns_offshore,'ns_offshore.json')
+    for df in [df_traffic,df_prod]:
+        df['Date'] = pd.to_datetime(df['Date'])
+    max_traffic = max(df_traffic['Date'])
+    max_prod = max(df_prod['Date'])
+    date_col,value_col = [],[]
+    while max_prod < max_traffic:
+        max_prod = max_prod+relativedelta(months=1)
+        date_col.append(max_prod)
+        value_col.append(None)
+    df_none = pd.DataFrame.from_dict({'Date':date_col,'Deep Panuke':value_col,'Sable Island':value_col})
+    df_prod = pd.concat([df_prod,df_none], axis=0, sort=False, ignore_index=True)
+    
+    for output in [[df_traffic,'st_stephen.json'],[df_prod,'ns_offshore.json']]:
+        write_path = os.path.join(os.getcwd(),'Sara/st_stephen/',output[-1])
+        output[0].to_json(write_path,orient='records')
+    
+    return df_traffic,df_prod
     
 
 if __name__ == '__main__':
@@ -789,6 +822,8 @@ if __name__ == '__main__':
     #df = readCersei(query_gas_traffic,'gas_traffic.json')
     #df = readCersei(query_gas_2019,'gas_2019.json')
     #df = readCersei(query_st_stephen,'st_stephen.json')
+    #df = readCersei(query_ns_offshore,'ns_offshore.json')
+    df1,df2 = st_stephen()
     
     #rebecca
     #df = readCersei(query_gas_prices,'gas_prices.json')
@@ -809,7 +844,7 @@ if __name__ == '__main__':
     #df_gas = throughcap(query=query_gas_throughcap, name='gas_throughcap.json')
     #df_point = keyPoints()
     #df_fin_insert = financialResources()
-    df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
+    #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
     #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
     #df_fin_class_names = readCersei(query_fin_resource_class_names,'fin_resource_class_names.json')
     #df,scale = creditRatings()
