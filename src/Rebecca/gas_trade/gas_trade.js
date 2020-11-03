@@ -231,6 +231,6 @@ export const rebeccaGasTrade = () => {
       gasTradeUnits.unitsCol,
       gasTrafficColors
     );
-    chartGasTraffic = createGasTrafficChart(seriesData);
+    chartGasTraffic = createGasTrafficChart(seriesData,gasTradeUnits);
   });
 };

@@ -300,6 +300,28 @@ export const mouseOutFunction = (itter) => {
   });
 };
 
+const symbolHTML = (symbolName) => {
+  var symbols = {
+    circle: "&#9679",
+    diamond: "&#9670",
+    square: "&#9632",
+    triangle: "&#9650",
+    "triangle-down": "&#9660",
+  };
+
+  return symbols[symbolName];
+};
+
 export const tooltipPoint = (unitsCurrent) => {
-  return `<tr><td> <span style="color: {series.color}">\u25CF</span> {series.name}: </td><td style="padding:0"><b>{point.y} ${unitsCurrent}</b></td></tr>`
-}
+  return `<tr><td> <span style="color: {series.color}">&#9679</span> {series.name}: </td><td style="padding:0"><b>{point.y} ${unitsCurrent}</b></td></tr>`;
+};
+
+export const tooltipSymbol = (event, unitsCurrent, shared = true) => {
+  if (shared) {
+    return `<tr><td> <span style="color: ${event.series.color}">${symbolHTML(
+      event.point.graphic.symbolName
+    )}</span> ${event.series.name}: </td><td style="padding:0"><b>${
+      event.point.y
+    } ${unitsCurrent}</b></td></tr>`;
+  }
+};

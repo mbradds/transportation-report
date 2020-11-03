@@ -444,12 +444,14 @@ def readExcelPipeline(name,sheet='Data',sql=False):
     df['Pipeline'] = df['Pipeline'].replace({'Trans Québec & Maritimes Pipeline':'Trans Quebec & Maritimes Pipeline'})    
     oil_lines = ['Aurora Pipeline','Enbridge Mainline','Enbridge Norman Wells Pipeline','Express Pipeline','Cochin Pipeline','Milk River Pipeline','Montreal Pipeline','Southern Lights Pipeline','Trans Mountain Pipeline','Keystone Pipeline System','Trans-Northern Pipeline','Wascana','Westspur Pipeline']
     df['Category'] = ['Oil' if x in oil_lines else 'Gas' for x in df['Pipeline']]
-    df = df.sort_values(by=['Year', 'Pipeline','Type'])
+    
     df['Pipeline'] = df['Pipeline'].replace({'Canadian Mainline':'TransCanada Mainline',
                                              'NGTL':'NGTL System',
                                              'Westcoast Transmission System':'Westcoast System',
                                              'Foothills Pipeline System':'Foothills System'})
     
+    df = normalize_numeric(df, ['Value'], 0)
+    df = df.sort_values(by=['Type','Category','Year','Value'])
     write_path = os.path.join(os.getcwd(),'Cassandra/all_pipes/',name.split('.')[0]+'.json')
     df.to_json(write_path,orient='records',force_ascii=False)
    
@@ -774,7 +776,7 @@ if __name__ == '__main__':
     #kevin
     #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
     #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
-    df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
+    #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = ne2_wcs_wti(query_ne2)
     
     #colette
@@ -807,7 +809,7 @@ if __name__ == '__main__':
     #df_gas = throughcap(query=query_gas_throughcap, name='gas_throughcap.json')
     #df_point = keyPoints()
     #df_fin_insert = financialResources()
-    #df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
+    df_fin = readCersei(query_fin_resource,'fin_resource_totals.json')
     #df_fin_class = readCersei(query_fin_resource_class,'fin_resource_class.json')
     #df_fin_class_names = readCersei(query_fin_resource_class_names,'fin_resource_class_names.json')
     #df,scale = creditRatings()

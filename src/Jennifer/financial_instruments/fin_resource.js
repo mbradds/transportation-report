@@ -169,7 +169,7 @@ export const jenniferFinResources = () => {
 
       tooltip: {
         shared: true,
-        pointFormat: tooltipPoint(''),
+        pointFormat: tooltipPoint(""),
       },
 
       title: {
@@ -301,43 +301,24 @@ export const jenniferFinResources = () => {
       if (commodity == "Oil") {
         finResourceColors["Companies using Financial Instrument"] =
           cerPalette["Night Sky"];
-        finResourceSeriesClass = prepareSeriesTidy(
-          finResourceClass,
-          finResourceFilters,
-          false,
-          "Commodity",
-          "Pipeline Group",
-          "Financial Resource",
-          commodityColors,
-          "name"
-        );
       } else if (commodity == "Gas") {
         finResourceColors["Companies using Financial Instrument"] =
           cerPalette["Forest"];
-        finResourceSeriesClass = prepareSeriesTidy(
-          finResourceClass,
-          finResourceFilters,
-          false,
-          "Commodity",
-          "Pipeline Group",
-          "Financial Resource",
-          commodityColors,
-          "name"
-        );
       } else {
         finResourceColors["Companies using Financial Instrument"] =
           cerPalette["Cool Grey"];
-        finResourceSeriesClass = prepareSeriesTidy(
-          finResourceClass,
-          false,
-          false,
-          "Commodity",
-          "Pipeline Group",
-          "Financial Resource",
-          commodityColors,
-          "name"
-        );
       }
+      const finResourceSeriesClass = prepareSeriesTidy(
+        finResourceClass,
+        finResourceFilters,
+        false,
+        "Commodity",
+        "Pipeline Group",
+        "Financial Resource",
+        commodityColors,
+        1,
+        "name"
+      );
       const finResourceSeries = finResourceChartTypes(
         prepareSeriesNonTidy(
           finResourceData,
@@ -349,6 +330,7 @@ export const jenniferFinResources = () => {
           ],
           "Financial Instrument",
           finResourceColors,
+          1,
           "name"
         )
       );
@@ -356,7 +338,6 @@ export const jenniferFinResources = () => {
         finResourceSeries,
         finResourceFilters
       );
-
       var chartFinResourceClass = createFinResourceChartClass(
         finResourceSeriesClass,
         finResourceFilters
