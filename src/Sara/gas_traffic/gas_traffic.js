@@ -1,11 +1,10 @@
 import {
   cerPalette,
   prepareSeriesNonTidy,
-  creditsClick,
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-
+import {lineAndStackedArea} from "../../modules/charts.js"
 import gasData from "./gas_traffic.json";
 
 export const saraGasTraffic = () => {
@@ -43,44 +42,16 @@ export const saraGasTraffic = () => {
     prepareSeriesNonTidy(gasData, false, units, columns, "Date", gasColors)
   );
 
-  const createChartGasTraffic = (seriesData, units) => {
-    return new Highcharts.chart("container_gas_traffic", {
-      chart: {
-        zoomType: "x",
-        borderWidth: 1,
-        events: {
-          load: function () {
-            creditsClick(
-              this,
-              "https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34"
-            );
-          },
-        },
-      },
-
-      credits: {
-        text: "Source: Open Government Throughput and Capacity Data",
-      },
-
-      tooltip: {
-        shared: true,
-        pointFormat: tooltipPoint(units.unitsCurrent),
-      },
-
-      xAxis: {
-        type: "datetime",
-        crosshair: true,
-      },
-
-      yAxis: {
-        title: { text: units.unitsCurrent },
-      },
-
-      series: seriesData,
-    });
-  };
   const mainGasTraffic = () => {
-    var chartGasTraffic = createChartGasTraffic(seriesData, units);
+    var params = {
+      div:"container_gas_traffic",
+      sourceLink:"https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34",
+      sourceText: "Source: Open Government Throughput and Capacity Data",
+      units: units,
+      series: seriesData,
+      xAxisType: "datetime"
+    }
+    var chartGasTraffic = lineAndStackedArea(params)
     var selectUnitsGasTraffic = document.getElementById(
       "select_units_gas_traffic"
     );

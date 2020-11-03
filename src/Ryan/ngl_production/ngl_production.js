@@ -1,11 +1,10 @@
 import {
   cerPalette,
   prepareSeriesNonTidy,
-  creditsClick,
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-
+import { productionChart } from "../../modules/charts.js";
 import nglProdData from "./fgrs-eng.json";
 
 export const ryanNglProduction = () => {
@@ -24,42 +23,16 @@ export const ryanNglProduction = () => {
     nglProdColors
   );
 
-  const createNglProdChart = (seriesData, units) => {
-    return new Highcharts.chart("container_ngl_production", {
-      chart: {
-        type: "column",
-        zoomType: "x",
-        borderWidth: 1,
-        events: {
-          load: function () {
-            creditsClick(
-              this,
-              "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html"
-            );
-          },
-        },
-      },
-
-      credits: {
-        text: "Source: Energy Futures",
-      },
-
-      tooltip: {
-        pointFormat: tooltipPoint(units.unitsCurrent),
-      },
-
-      yAxis: {
-        title: { text: units.unitsCurrent },
-        stackLabels: {
-          enabled: true,
-        },
-      },
-
-      series: seriesData,
-    });
-  };
   const mainNglProd = () => {
-    var chartNgl = createNglProdChart(seriesData, units);
+    var params = {
+      div: "container_ngl_production",
+      sourceLink:
+        "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
+      sourceText: "Source: Energy Futures",
+      units:units,
+      series:seriesData
+    };
+    var chartNgl = productionChart(params)
     var selectUnitsNglProd = document.getElementById("select_units_ngl_prod");
     selectUnitsNglProd.addEventListener("change", (selectUnitsNglProd) => {
       units.unitsCurrent = selectUnitsNglProd.target.value;

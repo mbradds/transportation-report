@@ -5,7 +5,7 @@ import {
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-
+import { productionChart } from "../../modules/charts.js";
 import gasProdData from "./Natural_Gas_Production.json";
 
 export const rebeccaGasProd = () => {
@@ -28,43 +28,16 @@ export const rebeccaGasProd = () => {
     gasProdColors
   );
 
-  const createGasProdChart = (seriesData, units) => {
-    return new Highcharts.chart("container_gas_production", {
-      chart: {
-        type: "column",
-        zoomType: "x",
-        borderWidth: 1,
-        events: {
-          load: function () {
-            creditsClick(
-              this,
-              "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html"
-            );
-          },
-        },
-      },
-
-      tooltip: {
-        pointFormat: tooltipPoint(units.unitsCurrent)
-      },
-
-      credits: {
-        text: "Source: Energy Futures",
-      },
-
-      yAxis: {
-        title: { text: units.unitsCurrent },
-        stackLabels: {
-          enabled: true,
-        },
-      },
-
-      series: seriesData,
-    });
-  };
-
   const mainGasProducton = () => {
-    var gasProdChart = createGasProdChart(seriesData, units);
+    var params = {
+      div: "container_gas_production",
+      sourceLink:
+        "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
+      sourceText: "Source: Energy Futures",
+      units:units,
+      series:seriesData
+    };
+    var gasProdChart = productionChart(params);
     var selectUnitsGasProd = document.getElementById("select_units_gas_prod");
     selectUnitsGasProd.addEventListener("change", (selectUnitsGasProd) => {
       units.unitsCurrent = selectUnitsGasProd.target.value;

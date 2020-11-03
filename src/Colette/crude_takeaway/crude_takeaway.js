@@ -1,16 +1,15 @@
 import {
   cerPalette,
   prepareSeriesNonTidy,
-  creditsClick,
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-
+import {lineAndStackedArea} from "../../modules/charts.js"
 import crudeTakeawayData from "./fgrs-eng.json";
 
 export const coletteCrudeTakeaway = () => {
   const crudeTakeawayChartTypes = (series) => {
-    series.map((data, seriesNum) => {
+    series.map((data) => {
       if (data.name == "Total Supply Available for Export") {
         data.type = "line";
         data.zIndex = 1;
@@ -59,44 +58,16 @@ export const coletteCrudeTakeaway = () => {
     )
   );
 
-  const createChartCrudeTakeaway = (seriesData, units) => {
-    return new Highcharts.chart("container_crude_takeaway", {
-      chart: {
-        zoomType: "x",
-        borderWidth: 1,
-        events: {
-          load: function () {
-            creditsClick(
-              this,
-              "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html"
-            );
-          },
-        },
-      },
-
-      credits: {
-        text: "Source: Energy Futures",
-      },
-
-      tooltip: {
-        shared: true,
-        pointFormat: tooltipPoint(units.unitsCurrent),
-      },
-
-      xAxis: {
-        crosshair: true,
-      },
-
-      yAxis: {
-        title: { text: units.unitsCurrent },
-      },
-
-      series: seriesData,
-    });
-  };
-
   const mainCrudeTakeaway = () => {
-    var crudeTakeawayChart = createChartCrudeTakeaway(seriesData, units);
+    var params = {
+      div:"container_crude_takeaway",
+      sourceLink:"https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
+      sourceText: "Source: Energy Futures",
+      units: units,
+      series: seriesData,
+      xAxisType: "linear"
+    }
+    var crudeTakeawayChart = lineAndStackedArea(params)
     var selectUnitsCrudeTakeaway = document.getElementById(
       "select_units_crude_takeaway"
     );

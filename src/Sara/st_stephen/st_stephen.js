@@ -60,7 +60,7 @@ export const saraMnp = () => {
       chart: {
         type: "area",
         zoomType: "x",
-        height: "45%",
+        //height: "45%",
       },
 
       credits: {
