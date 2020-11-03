@@ -1,10 +1,8 @@
 import {
   cerPalette,
   prepareSeriesNonTidy,
-  creditsClick,
-  tooltipPoint,
 } from "../../modules/util.js";
-
+import {lineAndStackedArea} from "../../modules/charts.js"
 import crudePriceData from "./oil_prices.json";
 
 export const kevinCrudePrices = () => {
@@ -37,40 +35,14 @@ export const kevinCrudePrices = () => {
     )
   );
 
-  const createCrudePriceChart = (seriesData) => {
-    return new Highcharts.chart("container_crude_prices", {
-      chart: {
-        zoomType: "x", //allows the user to focus in on the x or y (x,y,xy)
-        borderWidth: 1,
-        events: {
-          load: function () {
-            creditsClick(this, "https://www.ne2group.com/");
-          },
-        },
-      },
-
-      credits: {
-        text: "Source: ne2 Group",
-      },
-
-      tooltip: {
-        shared: true,
-        pointFormat: tooltipPoint('USD/bbl'),
-      },
-
-      xAxis: {
-        type: "datetime",
-        crosshair: true,
-      },
-
-      yAxis: {
-        title: { text: "USD/bbl" },
-        stackLabels: {
-          enabled: false,
-        },
-      },
-      series: seriesData,
-    });
-  };
-  const chart = createCrudePriceChart(seriesData);
+  var params = {
+    div:"container_crude_prices",
+    sourceLink:"https://www.ne2group.com/",
+    sourceText: "Source: ne2 Group",
+    units: {unitsCurrent:'USD/bbl'},
+    series: seriesData,
+    xAxisType: "datetime",
+    crosshair:true
+  }
+  const chartCrudePrice = lineAndStackedArea(params)
 };

@@ -65,7 +65,8 @@ export const coletteCrudeTakeaway = () => {
       sourceText: "Source: Energy Futures",
       units: units,
       series: seriesData,
-      xAxisType: "linear"
+      xAxisType: "linear",
+      crosshair:true
     }
     var crudeTakeawayChart = lineAndStackedArea(params)
     var selectUnitsCrudeTakeaway = document.getElementById(

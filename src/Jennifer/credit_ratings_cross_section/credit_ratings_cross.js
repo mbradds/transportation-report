@@ -186,7 +186,6 @@ export const jenniferRatingsCross = () => {
       });
     });
 
-    // You can use this to set default value
     $('#credit_years button[value="2019"]').click();
   };
   mainCreditYear();

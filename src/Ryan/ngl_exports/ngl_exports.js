@@ -82,9 +82,6 @@ export const ryanNglExports = () => {
 
       xAxis: {
         type: "datetime",
-        dateTimeLabelFormats: {
-          day: "%e of %,b",
-        },
         crosshair: true,
       },
 

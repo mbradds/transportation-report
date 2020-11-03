@@ -1,7 +1,6 @@
 import {
   cerPalette,
   prepareSeriesNonTidy,
-  creditsClick,
   tooltipPoint,
 } from "../../modules/util.js";
 

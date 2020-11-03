@@ -1,16 +1,15 @@
 import {
   cerPalette,
   prepareSeriesTidy,
-  creditsClick,
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-
+import {lineAndStackedArea} from "../../modules/charts.js"
 import crudeImportsData from "./UScrudeoilimports.json";
 
 export const kevinUsImports = () => {
   const crudeImportsChartTypes = (series) => {
-    series.map((data, seriesNum) => {
+    series.map((data) => {
       if (data.name == "U.S crude oil exports") {
         data.type = "line";
         data.zIndex = 1;
@@ -42,65 +41,47 @@ export const kevinUsImports = () => {
       crudeImportColors
     )
   );
-  const createCrudeImportsChart = (seriesData, units) => {
-    return new Highcharts.chart("container_crude_imports", {
-      chart: {
-        borderWidth: 1,
-        events: {
-          load: function () {
-            creditsClick(
-              this,
-              "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english"
-            );
-          },
-        },
-      },
 
-      credits: {
-        text: "Source: CER Commodity Tracking System & EIA",
-      },
-
-      tooltip: {
-        shared: true,
-        pointFormat: tooltipPoint(units.unitsCurrent),
-      },
-
-      yAxis: {
-        title: { text: units.unitsCurrent },
-      },
-
+  const mainUsImports = () => {
+    var params = {
+      div:"container_crude_imports",
+      sourceLink:"https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english",
+      sourceText: "Source: CER Commodity Tracking System & EIA",
+      units: units,
       series: seriesData,
-    });
-  };
-
-  var chartCrudeImports = createCrudeImportsChart(seriesData, units);
-  var selectUnitsCrudeImports = document.getElementById(
-    "select_units_crude_imports"
-  );
-  selectUnitsCrudeImports.addEventListener(
-    "change",
-    (selectUnitsCrudeImports) => {
-      units.unitsCurrent = selectUnitsCrudeImports.target.value;
-      var seriesData = crudeImportsChartTypes(
-        prepareSeriesTidy(
-          crudeImportsData,
-          false,
-          units,
-          "Attribute",
-          "Year",
-          "Value",
-          crudeImportColors
-        )
-      );
-      chartCrudeImports.update({
-        series: seriesData,
-        yAxis: {
-          title: { text: units.unitsCurrent },
-        },
-        tooltip: {
-          pointFormat: tooltipPoint(units.unitsCurrent),
-        },
-      });
+      xAxisType: "linear",
+      crosshair: false
     }
-  );
+    var chartCrudeImports = lineAndStackedArea(params)
+    var selectUnitsCrudeImports = document.getElementById(
+      "select_units_crude_imports"
+    );
+    selectUnitsCrudeImports.addEventListener(
+      "change",
+      (selectUnitsCrudeImports) => {
+        units.unitsCurrent = selectUnitsCrudeImports.target.value;
+        var seriesData = crudeImportsChartTypes(
+          prepareSeriesTidy(
+            crudeImportsData,
+            false,
+            units,
+            "Attribute",
+            "Year",
+            "Value",
+            crudeImportColors
+          )
+        );
+        chartCrudeImports.update({
+          series: seriesData,
+          yAxis: {
+            title: { text: units.unitsCurrent },
+          },
+          tooltip: {
+            pointFormat: tooltipPoint(units.unitsCurrent),
+          },
+        });
+      }
+    );
+  };
+  mainUsImports();
 };
