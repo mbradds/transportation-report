@@ -53,6 +53,7 @@ export const coletteMarine = () => {
       },
 
       tooltip: {
+        shared: true,
         pointFormat: tooltipPoint(units.unitsCurrent),
       },
 

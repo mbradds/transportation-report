@@ -53,7 +53,7 @@ export const lineAndStackedArea = (params) => {
 
     xAxis: {
       type: params.xAxisType,
-      crosshair: true,
+      crosshair: params.crosshair,
     },
 
     yAxis: {

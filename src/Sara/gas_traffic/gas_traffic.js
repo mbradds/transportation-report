@@ -4,7 +4,7 @@ import {
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-import {lineAndStackedArea} from "../../modules/charts.js"
+import { lineAndStackedArea } from "../../modules/charts.js";
 import gasData from "./gas_traffic.json";
 
 export const saraGasTraffic = () => {
@@ -44,14 +44,16 @@ export const saraGasTraffic = () => {
 
   const mainGasTraffic = () => {
     var params = {
-      div:"container_gas_traffic",
-      sourceLink:"https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34",
+      div: "container_gas_traffic",
+      sourceLink:
+        "https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34",
       sourceText: "Source: Open Government Throughput and Capacity Data",
       units: units,
       series: seriesData,
-      xAxisType: "datetime"
-    }
-    var chartGasTraffic = lineAndStackedArea(params)
+      xAxisType: "datetime",
+      crosshair: true,
+    };
+    var chartGasTraffic = lineAndStackedArea(params);
     var selectUnitsGasTraffic = document.getElementById(
       "select_units_gas_traffic"
     );

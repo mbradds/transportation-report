@@ -798,8 +798,10 @@ def st_stephen():
     df_prod = pd.concat([df_prod,df_none], axis=0, sort=False, ignore_index=True)
     
     for output in [[df_traffic,'st_stephen.json'],[df_prod,'ns_offshore.json']]:
+        df = output[0]
+        df = df.sort_values(by=['Date'])
         write_path = os.path.join(os.getcwd(),'Sara/st_stephen/',output[-1])
-        output[0].to_json(write_path,orient='records')
+        df.to_json(write_path,orient='records')
     
     return df_traffic,df_prod
     
