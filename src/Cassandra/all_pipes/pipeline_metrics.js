@@ -95,7 +95,6 @@ export const cassandraAllPipes = () => {
 
       plotOptions: {
         series: {
-          stickyTracking: false,
           connectNulls: false,
           states: {
             inactive: {
@@ -114,6 +113,7 @@ export const cassandraAllPipes = () => {
       },
 
       tooltip: {
+        shared: true,
         pointFormat: tooltipPoint(yOptions.tooltip),
       },
 
@@ -126,6 +126,10 @@ export const cassandraAllPipes = () => {
         labels: {
           formatter: yOptions.yCall,
         },
+      },
+
+      xAxis: {
+        crosshair: true
       },
 
       lang: {

@@ -35,14 +35,14 @@ export const jenniferRatingsMulti = () => {
     "Maritimes & Northeast Pipeline Limited Partnership":
       cerPalette["Aubergine"],
     "Westcoast Energy Inc.": cerPalette["Cool Grey"],
-    "Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC": "#8bbc21",
-    "NOVA Chemicals Corp.": "#2f7ed8",
+    "Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC": cerPalette['hcGreen'],
+    "NOVA Chemicals Corp.": cerPalette['hcPurple'],
     "TransCanada PipeLines Limited": cerPalette["Sun"],
     "NOVA Gas Transmission Ltd.": cerPalette["Flame"],
     "Trans Quebec & Maritimes Pipeline Inc.": cerPalette["Ocean"],
     "Alliance Pipeline Limited Partnership": cerPalette["Forest"],
     "Enbridge Inc.": cerPalette["Night Sky"],
-    "Emera Inc.": "#0d233a",
+    "Emera Inc.": cerPalette['hcRed'],
     "Enbridge Pipelines Inc.": cerPalette["Dim Grey"],
   };
 

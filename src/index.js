@@ -21,9 +21,9 @@ const generalTheme = () => {
 
     tooltip: {
       useHTML: true,
-      //headerFormat: '<span style="font-size:10px;font-weight:bold">{point.key}</span><br>',
-      headerFormat: '<span style="font-size:10px;font-weight:bold">{point.key}</span><table>',
-      footerFormat: '</table>',
+      headerFormat:
+        '<span style="font-size:10px;font-weight:bold">{point.key}</span><table>',
+      footerFormat: "</table>",
     },
 
     xAxis: {
@@ -92,9 +92,51 @@ const generalTheme = () => {
   Highcharts.setOptions(Highcharts.transportation);
 };
 
-generalTheme();
+const frenchTheme = () => {
+  Highcharts.french = {
+    lang: {
+      months: [
+        "Janvier",
+        "Février",
+        "Mars",
+        "Avril",
+        "Mai",
+        "Juin",
+        "Juillet",
+        "Août",
+        "Septembre",
+        "Octobre",
+        "Novembre",
+        "Décembre",
+      ],
+      weekdays: [
+        "Dimanche",
+        "Lundi",
+        "Mardi",
+        "Mercredi",
+        "Jeudi",
+        "Vendredi",
+        "Samedi",
+      ],
+      decimalPoint: ",",
+      downloadCSV: "Download CSV (FRA)",
+      downloadJPEG: "Download JPEG image (FRA)",
+      downloadPDF: "Download PDF document (FRA)",
+      downloadPNG: "Download PNG image (FRA)",
+      downloadSVG: "Download SVG vector image (FRA)",
+      downloadXLS: "Download XLS (FRA)",
+      printChart: "Print chart (FRA)",
+      resetZoom: "Reset zoom (FRA)",
+      viewData: "View data table (FRA)"
+    },
+  };
+  Highcharts.setOptions(Highcharts.french);
+};
 
-import { systemMaps } from "./SystemMaps/maps"
+generalTheme();
+//frenchTheme();
+
+import { systemMaps } from "./SystemMaps/maps";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
 import { kevinUsImports } from "./Kevin/us_imports/us_imports";
