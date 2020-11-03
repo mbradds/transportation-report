@@ -3,11 +3,10 @@ import {
   fillDropUpdate,
   prepareSeriesNonTidy,
   getUnique,
-  creditsClick,
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-
+import { productionChart } from "../../modules/charts.js";
 import crudeProdData from "./Crude_Oil_Production.json";
 
 export const kevinCrudeProduction = () => {
@@ -53,46 +52,21 @@ export const kevinCrudeProduction = () => {
     2
   );
 
-  const createCrudeProdChart = (seriesData, units) => {
-    return new Highcharts.chart("container_crude_production", {
-      chart: {
-        type: "column",
-        zoomType: "x",
-        borderWidth: 1,
-        events: {
-          load: function () {
-            creditsClick(
-              this,
-              "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html"
-            );
-          },
-        },
-      },
-
-      credits: {
-        text: "Source: Energy Futures",
-      },
-
-      tooltip: {
-        pointFormat: tooltipPoint(units.unitsCurrent),
-      },
-
-      yAxis: {
-        title: { text: units.unitsCurrent },
-        stackLabels: {
-          enabled: true,
-        },
-      },
-
-      series: seriesData,
-    });
-  };
 
   const mainCrudeProduction = () => {
     var figure_title = document.getElementById("crude_prod_title");
     setTitle(figure_title, crudeProdFilters);
 
-    var chartCrude = createCrudeProdChart(seriesData, units);
+    var params = {
+      div: "container_crude_production",
+      sourceLink:
+        "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
+      sourceText: "Source: Energy Futures",
+      units:units,
+      series:seriesData
+    };
+
+    var chartCrude = productionChart(params)
 
     var selectRegionCrudeProd = document.getElementById(
       "select_region_crude_prod"
@@ -110,7 +84,8 @@ export const kevinCrudeProduction = () => {
           "Year",
           crudeProdColors
         );
-        chartCrude = createCrudeProdChart(seriesData, units);
+        params.series = seriesData
+        chartCrude = productionChart(params)
       }
     );
 
@@ -129,7 +104,6 @@ export const kevinCrudeProduction = () => {
         crudeProdColors,
         1
       );
-
       chartCrude.update({
         series: seriesData,
         yAxis: {
