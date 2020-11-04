@@ -312,7 +312,7 @@ def readExcel(name,sheet='pq',flatten=False):
         products = ['Conventional Light','Conventional Heavy','C5+','Field Condensate','Mined Bitumen','In Situ Bitumen']
         for crude in products:
             df[crude] = df[crude]/1000
-        df = normalize_numeric(df, products, 2)
+        df = normalize_numeric(df, products, 3)
         #df['Value'] = pd.to_numeric(df['Value'])
         write_path = os.path.join(os.getcwd(),'Kevin/crude_production/',name.split('.')[0]+'.json')
     if name == 'UScrudeoilimports.xlsx':
@@ -825,7 +825,7 @@ if __name__ == '__main__':
     #df = readCersei(query_gas_2019,'gas_2019.json')
     #df = readCersei(query_st_stephen,'st_stephen.json')
     #df = readCersei(query_ns_offshore,'ns_offshore.json')
-    df1,df2 = st_stephen()
+    #df1,df2 = st_stephen()
     
     #rebecca
     #df = readCersei(query_gas_prices,'gas_prices.json')
@@ -838,7 +838,7 @@ if __name__ == '__main__':
     #df = negotiated_settlements()
     
     #ryan
-    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
+    df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
     #df = readExcel('fgrs-eng.xlsx',sheet='ngl production')
     
     #jennifer

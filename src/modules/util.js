@@ -102,17 +102,28 @@ export const filterData = (data, filters) => {
 const yHigherOrder = (units, roundPoints) => {
   if (!units || units.unitsCurrent == units.unitsBase) {
     //The dataset has no unit conversions, and the data is already rounded
-    const y = (row, col, units) => {
-      if (row[col] == null) {
-        return null;
-      } else {
-        return row[col];
-      }
-    };
-    return y;
+    if (roundPoints == 1) {
+      const y = (row, col, units, round) => {
+        if (row[col] == null) {
+          return null;
+        } else {
+          return row[col];
+        }
+      };
+      return y;
+    } else {
+      const y = (row, col, units, round) => {
+        if (row[col] == null) {
+          return null;
+        } else {
+          return +row[col].toFixed(round);
+        }
+      };
+      return y;
+    }
   } else {
     if (units.type == "*") {
-      const y = (row, col, units, round = roundPoints) => {
+      const y = (row, col, units, round) => {
         if (row[col] == null) {
           return null;
         } else {
@@ -121,7 +132,7 @@ const yHigherOrder = (units, roundPoints) => {
       };
       return y;
     } else if (units.type == "/") {
-      const y = (row, col, units, round = roundPoints) => {
+      const y = (row, col, units, round) => {
         if (row[col] == null) {
           return null;
         } else {
@@ -154,7 +165,7 @@ const tidyOperation = (
     variableSeries.map((r) => {
       hcData.push({
         [xName]: r[xCol],
-        y: yH(r, yCol, units),
+        y: yH(r, yCol, units, decimals),
       });
     });
 
@@ -192,7 +203,7 @@ const nonTidyOperation = (
     valueVars.map((col) => {
       seriesData[col].push({
         [xName]: row[xCol],
-        y: yH(row, col, units),
+        y: yH(row, col, units, decimals),
       });
       colTotals[col] = colTotals[col] + row[col];
     });

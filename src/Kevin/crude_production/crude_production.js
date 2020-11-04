@@ -42,6 +42,14 @@ export const kevinCrudeProduction = () => {
     "Canada"
   );
 
+  const roundValues = (filter) => {
+    if (["Canada", "Alberta", "British Columbia"].includes(filter.Region)) {
+      return 2;
+    } else {
+      return 3;
+    }
+  };
+
   var seriesData = prepareSeriesNonTidy(
     crudeProdData,
     crudeProdFilters,
@@ -49,9 +57,8 @@ export const kevinCrudeProduction = () => {
     crudeProdColumns,
     "Year",
     crudeProdColors,
-    2
+    roundValues(crudeProdFilters)
   );
-
 
   const mainCrudeProduction = () => {
     var figure_title = document.getElementById("crude_prod_title");
@@ -62,11 +69,11 @@ export const kevinCrudeProduction = () => {
       sourceLink:
         "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
       sourceText: "Source: Energy Futures",
-      units:units,
-      series:seriesData
+      units: units,
+      series: seriesData,
     };
 
-    var chartCrude = productionChart(params)
+    var chartCrude = productionChart(params);
 
     var selectRegionCrudeProd = document.getElementById(
       "select_region_crude_prod"
@@ -82,10 +89,11 @@ export const kevinCrudeProduction = () => {
           units,
           crudeProdColumns,
           "Year",
-          crudeProdColors
+          crudeProdColors,
+          roundValues(crudeProdFilters)
         );
-        params.series = seriesData
-        chartCrude = productionChart(params)
+        params.series = seriesData;
+        chartCrude = productionChart(params);
       }
     );
 
@@ -102,7 +110,7 @@ export const kevinCrudeProduction = () => {
         crudeProdColumns,
         "Year",
         crudeProdColors,
-        1
+        roundValues(crudeProdFilters)
       );
       chartCrude.update({
         series: seriesData,

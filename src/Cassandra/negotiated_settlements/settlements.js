@@ -2,6 +2,7 @@ import { cerPalette, creditsClick } from "../../modules/util.js";
 import settlementsData from "./settlements.json";
 
 export const cassandraSettlements = () => {
+  const dateFormat = "%b %d, %Y"
   const legendNames = {
     company: {
       name: "Active settlement(s)",
@@ -26,8 +27,7 @@ export const cassandraSettlements = () => {
   };
 
   const currentDate = () => {
-    var today = new Date(),
-      day = 1000 * 60 * 60 * 24;
+    var today = new Date();
     today.setUTCHours(0);
     today.setUTCMinutes(0);
     today.setUTCSeconds(0);
@@ -55,7 +55,7 @@ export const cassandraSettlements = () => {
   }
 
   const applyEndDateColors = (data) => {
-    return data.map((row, rowNum) => {
+    return data.map((row) => {
       var [endDate, seriesColor] = getEndDate(row["End Date"]);
       row.color = seriesColor;
       row.end = endDate;
@@ -75,7 +75,7 @@ export const cassandraSettlements = () => {
     data = applyEndDateColors(data);
     data = data.sort(sortByProperty("end"));
 
-    data.map((row, rowNum) => {
+    data.map((row) => {
       dates.push(row["Start Date"]);
       dates.push(row["End Date"]);
 
@@ -212,14 +212,7 @@ export const cassandraSettlements = () => {
         labelFormatter: function () {
           var legendText = "";
           for (const legendName in legendColors) {
-            legendText =
-              legendText +
-              '<span style="font-weight:bold; color:' +
-              legendColors[legendName] +
-              '">' +
-              legendName +
-              "&nbsp &nbsp &nbsp" +
-              "</span>";
+            legendText +=`<span style="font-weight:bold; color: ${legendColors[legendName]}">&#9679 ${legendName} &nbsp &nbsp &nbsp </span>`;
           }
           return legendText;
         },
@@ -235,7 +228,7 @@ export const cassandraSettlements = () => {
             label: {
               formatter: function () {
                 return (
-                  Highcharts.dateFormat("%Y-%m-%d", this.options.value) +
+                  Highcharts.dateFormat(dateFormat, this.options.value) +
                   " (today)"
                 );
               },
@@ -264,16 +257,16 @@ export const cassandraSettlements = () => {
           if (this.color == cerPalette["Cool Grey"]) {
             var endText = "No set end date";
           } else {
-            var endText = Highcharts.dateFormat("%Y-%m-%d", this.point.end);
+            var endText = Highcharts.dateFormat(dateFormat, this.point.end);
           }
           if (this.point.parent == null) {
             return (
               "<b>" +
               this.key +
               "</b> <br> Active settlement(s) start: " +
-              Highcharts.dateFormat("%Y-%m-%d", this.point.start) +
+              Highcharts.dateFormat(dateFormat, this.point.start) +
               "<br> Active settlement(s) end: " +
-              Highcharts.dateFormat("%Y-%m-%d", this.point.end) +
+              Highcharts.dateFormat(dateFormat, this.point.end) +
               "<br> Active settlement(s) duration: " +
               years +
               " years"
@@ -285,7 +278,7 @@ export const cassandraSettlements = () => {
               " - " +
               this.key +
               "</b> <br> Start: " +
-              Highcharts.dateFormat("%Y-%m-%d", this.point.start) +
+              Highcharts.dateFormat(dateFormat, this.point.start) +
               "<br> End: " +
               endText +
               "<br> Duration: " +
