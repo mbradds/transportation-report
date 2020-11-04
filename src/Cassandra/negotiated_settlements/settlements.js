@@ -2,7 +2,7 @@ import { cerPalette, creditsClick } from "../../modules/util.js";
 import settlementsData from "./settlements.json";
 
 export const cassandraSettlements = () => {
-  const dateFormat = "%b %d, %Y"
+  const dateFormat = "%b %d, %Y";
   const legendNames = {
     company: {
       name: "Active settlement(s)",
@@ -212,7 +212,7 @@ export const cassandraSettlements = () => {
         labelFormatter: function () {
           var legendText = "";
           for (const legendName in legendColors) {
-            legendText +=`<span style="font-weight:bold; color: ${legendColors[legendName]}">&#9679 ${legendName} &nbsp &nbsp &nbsp </span>`;
+            legendText += `<span style="font-weight:bold; color: ${legendColors[legendName]}">&#9679 ${legendName} &nbsp &nbsp &nbsp </span>`;
           }
           return legendText;
         },
@@ -261,29 +261,27 @@ export const cassandraSettlements = () => {
           }
           if (this.point.parent == null) {
             return (
-              "<b>" +
-              this.key +
-              "</b> <br> Active settlement(s) start: " +
-              Highcharts.dateFormat(dateFormat, this.point.start) +
-              "<br> Active settlement(s) end: " +
-              Highcharts.dateFormat(dateFormat, this.point.end) +
-              "<br> Active settlement(s) duration: " +
-              years +
-              " years"
+              `<b>${
+                this.key
+              }</b><table> <tr><td> Active settlement(s) start:</td><td style="padding:0"><b> ${Highcharts.dateFormat(
+                dateFormat,
+                this.point.start
+              )}</b></td></tr>` +
+              `<tr><td> Active settlement(s) end:</td><td style="padding:0"><b> ${Highcharts.dateFormat(
+                dateFormat,
+                this.point.end
+              )}</b></td></tr>` +
+              `<tr><td> Active settlement(s) duration:</td><td style="padding:0"><b> ${years} years</b></table>`
             );
           } else {
             return (
-              "<b>" +
-              this.point.parent +
-              " - " +
-              this.key +
-              "</b> <br> Start: " +
-              Highcharts.dateFormat(dateFormat, this.point.start) +
-              "<br> End: " +
-              endText +
-              "<br> Duration: " +
-              years +
-              " years"
+              `<b>${this.point.parent} - ${this.key} </b><table>` +
+              `<tr><td>Start:</td><td style="padding:0"><b> ${Highcharts.dateFormat(
+                dateFormat,
+                this.point.start
+              )}</b>` +
+              `<tr><td>End:</td><td style="padding:0"><b> ${endText}</b>` +
+              `<tr><td>Duration:</td><td style="padding:0"><b> ${years} years</b>`
             );
           }
         },
