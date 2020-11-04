@@ -48,8 +48,12 @@
 
 /* START selectors for each charts bootstrap grid container */
 /* all of these selectors start with "chart" */
-#chart_crude_exports_mode{
+#chart_crude_exports_mode {
   max-width: 400px;
+}
+
+#chart_gas_mnp {
+  max-width: 700px;
 }
 
 /* END selectors for each charts bootstrap grid container */
@@ -99,8 +103,6 @@
   height: 300px;
 }
 /* END selectors for each charts div within bootstrap container (this is where the Highcharts graph is rendered) */
-
-
 
 /* these selectors help to visualize the bootstrap grid */
 /* .my-row {
