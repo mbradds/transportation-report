@@ -1,6 +1,4 @@
-select 
-rail.Date,
-rail.Units,
+select rail.Date,rail.Units,
 round(rail.Volume,1) as [Crude by Rail],
 round(wcs.[WCS Differential],1) as [WCS-WTI Differential]
 from (
