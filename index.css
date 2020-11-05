@@ -56,6 +56,10 @@
   max-width: 700px;
 }
 
+#chart_gas_2019 {
+  max-width: 900px;
+}
+
 /* END selectors for each charts bootstrap grid container */
 
 /* START selectors for each charts div within bootstrap container (this is where the Highcharts graph is rendered) */

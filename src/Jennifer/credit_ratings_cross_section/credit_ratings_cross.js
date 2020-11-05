@@ -87,6 +87,11 @@ export const jenniferRatingsCross = () => {
         type: "column",
       },
 
+      credits: {
+        text: "Source: S&P, DBRS, Moody's",
+        enabled: false,
+      },
+
       plotOptions: {
         series: {
           states: {

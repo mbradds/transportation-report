@@ -35,14 +35,15 @@ export const jenniferRatingsMulti = () => {
     "Maritimes & Northeast Pipeline Limited Partnership":
       cerPalette["Aubergine"],
     "Westcoast Energy Inc.": cerPalette["Cool Grey"],
-    "Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC": cerPalette['hcGreen'],
-    "NOVA Chemicals Corp.": cerPalette['hcPurple'],
+    "Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC":
+      cerPalette["hcGreen"],
+    "NOVA Chemicals Corp.": cerPalette["hcPurple"],
     "TransCanada PipeLines Limited": cerPalette["Sun"],
     "NOVA Gas Transmission Ltd.": cerPalette["Flame"],
     "Trans Quebec & Maritimes Pipeline Inc.": cerPalette["Ocean"],
     "Alliance Pipeline Limited Partnership": cerPalette["Forest"],
     "Enbridge Inc.": cerPalette["Night Sky"],
-    "Emera Inc.": cerPalette['hcRed'],
+    "Emera Inc.": cerPalette["hcRed"],
     "Enbridge Pipelines Inc.": cerPalette["Dim Grey"],
   };
 
@@ -114,6 +115,7 @@ export const jenniferRatingsMulti = () => {
 
       credits: {
         text: "Source: S&P, DBRS, Moody's",
+        enabled: false,
       },
 
       legend: {
@@ -165,7 +167,7 @@ export const jenniferRatingsMulti = () => {
           this.series.chart.series.map((s) => {
             s.data.map((row) => {
               if (row.category == selectedYear && row.y == selectedRatings) {
-                overlaps[s.name] = {y:row.y,color:s.color};
+                overlaps[s.name] = { y: row.y, color: s.color };
               }
             });
           });
@@ -173,7 +175,11 @@ export const jenniferRatingsMulti = () => {
           toolText += `<tr><td> Credit Quality: </td><td style="padding:0"><b> ${selectedScale} </b></td></tr>`;
           for (var agency in overlaps) {
             var agencyName = agency.split(" - ").slice(-1)[0];
-            toolText += `<tr><td> <span style="color: ${overlaps[agency].color}">${symbols[agencyName]}</span> ${agency}: </td><td style="padding:0"><b>${
+            toolText += `<tr><td> <span style="color: ${
+              overlaps[agency].color
+            }">${
+              symbols[agencyName]
+            }</span> ${agency}: </td><td style="padding:0"><b>${
               scaleData[overlaps[agency].y][agencyName]
             }</b></td></tr>`;
           }
@@ -249,7 +255,7 @@ export const jenniferRatingsMulti = () => {
   var symbolLegend = document.getElementById("container_symbol_legend");
   var creditChart = createCreditChart(seriesSubset, scaleData, minY, maxY);
 
-  addLegend(getChartSeriesName(creditChart), pipeLegend, symbolLegend,symbols);
+  addLegend(getChartSeriesName(creditChart), pipeLegend, symbolLegend, symbols);
   $("#select_company_credit_multi").on("change", function () {
     onLoadCompanies = $(this).val();
     var [chartCompanies, chartAgencies] = getChartSeriesName(creditChart);

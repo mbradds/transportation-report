@@ -336,3 +336,4 @@ export const tooltipSymbol = (event, unitsCurrent, shared = true) => {
     } ${unitsCurrent}</b></td></tr>`;
   }
 };
+
