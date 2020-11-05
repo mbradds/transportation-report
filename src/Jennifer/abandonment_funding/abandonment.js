@@ -109,7 +109,8 @@ export const jenniferAbandonment = () => {
       },
 
       yAxis: {
-        //visible: false,
+        gridLineColor: 'transparent',
+        lineColor: 'transparent',
         title: {
           enabled: false,
         },
@@ -137,7 +138,6 @@ export const jenniferAbandonment = () => {
       },
 
       tooltip: {
-        //useHTML: false,
         shared: true,
         formatter: function () {
           return tooltipAbandon(this);

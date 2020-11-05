@@ -4,7 +4,6 @@ import {
   creditsClick,
   mouseOverFunction,
   mouseOutFunction,
-  tooltipPoint,
   tooltipSymbol,
 } from "../../modules/util.js";
 
