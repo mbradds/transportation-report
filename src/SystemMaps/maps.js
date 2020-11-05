@@ -317,7 +317,7 @@ export const systemMaps = () => {
                 const chart = this.series.chart;
                 if (!chart.mouseOver) {
                   chart.mouseOver = chart.renderer
-                    .text(text, 725, 75, [, true])
+                    .text(text, 640, 50, [, true])
                     .css({
                       width: "350px",
                     })
