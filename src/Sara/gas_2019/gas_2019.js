@@ -3,7 +3,6 @@ import {
   prepareSeriesNonTidy,
   creditsClick,
   conversions,
-  tooltipPoint,
 } from "../../modules/util.js";
 import gas2019Data from "./gas_2019.json";
 
@@ -73,6 +72,7 @@ export const sara2019 = () => {
 
       yAxis: {
         gridLineWidth: 0,
+        endOnTick: false,
         title: { text: units.unitsCurrent },
         labels: {
           formatter: function () {
