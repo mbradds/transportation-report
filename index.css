@@ -5,7 +5,7 @@
   color: #871455;
 }
 
-#legend_title {
+.legend_title {
   text-align: center;
   font-family: Arial;
   font-weight: bold;
@@ -19,12 +19,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.author {
-  font-family: Arial;
-  font-weight: bold;
-  padding-left: 100px;
 }
 
 .figure_title {
@@ -46,67 +40,59 @@
   border: 1px solid black;
 }
 
-/* START selectors for each charts bootstrap grid container */
-/* all of these selectors start with "chart" */
-#chart_crude_exports_mode {
+.chart-small {
   max-width: 400px;
+  margin: auto;
 }
 
-#chart_gas_mnp {
+.container-chart-small {
+  max-height: 400px;
+}
+
+.chart-medium {
+  max-width: 800px;
+  margin: auto;
+}
+
+.container-chart-medium {
+  max-height: 400px;
+}
+
+.chart-large {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.container-chart-large {
+  min-height: 400px;
+}
+
+.chart-map {
+  max-width: 1000px;
+  margin: auto;
+}
+
+.container-chart-map {
+  min-height: 700px;
+}
+
+.chart-insert {
   max-width: 700px;
+  margin: auto;
 }
 
-#chart_gas_2019 {
-  max-width: 900px;
-}
-
-/* END selectors for each charts bootstrap grid container */
-
-/* START selectors for each charts div within bootstrap container (this is where the Highcharts graph is rendered) */
-/* all of these selectors start with "container" */
-#container_ratings {
-  height: 550px;
-}
-
-#container_ratings_multi {
-  height: 550px;
-}
-
-#container_ratings_cross {
-  height: 550px;
-}
-#container_fin_resources {
-  min-height: 300px;
-}
-
-#container_fin_resources_class {
-  min-height: 300px;
-}
-
-#container_pipeline_legend {
-  text-align: center;
-}
-
-#container_symbol_legend {
-  text-align: center;
-}
-
-#container_map_oil {
-  min-height: 800px;
-}
-
-#container_map_gas {
-  min-height: 800px;
-}
-
-#container_mnp {
+.container-chart-insert {
   height: 300px;
 }
 
-#container_offshore {
-  height: 300px;
+.container-chart-ratings {
+  height: 550px;
 }
-/* END selectors for each charts div within bootstrap container (this is where the Highcharts graph is rendered) */
+
+.container-legend{
+  text-align: center;
+}
+
 
 /* these selectors help to visualize the bootstrap grid */
 /* .my-row {
