@@ -17,7 +17,7 @@ export const jenniferRatingsMulti = () => {
   );
 
   var ratingAgencies = ["S&P", "Moody's", "DBRS"];
-  var symbols = { DBRS: "&#9650", "Moody's": "&#11044", "S&P": "&#9632" };
+  var symbols = { DBRS: "&#9650", "Moody's": "&#9679", "S&P": "&#9632" };
 
   fillDropUpdate("select_rating_agency", ratingAgencies, false, false);
 
