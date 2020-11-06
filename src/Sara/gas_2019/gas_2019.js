@@ -72,6 +72,7 @@ export const sara2019 = () => {
 
       yAxis: {
         gridLineWidth: 0,
+        startOnTick: false,
         endOnTick: false,
         title: { text: units.unitsCurrent },
         labels: {
