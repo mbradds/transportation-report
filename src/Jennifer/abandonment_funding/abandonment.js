@@ -5,7 +5,7 @@ import abandonmentData from "./Modified.json";
 export const jenniferAbandonment = () => {
   const abandonmentColors = {
     "Amounts Set Aside": cerPalette["Sun"],
-    "Amount to Recover": cerPalette["Night Sky"],
+    "Remaining Estimate": cerPalette["Night Sky"],
   };
 
   var abandonmentFilters = { commodity: "All" };
@@ -39,7 +39,7 @@ export const jenniferAbandonment = () => {
       });
       totals["% of ACE Set Aside"] =
         totals["Amounts Set Aside"] / totals["ACE"];
-      totals["Amount to Recover"] = totals["ACE"] - totals["Amounts Set Aside"];
+      totals["Remaining Estimate"] = totals["ACE"] - totals["Amounts Set Aside"];
       return totals;
     };
 
@@ -90,7 +90,7 @@ export const jenniferAbandonment = () => {
       filterData(abandonmentData, abandonmentFilters),
       false,
       false,
-      ["Amounts Set Aside", "Amount to Recover"],
+      ["Amounts Set Aside", "Remaining Estimate"],
       "Company",
       abandonmentColors,
       2,
@@ -116,7 +116,7 @@ export const jenniferAbandonment = () => {
 
     calc["pctRecovered"] = (
       (calc["Amounts Set Aside"] /
-        (calc["Amount to Recover"] + calc["Amounts Set Aside"])) *
+        (calc["Remaining Estimate"] + calc["Amounts Set Aside"])) *
       100
     ).toFixed(1);
     return (
@@ -271,7 +271,7 @@ export const jenniferAbandonment = () => {
             filterData(abandonmentData, abandonmentFilters),
             false,
             false,
-            ["Amounts Set Aside", "Amount to Recover"],
+            ["Amounts Set Aside", "Remaining Estimate"],
             "Company",
             abandonmentColors,
             2,
