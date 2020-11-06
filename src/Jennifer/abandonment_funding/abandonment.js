@@ -8,9 +8,61 @@ export const jenniferAbandonment = () => {
     "Amount to Recover": cerPalette["Night Sky"],
   };
 
-  const filterSeries = (seriesData) => {
+  var abandonmentFilters = { commodity: "All" };
+
+  const g1SeriesName = (filters) => {
+    if (filters.commodity == "All") {
+      var company = "Total Group 1 Pipelines";
+    } else {
+      var company = `Total Group 1 ${abandonmentFilters.commodity} Pipelines`;
+    }
+    return company;
+  };
+
+  const filterData = (data, abandonmentFilters) => {
+    const totals = (data) => {
+      const exclude = [
+        "Total CER Regulated Pipelines",
+        "Total Group 2 Pipelines",
+      ];
+      var totals = {
+        ACE: 0,
+        "Amounts Set Aside": 0,
+        Commodity: "All",
+        Company: g1SeriesName(abandonmentFilters),
+      };
+      data.map((row) => {
+        if (!exclude.includes(row.Company)) {
+          totals.ACE += row.ACE;
+          totals["Amounts Set Aside"] += row["Amounts Set Aside"];
+        }
+      });
+      totals["% of ACE Set Aside"] =
+        totals["Amounts Set Aside"] / totals["ACE"];
+      totals["Amount to Recover"] = totals["ACE"] - totals["Amounts Set Aside"];
+      return totals;
+    };
+
+    if (abandonmentFilters.commodity == "All") {
+      var totalG1 = totals(data);
+    } else {
+      data = data.filter(
+        (row) =>
+          row.Commodity == abandonmentFilters.commodity ||
+          row.Commodity == "All"
+      );
+      var totalG1 = totals(data);
+    }
+    data = data.concat(totalG1);
+    data.sort(function (a, b) {
+      return b.ACE - a.ACE;
+    });
+    return data;
+  };
+
+  const filterSeries = (seriesData, filters) => {
     var exclude = [
-      "Total Group 1 Pipelines",
+      g1SeriesName(filters),
       "Total Group 2 Pipelines",
       "Total CER Regulated Pipelines",
     ];
@@ -35,7 +87,7 @@ export const jenniferAbandonment = () => {
 
   var [seriesData, seriesTotals] = filterSeries(
     prepareSeriesNonTidy(
-      abandonmentData,
+      filterData(abandonmentData, abandonmentFilters),
       false,
       false,
       ["Amounts Set Aside", "Amount to Recover"],
@@ -43,7 +95,8 @@ export const jenniferAbandonment = () => {
       abandonmentColors,
       2,
       "name"
-    )
+    ),
+    abandonmentFilters
   );
 
   const tooltipAbandon = (event) => {
@@ -51,7 +104,14 @@ export const jenniferAbandonment = () => {
     var calc = {};
     event.points.map((p) => {
       calc[p.series.name] = p.y;
-      toolText += `<tr><td> <span style="color: ${p.color}">\u25CF</span> ${p.series.name}: </td><td style="padding:0"><b>${p.y}</b></td></tr>`;
+      toolText += `<tr><td> <span style="color: ${p.color}">\u25CF</span> ${
+        p.series.name
+      }: </td><td style="padding:0"><b>${Highcharts.numberFormat(
+        p.y,
+        0,
+        ".",
+        " "
+      )}</b></td></tr>`;
     });
 
     calc["pctRecovered"] = (
@@ -66,7 +126,7 @@ export const jenniferAbandonment = () => {
   };
 
   const createAbandonmentTotals = (seriesData) => {
-    return new Highcharts.chart("container_abandonment_totals", {
+    new Highcharts.chart("container_abandonment_totals", {
       chart: {
         height: "30%",
         type: "bar",
@@ -109,8 +169,8 @@ export const jenniferAbandonment = () => {
       },
 
       yAxis: {
-        gridLineColor: 'transparent',
-        lineColor: 'transparent',
+        gridLineColor: "transparent",
+        lineColor: "transparent",
         title: {
           enabled: false,
         },
@@ -194,6 +254,42 @@ export const jenniferAbandonment = () => {
       series: seriesData,
     });
   };
-  const abandonTotals = createAbandonmentTotals(seriesTotals);
-  const abandonChart = createAbandonmentChart(seriesData);
+  const mainAbandon = () => {
+    createAbandonmentTotals(seriesTotals);
+    createAbandonmentChart(seriesData);
+    var selectCommodityAbandon = document.getElementById(
+      "select_commodity_abandon"
+    );
+    selectCommodityAbandon.addEventListener(
+      "change",
+      (selectCommodityAbandon) => {
+        abandonmentFilters.commodity = selectCommodityAbandon.target.value;
+        var [seriesData, seriesTotals] = filterSeries(
+          prepareSeriesNonTidy(
+            filterData(abandonmentData, abandonmentFilters),
+            false,
+            false,
+            ["Amounts Set Aside", "Amount to Recover"],
+            "Company",
+            abandonmentColors,
+            2,
+            "name"
+          ),
+          abandonmentFilters
+        );
+        createAbandonmentTotals(seriesTotals);
+        var abandonChart = createAbandonmentChart(seriesData);
+
+        if (abandonmentFilters.commodity == "All") {
+          var titleText = "Group 1 Abandonment Breakdown";
+        } else {
+          var titleText = `Group 1 Abandonment Breakdown - ${abandonmentFilters.commodity}`;
+        }
+        abandonChart.update({
+          title: { text: titleText },
+        });
+      }
+    );
+  };
+  mainAbandon();
 };
