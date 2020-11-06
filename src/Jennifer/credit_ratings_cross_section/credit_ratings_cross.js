@@ -2,7 +2,6 @@ import {
   cerPalette,
   prepareSeriesTidy,
   getUnique,
-  fillDropUpdate,
 } from "../../modules/util.js";
 
 import creditData from "../credit_ratings/CreditTables.json";
@@ -15,10 +14,10 @@ export const jenniferRatingsCross = () => {
     "Moody's": cerPalette["Forest"],
   };
 
-  const ratingsFilter = { Year: "2019" };
+  var ratingsFilter = { Year: "2019" };
 
   const setTitle = (figure_title, filters) => {
-    figure_title.innerText = `Figure 22: Company Credit Ratings, ${filters.Year}`;
+    figure_title.innerText = `Figure 22: Company Credit Ratings ${filters.Year.trim()}`;
   };
 
   var creditSeries = prepareSeriesTidy(
@@ -42,7 +41,7 @@ export const jenniferRatingsCross = () => {
   const createSortedSeries = (series) => {
     let average = (array) => array.reduce((a, b) => a + b) / array.length;
     var category = {};
-    series.map((s, seriesNum) => {
+    series.map((s) => {
       s.data.map((row) => {
         if (category.hasOwnProperty(row.name)) {
           category[row.name].push(row.y);
@@ -162,10 +161,11 @@ export const jenniferRatingsCross = () => {
   };
 
   const mainCreditYear = () => {
+
     var yearChart = createChartCross(sortedSeries);
     var figure_title = document.getElementById("ratings_year_title");
     setTitle(figure_title, ratingsFilter);
-
+    
     $("#credit_years button").on("click", function () {
       var thisBtn = $(this);
       thisBtn.addClass("active").siblings().removeClass("active");
@@ -190,8 +190,7 @@ export const jenniferRatingsCross = () => {
         series: sortedSeries,
       });
     });
-
-    $('#credit_years button[value="2019"]').click();
+    
   };
   mainCreditYear();
 };

@@ -616,7 +616,7 @@ def st_stephen():
 if __name__ == '__main__':
         
     #kevin
-    df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
+    #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
     #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = ne2_wcs_wti(query_ne2)
@@ -655,7 +655,7 @@ if __name__ == '__main__':
     #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
     #df,scale = creditRatings()
-    #df = readExcel("abandonment funding data.xlsx","Modified")
+    df = readExcel("abandonment funding data.xlsx","Modified")
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx')
