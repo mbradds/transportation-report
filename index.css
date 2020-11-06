@@ -5,6 +5,10 @@
   color: #871455;
 }
 
+.dropdown-menu {
+  max-height: 200px;
+}
+
 .legend_title {
   text-align: center;
   font-family: Arial;
@@ -26,6 +30,8 @@
   font-weight: bold;
   font-family: Arial;
   color: dimgray;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .my-row-border {
@@ -89,10 +95,12 @@
   height: 550px;
 }
 
-.container-legend{
+.container-legend {
   text-align: center;
 }
-
+/* #ratings_year_title {
+  display: inline-block;
+} */
 
 /* these selectors help to visualize the bootstrap grid */
 /* .my-row {
