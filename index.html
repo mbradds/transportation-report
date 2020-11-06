@@ -54,12 +54,11 @@
       <p>For CER internal use. Do not share externally.</p>
     </div>
 
+    <!-- crude oil pipeline map -->
     <div class="chart-map">
       <div class="row my-row">
         <div class="col my-col">
-          <div id="figureX" class="figure_title">
-            Figure X: Crude Oil Pipeline Map
-          </div>
+          <div id="figureX" class="figure_title">Crude Oil Pipeline Map</div>
         </div>
       </div>
       <div class="row py-2 my-row">
@@ -69,22 +68,7 @@
       </div>
     </div>
 
-    <div class="chart-map">
-      <div class="row my-row">
-        <div class="col my-col">
-          <div id="figureX" class="figure_title">
-            Figure X: Natural Gas Pipeline Map
-          </div>
-        </div>
-      </div>
-      <div class="row py-2 my-row">
-        <div class="col my-col">
-          <div class="container-chart-map" id="container_map_gas"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- crude production graph -->
+    <!-- crude production graph (figure 1) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
@@ -118,7 +102,7 @@
       </div>
     </div>
 
-    <!-- crude exports graph -->
+    <!-- crude exports graph (figure 2) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
@@ -147,7 +131,7 @@
       </div>
     </div>
 
-    <!-- crude imports graph -->
+    <!-- crude imports graph (figure 3) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
@@ -173,7 +157,7 @@
       </div>
     </div>
 
-    <!-- crude price graph -->
+    <!-- crude price graph (figure 4) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
@@ -189,12 +173,28 @@
       </div>
     </div>
 
-    <!-- crude by rail -->
+    <!-- crude export by mode (figure 5) -->
+    <div class="chart-small">
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="figureX" class="figure_title">
+            Figure 5: 2019 Crude Oil Exports by Mode of Transportation
+          </div>
+        </div>
+      </div>
+      <div class="row my-row">
+        <div class="col my-col">
+          <div class="container-chart-small" id="container_crude_mode"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- crude by rail (figure 6) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
           <div id="figureX" class="figure_title">
-            Figure 5: Crude by Rail Exports
+            Figure 6: Crude by Rail Exports
           </div>
         </div>
       </div>
@@ -214,12 +214,12 @@
       </div>
     </div>
 
-    <!-- marine exports -->
+    <!-- marine exports (figure 7) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
           <div id="figureX" class="figure_title">
-            Figure 6: Marine Crude Oil Exports
+            Figure 7: Marine Crude Oil Exports
           </div>
         </div>
       </div>
@@ -239,12 +239,12 @@
       </div>
     </div>
 
-    <!-- crude takeaway vs supply available for export -->
+    <!-- crude takeaway vs supply available for export (figure 8) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
           <div id="figureX" class="figure_title">
-            Figure 7: Pipeline Capacity vs Crude Oil Available for Export
+            Figure 8: Pipeline Capacity vs Crude Oil Available for Export
           </div>
         </div>
       </div>
@@ -267,131 +267,26 @@
       </div>
     </div>
 
-    <!-- crude export by mode -->
-    <div class="chart-small">
+    <!-- natural gas pipeline map -->
+    <div class="chart-map">
       <div class="row my-row">
         <div class="col my-col">
-          <div id="figureX" class="figure_title">
-            Figure 8: 2019 Crude Oil Exports by Mode of Transportation
-          </div>
+          <div id="figureX" class="figure_title">Natural Gas Pipeline Map</div>
         </div>
       </div>
-      <div class="row my-row">
+      <div class="row py-2 my-row">
         <div class="col my-col">
-          <div class="container-chart-small" id="container_crude_mode"></div>
+          <div class="container-chart-map" id="container_map_gas"></div>
         </div>
       </div>
     </div>
 
-    <!-- natural gas traffic -->
+    <!-- natural gas production (figure 9) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
           <div id="figureX" class="figure_title">
-            Figure 9: Ex-WCSB Pipeline Throughput & Capacity
-          </div>
-        </div>
-      </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
-          <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_gas_traffic" class="selectpicker">
-            <option value="Bcf/d">Bcf/d</option>
-            <option value="Million m3/d">Million m3/d</option>
-          </select>
-        </div>
-      </div>
-      <div class="row my-row">
-        <div class="col my-col">
-          <div class="container-chart-large" id="container_gas_traffic"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- gas 2019 -->
-    <div class="chart-medium">
-      <div class="row my-row">
-        <div class="col my-col">
-          <div id="figureX" class="figure_title">
-            Figure 10: 2019 Pipeline Throughput & Capacity at Key Points
-          </div>
-        </div>
-      </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
-          <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_gas_2019" class="selectpicker">
-            <option value="Bcf/d">Bcf/d</option>
-            <option value="Million m3/d">Million m3/d</option>
-          </select>
-        </div>
-      </div>
-      <div class="row my-row">
-        <div class="col my-col">
-          <div class="container-chart-medium" id="container_gas_2019"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- mnp -->
-    <div class="chart-insert">
-      <div class="row my-row">
-        <div class="col my-col">
-          <div id="figureX" class="figure_title">
-            Figure 11: St. Stephen Insert
-          </div>
-        </div>
-      </div>
-      <div class="row my-row-border">
-        <div class="col my-col">
-          <div class="row my-row">
-            <div class="col my-col">
-              <div class="container-chart-insert" id="container_mnp"></div>
-            </div>
-          </div>
-          <div class="row my-row">
-            <div class="col my-col">
-              <div class="container-chart-insert" id="container_offshore"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- gas prices -->
-    <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
-          <div id="figureX" class="figure_title">
-            Figure 12: Natural Gas Prices at Key North American Hubs
-          </div>
-        </div>
-      </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
-          <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_gas_prices" class="selectpicker">
-            <option value="$CN/GIG">$CN/GIG</option>
-            <option value="$US/MMB">$US/MMB</option>
-          </select>
-        </div>
-      </div>
-      <div class="row my-row-border">
-        <div class="col-9 my-col">
-          <div id="container_gas_prices"></div>
-        </div>
-        <div class="col-3 my-col">
-          <div id="container_gas_map"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- gas production -->
-    <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
-          <div id="figureX" class="figure_title">
-            Figure 13: Total Western Canadian Sedimentary Basin Production
+            Figure 9: Total Western Canadian Sedimentary Basin Production
           </div>
         </div>
       </div>
@@ -414,7 +309,7 @@
       </div>
     </div>
 
-    <!-- gas trade graph -->
+    <!-- natural gas trade graph (figure 10) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
@@ -447,97 +342,116 @@
       </div>
     </div>
 
-    <!-- financial metrics (showing one metric at a time for all pipes) -->
+    <!-- natural gas prices (figure 11) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
           <div id="figureX" class="figure_title">
-            Figure 15: Pipeline Financial Metrics
+            Figure 11: Natural Gas Prices at Key North American Hubs
           </div>
         </div>
       </div>
       <div class="row py-2 my-row">
-        <div class="col-md-3 col-sm-12">
-          <div class="cerlabel">Select pipelines:</div>
-          <select name="" id="select_pipelines_financial" class="selectpicker">
-            <option value="All">All</option>
-            <option value="Oil">Oil</option>
-            <option value="Gas">Gas</option>
-          </select>
-        </div>
-        <div class="col-md-3 col-sm-12">
-          <div class="cerlabel">Select Financial Metric:</div>
-          <select
-            name=""
-            id="select_metric_financial"
-            class="selectpicker"
-          ></select>
-        </div>
-      </div>
-      <div class="row my-row">
-        <div class="col my-col">
-          <div
-            class="container-chart-large"
-            id="container_financial_metrics"
-          ></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- tolls -->
-    <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
-          <div id="tolls_title" class="figure_title"></div>
-        </div>
-      </div>
-      <div class="row py-2 my-row">
-        <div class="col-md-3 col-sm-12">
-          <div class="cerlabel">Select commodity:</div>
-          <select
-            name=""
-            id="select_commodity_tolls"
-            class="selectpicker"
-          ></select>
-        </div>
-      </div>
-      <div class="row my-row">
-        <div class="col my-col">
-          <div class="container-chart-large" id="container_tolls"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- negotiated settlements -->
-    <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
-          <div id="settle_title" class="figure_title"></div>
-        </div>
-      </div>
-      <div class="row py-2 my-row">
-        <div class="col my-col">
-          <div class="cerlabel">Select pipeline company category:</div>
-          <select name="" id="select_commodity_settle" class="selectpicker">
-            <option value="All">All</option>
-            <option value="Oil">Oil</option>
-            <option value="Gas">Gas</option>
+        <div class="col-4 my-col">
+          <div class="cerlabel">Select units:</div>
+          <select name="" id="select_units_gas_prices" class="selectpicker">
+            <option value="$CN/GIG">$CN/GIG</option>
+            <option value="$US/MMB">$US/MMB</option>
           </select>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
-          <div class="container-chart-large" id="container_settlements"></div>
+      <div class="row my-row-border">
+        <div class="col-9 my-col">
+          <div id="container_gas_prices"></div>
+        </div>
+        <div class="col-3 my-col">
+          <div id="container_gas_map"></div>
         </div>
       </div>
     </div>
 
-    <!-- ngl production -->
+    <!-- ex-WCSB natural gas traffic (figure 12) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
           <div id="figureX" class="figure_title">
-            Figure 18: Canada NGL Production
+            Figure 12: Ex-WCSB Pipeline Throughput & Capacity
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
+        <div class="col-4 my-col">
+          <div class="cerlabel">Select units:</div>
+          <select name="" id="select_units_gas_traffic" class="selectpicker">
+            <option value="Bcf/d">Bcf/d</option>
+            <option value="Million m3/d">Million m3/d</option>
+          </select>
+        </div>
+      </div>
+      <div class="row my-row">
+        <div class="col my-col">
+          <div class="container-chart-large" id="container_gas_traffic"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- natural gas offshore production & St. Stephen imports (figure 13) -->
+    <div class="chart-insert">
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="figureX" class="figure_title">
+            Figure 13: Natural Gas Offshore Production & Exports/Imports at St.
+            Stephen
+          </div>
+        </div>
+      </div>
+      <div class="row my-row-border">
+        <div class="col my-col">
+          <div class="row my-row">
+            <div class="col my-col">
+              <div class="container-chart-insert" id="container_mnp"></div>
+            </div>
+          </div>
+          <div class="row my-row">
+            <div class="col my-col">
+              <div class="container-chart-insert" id="container_offshore"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2019 Natural Gas Traffic at key points (figure 14) -->
+    <div class="chart-medium">
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="figureX" class="figure_title">
+            Figure 14: 2019 Pipeline Throughput & Capacity at Key Points
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
+        <div class="col-4 my-col">
+          <div class="cerlabel">Select units:</div>
+          <select name="" id="select_units_gas_2019" class="selectpicker">
+            <option value="Bcf/d">Bcf/d</option>
+            <option value="Million m3/d">Million m3/d</option>
+          </select>
+        </div>
+      </div>
+      <div class="row my-row">
+        <div class="col my-col">
+          <div class="container-chart-medium" id="container_gas_2019"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ngl production (figure 15) -->
+    <div class="chart-large">
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="figureX" class="figure_title">
+            Figure 15: Canada NGL Production
           </div>
         </div>
       </div>
@@ -560,7 +474,7 @@
       </div>
     </div>
 
-    <!-- ngl exports -->
+    <!-- ngl exports (figure 16) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
@@ -594,12 +508,60 @@
       </div>
     </div>
 
-    <!-- financial resource chart -->
+    <!-- negotiated settlements (figure 17) -->
+    <div class="chart-large">
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="settle_title" class="figure_title"></div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
+        <div class="col my-col">
+          <div class="cerlabel">Select pipeline company category:</div>
+          <select name="" id="select_commodity_settle" class="selectpicker">
+            <option value="All">All</option>
+            <option value="Oil">Oil</option>
+            <option value="Gas">Gas</option>
+          </select>
+        </div>
+      </div>
+      <div class="row my-row">
+        <div class="col my-col">
+          <div class="container-chart-large" id="container_settlements"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- tolls (figure 18) -->
+    <div class="chart-large">
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="tolls_title" class="figure_title"></div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
+        <div class="col-md-3 col-sm-12">
+          <div class="cerlabel">Select commodity:</div>
+          <select
+            name=""
+            id="select_commodity_tolls"
+            class="selectpicker"
+          ></select>
+        </div>
+      </div>
+      <div class="row my-row">
+        <div class="col my-col">
+          <div class="container-chart-large" id="container_tolls"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- financial resources (figure 19) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
           <div id="figureX" class="figure_title">
-            Figure 20: Pipeline Financial Resource Requirements
+            Figure 19: Pipeline Financial Resource Requirements
           </div>
         </div>
       </div>
@@ -638,62 +600,70 @@
       </div>
     </div>
 
-    <!-- credit ratings option 2 -->
+    <!-- abandonment funding (figure 20) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
           <div id="figureX" class="figure_title">
-            Figure 21: Company Credit Ratings (with multi-select)
+            Figure 20: Abandonment Funding
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col my-col">
-          <div class="cerlabel">Select company:</div>
-          <select
-            multiple
-            name="select_company_credit"
-            id="select_company_credit_multi"
-            class="selectpicker"
-          ></select>
-        </div>
-        <div class="col my-col">
-          <div class="cerlabel">Select rating agency:</div>
-          <select
-            multiple
-            name="select_rating_agency"
-            id="select_rating_agency"
-            class="selectpicker"
-          ></select>
-        </div>
-      </div>
       <div class="col my-col-border">
-        <div class="row my-row">
+        <div class="row py-2 my-row">
           <div class="col my-col">
             <div
-              class="container-chart-ratings"
-              id="container_ratings_multi"
+              class="container-chart-insert"
+              id="container_abandonment_totals"
             ></div>
           </div>
         </div>
         <div class="row my-row">
           <div class="col my-col">
-            <div class="legend_title">
-              Legend: Currently Selected Pipelines (color)
-            </div>
-            <div class="container-legend" id="container_pipeline_legend"></div>
-          </div>
-          <div class="col my-col">
-            <div class="legend_title">
-              Legend: Credit Rating Agencies (symbol)
-            </div>
-            <div class="container-legend" id="container_symbol_legend"></div>
+            <div class="container-chart-large" id="container_abandonment"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- credit ratings cross section -->
+    <!-- financial metrics (figure 21) -->
+    <div class="chart-large">
+      <div class="row my-row">
+        <div class="col my-col">
+          <div id="figureX" class="figure_title">
+            Figure 21: Pipeline Financial Metrics
+          </div>
+        </div>
+      </div>
+      <div class="row py-2 my-row">
+        <div class="col-md-3 col-sm-12">
+          <div class="cerlabel">Select pipelines:</div>
+          <select name="" id="select_pipelines_financial" class="selectpicker">
+            <option value="All">All</option>
+            <option value="Oil">Oil</option>
+            <option value="Gas">Gas</option>
+          </select>
+        </div>
+        <div class="col-md-3 col-sm-12">
+          <div class="cerlabel">Select Financial Metric:</div>
+          <select
+            name=""
+            id="select_metric_financial"
+            class="selectpicker"
+          ></select>
+        </div>
+      </div>
+      <div class="row my-row">
+        <div class="col my-col">
+          <div
+            class="container-chart-large"
+            id="container_financial_metrics"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- credit ratings cross section (figure 22) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
@@ -741,27 +711,56 @@
       </div>
     </div>
 
-    <!-- abandonment funding -->
+    <!-- credit ratings multi-select (figure 23) -->
     <div class="chart-large">
       <div class="row my-row">
         <div class="col my-col">
           <div id="figureX" class="figure_title">
-            Figure 23: Abandonment Funding
+            Figure 23: Company Credit Ratings (with multi-select)
           </div>
         </div>
       </div>
+      <div class="row py-2 my-row">
+        <div class="col my-col">
+          <div class="cerlabel">Select company:</div>
+          <select
+            multiple
+            name="select_company_credit"
+            id="select_company_credit_multi"
+            class="selectpicker"
+          ></select>
+        </div>
+        <div class="col my-col">
+          <div class="cerlabel">Select rating agency:</div>
+          <select
+            multiple
+            name="select_rating_agency"
+            id="select_rating_agency"
+            class="selectpicker"
+          ></select>
+        </div>
+      </div>
       <div class="col my-col-border">
-        <div class="row py-2 my-row">
+        <div class="row my-row">
           <div class="col my-col">
             <div
-              class="container-chart-insert"
-              id="container_abandonment_totals"
+              class="container-chart-ratings"
+              id="container_ratings_multi"
             ></div>
           </div>
         </div>
         <div class="row my-row">
           <div class="col my-col">
-            <div class="container-chart-large" id="container_abandonment"></div>
+            <div class="legend_title">
+              Legend: Currently Selected Pipelines (color)
+            </div>
+            <div class="container-legend" id="container_pipeline_legend"></div>
+          </div>
+          <div class="col my-col">
+            <div class="legend_title">
+              Legend: Credit Rating Agencies (symbol)
+            </div>
+            <div class="container-legend" id="container_symbol_legend"></div>
           </div>
         </div>
       </div>
