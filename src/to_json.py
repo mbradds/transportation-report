@@ -227,6 +227,24 @@ def readExcel(name,sheet='pq',flatten=False):
                 json.dump(levels, f)
     if name == "abandonment funding data.xlsx":
         df = normalize_text(df, ['Company'])
+        df = df[df['Company']!='Total Group 1 Pipelines']
+        gas = ['TransCanada Pipelines Limited',
+               'Nova Gas Transmission Ltd.',
+               'Alliance Pipeline Ltd.',
+               'Westcoast Transmission',
+               'Foothills Pipelines Ltd.',
+               'Maritimes & Northeast Pipeline Management Limited',
+               'Trans Quebec & Maritimes Pipeline (TQM) Inc.']
+        
+        commodity = []
+        for company in df['Company']:
+            if company in gas:
+                commodity.append('Gas')
+            elif company in ['Total CER Regulated Pipelines','Total Group 2 Pipelines']:
+                commodity.append('All')
+            else:
+                commodity.append('Oil')
+        df['Commodity'] = commodity
         df['Amount to Recover'] = df['ACE'] - df['Amounts Set Aside']
         df = df.sort_values(by=['ACE'],ascending=False)
         write_path = os.path.join(os.getcwd(),'Jennifer/abandonment_funding/',sheet+'.json')
