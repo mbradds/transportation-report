@@ -245,7 +245,7 @@ def readExcel(name,sheet='pq',flatten=False):
             else:
                 commodity.append('Oil')
         df['Commodity'] = commodity
-        df['Amount to Recover'] = df['ACE'] - df['Amounts Set Aside']
+        df['Remaining Estimate'] = df['ACE'] - df['Amounts Set Aside']
         df = df.sort_values(by=['ACE'],ascending=False)
         write_path = os.path.join(os.getcwd(),'Jennifer/abandonment_funding/',sheet+'.json')
         
