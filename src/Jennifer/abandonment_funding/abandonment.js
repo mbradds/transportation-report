@@ -121,7 +121,7 @@ export const jenniferAbandonment = () => {
     ).toFixed(1);
     return (
       toolText +
-      `<tr><td> Percent Recovered: </td><td style="padding:0"> <b>${calc["pctRecovered"]}% </b></td></tr>`
+      `<tr><td> % set-aside: </td><td style="padding:0"> <b>${calc["pctRecovered"]}% </b></td></tr>`
     );
   };
 
@@ -182,7 +182,7 @@ export const jenniferAbandonment = () => {
           formatter: function () {
             var [remaining, total] = this.points[0];
             var recovered = total - remaining;
-            return (recovered / total).toFixed(2) * 100 + "% recovered";
+            return (recovered / total).toFixed(2) * 100 + "% set-aside";
           },
         },
       },
@@ -241,6 +241,8 @@ export const jenniferAbandonment = () => {
       },
 
       yAxis: {
+        startOnTick: false,
+        endOnTick: false,
         title: {
           text: "Abandonment Costs (Billions)",
         },
