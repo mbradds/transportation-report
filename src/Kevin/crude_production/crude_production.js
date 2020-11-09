@@ -1,6 +1,7 @@
 import {
   cerPalette,
   fillDropUpdate,
+  fillDropUpdateWet,
   prepareSeriesNonTidy,
   getUnique,
   conversions,
@@ -35,7 +36,14 @@ export const kevinCrudeProduction = () => {
     "In Situ Bitumen",
   ];
 
-  fillDropUpdate(
+  // fillDropUpdate(
+  //   "select_region_crude_prod",
+  //   getUnique(crudeProdData, "Region"),
+  //   false,
+  //   "Canada"
+  // );
+
+  fillDropUpdateWet(
     "select_region_crude_prod",
     getUnique(crudeProdData, "Region"),
     false,
