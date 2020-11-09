@@ -11,6 +11,7 @@ connection.py
 **/statsCan
 statsCan.geojson
 **/pipeline
+**/CER_html
 /Data
 .vscode
 CER.py
