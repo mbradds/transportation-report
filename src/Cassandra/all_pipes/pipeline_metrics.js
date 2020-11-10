@@ -1,6 +1,6 @@
 import {
   getUnique,
-  fillDropUpdate,
+  fillDropUpdateWet,
   creditsClick,
   cerPalette,
   tooltipPoint,
@@ -69,7 +69,8 @@ export const cassandraAllPipes = () => {
     financialData,
     financeFilters
   );
-  fillDropUpdate(
+
+  fillDropUpdateWet(
     "select_metric_financial",
     getUnique(financialData, "Type"),
     false,

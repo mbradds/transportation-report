@@ -2,14 +2,14 @@ import {
   cerPalette,
   prepareSeriesTidy,
   getUnique,
-  fillDropUpdate,
+  fillDropUpdateWet,
 } from "../../modules/util.js";
 
 import creditData from "./CreditTables.json";
 import scaleData from "./Scale.json";
 
 export const jenniferRatingsMulti = () => {
-  fillDropUpdate(
+  fillDropUpdateWet(
     "select_company_credit_multi",
     getUnique(creditData, "Corporate Entity"),
     false,
@@ -17,13 +17,23 @@ export const jenniferRatingsMulti = () => {
   );
 
   var ratingAgencies = ["S&P", "Moody's", "DBRS"];
+  fillDropUpdateWet("select_rating_agency", ratingAgencies, false, false);
+
+  const selectDefaultMultiple = (select_name,optionsToSelect) => {
+    var select = document.getElementById(select_name);
+    for (var i = 0, l = select.options.length, o; i < l; i++) {
+      o = select.options[i];
+      if (optionsToSelect.indexOf(o.text) != -1) {
+        o.selected = true;
+      }
+    }
+  };
+
+  
   var symbols = { DBRS: "&#9650", "Moody's": "&#9679", "S&P": "&#9632" };
-
-  fillDropUpdate("select_rating_agency", ratingAgencies, false, false);
-
   var onLoadCompanies = ["Enbridge Inc.", "TransCanada PipeLines Limited"];
-  $("#select_company_credit_multi").selectpicker("val", onLoadCompanies);
-  $("#select_rating_agency").selectpicker("val", ratingAgencies);
+  selectDefaultMultiple("select_company_credit_multi",onLoadCompanies)
+  selectDefaultMultiple("select_rating_agency",ratingAgencies)
 
   const yRange = (creditData) => {
     const creditRange = getUnique(creditData, "Level");
