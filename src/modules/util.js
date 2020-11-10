@@ -57,6 +57,32 @@ export const fillDropUpdate = (
   }
 };
 
+export const fillDropUpdateWet = (
+  select_name,
+  options,
+  refresh = false,
+  defaultSelect = false
+) => {
+
+  var selectElem = document.getElementById(select_name);
+
+  if (refresh){
+    $(select_name).empty();
+    selectElem.options.length = 0;
+  }
+  
+  options.map((value)=> {
+    var element = document.createElement("option");
+    element.innerText = value;
+    element.value = value
+    selectElem.append(element);
+  })
+    
+  if (defaultSelect !== false) {
+    selectElem.value=defaultSelect
+  }
+};
+
 //takes in a json object and checks if the column has data
 export const checkIfValid = (data) => {
   let valid = false;
@@ -336,4 +362,3 @@ export const tooltipSymbol = (event, unitsCurrent, shared = true) => {
     } ${unitsCurrent}</b></td></tr>`;
   }
 };
-

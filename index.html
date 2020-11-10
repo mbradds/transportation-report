@@ -4,33 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Transportation Report</title>
+    <!--[if gte IE 9 | !IE]><!-->
+    <link href="./GCWeb/assets/favicon.ico" rel="icon" type="image/x-icon" />
 
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="./GCWeb/css/theme.min.css" />
+    <script src="js/jquery/2.2.4/jquery.min.js"></script>
+    <!--<![endif]-->
+    <!--[if lt IE 9]>
+      <link href="./GCWeb/assets/favicon.ico" rel="shortcut icon" />
+      <link rel="stylesheet" href="./GCWeb/css/ie8-theme.min.css" />
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js"></script>
+      <script src="./wet-boew/js/ie8-wet-boew.min.js"></script>
+    <![endif]-->
+    <!--[if lte IE 9]> <![endif]-->
+
+    <noscript>
+      <link rel="stylesheet" href="./wet-boew/css/noscript.min.css" />
+    </noscript>
+
+    <link rel="stylesheet" href="main.css" />
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"
     ></script>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"
-    />
     <script
       src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
       integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
       crossorigin="anonymous"
     ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-      crossorigin="anonymous"
-    ></script>
+
     <script src="https://code.highcharts.com/8.2.0/highcharts.js"></script>
     <script src="https://code.highcharts.com/8.2.0/modules/data.js"></script>
     <script src="https://code.highcharts.com/maps/8.2.0/modules/map.js"></script>
@@ -43,7 +46,6 @@
     <script src="https://code.highcharts.com/mapdata/countries/us/custom/us-all-mainland.js"></script>
     <script src="https://code.highcharts.com/mapdata/custom/north-america-no-central.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
   </head>
 
   <body>
@@ -56,13 +58,13 @@
 
     <!-- crude oil pipeline map -->
     <div class="chart-map">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">Crude Oil Pipeline Map</div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="container-chart-map" id="container_map_oil"></div>
         </div>
       </div>
@@ -70,30 +72,26 @@
 
     <!-- crude production graph (figure 1) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="crude_prod_title" class="figure_title"></div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-3 my-col">
+      <div class="row">
+        <div class="col-md-3">
           <div class="cerlabel">Select region:</div>
-          <select
-            name=""
-            id="select_region_crude_prod"
-            class="selectpicker"
-          ></select>
+          <select class="form-control" id="select_region_crude_prod"></select>
         </div>
-        <div class="col-3 my-col">
+        <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_crude_prod" class="selectpicker">
+          <select class="form-control" id="select_units_crude_prod">
             <option value="MMb/d">MMb/d</option>
             <option value="Thousand m3/d">Thousand m3/d</option>
           </select>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div
             class="container-chart-large"
             id="container_crude_production"
@@ -104,28 +102,24 @@
 
     <!-- crude exports graph (figure 2) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 2: Crude Oil Exports
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
+      <div class="row">
+        <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
-          <select
-            name=""
-            id="select_units_crude_exports"
-            class="selectpicker"
-          ></select>
+          <select class="form-control" id="select_units_crude_exports"></select>
         </div>
       </div>
       <div class="row my-row-border">
-        <div class="col-8 my-col">
+        <div class="col-md-8">
           <div id="container_crude_exports"></div>
         </div>
-        <div class="col-4 my-col">
+        <div class="col-md-4">
           <div id="container_padd_map"></div>
         </div>
       </div>
@@ -133,25 +127,24 @@
 
     <!-- crude imports graph (figure 3) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 3: Canada's Share of U.S. Crude Oil Imports
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
+      <div class="row">
+        <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_crude_imports" class="selectpicker">
+          <select class="form-control" id="select_units_crude_imports">
             <option value="MMb/d">MMb/d</option>
             <option value="Thousand m3/d">Thousand m3/d</option>
           </select>
         </div>
       </div>
-
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="container-chart-large" id="container_crude_imports"></div>
         </div>
       </div>
@@ -159,15 +152,15 @@
 
     <!-- crude price graph (figure 4) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 4: Crude Oil Prices
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="container-chart-large" id="container_crude_prices"></div>
         </div>
       </div>
@@ -175,15 +168,15 @@
 
     <!-- crude export by mode (figure 5) -->
     <div class="chart-small">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 5: 2019 Crude Oil Exports by Mode of Transportation
           </div>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="container-chart-small" id="container_crude_mode"></div>
         </div>
       </div>
@@ -191,24 +184,24 @@
 
     <!-- crude by rail (figure 6) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 6: Crude by Rail Exports
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
+      <div class="row">
+        <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_rail" class="selectpicker">
+          <select class="form-control" id="select_units_rail">
             <option value="Mb/d">Mb/d</option>
             <option value="m3/d">m3/d</option>
           </select>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="container-chart-large" id="container_crude_by_rail"></div>
         </div>
       </div>
@@ -216,24 +209,24 @@
 
     <!-- marine exports (figure 7) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 7: Marine Crude Oil Exports
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
+      <div class="row">
+        <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_marine" class="selectpicker">
+          <select class="form-control" id="select_units_marine">
             <option value="Mb/d">Mb/d</option>
             <option value="m3/d">m3/d</option>
           </select>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="container-chart-large" id="container_crude_marine"></div>
         </div>
       </div>
@@ -241,24 +234,24 @@
 
     <!-- crude takeaway vs supply available for export (figure 8) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 8: Pipeline Capacity vs Crude Oil Available for Export
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
+      <div class="row">
+        <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_crude_takeaway" class="selectpicker">
+          <select class="form-control" id="select_units_crude_takeaway">
             <option value="MMb/d">MMb/d</option>
             <option value="Thousand m3/d">Thousand m3/d</option>
           </select>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div
             class="container-chart-large"
             id="container_crude_takeaway"
@@ -269,13 +262,13 @@
 
     <!-- natural gas pipeline map -->
     <div class="chart-map">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">Natural Gas Pipeline Map</div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="container-chart-map" id="container_map_gas"></div>
         </div>
       </div>
@@ -283,24 +276,24 @@
 
     <!-- natural gas production (figure 9) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 9: Total Western Canadian Sedimentary Basin Production
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
+      <div class="row">
+        <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_gas_prod" class="selectpicker">
+          <select class="form-control" id="select_units_gas_prod">
             <option value="Bcf/d">Bcf/d</option>
             <option value="Million m3/d">Million m3/d</option>
           </select>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div
             class="container-chart-large"
             id="container_gas_production"
@@ -311,32 +304,32 @@
 
     <!-- natural gas trade graph (figure 10) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="gas_trade_title" class="figure_title"></div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-3 my-col">
+      <div class="row">
+        <div class="col-md-2">
           <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_gas_trade" class="selectpicker">
+          <select class="form-control" id="select_units_gas_trade">
             <option value="Bcf/d">Bcf/d</option>
             <option value="Million m3/d">Million m3/d</option>
           </select>
         </div>
-        <div class="col-3 my-col">
+        <div class="col-md-2">
           <div class="cerlabel">Select trade type:</div>
-          <select name="" id="select_gas_trade_type" class="selectpicker">
+          <select class="form-control" id="select_gas_trade_type">
             <option value="Exports">Exports</option>
             <option value="Imports">Imports</option>
           </select>
         </div>
       </div>
       <div class="row my-row-border">
-        <div class="col-8 my-col">
+        <div class="col-md-8">
           <div id="container_gas_trade"></div>
         </div>
-        <div class="col-4 my-col">
+        <div class="col-md-4">
           <div id="container_gas_trade_map"></div>
         </div>
       </div>
@@ -344,27 +337,27 @@
 
     <!-- natural gas prices (figure 11) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col">
           <div id="figureX" class="figure_title">
             Figure 11: Natural Gas Prices at Key North American Hubs
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
+      <div class="row">
+        <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_gas_prices" class="selectpicker">
+          <select class="form-control" id="select_units_gas_prices">
             <option value="$CN/GIG">$CN/GIG</option>
             <option value="$US/MMB">$US/MMB</option>
           </select>
         </div>
       </div>
       <div class="row my-row-border">
-        <div class="col-9 my-col">
+        <div class="col-md-9">
           <div id="container_gas_prices"></div>
         </div>
-        <div class="col-3 my-col">
+        <div class="col-md-3">
           <div id="container_gas_map"></div>
         </div>
       </div>
@@ -372,24 +365,24 @@
 
     <!-- ex-WCSB natural gas traffic (figure 12) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col">
           <div id="figureX" class="figure_title">
             Figure 12: Ex-WCSB Pipeline Throughput & Capacity
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
+      <div class="row">
+        <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_gas_traffic" class="selectpicker">
+          <select class="form-control" id="select_units_gas_traffic">
             <option value="Bcf/d">Bcf/d</option>
             <option value="Million m3/d">Million m3/d</option>
           </select>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="container-chart-large" id="container_gas_traffic"></div>
         </div>
       </div>
@@ -397,23 +390,23 @@
 
     <!-- natural gas offshore production & St. Stephen imports (figure 13) -->
     <div class="chart-insert">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 13: Natural Gas Offshore Production & Exports/Imports at St.
             Stephen
           </div>
         </div>
       </div>
-      <div class="row my-row-border">
-        <div class="col my-col">
-          <div class="row my-row">
-            <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <div class="col-md">
               <div class="container-chart-insert" id="container_mnp"></div>
             </div>
           </div>
-          <div class="row my-row">
-            <div class="col my-col">
+          <div class="row">
+            <div class="col-md">
               <div class="container-chart-insert" id="container_offshore"></div>
             </div>
           </div>
@@ -423,24 +416,24 @@
 
     <!-- 2019 Natural Gas Traffic at key points (figure 14) -->
     <div class="chart-medium">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 14: 2019 Pipeline Throughput & Capacity at Key Points
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
+      <div class="row">
+        <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_gas_2019" class="selectpicker">
+          <select class="form-control" id="select_units_gas_2019">
             <option value="Bcf/d">Bcf/d</option>
             <option value="Million m3/d">Million m3/d</option>
           </select>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="container-chart-medium" id="container_gas_2019"></div>
         </div>
       </div>
@@ -448,24 +441,24 @@
 
     <!-- ngl production (figure 15) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 15: Canada NGL Production
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-4 my-col">
+      <div class="row">
+        <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_ngl_prod" class="selectpicker">
+          <select class="form-control" id="select_units_ngl_prod">
             <option value="Mb/d">Mb/d</option>
             <option value="m3/d">m3/d</option>
           </select>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div
             class="container-chart-large"
             id="container_ngl_production"
@@ -476,33 +469,33 @@
 
     <!-- ngl exports (figure 16) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="ngl_title" class="figure_title"></div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-md-3 col-sm-12">
+      <div class="row">
+        <div class="col-md-2">
           <div class="cerlabel">Select product:</div>
-          <select name="" id="select_product_ngl" class="selectpicker">
+          <select class="form-control" id="select_product_ngl">
             <option value="Propane">Propane</option>
             <option value="Butane">Butane</option>
           </select>
         </div>
-        <div class="col-md-3 col-sm-12">
+        <div class="col-md-2">
+          <div class="cerlabel">Select region:</div>
+          <select class="form-control" id="select_region_ngl"></select>
+        </div>
+        <div class="col-md-2">
           <div class="cerlabel">Select units:</div>
-          <select name="" id="select_units_ngl" class="selectpicker">
+          <select class="form-control" id="select_units_ngl">
             <option value="Mb/d">Mb/d</option>
             <option value="m3/d">m3/d</option>
           </select>
         </div>
-        <div class="col-md-3 col-sm-12">
-          <div class="cerlabel">Select region:</div>
-          <select name="" id="select_region_ngl" class="selectpicker"></select>
-        </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="container-chart-large" id="container_ngl"></div>
         </div>
       </div>
@@ -510,23 +503,23 @@
 
     <!-- negotiated settlements (figure 17) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="settle_title" class="figure_title"></div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="cerlabel">Select pipeline company category:</div>
-          <select name="" id="select_commodity_settle" class="selectpicker">
+          <select class="form-control" id="select_commodity_settle">
             <option value="All">All</option>
             <option value="Oil">Oil</option>
             <option value="Gas">Gas</option>
           </select>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="container-chart-large" id="container_settlements"></div>
         </div>
       </div>
@@ -534,23 +527,19 @@
 
     <!-- tolls (figure 18) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="tolls_title" class="figure_title"></div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-md-3 col-sm-12">
+      <div class="row">
+        <div class="col-md-3">
           <div class="cerlabel">Select commodity:</div>
-          <select
-            name=""
-            id="select_commodity_tolls"
-            class="selectpicker"
-          ></select>
+          <select class="form-control" id="select_commodity_tolls"></select>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="container-chart-large" id="container_tolls"></div>
         </div>
       </div>
@@ -558,39 +547,39 @@
 
     <!-- financial resources (figure 19) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 19: Pipeline Financial Resource Requirements
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="cerlabel">Select commodity:</div>
-          <select name="" id="select_units_fin_resource" class="selectpicker">
+          <select class="form-control" id="select_units_fin_resource">
             <option value="All">All</option>
             <option value="Oil">Oil</option>
             <option value="Gas">Gas</option>
           </select>
         </div>
       </div>
-      <div class="col my-col-border">
-        <div class="row my-row">
-          <div class="col my-col">
+      <div class="col-md">
+        <div class="row">
+          <div class="col-md">
             <div id="container_fin_totals"></div>
           </div>
         </div>
-        <div class="row my-row">
-          <div class="col my-col">
+        <div class="row">
+          <div class="col-md">
             <div
               class="container-chart-insert"
               id="container_fin_resources"
             ></div>
           </div>
         </div>
-        <div class="row my-row">
-          <div class="col my-col">
+        <div class="row">
+          <div class="col-md">
             <div
               class="container-chart-insert"
               id="container_fin_resources_class"
@@ -602,34 +591,34 @@
 
     <!-- abandonment funding (figure 20) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 20: Abandonment Funding
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="cerlabel">Select pipeline company category:</div>
-          <select name="" id="select_commodity_abandon" class="selectpicker">
+          <select class="form-control" id="select_commodity_abandon">
             <option value="All">All</option>
             <option value="Oil">Oil</option>
             <option value="Gas">Gas</option>
           </select>
         </div>
       </div>
-      <div class="col my-col-border">
-        <div class="row my-row">
-          <div class="col my-col">
+      <div class="col-md">
+        <div class="row">
+          <div class="col-md">
             <div
               class="container-chart-insert"
               id="container_abandonment_totals"
             ></div>
           </div>
         </div>
-        <div class="row my-row">
-          <div class="col my-col">
+        <div class="row">
+          <div class="col-md">
             <div class="container-chart-large" id="container_abandonment"></div>
           </div>
         </div>
@@ -638,33 +627,29 @@
 
     <!-- financial metrics (figure 21) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 21: Pipeline Financial Metrics
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col-md-3 col-sm-12">
+      <div class="row">
+        <div class="col-md-3">
           <div class="cerlabel">Select pipelines:</div>
-          <select name="" id="select_pipelines_financial" class="selectpicker">
+          <select class="form-control" id="select_pipelines_financial">
             <option value="All">All</option>
             <option value="Oil">Oil</option>
             <option value="Gas">Gas</option>
           </select>
         </div>
-        <div class="col-md-3 col-sm-12">
+        <div class="col-md-3">
           <div class="cerlabel">Select Financial Metric:</div>
-          <select
-            name=""
-            id="select_metric_financial"
-            class="selectpicker"
-          ></select>
+          <select class="form-control" id="select_metric_financial"></select>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div
             class="container-chart-large"
             id="container_financial_metrics"
@@ -675,13 +660,13 @@
 
     <!-- credit ratings cross section (figure 22) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="ratings_year_title" class="figure_title"></div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div class="cerlabel">Select year:</div>
           <div class="btn-group d-flex" role="group" id="credit_years">
             <button value="2019" type="button" class="btn btn-secondary active">
@@ -711,8 +696,8 @@
           </div>
         </div>
       </div>
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div
             class="container-chart-ratings"
             id="container_ratings_cross"
@@ -723,50 +708,48 @@
 
     <!-- credit ratings multi-select (figure 23) -->
     <div class="chart-large">
-      <div class="row my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md">
           <div id="figureX" class="figure_title">
             Figure 23: Company Credit Ratings (with multi-select)
           </div>
         </div>
       </div>
-      <div class="row py-2 my-row">
-        <div class="col my-col">
+      <div class="row">
+        <div class="col-md-6">
           <div class="cerlabel">Select company:</div>
           <select
-            multiple
-            name="select_company_credit"
+            multiple="multiple"
+            class="form-control"
             id="select_company_credit_multi"
-            class="selectpicker"
           ></select>
         </div>
-        <div class="col my-col">
+        <div class="col-md-6">
           <div class="cerlabel">Select rating agency:</div>
           <select
-            multiple
-            name="select_rating_agency"
+            multiple="multiple"
             id="select_rating_agency"
-            class="selectpicker"
+            class="form-control"
           ></select>
         </div>
       </div>
-      <div class="col my-col-border">
-        <div class="row my-row">
-          <div class="col my-col">
+      <div class="col-md">
+        <div class="row">
+          <div class="col-md">
             <div
               class="container-chart-ratings"
               id="container_ratings_multi"
             ></div>
           </div>
         </div>
-        <div class="row my-row">
-          <div class="col my-col">
+        <div class="row">
+          <div class="col-md-6">
             <div class="legend_title">
               Legend: Currently Selected Pipelines (color)
             </div>
             <div class="container-legend" id="container_pipeline_legend"></div>
           </div>
-          <div class="col my-col">
+          <div class="col-md-6">
             <div class="legend_title">
               Legend: Credit Rating Agencies (symbol)
             </div>

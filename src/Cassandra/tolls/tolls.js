@@ -1,5 +1,5 @@
 import {
-  fillDropUpdate,
+  fillDropUpdateWet,
   getUnique,
   cerPalette,
   prepareSeriesTidy,
@@ -10,12 +10,13 @@ import {
 import tollsData from "./tolls.json";
 
 export const cassandraTolls = () => {
-  fillDropUpdate(
+  fillDropUpdateWet(
     "select_commodity_tolls",
     getUnique(tollsData, "Commodity"),
     false,
     "Oil & Gas"
   );
+  
   const setTitle = (figure_title, filters) => {
     if (filters.Commodity == "Oil & Gas") {
       figure_title.innerText =
