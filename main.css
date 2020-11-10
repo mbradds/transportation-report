@@ -101,9 +101,9 @@
 } */
 
 /* these selectors help to visualize the bootstrap grid */
-.row {
+/* .row {
   border: 3px solid red;
 }
-.col {
+.col-md {
   border: 3px solid blue;
-}
+} */

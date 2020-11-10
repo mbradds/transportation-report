@@ -1,6 +1,7 @@
 import {
   cerPalette,
   fillDropUpdate,
+  fillDropUpdateWet,
   getUnique,
   prepareSeriesNonTidy,
   creditsClick,
@@ -34,7 +35,9 @@ export const ryanNglExports = () => {
     "Period",
     nglColors
   );
-  fillDropUpdate(
+
+
+  fillDropUpdateWet(
     "select_region_ngl",
     getUnique(nglData, "Region"),
     false,

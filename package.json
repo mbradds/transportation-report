@@ -27,6 +27,7 @@
     "babel-loader": "^8.1.0",
     "core-js": "^3.6.5",
     "mapshaper": "^0.5.26",
+    "webpack": "^5.4.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   }
