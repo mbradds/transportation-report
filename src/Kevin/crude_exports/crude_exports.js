@@ -1,6 +1,6 @@
 import {
   cerPalette,
-  fillDropUpdate,
+  fillDropUpdateWet,
   prepareSeriesTidy,
   creditsClick,
   conversions,
@@ -21,7 +21,7 @@ export const kevinCrudeExports = () => {
     Other: cerPalette["Flame"],
   };
 
-  fillDropUpdate(
+  fillDropUpdateWet(
     "select_units_crude_exports",
     ["MMb/d", "Thousand m3/d"],
     false,
