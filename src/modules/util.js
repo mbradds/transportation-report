@@ -33,29 +33,29 @@ export const conversions = (conv, current, base) => {
   return units;
 };
 
-export const fillDropUpdate = (
-  select_name,
-  options,
-  refresh = false,
-  defaultSelect = false
-) => {
-  var select = document.getElementById(select_name);
-  function addOption(text, select) {
-    select.options[select.options.length] = new Option(text);
-  }
-  if (refresh) {
-    select.options.length = 0;
-  }
-  options.map((option, i) => {
-    addOption(option, select);
-  });
-  if (refresh) {
-    $(select).selectpicker("refresh");
-  }
-  if (defaultSelect !== false) {
-    $(select).selectpicker("val", defaultSelect);
-  }
-};
+// export const fillDropUpdate = (
+//   select_name,
+//   options,
+//   refresh = false,
+//   defaultSelect = false
+// ) => {
+//   var select = document.getElementById(select_name);
+//   function addOption(text, select) {
+//     select.options[select.options.length] = new Option(text);
+//   }
+//   if (refresh) {
+//     select.options.length = 0;
+//   }
+//   options.map((option, i) => {
+//     addOption(option, select);
+//   });
+//   if (refresh) {
+//     $(select).selectpicker("refresh");
+//   }
+//   if (defaultSelect !== false) {
+//     $(select).selectpicker("val", defaultSelect);
+//   }
+// };
 
 export const fillDropUpdateWet = (
   select_name,
@@ -75,7 +75,7 @@ export const fillDropUpdateWet = (
     var element = document.createElement("option");
     element.innerText = value;
     element.value = value
-    selectElem.append(element);
+    selectElem.appendChild(element);
   })
     
   if (defaultSelect !== false) {
