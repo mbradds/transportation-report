@@ -4,16 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Transportation Report</title>
-    <meta
-      name="description"
-      content="Web Experience Toolkit (WET) includes reusable components for building and maintaining innovative Web sites that are accessible, usable, and interoperable. These reusable components are open source software and free for use by departments and external Web communities"
-    />
-    <link href="./GCWeb/assets/favicon.ico" rel="icon" type="image/x-icon" />
-    <link rel="stylesheet" href="./GCWeb/css/theme.min.css" />
-    <link rel="stylesheet" href="./wet-boew/css/noscript.min.css" />
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.js"></script>
     <link rel="stylesheet" href="main.css" />
-
     <script src="https://code.highcharts.com/8.2.0/highcharts.js"></script>
     <script src="https://code.highcharts.com/8.2.0/modules/data.js"></script>
     <script src="https://code.highcharts.com/maps/8.2.0/modules/map.js"></script>
@@ -60,7 +53,17 @@
       <div class="row">
         <div class="col-md-3">
           <div class="cerlabel">Select region:</div>
-          <select class="form-control" id="select_region_crude_prod"></select>
+          <select class="form-control" id="select_region_crude_prod">
+            <option value="Canada">Canada</option>
+            <option value="British Columbia">British Columbia</option>
+            <option value="Alberta">Alberta</option>
+            <option value="Saskatchewan">Saskatchewan</option>
+            <option value="Manitoba">Manitoba</option>
+            <option value="Ontario">Ontario</option>
+            <option value="Northwest Territories">Northwest Territories</option>
+            <option value="Nova Scotia">Nova Scotia</option>
+            <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+          </select>
         </div>
         <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
@@ -741,7 +744,6 @@
 
     <!-- bottom of page -->
     <div style="height: 100px"></div>
-    <script src="./wet-boew/js/wet-boew.min.js"></script>
     <script src="./dist/bundle.js" type="text/javascript"></script>
   </body>
 </html>

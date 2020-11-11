@@ -1,8 +1,6 @@
 import {
   cerPalette,
-  fillDropUpdateWet,
   prepareSeriesNonTidy,
-  getUnique,
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
@@ -34,13 +32,6 @@ export const kevinCrudeProduction = () => {
     "Mined Bitumen",
     "In Situ Bitumen",
   ];
-
-  fillDropUpdateWet(
-    "select_region_crude_prod",
-    getUnique(crudeProdData, "Region"),
-    false,
-    "Canada"
-  );
 
   const roundValues = (filter) => {
     if (["Canada", "Alberta", "British Columbia"].includes(filter.Region)) {
