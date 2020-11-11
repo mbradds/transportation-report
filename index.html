@@ -4,7 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Transportation Report</title>
-
+    <meta
+      name="description"
+      content="Web Experience Toolkit (WET) includes reusable components for building and maintaining innovative Web sites that are accessible, usable, and interoperable. These reusable components are open source software and free for use by departments and external Web communities"
+    />
+    <link href="./GCWeb/assets/favicon.ico" rel="icon" type="image/x-icon" />
+    <link rel="stylesheet" href="./GCWeb/css/theme.min.css" />
+    <link rel="stylesheet" href="./wet-boew/css/noscript.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.js"></script>
     <link rel="stylesheet" href="main.css" />
     <script src="https://code.highcharts.com/8.2.0/highcharts.js"></script>
@@ -62,7 +68,9 @@
             <option value="Ontario">Ontario</option>
             <option value="Northwest Territories">Northwest Territories</option>
             <option value="Nova Scotia">Nova Scotia</option>
-            <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+            <option value="Newfoundland and Labrador">
+              Newfoundland and Labrador
+            </option>
           </select>
         </div>
         <div class="col-md-4">
@@ -95,7 +103,10 @@
       <div class="row">
         <div class="col-md-4">
           <div class="cerlabel">Select units:</div>
-          <select class="form-control" id="select_units_crude_exports"></select>
+          <select class="form-control" id="select_units_crude_exports">
+            <option value="MMb/d">MMb/d</option>
+            <option value="Thousand m3/d">Thousand m3/d</option>
+          </select>
         </div>
       </div>
       <div class="row my-row-border">
@@ -467,7 +478,22 @@
         </div>
         <div class="col-md-2">
           <div class="cerlabel">Select region:</div>
-          <select class="form-control" id="select_region_ngl"></select>
+          <select class="form-control" id="select_region_ngl">
+            <option value="Canada">Canada</option>
+            <option value="British Columbia">British Columbia</option>
+            <option value="Alberta">Alberta</option>
+            <option value="Saskatchewan">Saskatchewan</option>
+            <option value="Manitoba">Manitoba</option>
+            <option value="Ontario">Ontario</option>
+            <option value="Northwest Territories">Northwest Territories</option>
+            <option value="Yukon">Yukon</option>
+            <option value="Nova Scotia">Nova Scotia</option>
+            <option value="New Brunswick">New Brunswick</option>
+            <option value="Prince Edward Island">Prince Edward Island</option>
+            <option value="Newfoundland and Labrador">
+              Newfoundland and Labrador
+            </option>
+          </select>
         </div>
         <div class="col-md-2">
           <div class="cerlabel">Select units:</div>
@@ -518,7 +544,11 @@
       <div class="row">
         <div class="col-md-3">
           <div class="cerlabel">Select commodity:</div>
-          <select class="form-control" id="select_commodity_tolls"></select>
+          <select class="form-control" id="select_commodity_tolls">
+            <option value="Oil & Gas">Oil & Gas</option>
+            <option value="Crude Oil Breakdown">Crude Oil Breakdown</option>
+            <option value="Natural Gas Breakdown">Natural Gas Breakdown</option>
+          </select>
         </div>
       </div>
       <div class="row">
@@ -628,7 +658,14 @@
         </div>
         <div class="col-md-3">
           <div class="cerlabel">Select Financial Metric:</div>
-          <select class="form-control" id="select_metric_financial"></select>
+          <select class="form-control" id="select_metric_financial">
+            <option value="Deemed Equity Ratio">Deemed Equity Ratio</option>
+            <option value="Actual Return on Equity">
+              Actual Return on Equity
+            </option>
+            <option value="Rate Base">Rate Base</option>
+            <option value="Revenue">Revenue</option>
+          </select>
         </div>
       </div>
       <div class="row">
@@ -705,7 +742,37 @@
             multiple="multiple"
             class="form-control"
             id="select_company_credit_multi"
-          ></select>
+          >
+            <option value="Alliance Pipeline Limited Partnership">
+              Alliance Pipeline Limited Partnership
+            </option>
+            <option value="Emera Inc.">Emera Inc.</option>
+            <option value="Enbridge Inc.">Enbridge Inc.</option>
+            <option value="Enbridge Pipelines Inc.">
+              Enbridge Pipelines Inc.
+            </option>
+            <option
+              value="Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC"
+            >
+              Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC
+            </option>
+            <option
+              value="Maritimes &amp; Northeast Pipeline Limited Partnership"
+            >
+              Maritimes &amp; Northeast Pipeline Limited Partnership
+            </option>
+            <option value="NOVA Chemicals Corp.">NOVA Chemicals Corp.</option>
+            <option value="NOVA Gas Transmission Ltd.">
+              NOVA Gas Transmission Ltd.
+            </option>
+            <option value="Trans Quebec &amp; Maritimes Pipeline Inc.">
+              Trans Quebec &amp; Maritimes Pipeline Inc.
+            </option>
+            <option value="TransCanada PipeLines Limited">
+              TransCanada PipeLines Limited
+            </option>
+            <option value="Westcoast Energy Inc.">Westcoast Energy Inc.</option>
+          </select>
         </div>
         <div class="col-md-6">
           <div class="cerlabel">Select rating agency:</div>
@@ -713,7 +780,11 @@
             multiple="multiple"
             id="select_rating_agency"
             class="form-control"
-          ></select>
+          >
+            <option value="S&amp;P">S&amp;P</option>
+            <option value="Moody's">Moody's</option>
+            <option value="DBRS">DBRS</option>
+          </select>
         </div>
       </div>
       <div class="col-md">
@@ -743,7 +814,7 @@
     </div>
 
     <!-- bottom of page -->
-    <div style="height: 100px"></div>
+    <!-- <script src="./wet-boew/js/wet-boew.min.js"></script> -->
     <script src="./dist/bundle.js" type="text/javascript"></script>
   </body>
 </html>

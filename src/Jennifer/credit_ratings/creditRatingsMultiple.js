@@ -2,22 +2,14 @@ import {
   cerPalette,
   prepareSeriesTidy,
   getUnique,
-  fillDropUpdateWet,
 } from "../../modules/util.js";
 
 import creditData from "./CreditTables.json";
 import scaleData from "./Scale.json";
 
 export const jenniferRatingsMulti = () => {
-  fillDropUpdateWet(
-    "select_company_credit_multi",
-    getUnique(creditData, "Corporate Entity"),
-    false,
-    false
-  );
 
   var ratingAgencies = ["S&P", "Moody's", "DBRS"];
-  fillDropUpdateWet("select_rating_agency", ratingAgencies, false, false);
 
   const selectDefaultMultiple = (select_name,optionsToSelect) => {
     var select = document.getElementById(select_name);

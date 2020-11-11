@@ -1,8 +1,5 @@
 import {
   cerPalette,
-  fillDropUpdate,
-  fillDropUpdateWet,
-  getUnique,
   prepareSeriesNonTidy,
   creditsClick,
   conversions,
@@ -34,14 +31,6 @@ export const ryanNglExports = () => {
     ["Pipeline", "Railway", "Truck", "Marine"],
     "Period",
     nglColors
-  );
-
-
-  fillDropUpdateWet(
-    "select_region_ngl",
-    getUnique(nglData, "Region"),
-    false,
-    "Canada"
   );
 
   const createNglChart = (seriesData, units) => {
