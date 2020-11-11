@@ -7,7 +7,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
 
 module.exports = {
   mode: "production",
-  target: "node",
+  target: "es5",
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
