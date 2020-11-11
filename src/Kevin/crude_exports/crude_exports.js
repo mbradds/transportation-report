@@ -1,6 +1,5 @@
 import {
   cerPalette,
-  fillDropUpdateWet,
   prepareSeriesTidy,
   creditsClick,
   conversions,
@@ -20,13 +19,6 @@ export const kevinCrudeExports = () => {
     "PADD V": cerPalette["Cool Grey"],
     Other: cerPalette["Flame"],
   };
-
-  fillDropUpdateWet(
-    "select_units_crude_exports",
-    ["MMb/d", "Thousand m3/d"],
-    false,
-    "MMb/d"
-  );
 
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
