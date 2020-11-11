@@ -20,8 +20,16 @@ export const jenniferRatingsCross = () => {
     figure_title.innerText = `Figure 22: Company Credit Ratings ${filters.Year.trim()}`;
   };
 
+  const addColumns = (data) => {
+    return data.map((row)=>{
+      row["Corporate Entity"] = row.series.split(" - ")[0]
+      row["Type"] = row.series.split(" - ").slice(-1)[0]
+      return row
+    })
+  }
+
   var creditSeries = prepareSeriesTidy(
-    creditData,
+    addColumns(creditData),
     ratingsFilter,
     false,
     "Type",
@@ -175,7 +183,7 @@ export const jenniferRatingsCross = () => {
       ratingsFilter.Year = btnText;
       setTitle(figure_title, ratingsFilter);
       var creditSeries = prepareSeriesTidy(
-        creditData,
+        addColumns(creditData),
         ratingsFilter,
         false,
         "Type",

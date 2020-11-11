@@ -56,6 +56,9 @@ def execute_sql(query_name):
     
     return df
 
+def saveJson(df,write_path):
+    df.to_json(write_path,orient='records',double_precision=2,date_unit="s",compression='infer')
+
 def readCersei(query,name=None):
 
     df = execute_sql(query)
@@ -66,6 +69,7 @@ def readCersei(query,name=None):
         write_path = os.path.join(os.getcwd(),'Colette/crude_by_rail/',name)
     if name == 'gas_traffic.json':
         df['Date'] = pd.to_datetime(df['Date'])
+        df = normalize_dates(df, ['Date'])
         write_path = os.path.join(os.getcwd(),'Sara/gas_traffic/',name)
     if name == 'fin_resource_totals.json':
         write_path = os.path.join(os.getcwd(),'Jennifer/financial_instruments/',name)
@@ -103,15 +107,15 @@ def readCersei(query,name=None):
         write_path = os.path.join(os.getcwd(),'Rebecca/gas_prices/',name)
     
     if (name != None and name not in ['fin_resource_class_names.json','st_stephen.json','ns_offshore.json']):
-        df.to_json(write_path,orient='records')
+        saveJson(df, write_path)
     return df
 
-def readCsv(name):
-    read_path = os.path.join(os.getcwd(),'Data/',name)
-    df = pd.read_csv(read_path)
-    df['Period'] = pd.to_datetime(df['Period'])
-    df.to_json(name.split('.')[0]+'.json',orient='records')
-    return df
+# def readCsv(name):
+#     read_path = os.path.join(os.getcwd(),'Data/',name)
+#     df = pd.read_csv(read_path)
+#     df['Period'] = pd.to_datetime(df['Period'])
+#     df.to_json(name.split('.')[0]+'.json',orient='records')
+#     return df
 
 def readExcel(name,sheet='pq',flatten=False):
     read_path = os.path.join(os.getcwd(),'Data/',name)
@@ -133,7 +137,7 @@ def readExcel(name,sheet='pq',flatten=False):
         df['Period'] = pd.to_datetime(df['Period'],errors='raise')
         df['Days in Month'] = [monthrange(x.year,x.month)[-1] for x in df['Period']]
         df['Region'] = df['Region'].replace({'Québec':'Quebec'})
-        df = df[df['Period'].dt.year >= 2010]
+        df = df[df['Period'].dt.year >= 2015]
         df = df[df['Units']=='bbl'].copy()
         for delete in ['Units','Total']:
             del df[delete]
@@ -142,14 +146,8 @@ def readExcel(name,sheet='pq',flatten=False):
             df[col] = ((df[col]/df['Days in Month'])/1000).round(1)
         del df['Days in Month']
         write_path = os.path.join(os.getcwd(),'Ryan/ngl_exports/',name.split('.')[0]+'.json')
-        df.to_json(write_path,orient='records',force_ascii=False)
+        #df.to_json(write_path,orient='records',force_ascii=False)
         
-        if flatten:
-            df = pd.melt(df,id_vars=['Period','Product','Region','Units'])
-            write_path = os.path.join(os.getcwd(),'Ryan/ngl_exports/',name.split('.')[0]+'_flat.json')
-            df = df[df['value'].notnull()]
-            df = df[df['variable']!='Total']
-            df.to_json(write_path,orient='records',force_ascii=False)
     
     if name == 'crude-oil-exports-by-destination-annual.xlsx':
         df = df[df['PADD'] != 'Total']
@@ -210,6 +208,9 @@ def readExcel(name,sheet='pq',flatten=False):
                                                   'MPLL shareholders - Imperial Oil Limited'])]
             
             df['series'] = df['Corporate Entity']+' - '+df['Type']
+            for delete in ['Credit Quality','Corporate Entity','Type']:
+                del df[delete]
+    
             write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',name.split('.')[0]+'.json')
         if sheet == 'Scale':
             write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',sheet+'.json')
@@ -251,7 +252,7 @@ def readExcel(name,sheet='pq',flatten=False):
         
     #df = df.astype(object).where(pd.notnull(df), None)
     if sheet != 'Scale':
-        df.to_json(write_path,orient='records',force_ascii=False)
+        saveJson(df, write_path)
     return df
 
 def readExcelPipeline(name,sheet='Data',sql=False):
@@ -295,7 +296,8 @@ def readExcelPipeline(name,sheet='Data',sql=False):
     df = normalize_numeric(df, ['Value'], 0)
     df = df.sort_values(by=['Type','Category','Year','Value'])
     write_path = os.path.join(os.getcwd(),'Cassandra/all_pipes/',name.split('.')[0]+'.json')
-    df.to_json(write_path,orient='records',force_ascii=False)
+    del df['Owner']
+    saveJson(df, write_path)
    
     if sql:
         conn,engine = cer_connection()
@@ -411,7 +413,7 @@ def throughcap(query,name):
         df[numeric] = df[numeric].round(1)
     
     write_path = os.path.join(os.getcwd(),'Jennifer/throughcap/',name)
-    df.to_json(write_path,orient='records')
+    saveJson(df, write_path)
     conn.close()
     return df
 
@@ -492,7 +494,7 @@ def ne2_wcs_wti(query):
     df['Differential'] = (df['WTI'] - df['WCS'])*-1
     #df = pd.melt(df,id_vars=['Date'])
     write_path = os.path.join(os.getcwd(),'Kevin/crude_prices/','oil_prices.json')
-    df.to_json(write_path,orient='records')
+    saveJson(df, write_path)
     return df
 
 def tolls(name):
@@ -578,7 +580,7 @@ def tolls(name):
                                              'Westcoast':'Westcoast System'})
     df = df.sort_values(by=['Commodity','Pipeline','Start','End'])
     write_path = os.path.join(os.getcwd(),'Cassandra/tolls/','tolls.json')
-    df.to_json(write_path,orient='records')
+    saveJson(df, write_path)
     return df
 
 def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX'):
@@ -597,8 +599,9 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
     
     df = normalize_dates(df, ['Start Date','End Date'])
     df = df.sort_values(by=['Company','Start Date','End Date'])
+    del df['Group']
     write_path = os.path.join(os.getcwd(),'Cassandra/negotiated_settlements/','settlements.json')
-    df.to_json(write_path,orient='records')
+    saveJson(df, write_path)
     return df
 
 def creditRatings():
@@ -626,7 +629,7 @@ def st_stephen():
         df = output[0]
         df = df.sort_values(by=['Date'])
         write_path = os.path.join(os.getcwd(),'Sara/st_stephen/',output[-1])
-        df.to_json(write_path,orient='records')
+        saveJson(df, write_path)
     
     return df_traffic,df_prod
 
@@ -668,12 +671,12 @@ if __name__ == '__main__':
     #df_oil = throughcap('oil_throughcap.sql', name='oil_throughcap.json')
     #df_gas = throughcap('gas_throughcap.sql', name='gas_throughcap.json')
     #df_point = keyPoints()
-    #df_fin_insert = financialResources()
+    #df_fin_to_sql = financialResources()
     #df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    #df,scale = creditRatings()
-    df = readExcel("abandonment funding data.xlsx","Modified")
+    df,scale = creditRatings()
+    #df = readExcel("abandonment funding data.xlsx","Modified")
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx')
