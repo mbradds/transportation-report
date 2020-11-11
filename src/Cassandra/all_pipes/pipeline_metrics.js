@@ -1,6 +1,5 @@
 import {
   getUnique,
-  fillDropUpdateWet,
   creditsClick,
   cerPalette,
   tooltipPoint,
@@ -68,13 +67,6 @@ export const cassandraAllPipes = () => {
   var [seriesData, yOptions] = prepareSeriesFinance(
     financialData,
     financeFilters
-  );
-
-  fillDropUpdateWet(
-    "select_metric_financial",
-    getUnique(financialData, "Type"),
-    false,
-    defaultMetric
   );
 
   const createFinancialChart = (newData, yOptions) => {

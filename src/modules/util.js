@@ -32,32 +32,6 @@ export const conversions = (conv, current, base) => {
   return units;
 };
 
-export const fillDropUpdateWet = (
-  select_name,
-  options,
-  refresh = false,
-  defaultSelect = false
-) => {
-
-  var selectElem = document.getElementById(select_name);
-
-  if (refresh){
-    $(select_name).empty();
-    selectElem.options.length = 0;
-  }
-  
-  options.map((value)=> {
-    var element = document.createElement("option");
-    element.innerText = value;
-    element.value = value
-    selectElem.appendChild(element);
-  })
-    
-  if (defaultSelect !== false) {
-    selectElem.value=defaultSelect
-  }
-};
-
 //takes in a json object and checks if the column has data
 export const checkIfValid = (data) => {
   let valid = false;
