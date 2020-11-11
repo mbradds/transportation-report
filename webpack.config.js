@@ -1,7 +1,5 @@
 const path = require("path");
-// const JsonMinimizerPlugin = require("json-minimizer-webpack-plugin");
-// const CopyPlugin = require("copy-webpack-plugin");
-// const CompressionPlugin = require("compression-webpack-plugin");
+const JsonMinimizerPlugin = require("json-minimizer-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 
@@ -13,7 +11,8 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
   },
-  plugins: [new BundleAnalyzerPlugin()],
+
+  plugins: [new BundleAnalyzerPlugin(),new JsonMinimizerPlugin()],
 
   module: {
     rules: [
