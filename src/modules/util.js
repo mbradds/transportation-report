@@ -7,7 +7,6 @@ export const cerPalette = {
   Aubergine: "#871455",
   "Dim Grey": "#8c8c96",
   "Cool Grey": "#42464B",
-  //White: "#FFFFFF",
   hcBlue: "#7cb5ec",
   hcGreen: "#90ed7d",
   hcPink: "#f15c80",
@@ -32,30 +31,6 @@ export const conversions = (conv, current, base) => {
   units.unitsBase = base;
   return units;
 };
-
-// export const fillDropUpdate = (
-//   select_name,
-//   options,
-//   refresh = false,
-//   defaultSelect = false
-// ) => {
-//   var select = document.getElementById(select_name);
-//   function addOption(text, select) {
-//     select.options[select.options.length] = new Option(text);
-//   }
-//   if (refresh) {
-//     select.options.length = 0;
-//   }
-//   options.map((option, i) => {
-//     addOption(option, select);
-//   });
-//   if (refresh) {
-//     $(select).selectpicker("refresh");
-//   }
-//   if (defaultSelect !== false) {
-//     $(select).selectpicker("val", defaultSelect);
-//   }
-// };
 
 export const fillDropUpdateWet = (
   select_name,
