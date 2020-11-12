@@ -57,18 +57,21 @@ def execute_sql(query_name):
     return df
 
 def saveJson(df,write_path):
-    df.to_json(write_path,orient='records',double_precision=2,date_unit="s",compression='infer')
+    df.to_json(write_path,orient='records',double_precision=2,compression='infer')
 
 def readCersei(query,name=None):
 
     df = execute_sql(query)
+    if name == 'oil_prices.json':
+        df = normalize_dates(df, ['Date'])
+        df['Differential'] = (df['WTI'] - df['WCS'])*-1
+        write_path = os.path.join(os.getcwd(),'Kevin/crude_prices/','oil_prices.json')
     if name == 'crude_by_rail_wcs.json':
         df['Crude by Rail'] = [x/1000 if u=='bbl per day' else x for x,u in zip(df['Crude by Rail'],df['Units'])]
         df['Units'] = df['Units'].replace({'bbl per day':'Mb/d','m3 per day':'m3/d'})
         df = normalize_numeric(df, ['Crude by Rail'], 1)
         write_path = os.path.join(os.getcwd(),'Colette/crude_by_rail/',name)
     if name == 'gas_traffic.json':
-        df['Date'] = pd.to_datetime(df['Date'])
         df = normalize_dates(df, ['Date'])
         write_path = os.path.join(os.getcwd(),'Sara/gas_traffic/',name)
     if name == 'fin_resource_totals.json':
@@ -110,12 +113,6 @@ def readCersei(query,name=None):
         saveJson(df, write_path)
     return df
 
-# def readCsv(name):
-#     read_path = os.path.join(os.getcwd(),'Data/',name)
-#     df = pd.read_csv(read_path)
-#     df['Period'] = pd.to_datetime(df['Period'])
-#     df.to_json(name.split('.')[0]+'.json',orient='records')
-#     return df
 
 def readExcel(name,sheet='pq',flatten=False):
     read_path = os.path.join(os.getcwd(),'Data/',name)
@@ -145,6 +142,7 @@ def readExcel(name,sheet='pq',flatten=False):
         for col in ['Pipeline','Railway','Truck','Marine']:
             df[col] = ((df[col]/df['Days in Month'])/1000).round(1)
         del df['Days in Month']
+        df = normalize_dates(df, ['Period'])
         write_path = os.path.join(os.getcwd(),'Ryan/ngl_exports/',name.split('.')[0]+'.json')
         #df.to_json(write_path,orient='records',force_ascii=False)
         
@@ -305,6 +303,7 @@ def readExcelPipeline(name,sheet='Data',sql=False):
         conn.close()
     return df
 
+
 def writeExcelCredit(name,sheet='Credit Ratings'):
     read_path = os.path.join(os.getcwd(),'Data/',name)
     df = pd.read_excel(read_path,sheet)
@@ -319,103 +318,6 @@ def writeExcelCredit(name,sheet='Credit Ratings'):
     conn.close()
     return df
 
-def keyPoints():
-    
-    query_gas = "SELECT point.[Key Point],\
-            point.[Corporate Entity],\
-            point.[Pipeline Name],\
-            [Latitude],\
-            [Longitude],\
-            direction.[Direction of Flow]\
-            FROM [EnergyData].[dbo].[Pipelines_KeyPoints] as point\
-            join\
-            (\
-            SELECT [Corporate Entity],\
-            [Pipeline Name],\
-            [Key Point],\
-            [Direction of Flow]\
-            FROM [EnergyData].[dbo].[Pipelines_Gas]\
-            group by\
-            [Corporate Entity],\
-            [Pipeline Name],\
-            [Key Point],\
-            [Direction of Flow]\
-            ) as direction\
-            on point.[Key Point] = direction.[Key Point] and point.[Corporate Entity] = direction.[Corporate Entity]"
-    
-    query_oil = "SELECT point.[Key Point],\
-            point.[Corporate Entity],\
-            point.[Pipeline Name],\
-            [Latitude],\
-            [Longitude],\
-            direction.[Direction of Flow]\
-            FROM [EnergyData].[dbo].[Pipelines_KeyPoints] as point\
-            join\
-            (\
-            SELECT [Corporate Entity],\
-            [Pipeline Name],\
-            [Key Point],\
-            [Direction of Flow]\
-            FROM [EnergyData].[dbo].[Pipelines_Throughput_Oil]\
-            group by\
-            [Corporate Entity],\
-            [Pipeline Name],\
-            [Key Point],\
-            [Direction of Flow]\
-            ) as direction\
-            on point.[Key Point] = direction.[Key Point] and point.[Corporate Entity] = direction.[Corporate Entity]"
-    
-    replace_oil = {'Trans Mountain':'Trans Mountain Pipeline',
-                   'Canadian Mainline':'Enbridge Canadian Mainline'}
-    
-    points_list = []
-    conn,engine = cer_connection()
-    for query in [[query_oil,'keyPointsOil.json'],[query_gas,'keyPointsGas.json']]:
-        df = pd.read_sql_query(query[0],con=conn)
-        df = normalize_text(df, ['Key Point','Corporate Entity','Pipeline Name','Direction of Flow'])
-        for num in ['Latitude','Longitude']:
-            df[num] = pd.to_numeric(df[num])
-        if query[-1] == 'keyPointsOil.json':
-            df['Pipeline Name'] = df['Pipeline Name'].replace(replace_oil)
-        else:
-            df.loc[df['Corporate Entity'] == 'Maritimes & Northeast Pipeline', 'Pipeline Name'] = 'M&NP Canadian Mainline'
-            df.loc[df['Corporate Entity'] == 'TransCanada PipeLines Limited', 'Pipeline Name'] = 'TCPL Canadian Mainline'
-            
-        write_path = os.path.join(os.getcwd(),'Jennifer/throughcap/',query[-1])
-        df.to_json(write_path,orient='records')
-        points_list.append(df)
-        
-    conn.close()
-    return points_list
-
-def throughcap(query,name):
-    
-    conn,engine = cer_connection()
-    df = execute_sql(query)
-    df['Date'] = pd.to_datetime(df['Date'])
-    
-    if name == 'gas_throughcap.json':
-        numeric_cols = ['Capacity (1000 m3/d)','Throughput (1000 m3/d)']
-        no_points_list = ['Brunswick Pipeline']
-        df = df[~df['Pipeline Name'].isin(no_points_list)]
-        df.loc[df['Corporate Entity'] == 'Maritimes & Northeast Pipeline', 'Pipeline Name'] = 'M&NP Canadian Mainline'
-        df.loc[df['Corporate Entity'] == 'TransCanada PipeLines Limited', 'Pipeline Name'] = 'TCPL Canadian Mainline'
-        
-    elif name == 'oil_throughcap.json':
-        numeric_cols = ['Available Capacity (1000 m3/d)','Throughput (1000 m3/d)']
-        no_points_list = ['Trans-Northern','Westpur Pipeline','Southern Lights Pipeline']
-        df = df[~df['Pipeline Name'].isin(no_points_list)]
-        replace_oil = {'Canadian Mainline':'Enbridge Canadian Mainline'}
-        df['Pipeline Name'] = df['Pipeline Name'].replace(replace_oil)
-        
-    for numeric in numeric_cols:
-        df[numeric] = pd.to_numeric(df[numeric])
-        df[numeric] = df[numeric].round(1)
-    
-    write_path = os.path.join(os.getcwd(),'Jennifer/throughcap/',name)
-    saveJson(df, write_path)
-    conn.close()
-    return df
 
 def financialResources(name='NEB_DM_PROD - 1267261 - Financial Resource Types - Data.XLSX',sql=False):
     
@@ -486,16 +388,6 @@ def financialResources(name='NEB_DM_PROD - 1267261 - Financial Resource Types - 
         conn.close()
     return df
 
-def ne2_wcs_wti(query):
-    
-    conn,engine = cer_connection()
-    df = readCersei(query)
-    conn.close()
-    df['Differential'] = (df['WTI'] - df['WCS'])*-1
-    #df = pd.melt(df,id_vars=['Date'])
-    write_path = os.path.join(os.getcwd(),'Kevin/crude_prices/','oil_prices.json')
-    saveJson(df, write_path)
-    return df
 
 def tolls(name):
     
@@ -579,6 +471,7 @@ def tolls(name):
                                              'TQM':'TQM Pipeline',
                                              'Westcoast':'Westcoast System'})
     df = df.sort_values(by=['Commodity','Pipeline','Start','End'])
+    df = normalize_dates(df, ['Start','End'])
     write_path = os.path.join(os.getcwd(),'Cassandra/tolls/','tolls.json')
     saveJson(df, write_path)
     return df
@@ -628,6 +521,7 @@ def st_stephen():
     for output in [[df_traffic,'st_stephen.json'],[df_prod,'ns_offshore.json']]:
         df = output[0]
         df = df.sort_values(by=['Date'])
+        df = normalize_dates(df, ['Date'])
         write_path = os.path.join(os.getcwd(),'Sara/st_stephen/',output[-1])
         saveJson(df, write_path)
     
@@ -637,46 +531,43 @@ def st_stephen():
 if __name__ == '__main__':
         
     #kevin
-    #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
-    #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
-    #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
-    #df = ne2_wcs_wti(query_ne2)
+    df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
+    df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
+    df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
+    df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
     
     #colette
-    #df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
-    #df = readExcel('fgrs-eng.xlsx',sheet='pq')
-    #df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
-    #df = readExcel('marine_exports.xlsx','marine exports')
+    df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
+    df = readExcel('fgrs-eng.xlsx',sheet='pq')
+    df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
+    df = readExcel('marine_exports.xlsx','marine exports')
     
     #sara
-    #df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
-    #df = readCersei('gas_2019_avg.sql','gas_2019.json')
-    #df1,df2 = st_stephen()
+    df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
+    df = readCersei('gas_2019_avg.sql','gas_2019.json')
+    df1,df2 = st_stephen()
     
     #rebecca
-    #df = readCersei('platts_gas.sql','gas_prices.json')
-    #df = readExcel('Natural_Gas_Production.xlsx')
-    #df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
+    df = readCersei('platts_gas.sql','gas_prices.json')
+    df = readExcel('Natural_Gas_Production.xlsx')
+    df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
     
     #cassandra
-    #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    #df = negotiated_settlements()
+    df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
+    df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    df = negotiated_settlements()
     
     #ryan
-    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
-    #df = readExcel('fgrs-eng.xlsx',sheet='ngl production')
+    df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
+    df = readExcel('fgrs-eng.xlsx',sheet='ngl production')
     
     #jennifer
-    #df_oil = throughcap('oil_throughcap.sql', name='oil_throughcap.json')
-    #df_gas = throughcap('gas_throughcap.sql', name='gas_throughcap.json')
-    #df_point = keyPoints()
-    #df_fin_to_sql = financialResources()
-    #df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
-    #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
-    #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
+    df_fin_to_sql = financialResources()
+    df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
+    df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
+    df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
     df,scale = creditRatings()
-    #df = readExcel("abandonment funding data.xlsx","Modified")
+    df = readExcel("abandonment funding data.xlsx","Modified")
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx')
