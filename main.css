@@ -5,6 +5,10 @@
   color: #871455;
 }
 
+.form-control {
+  min-width: 200px;
+}
+
 .dropdown-menu {
   max-height: 200px;
 }
@@ -105,5 +109,8 @@
   border: 3px solid red;
 }
 .col-md {
+  border: 3px solid blue;
+}
+.col-md-12 {
   border: 3px solid blue;
 } */

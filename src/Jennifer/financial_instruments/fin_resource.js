@@ -308,9 +308,14 @@ export const jenniferFinResources = () => {
         finResourceColors["Companies using Financial Instrument"] =
           cerPalette["Cool Grey"];
       }
+      if (commodity == "All"){
+        var classFilters = false
+      } else {
+        var classFilters = finResourceFilters
+      }
       const finResourceSeriesClass = prepareSeriesTidy(
         finResourceClass,
-        finResourceFilters,
+        classFilters,
         false,
         "Commodity",
         "Pipeline Group",
@@ -319,6 +324,7 @@ export const jenniferFinResources = () => {
         1,
         "name"
       );
+
       const finResourceSeries = finResourceChartTypes(
         prepareSeriesNonTidy(
           finResourceData,
@@ -338,6 +344,7 @@ export const jenniferFinResources = () => {
         finResourceSeries,
         finResourceFilters
       );
+
       var chartFinResourceClass = createFinResourceChartClass(
         finResourceSeriesClass,
         finResourceFilters
