@@ -34,7 +34,7 @@ export const kevinCrudeProduction = () => {
   ];
 
   const roundValues = (filter) => {
-    if (["Canada", "Alberta", "British Columbia"].includes(filter.Region)) {
+    if (["Canada", "Alberta"].includes(filter.Region)) {
       return 2;
     } else {
       return 3;
@@ -52,6 +52,30 @@ export const kevinCrudeProduction = () => {
   );
 
   const mainCrudeProduction = () => {
+
+    const ticks = (crudeProdFilters,units) => {
+      if (["Canada", "Alberta"].includes(crudeProdFilters.Region)){
+        if (units.unitsCurrent == 'MMb/d'){
+          var tickInterval = 1
+        } else {
+          var tickInterval = 100
+        }
+      } else if (["Ontario", "Northwest Territories","Nova Scotia"].includes(crudeProdFilters.Region)) {
+        if (units.unitsCurrent == 'MMb/d'){
+          var tickInterval = 0.001
+        } else {
+          var tickInterval = 0.5
+        }
+      } else {
+        if (units.unitsCurrent == "MMb/d"){
+          var tickInterval = 0.05
+        } else {
+          var tickInterval = 10
+        }
+      }
+      return tickInterval
+    }
+
     var figure_title = document.getElementById("crude_prod_title");
     setTitle(figure_title, crudeProdFilters);
 
@@ -65,7 +89,6 @@ export const kevinCrudeProduction = () => {
     };
 
     var chartCrude = productionChart(params);
-
     var selectRegionCrudeProd = document.getElementById(
       "select_region_crude_prod"
     );
@@ -73,6 +96,7 @@ export const kevinCrudeProduction = () => {
       "change",
       (selectRegionCrudeProd) => {
         crudeProdFilters.Region = selectRegionCrudeProd.target.value;
+
         setTitle(figure_title, crudeProdFilters);
         var seriesData = prepareSeriesNonTidy(
           crudeProdData,
@@ -85,6 +109,16 @@ export const kevinCrudeProduction = () => {
         );
         params.series = seriesData;
         chartCrude = productionChart(params);
+        chartCrude.update({
+          yAxis: {
+            tickInterval:ticks(crudeProdFilters,units),
+            labels: {
+              formatter: function(){
+                return this.value
+              }
+            }
+          }
+        })
       }
     );
 
@@ -107,6 +141,12 @@ export const kevinCrudeProduction = () => {
         series: seriesData,
         yAxis: {
           title: { text: units.unitsCurrent },
+          tickInterval:ticks(crudeProdFilters,units),
+          labels: {
+            formatter: function(){
+              return this.value
+            }
+          }
         },
         tooltip: {
           pointFormat: tooltipPoint(units.unitsCurrent),

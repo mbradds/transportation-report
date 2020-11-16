@@ -56,8 +56,8 @@ def execute_sql(query_name):
     
     return df
 
-def saveJson(df,write_path):
-    df.to_json(write_path,orient='records',double_precision=2,compression='infer')
+def saveJson(df,write_path,precision=2):
+    df.to_json(write_path,orient='records',double_precision=precision,compression='infer')
 
 def readCersei(query,name=None):
 
@@ -126,6 +126,7 @@ def readExcel(name,sheet='pq',flatten=False):
         df = normalize_numeric(df, products, 3)
         #df['Value'] = pd.to_numeric(df['Value'])
         write_path = os.path.join(os.getcwd(),'Kevin/crude_production/',name.split('.')[0]+'.json')
+        saveJson(df, write_path,precision=3)
     if name == 'UScrudeoilimports.xlsx':
         df['Attribute'] = [x.strip() for x in df['Attribute']]
         write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
@@ -249,7 +250,7 @@ def readExcel(name,sheet='pq',flatten=False):
         write_path = os.path.join(os.getcwd(),'Jennifer/abandonment_funding/',sheet+'.json')
         
     #df = df.astype(object).where(pd.notnull(df), None)
-    if sheet != 'Scale':
+    if sheet != 'Scale' and name != 'Crude_Oil_Production.xlsx':
         saveJson(df, write_path)
     return df
 
@@ -532,42 +533,42 @@ if __name__ == '__main__':
         
     #kevin
     df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
-    df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
-    df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
-    df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
+    #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
+    #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
+    #df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
     
     #colette
-    df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
-    df = readExcel('fgrs-eng.xlsx',sheet='pq')
-    df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
-    df = readExcel('marine_exports.xlsx','marine exports')
+    #df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
+    #df = readExcel('fgrs-eng.xlsx',sheet='pq')
+    #df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
+    #df = readExcel('marine_exports.xlsx','marine exports')
     
     #sara
-    df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
-    df = readCersei('gas_2019_avg.sql','gas_2019.json')
-    df1,df2 = st_stephen()
+    #df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
+    #df = readCersei('gas_2019_avg.sql','gas_2019.json')
+    #df1,df2 = st_stephen()
     
     #rebecca
-    df = readCersei('platts_gas.sql','gas_prices.json')
-    df = readExcel('Natural_Gas_Production.xlsx')
-    df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
+    #df = readCersei('platts_gas.sql','gas_prices.json')
+    #df = readExcel('Natural_Gas_Production.xlsx')
+    #df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
     
     #cassandra
-    df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    df = negotiated_settlements()
+    #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
+    #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    #df = negotiated_settlements()
     
     #ryan
-    df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
-    df = readExcel('fgrs-eng.xlsx',sheet='ngl production')
+    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
+    #df = readExcel('fgrs-eng.xlsx',sheet='ngl production')
     
     #jennifer
-    df_fin_to_sql = financialResources()
-    df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
-    df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
-    df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    df,scale = creditRatings()
-    df = readExcel("abandonment funding data.xlsx","Modified")
+    #df_fin_to_sql = financialResources()
+    #df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
+    #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
+    #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
+    #df,scale = creditRatings()
+    #df = readExcel("abandonment funding data.xlsx","Modified")
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx')
