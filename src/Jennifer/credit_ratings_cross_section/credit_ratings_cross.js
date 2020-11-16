@@ -10,7 +10,7 @@ import scaleData from "../credit_ratings/Scale.json";
 export const jenniferRatingsCross = () => {
   const ratingsColors = {
     DBRS: cerPalette["Sun"],
-    "S&P": cerPalette["Dim Grey"],
+    "S&P": cerPalette["Night Sky"],
     "Moody's": cerPalette["Forest"],
   };
 
@@ -169,19 +169,20 @@ export const jenniferRatingsCross = () => {
   };
 
   const mainCreditYear = () => {
-
     var yearChart = createChartCross(sortedSeries);
     var figure_title = document.getElementById("ratings_year_title");
     setTitle(figure_title, ratingsFilter);
     
     $("#credit_years button").on("click", function () {
+      $(".btn-group > .btn").removeClass("active");
+      $(this).addClass("active");
       var thisBtn = $(this);
-      thisBtn.addClass("active").siblings().removeClass("active");
       var btnText = thisBtn.text();
       var btnValue = thisBtn.val();
       $("#selectedVal").text(btnValue);
       ratingsFilter.Year = btnText;
       setTitle(figure_title, ratingsFilter);
+
       var creditSeries = prepareSeriesTidy(
         addColumns(creditData),
         ratingsFilter,
