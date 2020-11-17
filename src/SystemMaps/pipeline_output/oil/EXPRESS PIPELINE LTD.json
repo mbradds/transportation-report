@@ -1,3 +1,0 @@
-{"type":"FeatureCollection", "features": [
-{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-1081796,1281936],[-1065302,1241154],[-1045249,1143766],[-1029298,1146098],[-1049776,1245548],[-1065532,1282108],[-1056601,1331833],[-1010681,1523264],[-1009278,1543333],[-1025552,1546262],[-1026702,1524971],[-1072338,1335221],[-1081796,1281936]]]},"properties":{"OPERATOR":"EXPRESS PIPELINE LTD","STATUS":"Operating","LENGTH":0.75,"NEBGROUP":"Group 2","TYPE":"Oil"}}
-]}
