@@ -22,7 +22,7 @@ export const jenniferAbandonment = () => {
   const filterData = (data, abandonmentFilters) => {
     const totals = (data) => {
       const exclude = [
-        "Total CER Regulated Pipelines",
+        "Total CER Pipelines",
         "Total Group 2 Pipelines",
       ];
       var totals = {
@@ -64,7 +64,7 @@ export const jenniferAbandonment = () => {
     var exclude = [
       g1SeriesName(filters),
       "Total Group 2 Pipelines",
-      "Total CER Regulated Pipelines",
+      "Total CER Pipelines",
     ];
 
     var seriesTotals = [];

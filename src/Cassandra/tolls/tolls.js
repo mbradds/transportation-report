@@ -42,7 +42,7 @@ export const cassandraTolls = () => {
     "Oil Tolls": cerPalette["Night Sky"],
     "GDP Deflator": cerPalette["Cool Grey"],
     "TransCanada Mainline": cerPalette["Forest"],
-    "Westcoast System": cerPalette["Aubergine"],
+    "Enbridge BC Pipeline": cerPalette["Aubergine"],
     "TQM Pipeline": cerPalette["Dim Grey"],
     "Alliance Pipeline": cerPalette["Ocean"],
     "M&NP Pipeline": cerPalette["Sun"],
@@ -50,7 +50,7 @@ export const cassandraTolls = () => {
     "Trans-Northern Pipeline": cerPalette["Aubergine"],
     "Keystone Pipeline": cerPalette["Ocean"],
     "Express Pipeline": cerPalette["Cool Grey"],
-    "Enbridge Mainline": cerPalette["Flame"],
+    "Enbridge Canadian Mainline": cerPalette["Flame"],
   };
 
   const seriesData = tollChartTypes(
