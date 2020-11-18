@@ -24,7 +24,7 @@ export const saraGasTraffic = () => {
     "Alliance Pipeline - Border": cerPalette["Night Sky"],
     "Foothills System - Kingsgate": cerPalette["Sun"],
     "Foothills System - Monchy": cerPalette["Flame"],
-    "TransCanada Mainline - Northern Ontario Line": cerPalette["Forest"],
+    "TC Canadian Mainline - Northern Ontario Line": cerPalette["Forest"],
     Capacity: cerPalette["Cool Grey"],
   };
 
@@ -34,7 +34,7 @@ export const saraGasTraffic = () => {
     "Alliance Pipeline - Border",
     "Foothills System - Kingsgate",
     "Foothills System - Monchy",
-    "TransCanada Mainline - Northern Ontario Line",
+    "TC Canadian Mainline - Northern Ontario Line",
     "Capacity",
   ];
 

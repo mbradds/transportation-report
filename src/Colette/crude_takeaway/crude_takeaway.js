@@ -27,8 +27,8 @@ export const coletteCrudeTakeaway = () => {
     "Milk River Pipeline": cerPalette["hcRed"],
     "Aurora Pipeline": cerPalette["Dim Grey"],
     "Trans Mountain Pipeline": cerPalette["Night Sky"],
-    "Enbridge Mainline": cerPalette["Sun"],
-    Keystone: cerPalette["Forest"],
+    "Enbridge Canadian Mainline": cerPalette["Sun"],
+    "Keystone Pipeline": cerPalette["Forest"],
     "Structural Rail": cerPalette["Flame"],
     "Variable Rail": cerPalette["Ocean"],
   };
@@ -37,12 +37,12 @@ export const coletteCrudeTakeaway = () => {
 
   const columns = [
     "Total Supply Available for Export",
-    "Enbridge Mainline",
+    "Enbridge Canadian Mainline",
     "Express Pipeline",
     "Milk River Pipeline",
     "Aurora Pipeline",
     "Trans Mountain Pipeline",
-    "Keystone",
+    "Keystone Pipeline",
     "Structural Rail",
     "Variable Rail",
   ];

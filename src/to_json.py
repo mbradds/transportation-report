@@ -27,6 +27,15 @@ def normalize_numeric(df,num_list,decimals):
         df[num_col] = df[num_col].round(decimals)
     return df
 
+def pipeline_names():
+    read_path = os.path.join(os.getcwd(),'Data/','NEB_DM_PROD - 1271412 - Pipeline Naming Conventions.XLSX')
+    df = pd.read_excel(read_path,sheet_name='Pipeline Naming Conventions')
+    df = df.rename(columns={x:x.strip() for x in df.columns})
+    df['old name'] = [x.strip() for x in df['Company List maintained by Tammy Walker https://www.cer-rec.gc.ca/bts/whwr/cmpnsrgltdbnb-eng.html']]
+    df['new name'] = [x.strip() for x in df['Suggested Pipeline Name for ALL Future External Publications']]
+    return {old_name:new_name for old_name,new_name in zip(df['old name'],
+                                                           df['new name'])}
+
 def daysInYear(year):
     d1 = date(year, 1, 1)
     d2 = date(year + 1, 1, 1)
@@ -86,6 +95,17 @@ def readCersei(query,name=None):
     if name == 'fin_resource_class_names.json':
         write_path = os.path.join(os.getcwd(),'Jennifer/financial_instruments/',name)
         df = normalize_text(df, ['ALL Class','Company'])
+        df['Company'] = df['Company'].replace(pipeline_names())
+        df['Company'] = df['Company'].replace({'Alliance Pipeline Limited Partnership':'Alliance Pipeline',
+                                                'Maritimes & Northeast Pipeline Management Limited':'M&NP Pipeline',
+                                                'Ovintiv Canada ULC (used to be Encana)':'Ovintiv Canada ULC',
+                                                'Trans Quebec Maritimes Pipeline Inc.':'TQM Pipeline',
+                                                'Westcoast Energy Inc.':'Enbridge BC Pipeline',
+                                                'Express Pipeline Ltd., as a General Partner of Express Pipeline Limited Partnership':'Express Pipeline',
+                                                'Enbridge Bakken Pipeline Company Inc., on behalf of Enrbidge Bakken Pipeline Limited Partnership':'Enbridge Bakken System',
+                                                'Enbridge Southern Lights GP Inc. on behalf of enbridge Southern Lights LP':'Southern Lights Pipeline',
+                                                'Kingston Midstream Westpur Limited (formerly TEML Westspur Pipelines Limited)':'Westspur Pipeline',
+                                                'Trans Northern Pipelines Inc.':'Trans-Northern Pipeline'})
         classes = list(set(df['ALL Class']))
         names = {}
         for group in classes:
@@ -97,8 +117,9 @@ def readCersei(query,name=None):
         
     if name == 'gas_2019.json':
         write_path = os.path.join(os.getcwd(),'Sara/gas_2019/',name)
-        df.loc[df['Corporate Entity'] == 'TransCanada PipeLines Limited', 'Pipeline Name'] = 'TCPL Canadian Mainline'
+        df.loc[df['Corporate Entity'] == 'TransCanada PipeLines Limited', 'Pipeline Name'] = 'TC Canadian Mainline'
         df.loc[df['Corporate Entity'] == 'Maritimes & Northeast Pipeline', 'Pipeline Name'] = 'M&NP Pipeline'
+        df['Pipeline Name'] = df['Pipeline Name'].replace({'BC Pipeline':'Enbridge BC Pipeline'})
         df['Key Point'] = df['Key Point'].replace({'Baileyville, Ma. / St. Stephen N.B.':'St. Stephen'})
         #df['Spare Capacity'] = df['Capacity'] - df['Throughput']
         df['Series Name'] = df['Pipeline Name']+' - '+df['Key Point']+' - '+df['Trade Type']
@@ -147,7 +168,6 @@ def readExcel(name,sheet='pq',flatten=False):
         write_path = os.path.join(os.getcwd(),'Ryan/ngl_exports/',name.split('.')[0]+'.json')
         #df.to_json(write_path,orient='records',force_ascii=False)
         
-    
     if name == 'crude-oil-exports-by-destination-annual.xlsx':
         df = df[df['PADD'] != 'Total']
         df = df[df['Unit']!='m3/d']
@@ -163,7 +183,9 @@ def readExcel(name,sheet='pq',flatten=False):
         df = df.rename(columns={'TransMountain':'Trans Mountain Pipeline',
                                 'Aurora/Rangeland':'Aurora Pipeline',
                                 'Express':'Express Pipeline',
-                                'Milk River':'Milk River Pipeline'})
+                                'Milk River':'Milk River Pipeline',
+                                'Enbridge Mainline':'Enbridge Canadian Mainline',
+                                'Keystone':'Keystone Pipeline'})
         write_path = os.path.join(os.getcwd(),'Colette/crude_takeaway/',name.split('.')[0]+'.json')
     
     if name == 'marine_exports.xlsx':
@@ -246,6 +268,16 @@ def readExcel(name,sheet='pq',flatten=False):
                 commodity.append('Oil')
         df['Commodity'] = commodity
         df['Remaining Estimate'] = df['ACE'] - df['Amounts Set Aside']
+        df['Company'] = df['Company'].replace(pipeline_names())
+        df['Company'] = df['Company'].replace({'TransCanada Pipelines Limited':'TC Canadian Mainline',
+                                               'Nova Gas Transmission Ltd.':'NGTL System',
+                                               'Trans Mountain Pipeline Inc.':'Trans Mountain Pipeline',
+                                               'Westcoast Transmission':'Enbridge BC Pipeline',
+                                               'Foothills Pipelines Ltd.':'Foothills System',
+                                               'Maritimes & Northeast Pipeline Management Limited':'M&NP Pipeline',
+                                               'Trans Quebec & Maritimes Pipeline (TQM) Inc.':'TQM Pipeline',
+                                               'PKM Cochin ULC':'Cochin Pipeline',
+                                               'Total CER Regulated Pipelines':'Total CER Pipelines'})
         df = df.sort_values(by=['ACE'],ascending=False)
         write_path = os.path.join(os.getcwd(),'Jennifer/abandonment_funding/',sheet+'.json')
         
@@ -286,11 +318,18 @@ def readExcelPipeline(name,sheet='Data',sql=False):
     df['Pipeline'] = df['Pipeline'].replace({'Trans Québec & Maritimes Pipeline':'Trans Quebec & Maritimes Pipeline'})    
     oil_lines = ['Aurora Pipeline','Enbridge Mainline','Enbridge Norman Wells Pipeline','Express Pipeline','Cochin Pipeline','Milk River Pipeline','Montreal Pipeline','Southern Lights Pipeline','Trans Mountain Pipeline','Keystone Pipeline System','Trans-Northern Pipeline','Wascana','Westspur Pipeline']
     df['Category'] = ['Oil' if x in oil_lines else 'Gas' for x in df['Pipeline']]
-    
-    df['Pipeline'] = df['Pipeline'].replace({'Canadian Mainline':'TransCanada Mainline',
+    df['Pipeline'] = df['Pipeline'].replace({'Maritimes & Northeast Pipeline':'M&NP Pipeline', 
+                                             'Westcoast Transmission System':'Enbridge BC Pipeline', 
                                              'NGTL':'NGTL System',
-                                             'Westcoast Transmission System':'Westcoast System',
-                                             'Foothills Pipeline System':'Foothills System'})
+                                             'Foothills Pipeline System':'Foothills System', 
+                                             'Enbridge Bakken Pipeline':'Enbridge Bakken System', 
+                                             'Enbridge Mainline':'Enbridge Canadian Mainline', 
+                                             'Trans Quebec & Maritimes Pipeline':'TQM Pipeline', 
+                                             'Canadian Mainline':'TC Canadian Mainline', 
+                                             'Keystone Pipeline System':'Keystone Pipeline',
+                                             'Genesis Pipeline System':'Genesis Pipeline', 
+                                             'Emera Brunswick Pipeline':'Brunswick Pipeline', 
+                                             'Enbridge Norman Wells Pipeline':'Norman Wells Pipeline'})
     
     df = normalize_numeric(df, ['Value'], 0)
     df = df.sort_values(by=['Type','Category','Year','Value'])
@@ -460,7 +499,7 @@ def tolls(name):
     
     df = pd.concat([oil,gas,all_tolls], axis=0, sort=False, ignore_index=True)
     df['Rate Normalized'] = df['Rate Normalized'].round(2)
-    df['Pipeline'] = df['Pipeline'].replace({'Enbridge ML':'Enbridge Mainline',
+    df['Pipeline'] = df['Pipeline'].replace({'Enbridge ML':'Enbridge Canadian Mainline',
                                              'Express':'Express Pipeline',
                                              'Keystone':'Keystone Pipeline',
                                              'TMPL':'Trans Mountain Pipeline',
@@ -468,9 +507,9 @@ def tolls(name):
                                              'Alliance':'Alliance Pipeline',
                                              'M&NP':'M&NP Pipeline',
                                              'NGTL':'NGTL System',
-                                             'TC Mainline':'TransCanada Mainline',
+                                             'TC Mainline':'TC Canadian Mainline',
                                              'TQM':'TQM Pipeline',
-                                             'Westcoast':'Westcoast System'})
+                                             'Westcoast':'Enbridge BC Pipeline'})
     df = df.sort_values(by=['Commodity','Pipeline','Start','End'])
     df = normalize_dates(df, ['Start','End'])
     write_path = os.path.join(os.getcwd(),'Cassandra/tolls/','tolls.json')
@@ -494,6 +533,7 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
     df = normalize_dates(df, ['Start Date','End Date'])
     df = df.sort_values(by=['Company','Start Date','End Date'])
     del df['Group']
+    df['Company'] = df['Company'].replace(pipeline_names())
     write_path = os.path.join(os.getcwd(),'Cassandra/negotiated_settlements/','settlements.json')
     saveJson(df, write_path)
     return df
