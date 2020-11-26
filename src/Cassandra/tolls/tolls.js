@@ -8,7 +8,6 @@ import {
 import tollsData from "./tolls.json";
 
 export const cassandraTolls = () => {
-
   const setTitle = (figure_title, filters) => {
     if (filters.Commodity == "Oil & Gas") {
       figure_title.innerText =
@@ -40,6 +39,7 @@ export const cassandraTolls = () => {
   const tollColors = {
     "Gas Tolls": cerPalette["Sun"],
     "Oil Tolls": cerPalette["Night Sky"],
+    "Oil Tolls (omit TNPI)": cerPalette["Ocean"],
     "GDP Deflator": cerPalette["Cool Grey"],
     "TransCanada Mainline": cerPalette["Forest"],
     "Enbridge BC Pipeline": cerPalette["Aubergine"],
@@ -82,7 +82,7 @@ export const cassandraTolls = () => {
       },
 
       tooltip: {
-        pointFormat: tooltipPoint('')
+        pointFormat: tooltipPoint(""),
       },
 
       xAxis: {
