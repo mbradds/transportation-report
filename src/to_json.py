@@ -519,7 +519,7 @@ def tolls(name):
 def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX'):
     read_path = os.path.join(os.getcwd(),'Data/',name)
     df = pd.read_excel(read_path,sheet_name='Settlements Data',skiprows=2)
-    df = df[df['Approved pursuant to the Negotiated Settlement Guidelines?'] == "Yes"]
+    # df = df[df['Approved pursuant to the Negotiated Settlement Guidelines?'] == "Yes"]
     df = df[['Company', 'Group', 'Oil/Gas',
        'Settlement Name and/or Reference', 'Original Settlement Approval',
        'Start Date', 'End Date (specified, or effective)',
@@ -536,6 +536,7 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
     df = df.sort_values(by=['Company','Start Date','End Date'])
     del df['Group']
     df['Company'] = df['Company'].replace(pipeline_names())
+    df['Settlement Name'] = df['Settlement Name'].replace({np.nan:"Unnamed Settlement"})
     write_path = os.path.join(os.getcwd(),'Cassandra/negotiated_settlements/','settlements.json')
     saveJson(df, write_path)
     return df
@@ -597,8 +598,8 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    #df = negotiated_settlements()
+    #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    df = negotiated_settlements()
     
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!

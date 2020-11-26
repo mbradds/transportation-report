@@ -12,7 +12,8 @@ module.exports = {
     filename: "bundle.js",
   },
 
-  plugins: [new BundleAnalyzerPlugin(),new JsonMinimizerPlugin()],
+  //plugins: [new BundleAnalyzerPlugin(),new JsonMinimizerPlugin()],
+  plugins: [new JsonMinimizerPlugin()],
 
   module: {
     rules: [

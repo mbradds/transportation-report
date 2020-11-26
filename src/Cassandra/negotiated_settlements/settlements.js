@@ -49,8 +49,7 @@ export const cassandraSettlements = () => {
     return function (a, b) {
       if (a[property] > b[property]) return 1;
       else if (a[property] < b[property]) return -1;
-
-      return 0;
+      else return 0;
     };
   }
 
@@ -73,7 +72,7 @@ export const cassandraSettlements = () => {
     }
 
     data = applyEndDateColors(data);
-    data = data.sort(sortByProperty("end"));
+    data = data.sort(sortByProperty("start"));
 
     data.map((row) => {
       dates.push(row["Start Date"]);
@@ -132,7 +131,12 @@ export const cassandraSettlements = () => {
       var companyStartDates = seriesTracker[company].startDate;
       var companyEndDates = seriesTracker[company].endDate;
       var currentStart = companyStartDates[0];
+      var currentEnd = companyEndDates[0];
+      //this map creates the timeline for each company
       companyEndDates.map((endDate, endNum) => {
+        if (endDate > currentEnd) {
+          currentEnd = endDate;
+        }
         if (companyStartDates[endNum + 1] - endDate > 86400000) {
           companySettles.push({
             name: company,
@@ -140,7 +144,8 @@ export const cassandraSettlements = () => {
             color: cerPalette["Night Sky"],
             id: companyId(companyTracker, company),
             start: currentStart,
-            end: companyEndDates[endNum],
+            end: currentEnd,
+            //end: endDate,
           });
           companyTracker = companyCounter(companyTracker, company);
           currentStart = companyStartDates[endNum + 1];
@@ -152,7 +157,8 @@ export const cassandraSettlements = () => {
               color: cerPalette["Night Sky"],
               id: companyId(companyTracker, company),
               start: currentStart,
-              end: companyEndDates[endNum],
+              end: currentEnd,
+              //end: endDate,
             });
             companyTracker = companyCounter(companyTracker, company);
           }
