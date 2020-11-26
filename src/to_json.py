@@ -421,7 +421,7 @@ def financialResources(name='NEB_DM_PROD - 1267261 - Financial Resource Types - 
     df['values'] = pd.to_numeric(df['values'])
     df['values'] = [apply_base(v,b) for v,b in zip(df['values'],df['base'])]
     del df['base']
-    df = df[df['Filing']!='Confid']
+    df = df[~((df['Filing'] == 'Confid') & (df['variable'] != "ALL Limit"))]
     if sql:
         conn,engine = cer_connection()
         df.to_sql('Pipeline_Fin_Resource',if_exists='replace',index=False,con=conn)
@@ -599,17 +599,17 @@ if __name__ == '__main__':
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    df = negotiated_settlements()
+    #df = negotiated_settlements()
     
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
     #df = readExcel('fgrs-eng.xlsx',sheet='ngl production')
     
     #jennifer
-    #df_fin_to_sql = financialResources()
-    #df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
-    #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
-    #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
+    #df_fin_to_sql = financialResources(sql=True)
+    df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
+    df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
+    df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
     #df,scale = creditRatings()
     #df = readExcel("abandonment funding data.xlsx","Modified")
 
