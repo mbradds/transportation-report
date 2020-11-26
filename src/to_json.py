@@ -135,7 +135,7 @@ def readCersei(query,name=None):
     return df
 
 
-def readExcel(name,sheet='pq',flatten=False):
+def readExcel(name,sheet='pq',sql=False):
     read_path = os.path.join(os.getcwd(),'Data/',name)
     df = pd.read_excel(read_path,sheet_name=sheet)
     
@@ -269,17 +269,22 @@ def readExcel(name,sheet='pq',flatten=False):
         df['Commodity'] = commodity
         df['Remaining Estimate'] = df['ACE'] - df['Amounts Set Aside']
         df['Company'] = df['Company'].replace(pipeline_names())
+        df = normalize_text(df,['Company'])
         df['Company'] = df['Company'].replace({'TransCanada Pipelines Limited':'TC Canadian Mainline',
-                                               'Nova Gas Transmission Ltd.':'NGTL System',
-                                               'Trans Mountain Pipeline Inc.':'Trans Mountain Pipeline',
-                                               'Westcoast Transmission':'Enbridge BC Pipeline',
-                                               'Foothills Pipelines Ltd.':'Foothills System',
-                                               'Maritimes & Northeast Pipeline Management Limited':'M&NP Pipeline',
-                                               'Trans Quebec & Maritimes Pipeline (TQM) Inc.':'TQM Pipeline',
-                                               'PKM Cochin ULC':'Cochin Pipeline',
-                                               'Total CER Regulated Pipelines':'Total CER Pipelines'})
+                                                'Nova Gas Transmission Ltd.':'NGTL System',
+                                                'Trans Mountain Pipeline Inc.':'Trans Mountain Pipeline',
+                                                'Westcoast Transmission':'Enbridge BC Pipeline',
+                                                'Foothills Pipelines Ltd.':'Foothills System',
+                                                'Maritimes & Northeast Pipeline Management Limited':'M&NP Pipeline',
+                                                'Trans Quebec & Maritimes Pipeline (TQM) Inc.':'TQM Pipeline',
+                                                'PKM Cochin ULC':'Cochin Pipeline',
+                                                'Total CER Regulated Pipelines':'Total CER Pipelines'})
         df = df.sort_values(by=['ACE'],ascending=False)
         write_path = os.path.join(os.getcwd(),'Jennifer/abandonment_funding/',sheet+'.json')
+        if sql:
+            conn,engine = cer_connection()
+            df.to_sql("Pipelines_Abandonment_Totals",con=conn,index=False,if_exists='replace')
+            conn.close()
         
     #df = df.astype(object).where(pd.notnull(df), None)
     if sheet != 'Scale' and name != 'Crude_Oil_Production.xlsx':
@@ -602,16 +607,16 @@ if __name__ == '__main__':
     #df = negotiated_settlements()
     
     #ryan
-    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx',flatten=False) #TODO: move save location!
+    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx') #TODO: move save location!
     #df = readExcel('fgrs-eng.xlsx',sheet='ngl production')
     
     #jennifer
     #df_fin_to_sql = financialResources(sql=True)
-    df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
-    df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
-    df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
+    #df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
+    #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
+    #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
     #df,scale = creditRatings()
-    #df = readExcel("abandonment funding data.xlsx","Modified")
+    df = readExcel("abandonment funding data.xlsx","Modified",sql=True)
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx')
