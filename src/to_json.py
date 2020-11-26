@@ -145,13 +145,15 @@ def readExcel(name,sheet='pq',sql=False):
         for crude in products:
             df[crude] = df[crude]/1000
         df = normalize_numeric(df, products, 3)
-        #df['Value'] = pd.to_numeric(df['Value'])
         write_path = os.path.join(os.getcwd(),'Kevin/crude_production/',name.split('.')[0]+'.json')
         saveJson(df, write_path,precision=3)
     if name == 'UScrudeoilimports.xlsx':
         df['Attribute'] = [x.strip() for x in df['Attribute']]
         write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
         df['Value'] = df['Value'].round(2)
+        df['Attribute'] = df['Attribute'].replace({'Canadian imports':'U.S. Crude Oil imports from Canada', 
+                                                   'ROW imports':'U.S. crude oil imports from ROW',
+                                                   'U.S crude oil exports':'U.S. crude oil exports'})
     if name == 'natural-gas-liquids-exports-monthly.xlsx':
         df['Period'] = pd.to_datetime(df['Period'],errors='raise')
         df['Days in Month'] = [monthrange(x.year,x.month)[-1] for x in df['Period']]
@@ -231,7 +233,8 @@ def readExcel(name,sheet='pq',sql=False):
             df['series'] = df['Corporate Entity']+' - '+df['Type']
             for delete in ['Credit Quality','Corporate Entity','Type']:
                 del df[delete]
-    
+            
+            df = df[df['Year']>=2015]
             write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',name.split('.')[0]+'.json')
         if sheet == 'Scale':
             write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',sheet+'.json')
@@ -337,6 +340,8 @@ def readExcelPipeline(name,sheet='Data',sql=False):
                                              'Enbridge Norman Wells Pipeline':'Norman Wells Pipeline'})
     
     df = normalize_numeric(df, ['Value'], 0)
+    df['Year'] = pd.to_numeric(df['Year'])
+    df = df[df['Year']>=2015]
     df = df.sort_values(by=['Type','Category','Year','Value'])
     write_path = os.path.join(os.getcwd(),'Cassandra/all_pipes/',name.split('.')[0]+'.json')
     del df['Owner']
@@ -615,8 +620,8 @@ if __name__ == '__main__':
     #df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    #df,scale = creditRatings()
-    df = readExcel("abandonment funding data.xlsx","Modified",sql=True)
+    df,scale = creditRatings()
+    #df = readExcel("abandonment funding data.xlsx","Modified",sql=True)
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx')
