@@ -10,7 +10,7 @@ import crudeImportsData from "./UScrudeoilimports.json";
 export const kevinUsImports = () => {
   const crudeImportsChartTypes = (series) => {
     series.map((data) => {
-      if (data.name == "U.S. crude oil exports") {
+      if (data.name == "U.S crude oil exports") {
         data.type = "line";
         data.zIndex = 1;
       } else {
@@ -25,9 +25,9 @@ export const kevinUsImports = () => {
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
   const crudeImportColors = {
-    "U.S. crude oil imports from ROW": cerPalette["Night Sky"],
-    "U.S. crude oil exports": cerPalette["Ocean"],
-    "U.S. Crude Oil imports from Canada": cerPalette["Sun"],
+    "ROW imports": cerPalette["Night Sky"],
+    "U.S crude oil exports": cerPalette["Ocean"],
+    "Canadian imports": cerPalette["Sun"],
   };
 
   var seriesData = crudeImportsChartTypes(
