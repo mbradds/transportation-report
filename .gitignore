@@ -5,6 +5,7 @@
 *.twbr
 *.DOCX
 *.XLSX
+*.xlsx
 connection.py
 **/__pycache__
 **/.vscode
@@ -12,7 +13,6 @@ connection.py
 statsCan.geojson
 **/pipeline
 **/CER_html
-/Data
 .vscode
 CER.py
 CER_CONN.py 

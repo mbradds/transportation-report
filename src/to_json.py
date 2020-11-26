@@ -7,7 +7,7 @@ from datetime import date
 from calendar import monthrange
 import calendar
 from dateutil.relativedelta import relativedelta
-#TODO: add in the dataframe sorting before conversion to json
+import numpy as np
 
 
 def normalize_dates(df,date_list):
@@ -481,7 +481,7 @@ def tolls(name):
                   'Benchmark Toll - Keystone',
                   'Benchmark Toll - Express',
                   'Benchmark Toll - Enbridge ML']
-    
+
     gas_sheets = ['Benchmark Toll - TC Mainline',
                   'Benchmark Toll - Westcoast',
                   'Benchmark Toll - TQM',
@@ -519,6 +519,7 @@ def tolls(name):
 def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX'):
     read_path = os.path.join(os.getcwd(),'Data/',name)
     df = pd.read_excel(read_path,sheet_name='Settlements Data',skiprows=2)
+    df = df[df['Approved pursuant to the Negotiated Settlement Guidelines?'] == "Yes"]
     df = df[['Company', 'Group', 'Oil/Gas',
        'Settlement Name and/or Reference', 'Original Settlement Approval',
        'Start Date', 'End Date (specified, or effective)',
@@ -530,6 +531,7 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
                             'End Date (specified, or effective)':'End Date',
                             'Oil/Gas':'Commodity'})
     
+    df['End Date'] = df['End Date'].replace('Not Fixed',np.nan)
     df = normalize_dates(df, ['Start Date','End Date'])
     df = df.sort_values(by=['Company','Start Date','End Date'])
     del df['Group']
@@ -572,7 +574,7 @@ def st_stephen():
 if __name__ == '__main__':
         
     #kevin
-    df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
+    #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
     #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
@@ -595,7 +597,7 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     #df = negotiated_settlements()
     
     #ryan
