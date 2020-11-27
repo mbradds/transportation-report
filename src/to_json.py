@@ -233,6 +233,7 @@ def readExcel(name,sheet='pq',sql=False):
                                                   'Plains All American Pipeline',
                                                   'MPLL shareholders - Imperial Oil Limited'])]
             
+            df['Corporate Entity'] = df['Corporate Entity'].replace({'Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC':'Kinder Morgan Canada Limited'})
             df['series'] = df['Corporate Entity']+' - '+df['Type']
             for delete in ['Credit Quality','Corporate Entity','Type']:
                 del df[delete]
@@ -602,7 +603,7 @@ if __name__ == '__main__':
     #sara
     #df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
     #df = readCersei('gas_2019_avg.sql','gas_2019.json')
-    dfmnp,dfoffshore = st_stephen()
+    #dfmnp,dfoffshore = st_stephen()
     
     #rebecca
     #df = readCersei('platts_gas.sql','gas_prices.json')
@@ -623,7 +624,7 @@ if __name__ == '__main__':
     #df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    #df,scale = creditRatings()
+    df,scale = creditRatings()
     #df = readExcel("abandonment funding data.xlsx","Modified",sql=True)
 
     #other
