@@ -128,7 +128,6 @@ export const jenniferAbandonment = () => {
   const createAbandonmentTotals = (seriesData) => {
     new Highcharts.chart("container_abandonment_totals", {
       chart: {
-        height: "30%",
         type: "bar",
         gridLineWidth: 0,
       },
@@ -156,6 +155,7 @@ export const jenniferAbandonment = () => {
           },
         },
         series: {
+          pointWidth: 30,
           states: {
             inactive: {
               opacity: 1,

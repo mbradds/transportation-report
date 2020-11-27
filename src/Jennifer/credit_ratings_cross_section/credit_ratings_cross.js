@@ -21,12 +21,12 @@ export const jenniferRatingsCross = () => {
   };
 
   const addColumns = (data) => {
-    return data.map((row)=>{
-      row["Corporate Entity"] = row.series.split(" - ")[0]
-      row["Type"] = row.series.split(" - ").slice(-1)[0]
-      return row
-    })
-  }
+    return data.map((row) => {
+      row["Corporate Entity"] = row.series.split(" - ")[0];
+      row["Type"] = row.series.split(" - ").slice(-1)[0];
+      return row;
+    });
+  };
 
   var creditSeries = prepareSeriesTidy(
     addColumns(creditData),
@@ -112,14 +112,22 @@ export const jenniferRatingsCross = () => {
         },
       },
 
+      legend: {
+        align: "right",
+        verticalAlign: "top",
+        backgroundColor: "white",
+        borderColor: cerPalette["Dim Grey"],
+        borderWidth: 3,
+        x: -15,
+        y: 55,
+        floating: true,
+      },
+
       xAxis: {
         categories: true,
         crosshair: true,
-        title: {
-          text:
-            "CER Regulated Companies (higher average credit rating to the left)",
-        },
       },
+
       yAxis: {
         title: { text: "Standardized Credit Rating" },
         gridLineWidth: 3,
@@ -158,10 +166,14 @@ export const jenniferRatingsCross = () => {
         shared: true,
         formatter: function () {
           var toolText = `<b> ${this.points[0].key} </b><table>`;
-          this.points.map((p)=>{
-            toolText += `<tr><td> <span style="color: ${p.color}">\u25CF</span> ${p.series.name}: </td><td style="padding:0"><b>${scaleData[p.y][p.series.name]}</b></td></tr>`
-          })
-          return toolText + '</table>'
+          this.points.map((p) => {
+            toolText += `<tr><td> <span style="color: ${
+              p.color
+            }">\u25CF</span> ${p.series.name}: </td><td style="padding:0"><b>${
+              scaleData[p.y][p.series.name]
+            }</b></td></tr>`;
+          });
+          return toolText + "</table>";
         },
       },
       series: series,
@@ -172,7 +184,7 @@ export const jenniferRatingsCross = () => {
     var yearChart = createChartCross(sortedSeries);
     var figure_title = document.getElementById("ratings_year_title");
     setTitle(figure_title, ratingsFilter);
-    
+
     $("#credit_years button").on("click", function () {
       $(".btn-group > .btn").removeClass("active");
       $(this).addClass("active");
@@ -199,7 +211,6 @@ export const jenniferRatingsCross = () => {
         series: sortedSeries,
       });
     });
-    
   };
   mainCreditYear();
 };

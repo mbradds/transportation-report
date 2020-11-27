@@ -65,10 +65,12 @@ export const coletteCrudeByRail = () => {
           this.points.map((p)=>{
             if (p.series.name == 'Crude by Rail'){
               var unitsTooltip = railFilters.Units
+              var yValue = p.y
             } else {
               var unitsTooltip = "USD/bbl"
+              var yValue = p.y*-1
             }
-            toolText += `<tr><td> <span style="color: ${p.color}">\u25CF</span> ${p.series.name}: </td><td style="padding:0"><b>${p.y} ${unitsTooltip}</b></td></tr>`
+            toolText += `<tr><td> <span style="color: ${p.color}">\u25CF</span> ${p.series.name}: </td><td style="padding:0"><b>${yValue} ${unitsTooltip}</b></td></tr>`
           })
           return toolText + '</table>'
         },
@@ -91,7 +93,9 @@ export const coletteCrudeByRail = () => {
             text: "Differential - USD/bbl",
           },
           labels: {
-            format: "{value}",
+            formatter: function () {
+              return this.value*-1
+            }
           },
           opposite: true,
         },
