@@ -5,7 +5,7 @@ import {
   tooltipPoint,
 } from "../../modules/util.js";
 import { productionChart } from "../../modules/charts.js";
-import nglProdData from "./fgrs-eng.json";
+import nglProdData from "./figures.json";
 
 export const ryanNglProduction = () => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");

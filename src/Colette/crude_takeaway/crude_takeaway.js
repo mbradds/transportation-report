@@ -4,8 +4,8 @@ import {
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-import {lineAndStackedArea} from "../../modules/charts.js"
-import crudeTakeawayData from "./fgrs-eng.json";
+import { lineAndStackedArea } from "../../modules/charts.js";
+import crudeTakeawayData from "./figures.json";
 
 export const coletteCrudeTakeaway = () => {
   const crudeTakeawayChartTypes = (series) => {
@@ -24,27 +24,25 @@ export const coletteCrudeTakeaway = () => {
   const crudeTakeawayColors = {
     "Total Supply Available for Export": cerPalette["Cool Grey"],
     "Express Pipeline": cerPalette["Aubergine"],
-    "Milk River Pipeline": cerPalette["hcRed"],
+    "Milk River Pipeline": cerPalette["Flame"],
     "Aurora Pipeline": cerPalette["Dim Grey"],
     "Trans Mountain Pipeline": cerPalette["Night Sky"],
     "Enbridge Canadian Mainline": cerPalette["Sun"],
     "Keystone Pipeline": cerPalette["Forest"],
-    "Structural Rail": cerPalette["Flame"],
-    "Variable Rail": cerPalette["Ocean"],
+    Rail: cerPalette["Ocean"],
   };
 
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
   const columns = [
     "Total Supply Available for Export",
+    "Rail",
     "Enbridge Canadian Mainline",
     "Express Pipeline",
     "Milk River Pipeline",
     "Aurora Pipeline",
     "Trans Mountain Pipeline",
     "Keystone Pipeline",
-    "Structural Rail",
-    "Variable Rail",
   ];
 
   const seriesData = crudeTakeawayChartTypes(
@@ -60,15 +58,16 @@ export const coletteCrudeTakeaway = () => {
 
   const mainCrudeTakeaway = () => {
     var params = {
-      div:"container_crude_takeaway",
-      sourceLink:"https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
+      div: "container_crude_takeaway",
+      sourceLink:
+        "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
       sourceText: "Source: Energy Futures",
       units: units,
       series: seriesData,
       xAxisType: "linear",
-      crosshair:true
-    }
-    var crudeTakeawayChart = lineAndStackedArea(params)
+      crosshair: true,
+    };
+    var crudeTakeawayChart = lineAndStackedArea(params);
     var selectUnitsCrudeTakeaway = document.getElementById(
       "select_units_crude_takeaway"
     );

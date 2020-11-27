@@ -17,10 +17,13 @@ export const saraMnp = () => {
 
   var units = conversions("Million m3/d to Bcf/d", "Bcf/d", "Million m3/d");
 
+  var yMax = 0.5
   const ticks = (units) => {
     if (units.unitsCurrent == "Bcf/d") {
-      return 0.5;
+      yMax = 0.5;
+      return 0.1;
     } else {
+      yMax = 15;
       return 5;
     }
   };
@@ -63,7 +66,7 @@ export const saraMnp = () => {
     return offshoreSeries;
   };
 
-  const createChartMnp = (seriesData, div, units) => {
+  const createChartMnp = (seriesData, div, units, yMax) => {
     if (div == "container_mnp") {
       var titleText = "M&NP Pipeline Traffic";
       var sourceText = "";
@@ -99,6 +102,12 @@ export const saraMnp = () => {
       yAxis: {
         title: { text: units.unitsCurrent },
         tickInterval: ticks(units),
+        max: yMax,
+        labels: {
+          formatter: function () {
+            return this.value;
+          },
+        },
       },
 
       series: seriesData,
@@ -111,12 +120,14 @@ export const saraMnp = () => {
   chartObj.mnp.chart = createChartMnp(
     chartObj.mnp.series,
     "container_mnp",
-    units
+    units,
+    yMax
   );
   chartObj.offshore.chart = createChartMnp(
     chartObj.offshore.series,
     "container_offshore",
-    units
+    units,
+    yMax
   );
 
   var selectUnitsGasInsert = document.getElementById("select_units_gas_insert");
@@ -130,6 +141,7 @@ export const saraMnp = () => {
         yAxis: {
           title: { text: units.unitsCurrent },
           tickInterval: ticks(units),
+          max: yMax,
         },
         tooltip: {
           pointFormat: tooltipPoint(units.unitsCurrent),
