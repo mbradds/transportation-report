@@ -1,7 +1,6 @@
 import {
   cerPalette,
   prepareSeriesTidy,
-  creditsClick,
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
@@ -11,7 +10,7 @@ import gasProdData from "./Natural_Gas_Production.json";
 export const rebeccaGasProd = () => {
   const gasProdColors = {
     Solution: cerPalette["Aubergine"],
-    "Non Associated": cerPalette["Forest"],
+    "Conventional Non-tight": cerPalette["Forest"],
     Tight: cerPalette["Ocean"],
     Shale: cerPalette["Night Sky"],
     "Coalbed Methane": cerPalette["Sun"],

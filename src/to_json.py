@@ -183,7 +183,7 @@ def readExcel(name,sheet='pq',sql=False):
         df['Value'] = [round(x,2) for x in df['Value']]
         write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
     
-    if name == 'fgrs-eng.xlsx' and sheet=='pq':
+    if name == 'figures.xlsx' and sheet=='Available for Export':
         df = df.rename(columns={'TransMountain':'Trans Mountain Pipeline',
                                 'Aurora/Rangeland':'Aurora Pipeline',
                                 'Express':'Express Pipeline',
@@ -199,7 +199,7 @@ def readExcel(name,sheet='pq',sql=False):
         df = normalize_numeric(df, ['Mb/d'], 1)
         df = normalize_dates(df, ['Date'])
         
-    if name == 'fgrs-eng.xlsx' and sheet=='ngl production':
+    if name == 'figures.xlsx' and sheet=='ngl production':
         products = ['Ethane','Propane','Butanes']
         df = normalize_numeric(df, products, 1)
         write_path = os.path.join(os.getcwd(),'Ryan/ngl_production/',name.split('.')[0]+'.json')
@@ -213,6 +213,7 @@ def readExcel(name,sheet='pq',sql=False):
         write_path = os.path.join(os.getcwd(),'Colette/crude_export_mode/',name.split('.')[0]+'.json')
     
     if name == 'Natural_Gas_Production.xlsx':
+        df['Production Type'] = df['Production Type'].replace({'Non Associated':'Conventional Non-tight'})
         write_path = os.path.join(os.getcwd(),'Rebecca/gas_production/',name.split('.')[0]+'.json')
     if name == 'natural-gas-exports-and-imports-annual.xlsx':
         cal = calendar.Calendar()
@@ -594,7 +595,7 @@ if __name__ == '__main__':
     
     #colette
     #df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
-    #df = readExcel('fgrs-eng.xlsx',sheet='pq')
+    #df = readExcel('figures.xlsx',sheet='Available for Export')
     #df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
     #df = readExcel('marine_exports.xlsx','marine exports')
     
@@ -615,7 +616,7 @@ if __name__ == '__main__':
     
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx') #TODO: move save location!
-    #df = readExcel('fgrs-eng.xlsx',sheet='ngl production')
+    #df = readExcel('figures.xlsx',sheet='ngl production')
     
     #jennifer
     #df_fin_to_sql = financialResources(sql=True)
