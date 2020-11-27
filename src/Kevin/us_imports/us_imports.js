@@ -3,8 +3,9 @@ import {
   prepareSeriesTidy,
   conversions,
   tooltipPoint,
+  creditsClick,
 } from "../../modules/util.js";
-import {lineAndStackedArea} from "../../modules/charts.js"
+// import {lineAndStackedArea} from "../../modules/charts.js"
 import crudeImportsData from "./UScrudeoilimports.json";
 
 export const kevinUsImports = () => {
@@ -42,17 +43,80 @@ export const kevinUsImports = () => {
     )
   );
 
+  const createUSImports = (params) => {
+    return new Highcharts.chart(params.div, {
+      chart: {
+        zoomType: "x",
+        borderWidth: 1,
+        events: {
+          load: function () {
+            creditsClick(this, params.sourceLink);
+          },
+        },
+      },
+
+      credits: {
+        text: params.sourceText,
+      },
+
+      tooltip: {
+        shared: true,
+        pointFormat: tooltipPoint(params.units.unitsCurrent),
+      },
+
+      xAxis: {
+        type: params.xAxisType,
+        crosshair: params.crosshair,
+      },
+
+      annotations: [
+        {
+          labels: [
+            {
+              point: { x: 840, y: 30 },
+              style: {
+                fontWeight: "bold",
+                color:
+                  (Highcharts.theme && Highcharts.theme.textColor) || "grey",
+              },
+              shape: "rect",
+              backgroundColor: "white",
+              borderColor: cerPalette["Sun"],
+              text: "% - Canada's share of U.S. crude oil imports",
+            },
+          ],
+        },
+      ],
+
+      yAxis: {
+        title: { text: params.units.unitsCurrent },
+        stackLabels: {
+          enabled: true,
+          formatter: function () {
+            var usROW = this.points[0][0];
+            var usTotal = this.points[0].slice(-1)[0];
+            var usCAN = usTotal - usROW;
+            return ((usCAN / usTotal) * 100).toFixed(0) + "%";
+          },
+        },
+      },
+
+      series: params.series,
+    });
+  };
+
   const mainUsImports = () => {
     var params = {
-      div:"container_crude_imports",
-      sourceLink:"https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english",
+      div: "container_crude_imports",
+      sourceLink:
+        "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english",
       sourceText: "Source: CER Commodity Tracking System & EIA",
       units: units,
       series: seriesData,
       xAxisType: "linear",
-      crosshair: false
-    }
-    var chartCrudeImports = lineAndStackedArea(params)
+      crosshair: false,
+    };
+    var chartCrudeImports = createUSImports(params);
     var selectUnitsCrudeImports = document.getElementById(
       "select_units_crude_imports"
     );
