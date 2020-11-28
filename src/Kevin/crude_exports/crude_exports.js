@@ -218,14 +218,14 @@ export const kevinCrudeExports = () => {
   try {
     var paddMap = createPaddMap();
   } catch (err) {
-    errorChart("container_padd_map")
+    errorChart("container_padd_map");
   }
   try {
     var chartCrudeExports = createCrudeExportsChart(seriesData, units);
-  } catch(err) {
-    errorChart("container_crude_exports")
+  } catch (err) {
+    errorChart("container_crude_exports");
   }
-  
+
   var selectUnitsCrudeExports = document.getElementById(
     "select_units_crude_exports"
   );
