@@ -4,7 +4,7 @@ import {
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-import { productionChart } from "../../modules/charts.js";
+import { productionChart, errorChart } from "../../modules/charts.js";
 import gasProdData from "./Natural_Gas_Production.json";
 
 export const rebeccaGasProd = () => {
@@ -33,8 +33,8 @@ export const rebeccaGasProd = () => {
       sourceLink:
         "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
       sourceText: "Source: Energy Futures",
-      units:units,
-      series:seriesData
+      units: units,
+      series: seriesData,
     };
     var gasProdChart = productionChart(params);
     var selectUnitsGasProd = document.getElementById("select_units_gas_prod");
@@ -55,10 +55,15 @@ export const rebeccaGasProd = () => {
           title: { text: units.unitsCurrent },
         },
         tooltip: {
-          pointFormat: tooltipPoint(units.unitsCurrent)
+          pointFormat: tooltipPoint(units.unitsCurrent),
         },
       });
     });
   };
-  mainGasProducton();
+
+  try {
+    mainGasProducton();
+  } catch (err) {
+    errorChart("container_gas_production");
+  }
 };

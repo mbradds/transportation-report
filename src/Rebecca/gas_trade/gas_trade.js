@@ -6,6 +6,7 @@ import {
   mouseOutFunction,
   tooltipPoint,
 } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 
 import gasTradeData from "./natural-gas-exports-and-imports-annual.json";
 
@@ -147,7 +148,7 @@ export const rebeccaGasTrade = () => {
     });
   };
 
-  const createGasTrafficChart = (seriesData,units) => {
+  const createGasTrafficChart = (seriesData, units) => {
     return new Highcharts.chart("container_gas_trade", {
       chart: {
         type: "column",
@@ -186,51 +187,55 @@ export const rebeccaGasTrade = () => {
     });
   };
 
-  const mapGasTraffic = createGasRegionMap();
-  var chartGasTraffic = createGasTrafficChart(seriesData,gasTradeUnits);
-  var figure_title = document.getElementById("gas_trade_title");
-  setTitle(figure_title, gasTradeFilters);
-
-  var selectUnitsGasTrade = document.getElementById("select_units_gas_trade");
-  selectUnitsGasTrade.addEventListener("change", (selectUnitsGasTrade) => {
-    var units = selectUnitsGasTrade.target.value;
-    gasTradeUnits.unitsCurrent = units
-    if (units == "Bcf/d") {
-      gasTradeUnits.unitsCol = "Volume (Bcf/d)";
-    } else {
-      gasTradeUnits.unitsCol = "Volume (Million m3/d)";
-    }
-    var seriesData = prepareSeriesTidy(
-      gasTradeData,
-      gasTradeFilters,
-      false,
-      "Region",
-      "Year",
-      gasTradeUnits.unitsCol,
-      gasTrafficColors
-    );
-    chartGasTraffic.update({
-      series: seriesData,
-      yAxis: { title: { text: units } },
-      tooltip: {
-        pointFormat: tooltipPoint(units),
-      },
-    });
-  });
-
-  var selectTradeType = document.getElementById("select_gas_trade_type");
-  selectTradeType.addEventListener("change", (selectTradeType) => {
-    gasTradeFilters.Activity = selectTradeType.target.value;
+  try {
+    const mapGasTraffic = createGasRegionMap();
+    var chartGasTraffic = createGasTrafficChart(seriesData, gasTradeUnits);
+    var figure_title = document.getElementById("gas_trade_title");
     setTitle(figure_title, gasTradeFilters);
-    var seriesData = prepareSeriesTidy(
-      gasTradeData,
-      gasTradeFilters,
-      false,
-      "Region",
-      "Year",
-      gasTradeUnits.unitsCol,
-      gasTrafficColors
-    );
-    chartGasTraffic = createGasTrafficChart(seriesData,gasTradeUnits);
-  });
+    var selectUnitsGasTrade = document.getElementById("select_units_gas_trade");
+    selectUnitsGasTrade.addEventListener("change", (selectUnitsGasTrade) => {
+      var units = selectUnitsGasTrade.target.value;
+      gasTradeUnits.unitsCurrent = units;
+      if (units == "Bcf/d") {
+        gasTradeUnits.unitsCol = "Volume (Bcf/d)";
+      } else {
+        gasTradeUnits.unitsCol = "Volume (Million m3/d)";
+      }
+      var seriesData = prepareSeriesTidy(
+        gasTradeData,
+        gasTradeFilters,
+        false,
+        "Region",
+        "Year",
+        gasTradeUnits.unitsCol,
+        gasTrafficColors
+      );
+      chartGasTraffic.update({
+        series: seriesData,
+        yAxis: { title: { text: units } },
+        tooltip: {
+          pointFormat: tooltipPoint(units),
+        },
+      });
+    });
+
+    var selectTradeType = document.getElementById("select_gas_trade_type");
+    selectTradeType.addEventListener("change", (selectTradeType) => {
+      gasTradeFilters.Activity = selectTradeType.target.value;
+      setTitle(figure_title, gasTradeFilters);
+      var seriesData = prepareSeriesTidy(
+        gasTradeData,
+        gasTradeFilters,
+        false,
+        "Region",
+        "Year",
+        gasTradeUnits.unitsCol,
+        gasTrafficColors
+      );
+      chartGasTraffic = createGasTrafficChart(seriesData, gasTradeUnits);
+    });
+  } catch (err) {
+    errorChart("container_gas_trade");
+    errorChart("container_gas_trade_map");
+  }
 };

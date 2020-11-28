@@ -6,6 +6,7 @@ import {
   mouseOutFunction,
   tooltipSymbol,
 } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 
 import gasPriceData from "./gas_prices.json";
 
@@ -187,33 +188,40 @@ export const rebeccaGasPrices = () => {
     });
   };
 
-  var gasMap = createGasPriceMap();
-  var chartGasPrice = createGasPriceChart(seriesData, gasPriceFilters);
+  try {
+    var gasMap = createGasPriceMap();
+    var chartGasPrice = createGasPriceChart(seriesData, gasPriceFilters);
 
-  var selectUnitsGasPrice = document.getElementById("select_units_gas_prices");
-  selectUnitsGasPrice.addEventListener("change", (selectUnitsGasPrice) => {
-    var units = selectUnitsGasPrice.target.value;
-    gasPriceFilters.unitsCurrent = units;
-    if (units == "$CN/GIG") {
-      gasPriceFilters.Units = "Price ($CN/GIG)";
-    } else {
-      gasPriceFilters.Units = "Price ($US/MMB)";
-    }
-    var seriesData = prepareSeriesTidy(
-      gasPriceData,
-      false,
-      false,
-      "Location",
-      "Date",
-      gasPriceFilters.Units,
-      gasPriceColors
+    var selectUnitsGasPrice = document.getElementById(
+      "select_units_gas_prices"
     );
+    selectUnitsGasPrice.addEventListener("change", (selectUnitsGasPrice) => {
+      var units = selectUnitsGasPrice.target.value;
+      gasPriceFilters.unitsCurrent = units;
+      if (units == "$CN/GIG") {
+        gasPriceFilters.Units = "Price ($CN/GIG)";
+      } else {
+        gasPriceFilters.Units = "Price ($US/MMB)";
+      }
+      var seriesData = prepareSeriesTidy(
+        gasPriceData,
+        false,
+        false,
+        "Location",
+        "Date",
+        gasPriceFilters.Units,
+        gasPriceColors
+      );
 
-    chartGasPrice.update({
-      series: seriesData,
-      yAxis: {
-        title: { text: gasPriceFilters.Units },
-      },
+      chartGasPrice.update({
+        series: seriesData,
+        yAxis: {
+          title: { text: gasPriceFilters.Units },
+        },
+      });
     });
-  });
+  } catch (err) {
+    errorChart("container_gas_map");
+    errorChart("container_gas_prices");
+  }
 };

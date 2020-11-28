@@ -4,7 +4,7 @@ import {
   tooltipPoint,
   conversions,
 } from "../../modules/util.js";
-
+import { errorChart } from "../../modules/charts.js";
 import mnpData from "./st_stephen.json";
 import offshoreData from "./ns_offshore.json";
 
@@ -17,7 +17,7 @@ export const saraMnp = () => {
 
   var units = conversions("Million m3/d to Bcf/d", "Bcf/d", "Million m3/d");
 
-  var yMax = 0.5
+  var yMax = 0.5;
   const ticks = (units) => {
     if (units.unitsCurrent == "Bcf/d") {
       yMax = 0.5;
@@ -114,66 +114,76 @@ export const saraMnp = () => {
     });
   };
 
-  const chartObj = {};
-  chartObj.mnp = { series: createMnpSeries(mnpData, units) };
-  chartObj.offshore = { series: createOffshoreSeries(offshoreData, units) };
-  chartObj.mnp.chart = createChartMnp(
-    chartObj.mnp.series,
-    "container_mnp",
-    units,
-    yMax
-  );
-  chartObj.offshore.chart = createChartMnp(
-    chartObj.offshore.series,
-    "container_offshore",
-    units,
-    yMax
-  );
+  const mainMnp = () => {
+    const chartObj = {};
+    chartObj.mnp = { series: createMnpSeries(mnpData, units) };
+    chartObj.offshore = { series: createOffshoreSeries(offshoreData, units) };
+    chartObj.mnp.chart = createChartMnp(
+      chartObj.mnp.series,
+      "container_mnp",
+      units,
+      yMax
+    );
+    chartObj.offshore.chart = createChartMnp(
+      chartObj.offshore.series,
+      "container_offshore",
+      units,
+      yMax
+    );
 
-  var selectUnitsGasInsert = document.getElementById("select_units_gas_insert");
-  selectUnitsGasInsert.addEventListener("change", (selectUnitsGasInsert) => {
-    units.unitsCurrent = selectUnitsGasInsert.target.value;
-    chartObj.mnp.series = createMnpSeries(mnpData, units);
-    chartObj.offshore.series = createOffshoreSeries(offshoreData, units);
-    for (const [key, value] of Object.entries(chartObj)) {
-      value.chart.update({
-        series: value.series,
-        yAxis: {
-          title: { text: units.unitsCurrent },
-          tickInterval: ticks(units),
-          max: yMax,
-        },
-        tooltip: {
-          pointFormat: tooltipPoint(units.unitsCurrent),
-        },
-      });
-    }
-  });
+    var selectUnitsGasInsert = document.getElementById(
+      "select_units_gas_insert"
+    );
+    selectUnitsGasInsert.addEventListener("change", (selectUnitsGasInsert) => {
+      units.unitsCurrent = selectUnitsGasInsert.target.value;
+      chartObj.mnp.series = createMnpSeries(mnpData, units);
+      chartObj.offshore.series = createOffshoreSeries(offshoreData, units);
+      for (const [key, value] of Object.entries(chartObj)) {
+        value.chart.update({
+          series: value.series,
+          yAxis: {
+            title: { text: units.unitsCurrent },
+            tickInterval: ticks(units),
+            max: yMax,
+          },
+          tooltip: {
+            pointFormat: tooltipPoint(units.unitsCurrent),
+          },
+        });
+      }
+    });
 
-  chartObj.offshore.chart.update({
-    xAxis: {
-      plotLines: [
-        {
-          color: cerPalette["Ocean"],
-          value: Date.UTC(2018, 5, 7),
-          width: 2,
-          zIndex: 5,
-          label: {
-            text: "Production ceases",
-            align: "left",
+    chartObj.offshore.chart.update({
+      xAxis: {
+        plotLines: [
+          {
+            color: cerPalette["Ocean"],
+            value: Date.UTC(2018, 5, 7),
+            width: 2,
+            zIndex: 5,
+            label: {
+              text: "Production ceases",
+              align: "left",
+            },
           },
-        },
-        {
-          color: cerPalette["Night Sky"],
-          value: Date.UTC(2018, 12, 1),
-          width: 2,
-          zIndex: 5,
-          label: {
-            text: "Production ceases",
-            align: "left",
+          {
+            color: cerPalette["Night Sky"],
+            value: Date.UTC(2018, 12, 1),
+            width: 2,
+            zIndex: 5,
+            label: {
+              text: "Production ceases",
+              align: "left",
+            },
           },
-        },
-      ],
-    },
-  });
+        ],
+      },
+    });
+  };
+  try {
+    mainMnp();
+  } catch (err) {
+    errorChart("container_mnp");
+    errorChart("container_offshore");
+  }
 };

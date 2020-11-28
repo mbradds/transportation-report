@@ -5,6 +5,7 @@ import {
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 
 import nglData from "./natural-gas-liquids-exports-monthly.json";
 
@@ -90,14 +91,14 @@ export const ryanNglExports = () => {
   };
 
   const mainNglExports = () => {
-    var figure_title = document.getElementById('ngl_title');
-    setTitle(figure_title,nglFilters)
+    var figure_title = document.getElementById("ngl_title");
+    setTitle(figure_title, nglFilters);
     var nglChart = createNglChart(seriesData, units);
 
     var selectProductNgl = document.getElementById("select_product_ngl");
     selectProductNgl.addEventListener("change", (selectProductNgl) => {
       nglFilters.Product = selectProductNgl.target.value;
-      setTitle(figure_title,nglFilters)
+      setTitle(figure_title, nglFilters);
       var seriesData = prepareSeriesNonTidy(
         nglData,
         nglFilters,
@@ -112,7 +113,7 @@ export const ryanNglExports = () => {
     var selectRegionNgl = document.getElementById("select_region_ngl");
     selectRegionNgl.addEventListener("change", (selectRegionNgl) => {
       nglFilters.Region = selectRegionNgl.target.value;
-      setTitle(figure_title,nglFilters)
+      setTitle(figure_title, nglFilters);
       var seriesData = prepareSeriesNonTidy(
         nglData,
         nglFilters,
@@ -147,5 +148,9 @@ export const ryanNglExports = () => {
       });
     });
   };
-  mainNglExports();
+  try {
+    mainNglExports();
+  } catch (err) {
+    errorChart("container_ngl");
+  }
 };

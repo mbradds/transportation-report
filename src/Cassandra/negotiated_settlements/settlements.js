@@ -1,4 +1,5 @@
 import { cerPalette, creditsClick } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 import settlementsData from "./settlements.json";
 
 export const cassandraSettlements = () => {
@@ -313,5 +314,9 @@ export const cassandraSettlements = () => {
       settlementChart = createSettlements(seriesData);
     });
   };
-  mainSettlements();
+  try {
+    mainSettlements();
+  } catch (err) {
+    errorChart("container_settlements");
+  }
 };

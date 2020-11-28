@@ -3,7 +3,7 @@ import {
   prepareSeriesTidy,
   getUnique,
 } from "../../modules/util.js";
-
+import { errorChart } from "../../modules/charts.js";
 import creditData from "../credit_ratings/CreditTables.json";
 import scaleData from "../credit_ratings/Scale.json";
 
@@ -212,5 +212,9 @@ export const jenniferRatingsCross = () => {
       });
     });
   };
-  mainCreditYear();
+  try {
+    mainCreditYear();
+  } catch (err) {
+    errorChart("container_ratings_cross");
+  }
 };

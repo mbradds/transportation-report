@@ -1,4 +1,5 @@
 import { cerPalette, prepareSeriesNonTidy } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 
 import abandonmentData from "./Modified.json";
 
@@ -21,10 +22,7 @@ export const jenniferAbandonment = () => {
 
   const filterData = (data, abandonmentFilters) => {
     const totals = (data) => {
-      const exclude = [
-        "Total CER Pipelines",
-        "Total Group 2 Pipelines",
-      ];
+      const exclude = ["Total CER Pipelines", "Total Group 2 Pipelines"];
       var totals = {
         ACE: 0,
         "Amounts Set Aside": 0,
@@ -39,7 +37,8 @@ export const jenniferAbandonment = () => {
       });
       totals["% of ACE Set Aside"] =
         totals["Amounts Set Aside"] / totals["ACE"];
-      totals["Remaining Estimate"] = totals["ACE"] - totals["Amounts Set Aside"];
+      totals["Remaining Estimate"] =
+        totals["ACE"] - totals["Amounts Set Aside"];
       return totals;
     };
 
@@ -293,5 +292,10 @@ export const jenniferAbandonment = () => {
       }
     );
   };
-  mainAbandon();
+  try {
+    mainAbandon();
+  } catch (err) {
+    errorChart("container_abandonment_totals");
+    errorChart("container_abandonment");
+  }
 };

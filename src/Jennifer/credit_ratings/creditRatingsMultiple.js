@@ -3,15 +3,14 @@ import {
   prepareSeriesTidy,
   getUnique,
 } from "../../modules/util.js";
-
+import { errorChart } from "../../modules/charts.js";
 import creditData from "./CreditTables.json";
 import scaleData from "./Scale.json";
 
 export const jenniferRatingsMulti = () => {
-
   var ratingAgencies = ["S&P", "Moody's", "DBRS"];
 
-  const selectDefaultMultiple = (select_name,optionsToSelect) => {
+  const selectDefaultMultiple = (select_name, optionsToSelect) => {
     var select = document.getElementById(select_name);
     for (var i = 0, l = select.options.length, o; i < l; i++) {
       o = select.options[i];
@@ -21,11 +20,10 @@ export const jenniferRatingsMulti = () => {
     }
   };
 
-  
   var symbols = { DBRS: "&#9650", "Moody's": "&#9679", "S&P": "&#9632" };
   var onLoadCompanies = ["Enbridge Inc.", "TransCanada PipeLines Limited"];
-  selectDefaultMultiple("select_company_credit_multi",onLoadCompanies)
-  selectDefaultMultiple("select_rating_agency",ratingAgencies)
+  selectDefaultMultiple("select_company_credit_multi", onLoadCompanies);
+  selectDefaultMultiple("select_rating_agency", ratingAgencies);
 
   const yRange = (creditData) => {
     const creditRange = getUnique(creditData, "Level");
@@ -37,8 +35,7 @@ export const jenniferRatingsMulti = () => {
     "Maritimes & Northeast Pipeline Limited Partnership":
       cerPalette["Aubergine"],
     "Westcoast Energy Inc.": cerPalette["Cool Grey"],
-    "Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC":
-      cerPalette["hcGreen"],
+    "Kinder Morgan Canada Limited": cerPalette["hcGreen"],
     "NOVA Chemicals Corp.": cerPalette["hcPurple"],
     "TransCanada PipeLines Limited": cerPalette["Sun"],
     "NOVA Gas Transmission Ltd.": cerPalette["Flame"],
@@ -195,98 +192,110 @@ export const jenniferRatingsMulti = () => {
     });
   };
 
-  const getChartSeriesName = (chart) => {
-    var [companyNames, agencyNames] = [[], []];
-    chart.series.map((series) => {
-      companyNames.push(series.name.split(" - ")[0]);
-      agencyNames.push(series.name.split(" - ").slice(-1)[0]);
+  const mainRatingsMultiple = () => {
+    const getChartSeriesName = (chart) => {
+      var [companyNames, agencyNames] = [[], []];
+      chart.series.map((series) => {
+        companyNames.push(series.name.split(" - ")[0]);
+        agencyNames.push(series.name.split(" - ").slice(-1)[0]);
+      });
+      return [
+        Array.from(new Set(companyNames)),
+        Array.from(new Set(agencyNames)),
+      ];
+    };
+
+    const addCreditSeries = (chart, companyName, agencies) => {
+      var toAdd = creditSeriesSubset(creditSeries, companyName, agencies);
+      toAdd.map((series) => {
+        chart.addSeries(series);
+      });
+      chart.redraw();
+    };
+
+    const removeCreditSeries = (chart, companyName) => {
+      var removeList = [];
+      chart.series.map((seriesRemove, seriesNum) => {
+        if (seriesRemove.name.includes(companyName)) {
+          removeList.push(seriesNum);
+        }
+      });
+      removeList.sort(function (a, b) {
+        return b - a;
+      });
+      removeList.map((removeSeries) => {
+        chart.series[removeSeries].remove(false);
+      });
+      chart.redraw();
+    };
+
+    const addLegend = (legendItems, legendCompany, legendSymbol) => {
+      var [companyNames, agencyNames] = legendItems;
+      var legendHTML = "";
+      companyNames.map((company) => {
+        legendHTML =
+          legendHTML +
+          '<span style="font-weight:bold; color:' +
+          seriesColors[company] +
+          '">' +
+          company +
+          "&nbsp &nbsp &nbsp" +
+          "</span>";
+      });
+
+      var symbolHTML = "";
+      agencyNames.map((agency) => {
+        symbolHTML =
+          symbolHTML + symbols[agency] + " " + agency + "&nbsp &nbsp &nbsp";
+      });
+      legendCompany.innerHTML = legendHTML;
+      legendSymbol.innerHTML = symbolHTML;
+    };
+    var pipeLegend = document.getElementById("container_pipeline_legend");
+    var symbolLegend = document.getElementById("container_symbol_legend");
+    var creditChart = createCreditChart(seriesSubset, scaleData, minY, maxY);
+
+    addLegend(
+      getChartSeriesName(creditChart),
+      pipeLegend,
+      symbolLegend,
+      symbols
+    );
+    $("#select_company_credit_multi").on("change", function () {
+      onLoadCompanies = $(this).val();
+      var [chartCompanies, chartAgencies] = getChartSeriesName(creditChart);
+      onLoadCompanies.map((sCompany) => {
+        if (!chartCompanies.includes(sCompany)) {
+          addCreditSeries(creditChart, sCompany, ratingAgencies);
+        }
+      });
+      chartCompanies.map((cCompany) => {
+        if (!onLoadCompanies.includes(cCompany)) {
+          removeCreditSeries(creditChart, cCompany);
+        }
+      });
+      addLegend(getChartSeriesName(creditChart), pipeLegend, symbolLegend);
     });
-    return [
-      Array.from(new Set(companyNames)),
-      Array.from(new Set(agencyNames)),
-    ];
+
+    $("#select_rating_agency").on("change", function () {
+      ratingAgencies = $(this).val();
+      var [chartCompanies, chartAgencies] = getChartSeriesName(creditChart);
+      ratingAgencies.map((sAgency) => {
+        if (!chartAgencies.includes(sAgency)) {
+          addCreditSeries(creditChart, onLoadCompanies, [sAgency]);
+        }
+      });
+      chartAgencies.map((cAgency) => {
+        if (!ratingAgencies.includes(cAgency)) {
+          removeCreditSeries(creditChart, cAgency);
+        }
+      });
+      addLegend(getChartSeriesName(creditChart), pipeLegend, symbolLegend);
+    });
   };
-
-  const addCreditSeries = (chart, companyName, agencies) => {
-    var toAdd = creditSeriesSubset(creditSeries, companyName, agencies);
-    toAdd.map((series) => {
-      chart.addSeries(series);
-    });
-    chart.redraw();
-  };
-
-  const removeCreditSeries = (chart, companyName) => {
-    var removeList = [];
-    chart.series.map((seriesRemove, seriesNum) => {
-      if (seriesRemove.name.includes(companyName)) {
-        removeList.push(seriesNum);
-      }
-    });
-    removeList.sort(function (a, b) {
-      return b - a;
-    });
-    removeList.map((removeSeries) => {
-      chart.series[removeSeries].remove(false);
-    });
-    chart.redraw();
-  };
-
-  const addLegend = (legendItems, legendCompany, legendSymbol) => {
-    var [companyNames, agencyNames] = legendItems;
-    var legendHTML = "";
-    companyNames.map((company) => {
-      legendHTML =
-        legendHTML +
-        '<span style="font-weight:bold; color:' +
-        seriesColors[company] +
-        '">' +
-        company +
-        "&nbsp &nbsp &nbsp" +
-        "</span>";
-    });
-
-    var symbolHTML = "";
-    agencyNames.map((agency) => {
-      symbolHTML =
-        symbolHTML + symbols[agency] + " " + agency + "&nbsp &nbsp &nbsp";
-    });
-    legendCompany.innerHTML = legendHTML;
-    legendSymbol.innerHTML = symbolHTML;
-  };
-  var pipeLegend = document.getElementById("container_pipeline_legend");
-  var symbolLegend = document.getElementById("container_symbol_legend");
-  var creditChart = createCreditChart(seriesSubset, scaleData, minY, maxY);
-
-  addLegend(getChartSeriesName(creditChart), pipeLegend, symbolLegend, symbols);
-  $("#select_company_credit_multi").on("change", function () {
-    onLoadCompanies = $(this).val();
-    var [chartCompanies, chartAgencies] = getChartSeriesName(creditChart);
-    onLoadCompanies.map((sCompany) => {
-      if (!chartCompanies.includes(sCompany)) {
-        addCreditSeries(creditChart, sCompany, ratingAgencies);
-      }
-    });
-    chartCompanies.map((cCompany) => {
-      if (!onLoadCompanies.includes(cCompany)) {
-        removeCreditSeries(creditChart, cCompany);
-      }
-    });
-    addLegend(getChartSeriesName(creditChart), pipeLegend, symbolLegend);
-  });
-
-  $("#select_rating_agency").on("change", function () {
-    ratingAgencies = $(this).val();
-    var [chartCompanies, chartAgencies] = getChartSeriesName(creditChart);
-    ratingAgencies.map((sAgency) => {
-      if (!chartAgencies.includes(sAgency)) {
-        addCreditSeries(creditChart, onLoadCompanies, [sAgency]);
-      }
-    });
-    chartAgencies.map((cAgency) => {
-      if (!ratingAgencies.includes(cAgency)) {
-        removeCreditSeries(creditChart, cAgency);
-      }
-    });
-    addLegend(getChartSeriesName(creditChart), pipeLegend, symbolLegend);
-  });
+  try {
+    mainRatingsMultiple();
+  } catch (err) {
+    errorChart("container_ratings_multi");
+  }
 };

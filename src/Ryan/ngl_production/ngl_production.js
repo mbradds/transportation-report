@@ -4,7 +4,7 @@ import {
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-import { productionChart } from "../../modules/charts.js";
+import { productionChart, errorChart } from "../../modules/charts.js";
 import nglProdData from "./figures.json";
 
 export const ryanNglProduction = () => {
@@ -29,10 +29,10 @@ export const ryanNglProduction = () => {
       sourceLink:
         "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
       sourceText: "Source: Energy Futures",
-      units:units,
-      series:seriesData
+      units: units,
+      series: seriesData,
     };
-    var chartNgl = productionChart(params)
+    var chartNgl = productionChart(params);
     var selectUnitsNglProd = document.getElementById("select_units_ngl_prod");
     selectUnitsNglProd.addEventListener("change", (selectUnitsNglProd) => {
       units.unitsCurrent = selectUnitsNglProd.target.value;
@@ -56,5 +56,9 @@ export const ryanNglProduction = () => {
       });
     });
   };
-  mainNglProd();
+  try {
+    mainNglProd();
+  } catch (err) {
+    errorChart("container_ngl_production");
+  }
 };
