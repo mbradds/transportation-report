@@ -270,19 +270,34 @@ export const creditsClick = (chart, link) => {
   };
 };
 
-export const mouseOverFunction = (itter, currentSelection) => {
+export const mouseOverFunction = (
+  itter,
+  currentSelection,
+  newColor = false
+) => {
   itter.forEach(function (s) {
-    if (s.name != currentSelection) {
-      s.setState("inactive");
-    } else {
-      s.setState("hover");
+    if (newColor && s.name == currentSelection) {
+      s.update({
+        color: newColor,
+      });
+    } else if (newColor == false) {
+      if (s.name != currentSelection) {
+        s.setState("inactive");
+      } else {
+        s.setState("hover");
+      }
     }
   });
 };
 
-export const mouseOutFunction = (itter) => {
+export const mouseOutFunction = (itter, oldColor = false) => {
   itter.forEach(function (s) {
     s.setState("");
+    if (oldColor) {
+      s.update({
+        color: oldColor,
+      });
+    }
   });
 };
 

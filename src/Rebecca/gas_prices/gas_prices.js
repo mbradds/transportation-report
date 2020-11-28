@@ -7,7 +7,6 @@ import {
   tooltipSymbol,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-
 import gasPriceData from "./gas_prices.json";
 
 export const rebeccaGasPrices = () => {
