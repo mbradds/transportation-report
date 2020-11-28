@@ -8,6 +8,8 @@ import {
   tooltipPoint,
 } from "../../modules/util.js";
 
+import { errorChart } from "../../modules/charts.js";
+
 import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
 
 export const kevinCrudeExports = () => {
@@ -172,7 +174,7 @@ export const kevinCrudeExports = () => {
   };
 
   const createCrudeExportsChart = (seriesData, units) => {
-    return (chartCrudeExports = new Highcharts.chart(
+    return chartCrudeExports = new Highcharts.chart(
       "container_crude_exports",
       {
         chart: {
@@ -210,12 +212,20 @@ export const kevinCrudeExports = () => {
 
         series: seriesData,
       }
-    ));
+    );
   };
 
-  var paddMap = createPaddMap();
-  var chartCrudeExports = createCrudeExportsChart(seriesData, units);
-
+  try {
+    var paddMap = createPaddMap();
+  } catch (err) {
+    errorChart("container_padd_map")
+  }
+  try {
+    var chartCrudeExports = createCrudeExportsChart(seriesData, units);
+  } catch(err) {
+    errorChart("container_crude_exports")
+  }
+  
   var selectUnitsCrudeExports = document.getElementById(
     "select_units_crude_exports"
   );

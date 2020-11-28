@@ -3,6 +3,7 @@ import {
   prepareSeriesNonTidy,
   creditsClick,
 } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 
 import railData from "./crude_by_rail_wcs.json";
 
@@ -61,18 +62,21 @@ export const coletteCrudeByRail = () => {
       tooltip: {
         shared: true,
         formatter: function () {
-          var toolText = `<b> ${Highcharts.dateFormat("%B-%Y", this.x)} </b><table>`;
-          this.points.map((p)=>{
-            if (p.series.name == 'Crude by Rail'){
-              var unitsTooltip = railFilters.Units
-              var yValue = p.y
+          var toolText = `<b> ${Highcharts.dateFormat(
+            "%B-%Y",
+            this.x
+          )} </b><table>`;
+          this.points.map((p) => {
+            if (p.series.name == "Crude by Rail") {
+              var unitsTooltip = railFilters.Units;
+              var yValue = p.y;
             } else {
-              var unitsTooltip = "USD/bbl"
-              var yValue = p.y*-1
+              var unitsTooltip = "USD/bbl";
+              var yValue = p.y * -1;
             }
-            toolText += `<tr><td> <span style="color: ${p.color}">\u25CF</span> ${p.series.name}: </td><td style="padding:0"><b>${yValue} ${unitsTooltip}</b></td></tr>`
-          })
-          return toolText + '</table>'
+            toolText += `<tr><td> <span style="color: ${p.color}">\u25CF</span> ${p.series.name}: </td><td style="padding:0"><b>${yValue} ${unitsTooltip}</b></td></tr>`;
+          });
+          return toolText + "</table>";
         },
       },
 
@@ -94,8 +98,8 @@ export const coletteCrudeByRail = () => {
           },
           labels: {
             formatter: function () {
-              return this.value*-1
-            }
+              return this.value * -1;
+            },
           },
           opposite: true,
         },
@@ -126,5 +130,9 @@ export const coletteCrudeByRail = () => {
       });
     });
   };
-  mainChartRail();
+  try {
+    mainChartRail();
+  } catch (err) {
+    errorChart("container_crude_by_rail");
+  }
 };

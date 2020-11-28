@@ -4,6 +4,7 @@ import {
   cerPalette,
   tooltipPoint,
 } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 
 import financialData from "./PipelineProfileTables.json";
 
@@ -122,7 +123,7 @@ export const cassandraAllPipes = () => {
       },
 
       xAxis: {
-        crosshair: true
+        crosshair: true,
       },
 
       lang: {
@@ -162,5 +163,9 @@ export const cassandraAllPipes = () => {
       return createFinancialChart(seriesData, yOptions);
     };
   };
-  mainPipeline();
+  try {
+    mainPipeline();
+  } catch (err) {
+    errorChart("container_financial_metrics");
+  }
 };

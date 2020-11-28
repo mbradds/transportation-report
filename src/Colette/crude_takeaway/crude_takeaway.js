@@ -4,7 +4,7 @@ import {
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-import { lineAndStackedArea } from "../../modules/charts.js";
+import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudeTakeawayData from "./figures.json";
 
 export const coletteCrudeTakeaway = () => {
@@ -98,5 +98,10 @@ export const coletteCrudeTakeaway = () => {
       }
     );
   };
-  mainCrudeTakeaway();
+
+  try {
+    mainCrudeTakeaway();
+  } catch (err) {
+    errorChart("container_crude_takeaway");
+  }
 };

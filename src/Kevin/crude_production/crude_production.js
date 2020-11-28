@@ -4,7 +4,7 @@ import {
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-import { productionChart } from "../../modules/charts.js";
+import { productionChart, errorChart } from "../../modules/charts.js";
 import crudeProdData from "./Crude_Oil_Production.json";
 
 export const kevinCrudeProduction = () => {
@@ -52,29 +52,32 @@ export const kevinCrudeProduction = () => {
   );
 
   const mainCrudeProduction = () => {
-
-    const ticks = (crudeProdFilters,units) => {
-      if (["Canada", "Alberta"].includes(crudeProdFilters.Region)){
-        if (units.unitsCurrent == 'MMb/d'){
-          var tickInterval = 1
+    const ticks = (crudeProdFilters, units) => {
+      if (["Canada", "Alberta"].includes(crudeProdFilters.Region)) {
+        if (units.unitsCurrent == "MMb/d") {
+          var tickInterval = 1;
         } else {
-          var tickInterval = 100
+          var tickInterval = 100;
         }
-      } else if (["Ontario", "Northwest Territories","Nova Scotia"].includes(crudeProdFilters.Region)) {
-        if (units.unitsCurrent == 'MMb/d'){
-          var tickInterval = 0.001
+      } else if (
+        ["Ontario", "Northwest Territories", "Nova Scotia"].includes(
+          crudeProdFilters.Region
+        )
+      ) {
+        if (units.unitsCurrent == "MMb/d") {
+          var tickInterval = 0.001;
         } else {
-          var tickInterval = 0.5
+          var tickInterval = 0.5;
         }
       } else {
-        if (units.unitsCurrent == "MMb/d"){
-          var tickInterval = 0.05
+        if (units.unitsCurrent == "MMb/d") {
+          var tickInterval = 0.05;
         } else {
-          var tickInterval = 10
+          var tickInterval = 10;
         }
       }
-      return tickInterval
-    }
+      return tickInterval;
+    };
 
     var figure_title = document.getElementById("crude_prod_title");
     setTitle(figure_title, crudeProdFilters);
@@ -111,14 +114,14 @@ export const kevinCrudeProduction = () => {
         chartCrude = productionChart(params);
         chartCrude.update({
           yAxis: {
-            tickInterval:ticks(crudeProdFilters,units),
+            tickInterval: ticks(crudeProdFilters, units),
             labels: {
-              formatter: function(){
-                return this.value
-              }
-            }
-          }
-        })
+              formatter: function () {
+                return this.value;
+              },
+            },
+          },
+        });
       }
     );
 
@@ -141,12 +144,12 @@ export const kevinCrudeProduction = () => {
         series: seriesData,
         yAxis: {
           title: { text: units.unitsCurrent },
-          tickInterval:ticks(crudeProdFilters,units),
+          tickInterval: ticks(crudeProdFilters, units),
           labels: {
-            formatter: function(){
-              return this.value
-            }
-          }
+            formatter: function () {
+              return this.value;
+            },
+          },
         },
         tooltip: {
           pointFormat: tooltipPoint(units.unitsCurrent),
@@ -154,5 +157,10 @@ export const kevinCrudeProduction = () => {
       });
     });
   };
-  mainCrudeProduction();
+
+  try {
+    mainCrudeProduction();  
+  } catch(err) {
+    errorChart("container_crude_production")
+  }
 };

@@ -4,6 +4,7 @@ import {
   creditsClick,
   tooltipPoint,
 } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 
 import tollsData from "./tolls.json";
 
@@ -126,5 +127,9 @@ export const cassandraTolls = () => {
       chartTolls = createTollsChart(seriesData, tollDate);
     });
   };
-  mainTolls();
+  try {
+    mainTolls();
+  } catch (err) {
+    errorChart("container_tolls");
+  }
 };

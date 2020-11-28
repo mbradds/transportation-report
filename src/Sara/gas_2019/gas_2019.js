@@ -4,6 +4,7 @@ import {
   creditsClick,
   conversions,
 } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 import gas2019Data from "./gas_2019.json";
 
 export const sara2019 = () => {
@@ -185,5 +186,9 @@ export const sara2019 = () => {
       });
     });
   };
-  mainGas2019();
+  try {
+    mainGas2019();
+  } catch (err) {
+    errorChart("container_gas_2019");
+  }
 };

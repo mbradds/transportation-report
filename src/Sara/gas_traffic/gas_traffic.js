@@ -4,7 +4,7 @@ import {
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
-import { lineAndStackedArea } from "../../modules/charts.js";
+import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import gasData from "./gas_traffic.json";
 
 export const saraGasTraffic = () => {
@@ -84,5 +84,9 @@ export const saraGasTraffic = () => {
       }
     );
   };
-  mainGasTraffic();
+  try {
+    mainGasTraffic();
+  } catch (err) {
+    errorChart("container_gas_traffic");
+  }
 };

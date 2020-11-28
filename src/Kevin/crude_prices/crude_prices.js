@@ -1,8 +1,5 @@
-import {
-  cerPalette,
-  prepareSeriesNonTidy,
-} from "../../modules/util.js";
-import {lineAndStackedArea} from "../../modules/charts.js"
+import { cerPalette, prepareSeriesNonTidy } from "../../modules/util.js";
+import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudePriceData from "./oil_prices.json";
 
 export const kevinCrudePrices = () => {
@@ -36,13 +33,19 @@ export const kevinCrudePrices = () => {
   );
 
   var params = {
-    div:"container_crude_prices",
-    sourceLink:"https://www.ne2group.com/",
+    div: "container_crude_prices",
+    sourceLink: "https://www.ne2group.com/",
     sourceText: "Source: ne2 Group",
-    units: {unitsCurrent:'USD/bbl'},
+    units: { unitsCurrent: "USD/bbl" },
     series: seriesData,
     xAxisType: "datetime",
-    crosshair:true
+    crosshair: true,
+  };
+  
+  try {
+    const chartCrudePrice = lineAndStackedArea(params);
+  } catch(err) {
+    errorChart("container_crude_prices")
   }
-  const chartCrudePrice = lineAndStackedArea(params)
+  
 };

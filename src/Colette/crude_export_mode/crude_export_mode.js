@@ -3,6 +3,7 @@ import {
   creditsClick,
   prepareSeriesPie,
 } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 
 import crudeModeData from "./CrudeRawData-2019-01-01-2019-12-01.json";
 
@@ -37,7 +38,7 @@ export const coletteCrudeMode = () => {
         text: "Source: CER Commodity Tracking System",
       },
       tooltip: {
-        headerFormat: '<table>',
+        headerFormat: "<table>",
         pointFormat: "<b>{point.percentage:.1f}%</b>",
       },
       accessibility: {
@@ -58,5 +59,9 @@ export const coletteCrudeMode = () => {
       series: seriesData,
     });
   };
-  createCrudeModeChart(seriesData);
+  try {
+    createCrudeModeChart(seriesData);
+  } catch (err) {
+    errorChart("container_crude_mode");
+  }
 };

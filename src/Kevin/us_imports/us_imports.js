@@ -5,6 +5,7 @@ import {
   tooltipPoint,
   creditsClick,
 } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 import crudeImportsData from "./UScrudeoilimports.json";
 
 export const kevinUsImports = () => {
@@ -146,5 +147,9 @@ export const kevinUsImports = () => {
       }
     );
   };
-  mainUsImports();
+  try {
+    mainUsImports();
+  } catch (err) {
+    errorChart("container_crude_imports");
+  }
 };

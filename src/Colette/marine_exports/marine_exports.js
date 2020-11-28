@@ -5,6 +5,7 @@ import {
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 
 import marineData from "./marine_exports.json";
 
@@ -97,5 +98,10 @@ export const coletteMarine = () => {
       });
     });
   };
-  mainMarine();
+
+  try {
+    mainMarine();
+  } catch (err) {
+    errorChart("container_crude_marine");
+  }
 };

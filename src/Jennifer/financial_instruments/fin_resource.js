@@ -5,6 +5,7 @@ import {
   creditsClick,
   tooltipPoint,
 } from "../../modules/util.js";
+import { errorChart } from "../../modules/charts.js";
 
 import finResourceData from "./fin_resource_totals.json";
 import finResourceClass from "./fin_resource_class.json";
@@ -308,10 +309,10 @@ export const jenniferFinResources = () => {
         finResourceColors["Companies using Financial Instrument"] =
           cerPalette["Cool Grey"];
       }
-      if (commodity == "All"){
-        var classFilters = false
+      if (commodity == "All") {
+        var classFilters = false;
       } else {
-        var classFilters = finResourceFilters
+        var classFilters = finResourceFilters;
       }
       const finResourceSeriesClass = prepareSeriesTidy(
         finResourceClass,
@@ -352,6 +353,12 @@ export const jenniferFinResources = () => {
       $(window).scrollTop(tempScrollTop);
     });
   };
-  loadInitialCharts();
-  commodityListener();
+  try {
+    loadInitialCharts();
+    commodityListener();
+  } catch (err) {
+    errorChart("container_fin_totals");
+    errorChart("container_fin_resources");
+    errorChart("container_fin_resources_class");
+  }
 };

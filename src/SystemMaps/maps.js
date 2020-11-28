@@ -1,4 +1,5 @@
 import { cerPalette } from "../modules/util.js";
+import { errorChart } from "../modules/charts.js";
 import aurora from "./pipeline_output/oil/AURORA PIPELINE COMPANY LTD.json";
 import enbridgeNW from "./pipeline_output/oil/ENBRIDGE PIPELINES (NW) INC.json";
 import enbridgeML from "./pipeline_output/oil/ENBRIDGE PIPELINES INC.json";
@@ -24,7 +25,6 @@ import westcoast from "./pipeline_output/gas/WESTCOAST ENERGY INC, CARRYING ON B
 import canadaMap from "./map_output/statsCanFormat.json";
 
 export const systemMaps = () => {
-
   const oilFileNames = {
     "AURORA PIPE LINE COMPANY LTD": {
       color: cerPalette["Aubergine"],
@@ -335,6 +335,17 @@ export const systemMaps = () => {
       series: shapes,
     });
   };
-  const crudePipeMap = createPointMap(oilShapes, "container_map_oil");
-  const gasPipeMap = createPointMap(gasShapes, "container_map_gas");
+  const mainCharts = () => {
+    try {
+      const crudePipeMap = createPointMap(oilShapes, "container_map_oil");  
+    } catch(err) {
+      errorChart("container_map_oil")
+    }
+    try {
+      const gasPipeMap = createPointMap(gasShapes, "container_map_gas");  
+    } catch(err) {
+      errorChart("container_map_gas")
+    }
+  }
+  mainCharts()
 };
