@@ -1,6 +1,5 @@
-import { generalTheme, frenchTheme } from "./modules/themes";
+import { generalTheme} from "./modules/themes";
 generalTheme();
-//frenchTheme();
 import { instructionsChart } from "./modules/charts.js";
 import { systemMaps } from "./SystemMaps/maps";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";

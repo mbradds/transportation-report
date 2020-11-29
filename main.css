@@ -4,12 +4,10 @@
   font-weight: bold;
   color: #871455;
 }
-
 .form-control {
   min-width: 200px;
   max-height: 85px;
 }
-
 .legend_title {
   text-align: center;
   font-family: Arial;
@@ -17,7 +15,6 @@
   font-size: small;
   color: #871455;
 }
-
 .header {
   font-family: Arial;
   font-weight: bold;
@@ -25,101 +22,68 @@
   justify-content: center;
   align-items: center;
 }
-
 .figure_title {
   font-size: 25px;
   font-weight: bold;
   font-family: Arial;
   color: dimgray;
 }
-
 .my-row-border {
   border: 1px solid black;
 }
-
 .my-col-border {
   border: 1px solid black;
 }
-
 .my-container-border {
   border: 1px solid black;
 }
-
 #container-instructions {
   height: 290px;
 }
-
 .chart-small {
   max-width: 400px;
   margin: auto;
 }
-
 .chart-insert {
   max-width: 700px;
   margin: auto;
 }
-
 .chart-medium {
   max-width: 800px;
   margin: auto;
 }
-
 .chart-large {
   max-width: 1100px;
   margin: auto;
 }
-
 .chart-map {
   max-width: 1000px;
   margin: auto;
 }
-
 #container_abandonment_totals {
   height: 200px;
 }
-
 .container-chart-xs {
   height: 250px;
 }
-
 .container-chart-small {
   max-height: 400px;
 }
-
 .container-chart-medium {
   max-height: 400px;
 }
-
 .container-chart-large {
   min-height: 400px;
 }
-
 .container-chart-map {
   min-height: 700px;
 }
-
 .container-chart-insert {
   height: 300px;
 }
-
 .container-chart-ratings {
   height: 500px;
 }
-
 .container-legend {
   text-align: center;
 }
-/* #ratings_year_title {
-  display: inline-block;
-} */
-
-/* these selectors help to visualize the bootstrap grid */
-/* .row {
-  border: 3px solid red;
-}
-.col-md {
-  border: 3px solid blue;
-}
-.col-md-12 {
-  border: 3px solid blue;
-} */
