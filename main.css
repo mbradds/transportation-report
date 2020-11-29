@@ -45,6 +45,10 @@
   border: 1px solid black;
 }
 
+#container-instructions {
+  height: 290px;
+}
+
 .chart-small {
   max-width: 400px;
   margin: auto;
@@ -71,7 +75,7 @@
 }
 
 #container_abandonment_totals {
-  height: 200px
+  height: 200px;
 }
 
 .container-chart-xs {

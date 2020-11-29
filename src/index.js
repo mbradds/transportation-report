@@ -1,6 +1,7 @@
 import { generalTheme, frenchTheme } from "./modules/themes";
 generalTheme();
 //frenchTheme();
+import { instructionsChart } from "./modules/charts.js";
 import { systemMaps } from "./SystemMaps/maps";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
@@ -28,6 +29,7 @@ import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMul
 
 var t0Transportation = performance.now();
 async function transportationReport() {
+  instructionsChart();
   systemMaps();
   kevinCrudeProduction();
   kevinCrudeExports();

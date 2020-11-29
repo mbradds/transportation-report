@@ -121,6 +121,9 @@ export const jenniferRatingsCross = () => {
         x: -15,
         y: 55,
         floating: true,
+        title: {
+          text:"Higher average rating to the left"
+        }
       },
 
       xAxis: {

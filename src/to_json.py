@@ -233,7 +233,9 @@ def readExcel(name,sheet='pq',sql=False):
                                                   'Plains All American Pipeline',
                                                   'MPLL shareholders - Imperial Oil Limited'])]
             
-            df['Corporate Entity'] = df['Corporate Entity'].replace({'Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC':'Kinder Morgan Canada Limited'})
+            df['Corporate Entity'] = df['Corporate Entity'].replace({'Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC':'Kinder Morgan Canada Limited',
+                                                                     'Trans Quebec & Maritimes Pipeline Inc.':'TQM Pipeline Inc.',
+                                                                     'Alliance Pipeline Limited Partnership':'Alliance Pipeline L.P.'})
             df['series'] = df['Corporate Entity']+' - '+df['Type']
             for delete in ['Credit Quality','Corporate Entity','Type']:
                 del df[delete]
