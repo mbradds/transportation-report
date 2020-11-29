@@ -317,7 +317,6 @@ export const sara2019 = () => {
 
       tooltip: {
         shared: true,
-        shared: true,
         formatter: function () {
           var pipelineName = this.points[0].key;
           var toolText = `<b> ${pipelineName} </b><table>`;
