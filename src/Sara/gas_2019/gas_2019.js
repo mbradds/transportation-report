@@ -50,14 +50,9 @@ export const sara2019 = () => {
       chart: {
         type: "map",
         map: "countries/ca/ca-all",
-        // events: {
-        //   load: function () {
-        //     creditsClick(this, "https://www.spglobal.com/platts/en");
-        //   },
-        // },
       },
       credits: {
-        text: "Source: CER",
+        text: "",
       },
 
       legend: {
@@ -67,7 +62,7 @@ export const sara2019 = () => {
         series: {
           states: {
             inactive: {
-              opacity: 0.5,
+              opacity: 1,
             },
             hover: {
               brightness: 0,
@@ -82,13 +77,17 @@ export const sara2019 = () => {
             events: {
               mouseOver: function () {
                 var currentSelection = this.series.name;
-                //console.log(this)
-                //mouseOverFunction(this.series, currentSelection);
-                //mouseOverFunction(chartGas2019.series, currentSelection);
+                mouseOverFunction(
+                  this.series.chart.series,
+                  currentSelection,
+                  cerPalette["Sun"]
+                );
               },
               mouseOut: function () {
-                //mouseOutFunction(this.series);
-                //mouseOutFunction(chartGas2019.series);
+                mouseOutFunction(
+                  this.series.chart.series,
+                  cerPalette["Night Sky"]
+                );
               },
             },
           },
@@ -256,7 +255,6 @@ export const sara2019 = () => {
     return new Highcharts.chart("container_gas_2019", {
       chart: {
         type: "column",
-        // borderWidth: 1,
         events: {
           load: function () {
             creditsClick(
@@ -323,12 +321,16 @@ export const sara2019 = () => {
         formatter: function () {
           var pipelineName = this.points[0].key;
           var toolText = `<b> ${pipelineName} </b><table>`;
+          var cap = this.points[0].y;
+          var through = this.points.slice(-1)[0].y;
+          var utilization = ((through / cap) * 100).toFixed(0);
+          toolText += `<tr><td>Capacity Utilization</td><td style="padding:0">:<b> ${utilization} %</b></td></tr>`;
           this.points.map((p) => {
-            toolText += `<tr><td> <span style="color: ${
+            toolText += `<tr><td><span style="color: ${
               p.series.color
             }">&#9679</span> ${
               p.series.name
-            }: </td><td style="padding:0"><b>${Math.abs(p.y)} ${
+            }:</td><td style="padding:0"><b>${Math.abs(p.y)} ${
               units.unitsCurrent
             }</b></td></tr>`;
           });
@@ -389,26 +391,31 @@ export const sara2019 = () => {
     });
   };
 
-  var gasPointsMap = createGas2019Map();
-  var chartGas2019 = createGas2019Chart(seriesData, units);
-  var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
-  selectUnitsGas2019.addEventListener("change", (selectUnitsGas2019) => {
-    units.unitsCurrent = selectUnitsGas2019.target.value;
-    const seriesData = prepareSeriesNonTidy(
-      gas2019Data,
-      false,
-      units,
-      ["Capacity", "Throughput"],
-      "Series Name",
-      gas2019Colors,
-      1,
-      "name"
-    );
-    chartGas2019.update({
-      series: seriesData,
-      yAxis: {
-        title: { text: units.unitsCurrent },
-      },
+  try {
+    var gasPointsMap = createGas2019Map();
+    var chartGas2019 = createGas2019Chart(seriesData, units);
+    var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
+    selectUnitsGas2019.addEventListener("change", (selectUnitsGas2019) => {
+      units.unitsCurrent = selectUnitsGas2019.target.value;
+      const seriesData = prepareSeriesNonTidy(
+        gas2019Data,
+        false,
+        units,
+        ["Capacity", "Throughput"],
+        "Series Name",
+        gas2019Colors,
+        1,
+        "name"
+      );
+      chartGas2019.update({
+        series: seriesData,
+        yAxis: {
+          title: { text: units.unitsCurrent },
+        },
+      });
     });
-  });
+  } catch (err) {
+    errorChart("container_gas_2019_map")
+    errorChart("container_gas_2019");
+  }
 };
