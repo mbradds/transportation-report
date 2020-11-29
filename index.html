@@ -11,20 +11,13 @@
     <link href="./GCWeb/assets/favicon.ico" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" href="./GCWeb/css/theme.min.css" />
     <link rel="stylesheet" href="./wet-boew/css/noscript.min.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.js"></script>
-    <link rel="stylesheet" href="main.css" />
-    <script src="https://code.highcharts.com/8.2.0/highcharts.js"></script>
-    <script src="https://code.highcharts.com/8.2.0/modules/data.js"></script>
-    <script src="https://code.highcharts.com/maps/8.2.0/modules/map.js"></script>
-    <script src="https://code.highcharts.com/gantt/8.2.0/modules/gantt.js"></script>
-    <script src="https://code.highcharts.com/8.2.0/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/8.2.0/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/8.2.0/modules/no-data-to-display.js"></script>
-    <script src="https://code.highcharts.com/8.2.0/modules/annotations.js"></script>
-    <script src="https://code.highcharts.com/mapdata/countries/ca/ca-all.js"></script>
-    <script src="https://code.highcharts.com/mapdata/countries/us/custom/us-all-mainland.js"></script>
-    <script src="https://code.highcharts.com/mapdata/custom/north-america-no-central.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js"></script>
+    <link
+      rel="preload"
+      href="main.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript><link rel="stylesheet" href="main.css" /></noscript>
   </head>
 
   <body>
@@ -52,9 +45,9 @@
                   </p>
                   <ul>
                     <li>
-                      <b>Filtering/selecting Data:</b> Some charts allow for adding &
-                      removing data by clicking on the legend item. Some charts also have dropdown
-                      filters above the chart. 
+                      <b>Filtering/selecting Data:</b> Some charts allow for
+                      adding & removing data by clicking on the legend item.
+                      Some charts also have dropdown filters above the chart.
                     </li>
                     <div class="mrgn-tp-md"></div>
                     <li>
@@ -960,7 +953,19 @@
     </div>
 
     <div class="mrgn-tp-xl"></div>
-    <!-- <script src="./wet-boew/js/wet-boew.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.js"></script>
+    <script src="https://code.highcharts.com/8.2.0/highcharts.js"></script>
+    <script src="https://code.highcharts.com/8.2.0/modules/data.js"></script>
+    <script src="https://code.highcharts.com/maps/8.2.0/modules/map.js"></script>
+    <script src="https://code.highcharts.com/gantt/8.2.0/modules/gantt.js"></script>
+    <script src="https://code.highcharts.com/8.2.0/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/8.2.0/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/8.2.0/modules/no-data-to-display.js"></script>
+    <script src="https://code.highcharts.com/8.2.0/modules/annotations.js"></script>
+    <script src="https://code.highcharts.com/mapdata/countries/ca/ca-all.js"></script>
+    <script src="https://code.highcharts.com/mapdata/countries/us/custom/us-all-mainland.js"></script>
+    <script src="https://code.highcharts.com/mapdata/custom/north-america-no-central.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js"></script>
     <script src="./dist/bundle.js" type="text/javascript"></script>
   </body>
 </html>
