@@ -44,6 +44,7 @@ export const jenniferRatingsMulti = () => {
     "Enbridge Inc.": cerPalette["Night Sky"],
     "Emera Inc.": cerPalette["hcRed"],
     "Enbridge Pipelines Inc.": cerPalette["Dim Grey"],
+    "TC Energy Corporation": cerPalette["hcLightBlue"],
   };
 
   const createCreditSeries = (creditData) => {
