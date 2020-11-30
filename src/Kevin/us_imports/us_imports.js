@@ -85,6 +85,7 @@ export const kevinUsImports = () => {
               text: "% - Canada's share of U.S. crude oil imports",
             },
           ],
+          draggable: "",
         },
       ],
 

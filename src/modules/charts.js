@@ -133,6 +133,7 @@ export const instructionsChart = (div = "container-instructions") => {
               text: "Click on this icon to download chart images/data:",
             },
           ],
+          draggable: "",
         },
       ],
       series: [

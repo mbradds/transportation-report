@@ -146,7 +146,6 @@ export const cassandraSettlements = () => {
             id: companyId(companyTracker, company),
             start: currentStart,
             end: currentEnd,
-            //end: endDate,
           });
           companyTracker = companyCounter(companyTracker, company);
           currentStart = companyStartDates[endNum + 1];
@@ -159,7 +158,6 @@ export const cassandraSettlements = () => {
               id: companyId(companyTracker, company),
               start: currentStart,
               end: currentEnd,
-              //end: endDate,
             });
             companyTracker = companyCounter(companyTracker, company);
           }
@@ -236,7 +234,7 @@ export const cassandraSettlements = () => {
               formatter: function () {
                 return (
                   Highcharts.dateFormat(dateFormat, this.options.value) +
-                  " (today)"
+                  " (today, UTC)"
                 );
               },
             },
