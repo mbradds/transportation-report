@@ -615,7 +615,7 @@ if __name__ == '__main__':
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    #df = negotiated_settlements()
+    df = negotiated_settlements()
     
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx') #TODO: move save location!
@@ -626,7 +626,7 @@ if __name__ == '__main__':
     #df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    df,scale = creditRatings()
+    #df,scale = creditRatings()
     #df = readExcel("abandonment funding data.xlsx","Modified",sql=True)
 
     #other
