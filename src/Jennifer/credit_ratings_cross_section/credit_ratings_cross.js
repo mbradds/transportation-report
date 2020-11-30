@@ -189,7 +189,7 @@ export const jenniferRatingsCross = () => {
     setTitle(figure_title, ratingsFilter);
 
     $("#credit_years button").on("click", function () {
-      $(".btn-group > .btn").removeClass("active");
+      $(".btn-credit > .btn").removeClass("active");
       $(this).addClass("active");
       var thisBtn = $(this);
       var btnText = thisBtn.text();

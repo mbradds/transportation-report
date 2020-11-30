@@ -16,6 +16,11 @@ export const sara2019 = () => {
   };
 
   var units = conversions("Million m3/d to Bcf/d", "Bcf/d", "Million m3/d");
+  var pointsFilters = { Year: "2019" };
+
+  const setTitle = (figure_title, filters) => {
+    figure_title.innerText = `Figure 14: ${filters.Year.trim()} Pipeline Throughput & Capacity at Key Points`;
+  };
 
   const columnPlacement = (series) => {
     return series.map((s) => {
@@ -32,17 +37,26 @@ export const sara2019 = () => {
     });
   };
 
-  const seriesData = columnPlacement(
-    prepareSeriesNonTidy(
-      gas2019Data,
-      false,
-      units,
-      ["Capacity", "Throughput"],
-      "Series Name",
-      gas2019Colors,
-      2,
-      "name"
-    )
+  const createGasPointsSeries = (data, filters, units, colors) => {
+    return columnPlacement(
+      prepareSeriesNonTidy(
+        data,
+        filters,
+        units,
+        ["Capacity", "Throughput"],
+        "Series Name",
+        colors,
+        2,
+        "name"
+      )
+    );
+  };
+
+  const seriesData = createGasPointsSeries(
+    gas2019Data,
+    pointsFilters,
+    units,
+    gas2019Colors
   );
 
   const createGas2019Map = () => {
@@ -319,7 +333,7 @@ export const sara2019 = () => {
         shared: true,
         formatter: function () {
           var pipelineName = this.points[0].key;
-          var toolText = `<b> ${pipelineName} </b><table>`;
+          var toolText = `<b> ${pipelineName} (${pointsFilters.Year.trim()}) </b><table>`;
           var cap = this.points[0].y;
           var through = this.points.slice(-1)[0].y;
           var utilization = ((through / cap) * 100).toFixed(0);
@@ -391,20 +405,18 @@ export const sara2019 = () => {
   };
 
   try {
+    var figure_title = document.getElementById("gas_points_title");
+    setTitle(figure_title, pointsFilters);
     var gasPointsMap = createGas2019Map();
     var chartGas2019 = createGas2019Chart(seriesData, units);
     var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
     selectUnitsGas2019.addEventListener("change", (selectUnitsGas2019) => {
       units.unitsCurrent = selectUnitsGas2019.target.value;
-      const seriesData = prepareSeriesNonTidy(
+      const seriesData = createGasPointsSeries(
         gas2019Data,
-        false,
+        pointsFilters,
         units,
-        ["Capacity", "Throughput"],
-        "Series Name",
-        gas2019Colors,
-        1,
-        "name"
+        gas2019Colors
       );
       chartGas2019.update({
         series: seriesData,
@@ -413,8 +425,29 @@ export const sara2019 = () => {
         },
       });
     });
+
+    $("#gas-points-years button").on("click", function () {
+      $(".btn-gas-points > .btn").removeClass("active");
+      $(this).addClass("active");
+      var thisBtn = $(this);
+      var btnText = thisBtn.text();
+      var btnValue = thisBtn.val();
+      $("#selectedVal").text(btnValue);
+      pointsFilters.Year = btnText;
+      setTitle(figure_title, pointsFilters);
+      const seriesData = createGasPointsSeries(
+        gas2019Data,
+        pointsFilters,
+        units,
+        gas2019Colors
+      );
+      chartGas2019.update({
+        series: seriesData,
+      });
+    });
   } catch (err) {
-    errorChart("container_gas_2019_map")
+    console.log(err);
+    errorChart("container_gas_2019_map");
     errorChart("container_gas_2019");
   }
 };
