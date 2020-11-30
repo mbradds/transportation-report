@@ -124,7 +124,7 @@ def readCersei(query,name=None):
         #df['Spare Capacity'] = df['Capacity'] - df['Throughput']
         df['Series Name'] = df['Pipeline Name']+' - '+df['Key Point']+' - '+df['Trade Type']
         df = df.sort_values(by=['Capacity'], ascending=False)
-        delete = ['Corporate Entity','Pipeline Name','Key Point','Trade Type','Year']
+        delete = ['Corporate Entity','Pipeline Name','Key Point','Trade Type']
         for d in delete:
             del df[d]
     if name == 'gas_prices.json':
@@ -604,7 +604,7 @@ if __name__ == '__main__':
     
     #sara
     #df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
-    #df = readCersei('gas_2019_avg.sql','gas_2019.json')
+    df = readCersei('gas_2019_avg.sql','gas_2019.json')
     #dfmnp,dfoffshore = st_stephen()
     
     #rebecca
@@ -615,7 +615,7 @@ if __name__ == '__main__':
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    df = negotiated_settlements()
+    #df = negotiated_settlements()
     
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx') #TODO: move save location!
