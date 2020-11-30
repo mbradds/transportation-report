@@ -159,8 +159,8 @@ export const kevinCrudeProduction = () => {
   };
 
   try {
-    mainCrudeProduction();  
-  } catch(err) {
-    errorChart("container_crude_production")
+    mainCrudeProduction();
+  } catch (err) {
+    errorChart("container_crude_production");
   }
 };

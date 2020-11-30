@@ -14,6 +14,7 @@ export const cerPalette = {
   hcAqua: "#2b908f",
   hcPurple: "#8085e9",
   hcLightBlue: "#91e8e1",
+  Forecast: "#F0F8FF",
 };
 
 export const conversions = (conv, current, base) => {

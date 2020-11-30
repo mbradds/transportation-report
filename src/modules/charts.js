@@ -15,6 +15,26 @@ export const productionChart = (params) => {
       text: params.sourceText,
     },
 
+    xAxis: {
+      categories: true,
+      plotBands: [
+        {
+          color: cerPalette["Forecast"],
+          from: 2019.5,
+          to: 2020.5,
+          label: {
+            text: "Forecast",
+            align: "center",
+            y: 10,
+            style: {
+              fontWeight: "bold",
+              color: cerPalette["Cool Grey"],
+            },
+          },
+        },
+      ],
+    },
+
     tooltip: {
       pointFormat: tooltipPoint(params.units.unitsCurrent),
     },

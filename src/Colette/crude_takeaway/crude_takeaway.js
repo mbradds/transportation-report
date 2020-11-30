@@ -68,6 +68,27 @@ export const coletteCrudeTakeaway = () => {
       crosshair: true,
     };
     var crudeTakeawayChart = lineAndStackedArea(params);
+    crudeTakeawayChart.update({
+      xAxis: {
+        plotLines: [
+          {
+            color: "black",
+            dashStyle: "longDash",
+            value: 2019,
+            width: 3,
+            zIndex: 5,
+            label: {
+              text: "Forecast",
+              rotation: 0,
+              style: {
+                fontWeight: "bold",
+                color: cerPalette["Cool Grey"],
+              },
+            },
+          },
+        ],
+      },
+    });
     var selectUnitsCrudeTakeaway = document.getElementById(
       "select_units_crude_takeaway"
     );
