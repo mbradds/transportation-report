@@ -67,6 +67,7 @@ export const kevinUsImports = () => {
       xAxis: {
         type: params.xAxisType,
         crosshair: params.crosshair,
+        categories: true,
       },
 
       annotations: [

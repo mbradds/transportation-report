@@ -127,7 +127,7 @@ export const frenchTheme = () => {
       downloadXLS: "Download XLS (FRA)",
       printChart: "Print chart (FRA)",
       resetZoom: "Reset zoom (FRA)",
-      viewData: "View data table (FRA)"
+      viewData: "View data table (FRA)",
     },
   };
   Highcharts.setOptions(Highcharts.french);
