@@ -360,18 +360,20 @@ def readExcelPipeline(name,sheet='Data',sql=False):
     return df
 
 
-def writeExcelCredit(name,sheet='Credit Ratings'):
+def writeExcelCredit(name,sheet='Credit Ratings',sql=False):
     read_path = os.path.join(os.getcwd(),'Data/',name)
     df = pd.read_excel(read_path,sheet)
     df['Value'] = [str(x).strip() for x in df['Value']]
     df['Value'] = df['Value'].replace({'-':None})
-    df = df.rename(columns={'Pipeline':'Corporate Entity'})
+    #df = df.rename(columns={'Pipeline':'Corporate Entity'})
     df = normalize_text(df, ['Corporate Entity','Type','Value'])
     df['Value'] = df['Value'].replace({'A\xa0(low)':'A (low)','BBB(high)':'BBB (high)'})
     
-    conn,engine = cer_connection()
-    df.to_sql('Pipeline_Financial_Ratings',con=conn,index=False,if_exists='replace')
-    conn.close()
+    if sql:    
+        conn,engine = cer_connection()
+        df.to_sql('Pipeline_Financial_Ratings',con=conn,index=False,if_exists='replace')
+        conn.close()
+        
     return df
 
 
@@ -604,7 +606,7 @@ if __name__ == '__main__':
     
     #sara
     #df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
-    df = readCersei('gas_2019_avg.sql','gas_2019.json')
+    #df = readCersei('gas_2019_avg.sql','gas_2019.json')
     #dfmnp,dfoffshore = st_stephen()
     
     #rebecca
@@ -618,7 +620,7 @@ if __name__ == '__main__':
     #df = negotiated_settlements()
     
     #ryan
-    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx') #TODO: move save location!
+    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx')
     #df = readExcel('figures.xlsx',sheet='ngl production')
     
     #jennifer
@@ -626,11 +628,11 @@ if __name__ == '__main__':
     #df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    #df,scale = creditRatings()
+    df,scale = creditRatings()
     #df = readExcel("abandonment funding data.xlsx","Modified",sql=True)
 
     #other
-    #df = writeExcelCredit(name='CreditTables.xlsx')
+    #df = writeExcelCredit(name='CreditTables.xlsx',sql=True)
     #df = crudeThroughput(name='oil_throughput.sql')
     #df = crudeCapacity(name='oil_capacity.sql')
     
