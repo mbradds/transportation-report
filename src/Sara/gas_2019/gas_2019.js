@@ -364,18 +364,14 @@ export const sara2019 = () => {
               return companyName.join("<br>");
             },
           },
-          plotBands: [
-            {
-              color: "#D3D3D3",
-              from: 7.5,
-              to: 9.5,
-              zIndex: 3,
-              label: {
-                text: "Imports",
-                align: "center",
-              },
+          plotBands: {
+            from: 7.5,
+            to: 9.5,
+            zIndex: 3,
+            label: {
+              text: "Imports",
             },
-          ],
+          },
         },
         {
           type: "category",
