@@ -78,7 +78,7 @@ export const coletteCrudeTakeaway = () => {
             width: 3,
             zIndex: 5,
             label: {
-              text: "Forecast",
+              text: "Estimated <br> value",
               rotation: 0,
               style: {
                 fontWeight: "bold",
