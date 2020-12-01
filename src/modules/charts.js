@@ -23,7 +23,7 @@ export const productionChart = (params) => {
           from: 2019.5,
           to: 2020.5,
           label: {
-            text: "Forecast",
+            text: "Estimated value",
             align: "center",
             y: 10,
             style: {

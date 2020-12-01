@@ -23,7 +23,7 @@ export const cassandraSettlements = () => {
     if (filters.Commodity == "All") {
       figure_title.innerText = "Figure 17: Negotiated Settlement Timelines";
     } else {
-      figure_title.innerText = `Figure 17: Negotiated Settlement Timelines - ${filters.Commodity} Companies`;
+      figure_title.innerText = `Figure 17: Negotiated Settlement Timelines - ${filters.Commodity}`;
     }
   };
 
@@ -304,7 +304,7 @@ export const cassandraSettlements = () => {
     var figure_title = document.getElementById("settle_title");
     setTitle(figure_title, filters);
     var settlementChart = createSettlements(seriesData);
-    var selectSettle = document.getElementById("select_commodity_settle");
+    var selectSettle = document.getElementById("select_commodity_settlements");
     selectSettle.addEventListener("change", (selectSettle) => {
       filters.Commodity = selectSettle.target.value;
       setTitle(figure_title, filters);
