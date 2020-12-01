@@ -207,13 +207,6 @@ export const cassandraSettlements = () => {
         symbolHeight: 0,
         squareSymbol: false,
         useHTML: true,
-        title: {
-          text:
-            "Legend: (Click on a company name above to view all negotiated settlements)",
-          style: {
-            fontStyle: "italic",
-          },
-        },
         labelFormatter: function () {
           var legendText = "";
           for (const legendName in legendColors) {
@@ -250,6 +243,30 @@ export const cassandraSettlements = () => {
           },
         },
       },
+
+      annotations: [
+        {
+          labelOptions: {
+            verticalAlign: "top",
+            overflow: "none",
+          },
+          labels: [
+            {
+              point: { x: -110, y: -30 },
+              style: {
+                fontWeight: "bold",
+                fontSize: 12,
+                color:
+                  (Highcharts.theme && Highcharts.theme.textColor) || "grey",
+              },
+              backgroundColor: "white",
+              borderColor: "white",
+              text: "Click on a pipeline name<br>to view individual settlements",
+            },
+          ],
+          draggable: "",
+        },
+      ],
 
       tooltip: {
         xDateFormat: "%Y-%m-%d",
