@@ -19,7 +19,6 @@ export const kevinUsImports = () => {
         data.zIndex = 0;
       }
     });
-
     return series;
   };
 
