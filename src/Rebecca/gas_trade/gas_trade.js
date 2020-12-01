@@ -7,7 +7,6 @@ import {
   tooltipPoint,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-
 import gasTradeData from "./natural-gas-exports-and-imports-annual.json";
 
 export const rebeccaGasTrade = () => {
@@ -188,7 +187,7 @@ export const rebeccaGasTrade = () => {
   };
 
   try {
-    const mapGasTraffic = createGasRegionMap();
+    var mapGasTraffic = createGasRegionMap();
     var chartGasTraffic = createGasTrafficChart(seriesData, gasTradeUnits);
     var figure_title = document.getElementById("gas_trade_title");
     setTitle(figure_title, gasTradeFilters);

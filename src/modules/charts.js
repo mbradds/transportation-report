@@ -17,22 +17,14 @@ export const productionChart = (params) => {
 
     xAxis: {
       categories: true,
-      plotBands: [
-        {
-          color: cerPalette["Forecast"],
-          from: 2019.5,
-          to: 2020.5,
-          label: {
-            text: "Estimated value",
-            align: "center",
-            y: 10,
-            style: {
-              fontWeight: "bold",
-              color: cerPalette["Cool Grey"],
-            },
-          },
+      plotBands: {
+        from: 2019.5,
+        to: 2020.5,
+        label: {
+          text: "Estimated value",
+          y: 10,
         },
-      ],
+      },
     },
 
     tooltip: {
