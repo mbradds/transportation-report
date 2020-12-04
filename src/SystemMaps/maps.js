@@ -169,9 +169,6 @@ export const systemMaps = () => {
     return shapes;
   };
 
-  const oilShapes = importPipes(oilFileNames);
-  const gasShapes = importPipes(gasFileNames);
-
   const mapTooltip = (e) => {
     var properties = {};
     var hasProperties = false;
@@ -337,15 +334,17 @@ export const systemMaps = () => {
   };
   const mainCharts = () => {
     try {
-      const crudePipeMap = createPointMap(oilShapes, "container_map_oil");  
-    } catch(err) {
-      errorChart("container_map_oil")
+      const oilShapes = importPipes(oilFileNames);
+      const crudePipeMap = createPointMap(oilShapes, "container_map_oil");
+    } catch (err) {
+      errorChart("container_map_oil");
     }
     try {
-      const gasPipeMap = createPointMap(gasShapes, "container_map_gas");  
-    } catch(err) {
-      errorChart("container_map_gas")
+      const gasShapes = importPipes(gasFileNames);
+      const gasPipeMap = createPointMap(gasShapes, "container_map_gas");
+    } catch (err) {
+      errorChart("container_map_gas");
     }
-  }
-  mainCharts()
+  };
+  mainCharts();
 };
