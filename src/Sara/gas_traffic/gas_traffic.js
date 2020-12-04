@@ -38,9 +38,11 @@ export const saraGasTraffic = () => {
     "Capacity",
   ];
 
-  const seriesData = gasTrafficChartTypes(
-    prepareSeriesNonTidy(gasData, false, units, columns, "Date", gasColors)
-  );
+  const creatGasTrafficSeries = (gasData, units, columns, gasColors) => {
+    return gasTrafficChartTypes(
+      prepareSeriesNonTidy(gasData, false, units, columns, "Date", gasColors)
+    );
+  };
 
   const mainGasTraffic = () => {
     var params = {
@@ -49,7 +51,7 @@ export const saraGasTraffic = () => {
         "https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34",
       sourceText: "Source: Open Government Throughput and Capacity Data",
       units: units,
-      series: seriesData,
+      series: creatGasTrafficSeries(gasData, units, columns, gasColors),
       xAxisType: "datetime",
       crosshair: true,
     };
@@ -61,19 +63,8 @@ export const saraGasTraffic = () => {
       "change",
       (selectUnitsGasTraffic) => {
         units.unitsCurrent = selectUnitsGasTraffic.target.value;
-        const seriesData = gasTrafficChartTypes(
-          prepareSeriesNonTidy(
-            gasData,
-            false,
-            units,
-            columns,
-            "Date",
-            gasColors
-          )
-        );
-
         chartGasTraffic.update({
-          series: seriesData,
+          series: creatGasTrafficSeries(gasData, units, columns, gasColors),
           yAxis: {
             title: { text: units.unitsCurrent },
           },

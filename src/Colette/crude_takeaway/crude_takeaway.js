@@ -45,16 +45,22 @@ export const coletteCrudeTakeaway = () => {
     "Keystone Pipeline",
   ];
 
-  const seriesData = crudeTakeawayChartTypes(
-    prepareSeriesNonTidy(
-      crudeTakeawayData,
-      false,
-      units,
-      columns,
-      "Year",
-      crudeTakeawayColors
-    )
-  );
+  const createTakeawaySeries = (
+    crudeTakeawayData,
+    units,
+    crudeTakeawayColors
+  ) => {
+    return crudeTakeawayChartTypes(
+      prepareSeriesNonTidy(
+        crudeTakeawayData,
+        false,
+        units,
+        columns,
+        "Year",
+        crudeTakeawayColors
+      )
+    );
+  };
 
   const mainCrudeTakeaway = () => {
     var params = {
@@ -63,7 +69,11 @@ export const coletteCrudeTakeaway = () => {
         "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
       sourceText: "Source: Energy Futures",
       units: units,
-      series: seriesData,
+      series: createTakeawaySeries(
+        crudeTakeawayData,
+        units,
+        crudeTakeawayColors
+      ),
       xAxisType: "linear",
       crosshair: true,
     };
@@ -96,19 +106,12 @@ export const coletteCrudeTakeaway = () => {
       "change",
       (selectUnitsCrudeTakeaway) => {
         units.unitsCurrent = selectUnitsCrudeTakeaway.target.value;
-        var seriesData = crudeTakeawayChartTypes(
-          prepareSeriesNonTidy(
-            crudeTakeawayData,
-            false,
-            units,
-            columns,
-            "Year",
-            crudeTakeawayColors
-          )
-        );
-
         crudeTakeawayChart.update({
-          series: seriesData,
+          series: createTakeawaySeries(
+            crudeTakeawayData,
+            units,
+            crudeTakeawayColors
+          ),
           yAxis: {
             title: { text: units.unitsCurrent },
           },

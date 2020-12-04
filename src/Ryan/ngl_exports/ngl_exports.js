@@ -25,14 +25,16 @@ export const ryanNglExports = () => {
     Marine: cerPalette["Ocean"],
   };
 
-  var seriesData = prepareSeriesNonTidy(
-    nglData,
-    nglFilters,
-    units,
-    ["Pipeline", "Railway", "Truck", "Marine"],
-    "Period",
-    nglColors
-  );
+  const createNglExpSeries = (nglData, nglFilters, units, nglColors) => {
+    return prepareSeriesNonTidy(
+      nglData,
+      nglFilters,
+      units,
+      ["Pipeline", "Railway", "Truck", "Marine"],
+      "Period",
+      nglColors
+    );
+  };
 
   const createNglChart = (seriesData, units) => {
     return new Highcharts.chart("container_ngl", {
@@ -91,6 +93,7 @@ export const ryanNglExports = () => {
   };
 
   const mainNglExports = () => {
+    var seriesData = createNglExpSeries(nglData, nglFilters, units, nglColors);
     var figure_title = document.getElementById("ngl_title");
     setTitle(figure_title, nglFilters);
     var nglChart = createNglChart(seriesData, units);
@@ -99,46 +102,27 @@ export const ryanNglExports = () => {
     selectProductNgl.addEventListener("change", (selectProductNgl) => {
       nglFilters.Product = selectProductNgl.target.value;
       setTitle(figure_title, nglFilters);
-      var seriesData = prepareSeriesNonTidy(
-        nglData,
-        nglFilters,
-        units,
-        ["Pipeline", "Railway", "Truck", "Marine"],
-        "Period",
-        nglColors
+      nglChart = createNglChart(
+        createNglExpSeries(nglData, nglFilters, units, nglColors),
+        units
       );
-      nglChart = createNglChart(seriesData, units);
     });
 
     var selectRegionNgl = document.getElementById("select_region_ngl");
     selectRegionNgl.addEventListener("change", (selectRegionNgl) => {
       nglFilters.Region = selectRegionNgl.target.value;
       setTitle(figure_title, nglFilters);
-      var seriesData = prepareSeriesNonTidy(
-        nglData,
-        nglFilters,
-        units,
-        ["Pipeline", "Railway", "Truck", "Marine"],
-        "Period",
-        nglColors
+      nglChart = createNglChart(
+        createNglExpSeries(nglData, nglFilters, units, nglColors),
+        units
       );
-      nglChart = createNglChart(seriesData, units);
     });
 
     var selectUnitsNgl = document.getElementById("select_units_ngl");
     selectUnitsNgl.addEventListener("change", (selectUnitsNgl) => {
       units.unitsCurrent = selectUnitsNgl.target.value;
-      var seriesData = prepareSeriesNonTidy(
-        nglData,
-        nglFilters,
-        units,
-        ["Pipeline", "Railway", "Truck", "Marine"],
-        "Period",
-        nglColors
-      );
-
       nglChart.update({
-        series: seriesData,
+        series: createNglExpSeries(nglData, nglFilters, units, nglColors),
         yAxis: {
           title: { text: units.unitsCurrent },
         },

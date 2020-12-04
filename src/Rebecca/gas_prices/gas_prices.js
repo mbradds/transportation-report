@@ -19,15 +19,21 @@ export const rebeccaGasPrices = () => {
 
   var gasPriceFilters = { Units: "Price ($CN/GIG)", unitsCurrent: "$CN/GIG" };
 
-  var seriesData = prepareSeriesTidy(
+  const createGasPriceSeries = (
     gasPriceData,
-    false,
-    false,
-    "Location",
-    "Date",
-    gasPriceFilters.Units,
+    gasPriceFilters,
     gasPriceColors
-  );
+  ) => {
+    return prepareSeriesTidy(
+      gasPriceData,
+      false,
+      false,
+      "Location",
+      "Date",
+      gasPriceFilters.Units,
+      gasPriceColors
+    );
+  };
 
   const createGasPriceMap = () => {
     return Highcharts.mapChart("container_gas_map", {
@@ -188,6 +194,11 @@ export const rebeccaGasPrices = () => {
   };
 
   try {
+    var seriesData = createGasPriceSeries(
+      gasPriceData,
+      gasPriceFilters,
+      gasPriceColors
+    );
     var gasMap = createGasPriceMap();
     var chartGasPrice = createGasPriceChart(seriesData, gasPriceFilters);
 
@@ -202,18 +213,13 @@ export const rebeccaGasPrices = () => {
       } else {
         gasPriceFilters.Units = "Price ($US/MMB)";
       }
-      var seriesData = prepareSeriesTidy(
-        gasPriceData,
-        false,
-        false,
-        "Location",
-        "Date",
-        gasPriceFilters.Units,
-        gasPriceColors
-      );
 
       chartGasPrice.update({
-        series: seriesData,
+        series: createGasPriceSeries(
+          gasPriceData,
+          gasPriceFilters,
+          gasPriceColors
+        ),
         yAxis: {
           title: { text: gasPriceFilters.Units },
         },

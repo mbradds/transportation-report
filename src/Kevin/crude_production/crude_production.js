@@ -41,15 +41,6 @@ export const kevinCrudeProduction = () => {
     }
   };
 
-  var seriesData = prepareSeriesNonTidy(
-    crudeProdData,
-    crudeProdFilters,
-    units,
-    crudeProdColumns,
-    "Year",
-    crudeProdColors,
-    roundValues(crudeProdFilters)
-  );
 
   const mainCrudeProduction = () => {
     const ticks = (crudeProdFilters, units) => {
@@ -82,6 +73,16 @@ export const kevinCrudeProduction = () => {
     var figure_title = document.getElementById("crude_prod_title");
     setTitle(figure_title, crudeProdFilters);
 
+    var seriesData = prepareSeriesNonTidy(
+      crudeProdData,
+      crudeProdFilters,
+      units,
+      crudeProdColumns,
+      "Year",
+      crudeProdColors,
+      roundValues(crudeProdFilters)
+    );
+    
     var params = {
       div: "container_crude_production",
       sourceLink:

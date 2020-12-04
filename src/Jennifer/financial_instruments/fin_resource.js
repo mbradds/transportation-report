@@ -6,13 +6,12 @@ import {
   tooltipPoint,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-
-import finResourceData from "./fin_resource_totals.json";
-import finResourceClass from "./fin_resource_class.json";
-import finResourceNames from "./fin_resource_class_names.json";
+import finResData from "./fin_resource_totals.json";
+import finClassData from "./fin_resource_class.json";
+import finResNames from "./fin_resource_class_names.json";
 
 export const jenniferFinResources = () => {
-  var finResourceFilters = { Commodity: "All" };
+  var resFilters = { Commodity: "All" };
 
   const finResourceChartTypes = (series) => {
     series.map((data) => {
@@ -52,41 +51,49 @@ export const jenniferFinResources = () => {
     return totalSeries;
   };
 
-  const commodityColors = {
+  const prodColors = {
     Oil: cerPalette["Night Sky"],
     Gas: cerPalette["Forest"],
   };
 
-  const finResourceColors = {
+  const finResColors = {
     "Companies using Financial Instrument": cerPalette["Cool Grey"],
     "Financial Instrument Total": cerPalette["Sun"],
   };
 
-  const totals = commodityTotals(finResourceData, commodityColors);
-  const finResourceSeries = finResourceChartTypes(
-    prepareSeriesNonTidy(
-      finResourceData,
-      finResourceFilters,
+  const createResSeries = (data, filters, colors) => {
+    return finResourceChartTypes(
+      prepareSeriesNonTidy(
+        data,
+        filters,
+        false,
+        ["Companies using Financial Instrument", "Financial Instrument Total"],
+        "Financial Instrument",
+        colors,
+        1,
+        "name"
+      )
+    );
+  };
+
+  const createClassSeries = (classData, colors, filters) => {
+    if (filters.Commodity == "All") {
+      var classFilters = false;
+    } else {
+      var classFilters = filters;
+    }
+    return prepareSeriesTidy(
+      classData,
+      classFilters,
       false,
-      ["Companies using Financial Instrument", "Financial Instrument Total"],
-      "Financial Instrument",
-      finResourceColors,
+      "Commodity",
+      "Pipeline Group",
+      "Financial Resource",
+      colors,
       1,
       "name"
-    )
-  );
-
-  var finResourceSeriesClass = prepareSeriesTidy(
-    finResourceClass,
-    false,
-    false,
-    "Commodity",
-    "Pipeline Group",
-    "Financial Resource",
-    commodityColors,
-    1,
-    "name"
-  );
+    );
+  };
 
   const createFinResourceTotals = (seriesData) => {
     return new Highcharts.chart("container_fin_totals", {
@@ -152,12 +159,8 @@ export const jenniferFinResources = () => {
     });
   };
 
-  const createFinResourceChart = (seriesData, finResourceFilters) => {
+  const createResChart = (seriesData, resFilters) => {
     return new Highcharts.chart("container_fin_resources", {
-      chart: {
-        //height: "30%",
-      },
-
       credits: {
         enabled: false,
       },
@@ -174,7 +177,7 @@ export const jenniferFinResources = () => {
       },
 
       title: {
-        text: `Financial Instruments Utilized in Financial Resource Plan: ${finResourceFilters.Commodity} Pipelines`,
+        text: `Financial Instruments Utilized in Financial Resource Plan: ${resFilters.Commodity} Pipelines`,
       },
 
       xAxis: {
@@ -206,10 +209,9 @@ export const jenniferFinResources = () => {
     });
   };
 
-  const createFinResourceChartClass = (seriesData, finResourceFilters) => {
+  const createClassChart = (seriesData, resFilters) => {
     return new Highcharts.chart("container_fin_resources_class", {
       chart: {
-        //height: "30%",
         type: "column",
         events: {
           load: function () {
@@ -249,13 +251,13 @@ export const jenniferFinResources = () => {
             "<i>Companies in " +
             this.key +
             ": </i><br>" +
-            finResourceNames[this.key].join(", ")
+            finResNames[this.key].join(", ")
           );
         },
       },
 
       title: {
-        text: `Absolute Liability Limits by Class: ${finResourceFilters.Commodity} Pipelines`,
+        text: `Absolute Liability Limits by Class: ${resFilters.Commodity} Pipelines`,
       },
 
       xAxis: {
@@ -280,15 +282,13 @@ export const jenniferFinResources = () => {
   };
 
   const loadInitialCharts = () => {
+    const totals = commodityTotals(finResData, prodColors);
+    const seriesFin = createResSeries(finResData, resFilters, finResColors);
+    const seriesClass = createClassSeries(finClassData, prodColors, resFilters);
+
     const chartFinTotals = createFinResourceTotals(totals);
-    var chartFinResource = createFinResourceChart(
-      finResourceSeries,
-      finResourceFilters
-    );
-    var chartFinResourceClass = createFinResourceChartClass(
-      finResourceSeriesClass,
-      finResourceFilters
-    );
+    var chartFinResource = createResChart(seriesFin, resFilters);
+    var chartfinClassData = createClassChart(seriesClass, resFilters);
   };
 
   const commodityListener = () => {
@@ -298,58 +298,27 @@ export const jenniferFinResources = () => {
     selectCommodityFin.addEventListener("change", (selectCommodityFin) => {
       var tempScrollTop = $(window).scrollTop(); //saves the scroll location so that HC doesnt scroll up on chart changes
       var commodity = selectCommodityFin.target.value;
-      finResourceFilters.Commodity = commodity;
+      resFilters.Commodity = commodity;
       if (commodity == "Oil") {
-        finResourceColors["Companies using Financial Instrument"] =
+        finResColors["Companies using Financial Instrument"] =
           cerPalette["Night Sky"];
       } else if (commodity == "Gas") {
-        finResourceColors["Companies using Financial Instrument"] =
+        finResColors["Companies using Financial Instrument"] =
           cerPalette["Forest"];
       } else {
-        finResourceColors["Companies using Financial Instrument"] =
+        finResColors["Companies using Financial Instrument"] =
           cerPalette["Cool Grey"];
       }
-      if (commodity == "All") {
-        var classFilters = false;
-      } else {
-        var classFilters = finResourceFilters;
-      }
-      const finResourceSeriesClass = prepareSeriesTidy(
-        finResourceClass,
-        classFilters,
-        false,
-        "Commodity",
-        "Pipeline Group",
-        "Financial Resource",
-        commodityColors,
-        1,
-        "name"
+      //create new series after commodity is selected
+      const seriesClass = createClassSeries(
+        finClassData,
+        prodColors,
+        resFilters
       );
-
-      const finResourceSeries = finResourceChartTypes(
-        prepareSeriesNonTidy(
-          finResourceData,
-          finResourceFilters,
-          false,
-          [
-            "Companies using Financial Instrument",
-            "Financial Instrument Total",
-          ],
-          "Financial Instrument",
-          finResourceColors,
-          1,
-          "name"
-        )
-      );
-      var chartFinResource = createFinResourceChart(
-        finResourceSeries,
-        finResourceFilters
-      );
-
-      var chartFinResourceClass = createFinResourceChartClass(
-        finResourceSeriesClass,
-        finResourceFilters
-      );
+      const seriesFin = createResSeries(finResData, resFilters, finResColors);
+      //create new charts after commodity is selected
+      var chartFinResource = createResChart(seriesFin, resFilters);
+      var chartfinClassData = createClassChart(seriesClass, resFilters);
       $(window).scrollTop(tempScrollTop);
     });
   };

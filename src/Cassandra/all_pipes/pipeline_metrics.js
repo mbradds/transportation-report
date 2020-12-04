@@ -5,7 +5,6 @@ import {
   tooltipPoint,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-
 import financialData from "./PipelineProfileTables.json";
 
 export const cassandraAllPipes = () => {
@@ -64,11 +63,6 @@ export const cassandraAllPipes = () => {
 
   var defaultMetric = "Deemed Equity Ratio";
   var financeFilters = { Category: "All", Type: defaultMetric };
-
-  var [seriesData, yOptions] = prepareSeriesFinance(
-    financialData,
-    financeFilters
-  );
 
   const createFinancialChart = (newData, yOptions) => {
     return new Highcharts.chart("container_financial_metrics", {
@@ -134,6 +128,10 @@ export const cassandraAllPipes = () => {
   };
 
   const mainPipeline = () => {
+    var [seriesData, yOptions] = prepareSeriesFinance(
+      financialData,
+      financeFilters
+    );
     var chartFinance = createFinancialChart(seriesData, yOptions);
     var selectMetricFinancial = document.getElementById(
       "select_metric_financial"

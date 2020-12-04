@@ -28,23 +28,24 @@ export const jenniferRatingsCross = () => {
     });
   };
 
-  var creditSeries = prepareSeriesTidy(
-    addColumns(creditData),
-    ratingsFilter,
-    false,
-    "Type",
-    "Corporate Entity",
-    "Level",
-    ratingsColors,
-    1,
-    "name"
-  );
+  const createCreditSeries = (creditData, ratingsFilter, ratingsColors) => {
+    return prepareSeriesTidy(
+      addColumns(creditData),
+      ratingsFilter,
+      false,
+      "Type",
+      "Corporate Entity",
+      "Level",
+      ratingsColors,
+      1,
+      "name"
+    );
+  };
 
   const yRange = (creditData) => {
     const creditRange = getUnique(creditData, "Level");
     return [Math.min(...creditRange), 26];
   };
-  const [minY, maxY] = yRange(creditData);
 
   const createSortedSeries = (series) => {
     let average = (array) => array.reduce((a, b) => a + b) / array.length;
@@ -85,9 +86,7 @@ export const jenniferRatingsCross = () => {
     return sortedSeries;
   };
 
-  var sortedSeries = createSortedSeries(creditSeries);
-
-  const createChartCross = (series) => {
+  const createChartCross = (series, minY, maxY) => {
     return Highcharts.chart("container_ratings_cross", {
       chart: {
         borderWidth: 1,
@@ -122,8 +121,8 @@ export const jenniferRatingsCross = () => {
         y: 55,
         floating: true,
         title: {
-          text:"Higher average rating to the left"
-        }
+          text: "Higher average rating to the left",
+        },
       },
 
       xAxis: {
@@ -184,7 +183,14 @@ export const jenniferRatingsCross = () => {
   };
 
   const mainCreditYear = () => {
-    var yearChart = createChartCross(sortedSeries);
+    const [minY, maxY] = yRange(creditData);
+    var creditSeries = createCreditSeries(
+      creditData,
+      ratingsFilter,
+      ratingsColors
+    );
+    var sortedSeries = createSortedSeries(creditSeries);
+    var yearChart = createChartCross(sortedSeries, minY, maxY);
     var figure_title = document.getElementById("ratings_year_title");
     setTitle(figure_title, ratingsFilter);
 
@@ -197,17 +203,10 @@ export const jenniferRatingsCross = () => {
       $("#selectedVal").text(btnValue);
       ratingsFilter.Year = btnText;
       setTitle(figure_title, ratingsFilter);
-
-      var creditSeries = prepareSeriesTidy(
-        addColumns(creditData),
+      var creditSeries = createCreditSeries(
+        creditData,
         ratingsFilter,
-        false,
-        "Type",
-        "Corporate Entity",
-        "Level",
-        ratingsColors,
-        1,
-        "name"
+        ratingsColors
       );
       sortedSeries = createSortedSeries(creditSeries);
       yearChart.update({
@@ -218,6 +217,7 @@ export const jenniferRatingsCross = () => {
   try {
     mainCreditYear();
   } catch (err) {
+    console.log(err);
     errorChart("container_ratings_cross");
   }
 };

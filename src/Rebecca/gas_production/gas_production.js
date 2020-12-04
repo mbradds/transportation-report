@@ -17,15 +17,18 @@ export const rebeccaGasProd = () => {
   };
 
   var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
-  var seriesData = prepareSeriesTidy(
-    gasProdData,
-    false,
-    units,
-    "Production Type",
-    "Year",
-    "Production (BCf/d)",
-    gasProdColors
-  );
+
+  const createGasProdSeries = (gasProdData, units, gasProdColors) => {
+    return prepareSeriesTidy(
+      gasProdData,
+      false,
+      units,
+      "Production Type",
+      "Year",
+      "Production (BCf/d)",
+      gasProdColors
+    );
+  };
 
   const mainGasProducton = () => {
     var params = {
@@ -34,23 +37,14 @@ export const rebeccaGasProd = () => {
         "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
       sourceText: "Source: Energy Futures",
       units: units,
-      series: seriesData,
+      series: createGasProdSeries(gasProdData, units, gasProdColors),
     };
     var gasProdChart = productionChart(params);
     var selectUnitsGasProd = document.getElementById("select_units_gas_prod");
     selectUnitsGasProd.addEventListener("change", (selectUnitsGasProd) => {
       units.unitsCurrent = selectUnitsGasProd.target.value;
-      var seriesData = prepareSeriesTidy(
-        gasProdData,
-        false,
-        units,
-        "Production Type",
-        "Year",
-        "Production (BCf/d)",
-        gasProdColors
-      );
       gasProdChart.update({
-        series: seriesData,
+        series: createGasProdSeries(gasProdData, units, gasProdColors),
         yAxis: {
           title: { text: units.unitsCurrent },
         },

@@ -1,33 +1,33 @@
 import { cerPalette, prepareSeriesNonTidy } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 
-import abandonmentData from "./Modified.json";
+import abandonData from "./Modified.json";
 
 export const jenniferAbandonment = () => {
-  const abandonmentColors = {
+  const colors = {
     "Amounts Set Aside": cerPalette["Sun"],
     "Remaining Estimate": cerPalette["Night Sky"],
   };
 
-  var abandonmentFilters = { commodity: "All" };
+  var filters = { commodity: "All" };
 
   const g1SeriesName = (filters) => {
     if (filters.commodity == "All") {
       var company = "Total Group 1 Pipelines";
     } else {
-      var company = `Total Group 1 ${abandonmentFilters.commodity} Pipelines`;
+      var company = `Total Group 1 ${filters.commodity} Pipelines`;
     }
     return company;
   };
 
-  const filterData = (data, abandonmentFilters) => {
+  const filterData = (data, filters) => {
     const totals = (data) => {
       const exclude = ["Total CER Pipelines", "Total Group 2 Pipelines"];
       var totals = {
         ACE: 0,
         "Amounts Set Aside": 0,
         Commodity: "All",
-        Company: g1SeriesName(abandonmentFilters),
+        Company: g1SeriesName(filters),
       };
       data.map((row) => {
         if (!exclude.includes(row.Company)) {
@@ -42,13 +42,11 @@ export const jenniferAbandonment = () => {
       return totals;
     };
 
-    if (abandonmentFilters.commodity == "All") {
+    if (filters.commodity == "All") {
       var totalG1 = totals(data);
     } else {
       data = data.filter(
-        (row) =>
-          row.Commodity == abandonmentFilters.commodity ||
-          row.Commodity == "All"
+        (row) => row.Commodity == filters.commodity || row.Commodity == "All"
       );
       var totalG1 = totals(data);
     }
@@ -84,19 +82,22 @@ export const jenniferAbandonment = () => {
     return [seriesData, seriesTotals];
   };
 
-  var [seriesData, seriesTotals] = filterSeries(
-    prepareSeriesNonTidy(
-      filterData(abandonmentData, abandonmentFilters),
-      false,
-      false,
-      ["Amounts Set Aside", "Remaining Estimate"],
-      "Company",
-      abandonmentColors,
-      2,
-      "name"
-    ),
-    abandonmentFilters
-  );
+  const createAbandSeries = (abandonData, filters, colors) => {
+    var [seriesData, seriesTotals] = filterSeries(
+      prepareSeriesNonTidy(
+        filterData(abandonData, filters),
+        false,
+        false,
+        ["Amounts Set Aside", "Remaining Estimate"],
+        "Company",
+        colors,
+        2,
+        "name"
+      ),
+      filters
+    );
+    return [seriesData, seriesTotals];
+  };
 
   const tooltipAbandon = (event) => {
     var toolText = `<b>${event.points[0].key}</b><table>`;
@@ -255,7 +256,13 @@ export const jenniferAbandonment = () => {
       series: seriesData,
     });
   };
+
   const mainAbandon = () => {
+    var [seriesData, seriesTotals] = createAbandSeries(
+      abandonData,
+      filters,
+      colors
+    );
     createAbandonmentTotals(seriesTotals);
     createAbandonmentChart(seriesData);
     var selectCommodityAbandon = document.getElementById(
@@ -264,27 +271,18 @@ export const jenniferAbandonment = () => {
     selectCommodityAbandon.addEventListener(
       "change",
       (selectCommodityAbandon) => {
-        abandonmentFilters.commodity = selectCommodityAbandon.target.value;
-        var [seriesData, seriesTotals] = filterSeries(
-          prepareSeriesNonTidy(
-            filterData(abandonmentData, abandonmentFilters),
-            false,
-            false,
-            ["Amounts Set Aside", "Remaining Estimate"],
-            "Company",
-            abandonmentColors,
-            2,
-            "name"
-          ),
-          abandonmentFilters
+        filters.commodity = selectCommodityAbandon.target.value;
+        var [seriesData, seriesTotals] = createAbandSeries(
+          abandonData,
+          filters,
+          colors
         );
         createAbandonmentTotals(seriesTotals);
         var abandonChart = createAbandonmentChart(seriesData);
-
-        if (abandonmentFilters.commodity == "All") {
+        if (filters.commodity == "All") {
           var titleText = "Group 1 Abandonment Breakdown";
         } else {
-          var titleText = `Group 1 Abandonment Breakdown - ${abandonmentFilters.commodity}`;
+          var titleText = `Group 1 Abandonment Breakdown - ${filters.commodity}`;
         }
         abandonChart.update({
           title: { text: titleText },

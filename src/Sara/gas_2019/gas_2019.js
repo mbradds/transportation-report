@@ -52,13 +52,6 @@ export const sara2019 = () => {
     );
   };
 
-  const seriesData = createGasPointsSeries(
-    gas2019Data,
-    pointsFilters,
-    units,
-    gas2019Colors
-  );
-
   const createGas2019Map = () => {
     return Highcharts.mapChart("container_gas_2019_map", {
       chart: {
@@ -401,6 +394,12 @@ export const sara2019 = () => {
   };
 
   try {
+    const seriesData = createGasPointsSeries(
+      gas2019Data,
+      pointsFilters,
+      units,
+      gas2019Colors
+    );
     var figure_title = document.getElementById("gas_points_title");
     setTitle(figure_title, pointsFilters);
     var gasPointsMap = createGas2019Map();
@@ -408,14 +407,13 @@ export const sara2019 = () => {
     var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
     selectUnitsGas2019.addEventListener("change", (selectUnitsGas2019) => {
       units.unitsCurrent = selectUnitsGas2019.target.value;
-      const seriesData = createGasPointsSeries(
-        gas2019Data,
-        pointsFilters,
-        units,
-        gas2019Colors
-      );
       chartGas2019.update({
-        series: seriesData,
+        series: createGasPointsSeries(
+          gas2019Data,
+          pointsFilters,
+          units,
+          gas2019Colors
+        ),
         yAxis: {
           title: { text: units.unitsCurrent },
         },
@@ -431,14 +429,13 @@ export const sara2019 = () => {
       $("#selectedVal").text(btnValue);
       pointsFilters.Year = btnText;
       setTitle(figure_title, pointsFilters);
-      const seriesData = createGasPointsSeries(
-        gas2019Data,
-        pointsFilters,
-        units,
-        gas2019Colors
-      );
       chartGas2019.update({
-        series: seriesData,
+        series: createGasPointsSeries(
+          gas2019Data,
+          pointsFilters,
+          units,
+          gas2019Colors
+        ),
       });
     });
   } catch (err) {
