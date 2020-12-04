@@ -28,16 +28,18 @@ export const coletteCrudeByRail = () => {
     "WCS-WTI Differential": cerPalette["Sun"],
   };
 
-  const seriesData = railChartTypes(
-    prepareSeriesNonTidy(
-      railData,
-      railFilters,
-      false,
-      ["Crude by Rail", "WCS-WTI Differential"],
-      "Date",
-      railColors
-    )
-  );
+  const createRailSeries = (railData,railFilters,railColors) => {
+    return railChartTypes(
+      prepareSeriesNonTidy(
+        railData,
+        railFilters,
+        false,
+        ["Crude by Rail", "WCS-WTI Differential"],
+        "Date",
+        railColors
+      )
+    );
+  };
 
   const createRailChart = (seriesData, railFilters) => {
     return new Highcharts.chart("container_crude_by_rail", {
@@ -108,22 +110,13 @@ export const coletteCrudeByRail = () => {
   };
 
   const mainChartRail = () => {
+    const seriesData = createRailSeries(railData,railFilters,railColors)
     var chartRail = createRailChart(seriesData, railFilters);
     var selectUnitsRail = document.getElementById("select_units_rail");
     selectUnitsRail.addEventListener("change", (selectUnitsRail) => {
       railFilters.Units = selectUnitsRail.target.value;
-      const seriesData = railChartTypes(
-        prepareSeriesNonTidy(
-          railData,
-          railFilters,
-          false,
-          ["Crude by Rail", "WCS-WTI Differential"],
-          "Date",
-          railColors
-        )
-      );
       chartRail.update({
-        series: seriesData,
+        series: createRailSeries(railData,railFilters,railColors),
         yAxis: {
           title: { text: `Rail Exports - ${railFilters.Units}` },
         },

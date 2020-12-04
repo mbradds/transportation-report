@@ -18,15 +18,23 @@ export const rebeccaGasTrade = () => {
   };
   var gasTradeFilters = { Activity: "Exports" };
   var gasTradeUnits = { unitsCol: "Volume (Bcf/d)", unitsCurrent: "Bcf/d" };
-  var seriesData = prepareSeriesTidy(
+
+  const createGasTradeSeries = (
     gasTradeData,
     gasTradeFilters,
-    false,
-    "Region",
-    "Year",
-    gasTradeUnits.unitsCol,
+    gasTradeUnits,
     gasTrafficColors
-  );
+  ) => {
+    return prepareSeriesTidy(
+      gasTradeData,
+      gasTradeFilters,
+      false,
+      "Region",
+      "Year",
+      gasTradeUnits.unitsCol,
+      gasTrafficColors
+    );
+  };
   const setTitle = (figure_title, filters) => {
     if (filters.Activity == "Exports") {
       figure_title.innerText =
@@ -187,6 +195,12 @@ export const rebeccaGasTrade = () => {
   };
 
   try {
+    var seriesData = createGasTradeSeries(
+      gasTradeData,
+      gasTradeFilters,
+      gasTradeUnits,
+      gasTrafficColors
+    );
     var mapGasTraffic = createGasRegionMap();
     var chartGasTraffic = createGasTrafficChart(seriesData, gasTradeUnits);
     var figure_title = document.getElementById("gas_trade_title");
@@ -200,17 +214,13 @@ export const rebeccaGasTrade = () => {
       } else {
         gasTradeUnits.unitsCol = "Volume (Million m3/d)";
       }
-      var seriesData = prepareSeriesTidy(
-        gasTradeData,
-        gasTradeFilters,
-        false,
-        "Region",
-        "Year",
-        gasTradeUnits.unitsCol,
-        gasTrafficColors
-      );
       chartGasTraffic.update({
-        series: seriesData,
+        series: createGasTradeSeries(
+          gasTradeData,
+          gasTradeFilters,
+          gasTradeUnits,
+          gasTrafficColors
+        ),
         yAxis: { title: { text: units } },
         tooltip: {
           pointFormat: tooltipPoint(units),
@@ -222,13 +232,10 @@ export const rebeccaGasTrade = () => {
     selectTradeType.addEventListener("change", (selectTradeType) => {
       gasTradeFilters.Activity = selectTradeType.target.value;
       setTitle(figure_title, gasTradeFilters);
-      var seriesData = prepareSeriesTidy(
+      var seriesData = createGasTradeSeries(
         gasTradeData,
         gasTradeFilters,
-        false,
-        "Region",
-        "Year",
-        gasTradeUnits.unitsCol,
+        gasTradeUnits,
         gasTrafficColors
       );
       chartGasTraffic = createGasTrafficChart(seriesData, gasTradeUnits);

@@ -72,8 +72,6 @@ export const jenniferRatingsMulti = () => {
     return creditSeriesTidy;
   };
 
-  var creditSeries = createCreditSeries(creditData);
-
   const creditSeriesSubset = (creditSeries, defaultSelect, agencies) => {
     if (agencies) {
       creditSeries = agencies.map((agency) => {
@@ -96,8 +94,6 @@ export const jenniferRatingsMulti = () => {
       return subset.flat();
     }
   };
-
-  var seriesSubset = creditSeriesSubset(creditSeries, onLoadCompanies, false);
 
   const createCreditChart = (series, scaleData, minY, maxY) => {
     return Highcharts.chart("container_ratings_multi", {
@@ -194,6 +190,8 @@ export const jenniferRatingsMulti = () => {
   };
 
   const mainRatingsMultiple = () => {
+    var creditSeries = createCreditSeries(creditData);
+    var seriesSubset = creditSeriesSubset(creditSeries, onLoadCompanies, false);
     const getChartSeriesName = (chart) => {
       var [companyNames, agencyNames] = [[], []];
       chart.series.map((series) => {

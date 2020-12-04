@@ -4,7 +4,6 @@ import {
   prepareSeriesPie,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-
 import crudeModeData from "./CrudeRawData-2019-01-01-2019-12-01.json";
 
 export const coletteCrudeMode = () => {
@@ -13,13 +12,7 @@ export const coletteCrudeMode = () => {
     Marine: cerPalette["Ocean"],
     Rail: cerPalette["Sun"],
   };
-  const seriesData = prepareSeriesPie(
-    crudeModeData,
-    "Crude Exports by Mode",
-    "Attribute",
-    "Percent",
-    crudeModeColors
-  );
+
   const createCrudeModeChart = (seriesData) => {
     return Highcharts.chart("container_crude_mode", {
       chart: {
@@ -60,6 +53,13 @@ export const coletteCrudeMode = () => {
     });
   };
   try {
+    const seriesData = prepareSeriesPie(
+      crudeModeData,
+      "Crude Exports by Mode",
+      "Attribute",
+      "Percent",
+      crudeModeColors
+    );
     createCrudeModeChart(seriesData);
   } catch (err) {
     errorChart("container_crude_mode");

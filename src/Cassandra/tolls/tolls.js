@@ -54,18 +54,19 @@ export const cassandraTolls = () => {
     "Enbridge Canadian Mainline": cerPalette["Flame"],
   };
 
-  const seriesData = tollChartTypes(
-    prepareSeriesTidy(
-      tollsData,
-      tollFilters,
-      false,
-      "Pipeline",
-      tollDate.Date,
-      "Rate Normalized",
-      tollColors
-    )
-  );
-
+  const createTollSeries = (tollsData, tollFilters, tollDate, tollColors) => {
+    return tollChartTypes(
+      prepareSeriesTidy(
+        tollsData,
+        tollFilters,
+        false,
+        "Pipeline",
+        tollDate.Date,
+        "Rate Normalized",
+        tollColors
+      )
+    );
+  };
   const createTollsChart = (seriesData, tollDate) => {
     return new Highcharts.chart("container_tolls", {
       chart: {
@@ -105,6 +106,12 @@ export const cassandraTolls = () => {
   };
 
   const mainTolls = () => {
+    var seriesData = createTollSeries(
+      tollsData,
+      tollFilters,
+      tollDate,
+      tollColors
+    );
     var figure_title = document.getElementById("tolls_title");
     setTitle(figure_title, tollFilters);
     var chartTolls = createTollsChart(seriesData, tollDate);
@@ -113,16 +120,11 @@ export const cassandraTolls = () => {
     selectTolls.addEventListener("change", (selectTolls) => {
       tollFilters.Commodity = selectTolls.target.value;
       setTitle(figure_title, tollFilters);
-      const seriesData = tollChartTypes(
-        prepareSeriesTidy(
-          tollsData,
-          tollFilters,
-          false,
-          "Pipeline",
-          tollDate.Date,
-          "Rate Normalized",
-          tollColors
-        )
+      var seriesData = createTollSeries(
+        tollsData,
+        tollFilters,
+        tollDate,
+        tollColors
       );
       chartTolls = createTollsChart(seriesData, tollDate);
     });

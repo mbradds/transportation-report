@@ -14,14 +14,17 @@ export const ryanNglProduction = () => {
     Propane: cerPalette["Forest"],
     Butanes: cerPalette["Night Sky"],
   };
-  var seriesData = prepareSeriesNonTidy(
-    nglProdData,
-    false,
-    units,
-    ["Ethane", "Propane", "Butanes"],
-    "Year",
-    nglProdColors
-  );
+
+  const createNglProdSeries = (nglProdData, units, nglProdColors) => {
+    return prepareSeriesNonTidy(
+      nglProdData,
+      false,
+      units,
+      ["Ethane", "Propane", "Butanes"],
+      "Year",
+      nglProdColors
+    );
+  };
 
   const mainNglProd = () => {
     var params = {
@@ -30,23 +33,14 @@ export const ryanNglProduction = () => {
         "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
       sourceText: "Source: Energy Futures",
       units: units,
-      series: seriesData,
+      series: createNglProdSeries(nglProdData, units, nglProdColors),
     };
     var chartNgl = productionChart(params);
     var selectUnitsNglProd = document.getElementById("select_units_ngl_prod");
     selectUnitsNglProd.addEventListener("change", (selectUnitsNglProd) => {
       units.unitsCurrent = selectUnitsNglProd.target.value;
-      var seriesData = prepareSeriesNonTidy(
-        nglProdData,
-        false,
-        units,
-        ["Ethane", "Propane", "Butanes"],
-        "Year",
-        nglProdColors
-      );
-
       chartNgl.update({
-        series: seriesData,
+        series: createNglProdSeries(nglProdData, units, nglProdColors),
         yAxis: {
           title: { text: units.unitsCurrent },
         },

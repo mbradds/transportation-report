@@ -21,31 +21,28 @@ export const kevinCrudePrices = () => {
     Differential: cerPalette["Ocean"],
   };
 
-  var seriesData = crudePriceChartTypes(
-    prepareSeriesNonTidy(
-      crudePriceData,
-      false,
-      false,
-      ["WCS", "WTI", "Differential"],
-      "Date",
-      crudePriceColors
-    )
-  );
-
-  var params = {
-    div: "container_crude_prices",
-    sourceLink: "https://www.ne2group.com/",
-    sourceText: "Source: ne2 Group",
-    units: { unitsCurrent: "USD/bbl" },
-    series: seriesData,
-    xAxisType: "datetime",
-    crosshair: true,
-  };
-  
   try {
+    var seriesData = crudePriceChartTypes(
+      prepareSeriesNonTidy(
+        crudePriceData,
+        false,
+        false,
+        ["WCS", "WTI", "Differential"],
+        "Date",
+        crudePriceColors
+      )
+    );
+    var params = {
+      div: "container_crude_prices",
+      sourceLink: "https://www.ne2group.com/",
+      sourceText: "Source: ne2 Group",
+      units: { unitsCurrent: "USD/bbl" },
+      series: seriesData,
+      xAxisType: "datetime",
+      crosshair: true,
+    };
     const chartCrudePrice = lineAndStackedArea(params);
-  } catch(err) {
-    errorChart("container_crude_prices")
+  } catch (err) {
+    errorChart("container_crude_prices");
   }
-  
 };

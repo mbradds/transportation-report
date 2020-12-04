@@ -13,15 +13,18 @@ export const coletteMarine = () => {
   const marineColors = { "Mb/d": cerPalette["Ocean"] };
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
 
-  var seriesData = prepareSeriesNonTidy(
-    marineData,
-    false,
-    units,
-    ["Mb/d"],
-    "Date",
-    marineColors
-  );
-  seriesData[0].name = "Marine Volumes";
+  const createMarineSeries = (marineData, units, marineColors) => {
+    var seriesData = prepareSeriesNonTidy(
+      marineData,
+      false,
+      units,
+      ["Mb/d"],
+      "Date",
+      marineColors
+    );
+    seriesData[0].name = "Marine Volumes";
+    return seriesData;
+  };
 
   const createMarineChart = (seriesData, units) => {
     return new Highcharts.chart("container_crude_marine", {
@@ -72,23 +75,14 @@ export const coletteMarine = () => {
   };
 
   const mainMarine = () => {
+    var seriesData = createMarineSeries(marineData, units, marineColors);
     var marineChart = createMarineChart(seriesData, units);
     var selectUnitsMarine = document.getElementById("select_units_marine");
 
     selectUnitsMarine.addEventListener("change", (selectUnitsMarine) => {
       units.unitsCurrent = selectUnitsMarine.target.value;
-      var seriesData = prepareSeriesNonTidy(
-        marineData,
-        false,
-        units,
-        ["Mb/d"],
-        "Date",
-        marineColors
-      );
-      seriesData[0].name = "Marine Volumes";
-
       marineChart.update({
-        series: seriesData,
+        series: createMarineSeries(marineData, units, marineColors),
         yAxis: {
           title: { text: units.unitsCurrent },
         },

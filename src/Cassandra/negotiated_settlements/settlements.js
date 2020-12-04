@@ -75,6 +75,17 @@ export const cassandraSettlements = () => {
     data = applyEndDateColors(data);
     data = data.sort(sortByProperty("start"));
 
+    const addRow = (row) => {
+      return {
+        name: row["Settlement Name"],
+        id: row["Settlement Name"],
+        parent: row.Company,
+        color: row.color,
+        start: row["Start Date"],
+        end: row.end,
+      };
+    };
+
     data.map((row) => {
       dates.push(row["Start Date"]);
       dates.push(row["End Date"]);
@@ -83,28 +94,14 @@ export const cassandraSettlements = () => {
         //the parent company is already in the series, add the sub settlement
         seriesTracker[row.Company].startDate.push(row["Start Date"]);
         seriesTracker[row.Company].endDate.push(row.end);
-        seriesSettle.push({
-          name: row["Settlement Name"],
-          id: row["Settlement Name"],
-          parent: row.Company,
-          color: row.color,
-          start: row["Start Date"],
-          end: row.end,
-        });
+        seriesSettle.push(addRow(row));
       } else {
         //A new company is added to the series as the parent, and the current settlement is also added
         seriesTracker[row.Company] = {
           startDate: [row["Start Date"]],
           endDate: [row.end],
         };
-        seriesSettle.push({
-          name: row["Settlement Name"],
-          id: row["Settlement Name"],
-          parent: row.Company,
-          color: row.color,
-          start: row["Start Date"],
-          end: row.end,
-        });
+        seriesSettle.push(addRow(row));
       }
     });
 
@@ -170,9 +167,7 @@ export const cassandraSettlements = () => {
     return [[...seriesSettle, ...companySettles], dates];
   };
 
-  const [seriesData, dates] = settlementSeries(settlementsData, filters);
-
-  const createSettlements = (seriesData) => {
+  const createSettlements = (seriesData,dates) => {
     return Highcharts.ganttChart("container_settlements", {
       chart: {
         type: "gantt",
@@ -320,13 +315,14 @@ export const cassandraSettlements = () => {
   const mainSettlements = () => {
     var figure_title = document.getElementById("settle_title");
     setTitle(figure_title, filters);
-    var settlementChart = createSettlements(seriesData);
+    const [seriesData, dates] = settlementSeries(settlementsData, filters);
+    var settlementChart = createSettlements(seriesData,dates);
     var selectSettle = document.getElementById("select_commodity_settlements");
     selectSettle.addEventListener("change", (selectSettle) => {
       filters.Commodity = selectSettle.target.value;
       setTitle(figure_title, filters);
       const [seriesData, dates] = settlementSeries(settlementsData, filters);
-      settlementChart = createSettlements(seriesData);
+      settlementChart = createSettlements(seriesData,dates);
     });
   };
   try {

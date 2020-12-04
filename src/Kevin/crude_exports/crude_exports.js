@@ -24,16 +24,6 @@ export const kevinCrudeExports = () => {
 
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
-  var seriesData = prepareSeriesTidy(
-    crudeExportsData,
-    false,
-    units,
-    "PADD",
-    "Year",
-    "Value",
-    crudeExportColors
-  );
-
   const createPaddMap = () => {
     return (paddMap = new Highcharts.mapChart("container_padd_map", {
       chart: {
@@ -174,7 +164,7 @@ export const kevinCrudeExports = () => {
   };
 
   const createCrudeExportsChart = (seriesData, units) => {
-    return chartCrudeExports = new Highcharts.chart(
+    return (chartCrudeExports = new Highcharts.chart(
       "container_crude_exports",
       {
         chart: {
@@ -212,7 +202,7 @@ export const kevinCrudeExports = () => {
 
         series: seriesData,
       }
-    );
+    ));
   };
 
   try {
@@ -221,6 +211,15 @@ export const kevinCrudeExports = () => {
     errorChart("container_padd_map");
   }
   try {
+    var seriesData = prepareSeriesTidy(
+      crudeExportsData,
+      false,
+      units,
+      "PADD",
+      "Year",
+      "Value",
+      crudeExportColors
+    );
     var chartCrudeExports = createCrudeExportsChart(seriesData, units);
   } catch (err) {
     errorChart("container_crude_exports");
