@@ -9,7 +9,7 @@ import gasData from "./gas_traffic.json";
 
 export const saraGasTraffic = () => {
   const gasTrafficChartTypes = (series) => {
-    series.map((data, seriesNum) => {
+    series.map((data) => {
       if (data.name == "Capacity") {
         data.type = "line";
       } else {
@@ -24,7 +24,7 @@ export const saraGasTraffic = () => {
     "Alliance Pipeline - Border": cerPalette["Night Sky"],
     "Foothills System - Kingsgate": cerPalette["Sun"],
     "Foothills System - Monchy": cerPalette["Flame"],
-    "TC Canadian Mainline - Northern Ontario Line": cerPalette["Forest"],
+    "TC Canadian Mainline - Prairies (Empress)": cerPalette["Forest"],
     Capacity: cerPalette["Cool Grey"],
   };
 
@@ -34,7 +34,7 @@ export const saraGasTraffic = () => {
     "Alliance Pipeline - Border",
     "Foothills System - Kingsgate",
     "Foothills System - Monchy",
-    "TC Canadian Mainline - Northern Ontario Line",
+    "TC Canadian Mainline - Prairies (Empress)",
     "Capacity",
   ];
 

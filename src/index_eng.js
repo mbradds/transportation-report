@@ -1,4 +1,6 @@
-import { generalTheme} from "./modules/themes";
+//TODO: add Highcharts number/date format to util
+//TODO: add setTitle to util
+import { generalTheme } from "./modules/themes";
 generalTheme();
 import { instructionsChart } from "./modules/charts.js";
 import { systemMaps } from "./SystemMaps/maps";

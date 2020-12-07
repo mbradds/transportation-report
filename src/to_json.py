@@ -59,7 +59,10 @@ def execute_sql(query_name):
     except:
         query = no_encoding_open(query_path)
     
-    conn,engine = cer_connection()
+    if query_name == 'crude_mode.sql':
+        conn,engine = cer_connection(db='ndb-b1')
+    else:
+        conn,engine = cer_connection()
     df = pd.read_sql_query(query,con=conn)
     conn.close()
     
@@ -74,7 +77,16 @@ def readCersei(query,name=None):
     if name == 'oil_prices.json':
         df = normalize_dates(df, ['Date'])
         df['Differential'] = (df['WTI'] - df['WCS'])*-1
-        write_path = os.path.join(os.getcwd(),'Kevin/crude_prices/','oil_prices.json')
+        write_path = os.path.join(os.getcwd(),'Kevin/crude_prices/',name)
+    if name == 'crude_mode.json':
+        # totals = []
+        # for year in list(set(df['Year'])):
+        #     df_year = df[df['Year']==year].copy()
+        #     df_year['Total'] = df_year['Volume (bbl/d)'].sum()
+        #     df_year['Percent'] = df_year['Volume (bbl/d)']/df_year['Total']
+        #     totals.append(df_year)
+        # df = pd.concat(totals, axis=0, sort=False, ignore_index=True)
+        write_path = os.path.join(os.getcwd(),'Colette/crude_export_mode/',name)
     if name == 'crude_by_rail_wcs.json':
         df['Crude by Rail'] = [x/1000 if u=='bbl per day' else x for x,u in zip(df['Crude by Rail'],df['Units'])]
         df['Units'] = df['Units'].replace({'bbl per day':'Mb/d','m3 per day':'m3/d'})
@@ -601,6 +613,7 @@ if __name__ == '__main__':
     #colette
     #df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
     #df = readExcel('figures.xlsx',sheet='Available for Export')
+    df = readCersei('crude_mode.sql','crude_mode.json')
     #df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
     #df = readExcel('marine_exports.xlsx','marine exports')
     
@@ -628,7 +641,7 @@ if __name__ == '__main__':
     #df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    df,scale = creditRatings()
+    #df,scale = creditRatings()
     #df = readExcel("abandonment funding data.xlsx","Modified",sql=True)
 
     #other
