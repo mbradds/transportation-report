@@ -17,6 +17,10 @@ export const cerPalette = {
   Forecast: "#F0F8FF",
 };
 
+export const numberFormat = (value) => {
+  return Highcharts.numberFormat(value, 0, ".", ",");
+};
+
 export const conversions = (conv, current, base) => {
   var cerConversions = {
     "m3/d to b/d": { conversion: 6.2898, type: "*" },
@@ -247,21 +251,25 @@ export const prepareSeriesTidy = (
 };
 
 export const prepareSeriesPie = (
-  data,
+  dataRaw,
+  filters,
   seriesName,
   nameCol,
   yCol,
   colors,
   colorByPoint = true
 ) => {
-  const series = { name: seriesName, colorByPoint: colorByPoint };
-  series.data = data.map((row) => {
-    return {
-      name: row[nameCol],
-      y: row[yCol],
-      color: colors[row[nameCol]],
-    };
-  });
+  const data = filterData(dataRaw, filters)[0];
+  const series = { name: seriesName, colorByPoint: colorByPoint, data: [] };
+  for (const [key, value] of Object.entries(data)) {
+    if (key !== "Year") {
+      series.data.push({
+        name: key,
+        y: value,
+        color: colors[key],
+      });
+    }
+  }
   return [series];
 };
 
