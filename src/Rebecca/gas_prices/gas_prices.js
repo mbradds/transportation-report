@@ -154,7 +154,7 @@ export const rebeccaGasPrices = () => {
     });
   };
 
-  const createGasPriceChart = (seriesData, units) => {
+  const createGasPriceChart = (seriesData) => {
     return new Highcharts.chart("container_gas_prices", {
       chart: {
         zoomType: "x",
@@ -172,7 +172,7 @@ export const rebeccaGasPrices = () => {
             this.x
           )} </b><table>`;
           this.points.map((p) => {
-            toolText += tooltipSymbol(p, units.unitsCurrent, true);
+            toolText += tooltipSymbol(p, "", true, false);
           });
           return toolText + "</table>";
         },
@@ -184,8 +184,8 @@ export const rebeccaGasPrices = () => {
       },
 
       yAxis: {
-        title: { text: units.Units },
-        stackLabels: {
+        title: { text: "Prices (Normalized)" },
+        labels: {
           enabled: false,
         },
       },
@@ -201,31 +201,8 @@ export const rebeccaGasPrices = () => {
     );
     var gasMap = createGasPriceMap();
     var chartGasPrice = createGasPriceChart(seriesData, gasPriceFilters);
-
-    var selectUnitsGasPrice = document.getElementById(
-      "select_units_gas_prices"
-    );
-    selectUnitsGasPrice.addEventListener("change", (selectUnitsGasPrice) => {
-      var units = selectUnitsGasPrice.target.value;
-      gasPriceFilters.unitsCurrent = units;
-      if (units == "$CN/GIG") {
-        gasPriceFilters.Units = "Price ($CN/GIG)";
-      } else {
-        gasPriceFilters.Units = "Price ($US/MMB)";
-      }
-
-      chartGasPrice.update({
-        series: createGasPriceSeries(
-          gasPriceData,
-          gasPriceFilters,
-          gasPriceColors
-        ),
-        yAxis: {
-          title: { text: gasPriceFilters.Units },
-        },
-      });
-    });
   } catch (err) {
+    console.log(err);
     errorChart("container_gas_map");
     errorChart("container_gas_prices");
   }

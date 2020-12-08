@@ -25,7 +25,7 @@ export const kevinCrudeExports = () => {
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
   const createPaddMap = () => {
-    return (paddMap = new Highcharts.mapChart("container_padd_map", {
+    return new Highcharts.mapChart("container_padd_map", {
       chart: {
         type: "map",
         map: "countries/us/custom/us-all-mainland",
@@ -160,49 +160,46 @@ export const kevinCrudeExports = () => {
           color: crudeExportColors["PADD V"],
         },
       ],
-    }));
+    });
   };
 
   const createCrudeExportsChart = (seriesData, units) => {
-    return (chartCrudeExports = new Highcharts.chart(
-      "container_crude_exports",
-      {
-        chart: {
-          type: "column",
-        },
+    return new Highcharts.chart("container_crude_exports", {
+      chart: {
+        type: "column",
+      },
 
-        credits: {
-          enabled: false,
-        },
+      credits: {
+        enabled: false,
+      },
 
-        plotOptions: {
-          series: {
-            events: {
-              mouseOver: function () {
-                var currentSelection = this.name;
-                mouseOverFunction(paddMap.series, currentSelection);
-              },
-              mouseOut: function () {
-                mouseOutFunction(paddMap.series);
-              },
+      plotOptions: {
+        series: {
+          events: {
+            mouseOver: function () {
+              var currentSelection = this.name;
+              mouseOverFunction(paddMap.series, currentSelection);
+            },
+            mouseOut: function () {
+              mouseOutFunction(paddMap.series);
             },
           },
         },
+      },
 
-        tooltip: {
-          pointFormat: tooltipPoint(units.unitsCurrent),
+      tooltip: {
+        pointFormat: tooltipPoint(units.unitsCurrent),
+      },
+
+      yAxis: {
+        title: { text: units.unitsCurrent },
+        stackLabels: {
+          enabled: true,
         },
+      },
 
-        yAxis: {
-          title: { text: units.unitsCurrent },
-          stackLabels: {
-            enabled: true,
-          },
-        },
-
-        series: seriesData,
-      }
-    ));
+      series: seriesData,
+    });
   };
 
   try {

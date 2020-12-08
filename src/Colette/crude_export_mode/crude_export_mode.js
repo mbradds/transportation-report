@@ -21,7 +21,7 @@ export const coletteCrudeMode = () => {
   };
 
   const createCrudeModeChart = (seriesData, filters) => {
-    return Highcharts.chart("container_crude_mode", {
+    return new Highcharts.chart("container_crude_mode", {
       chart: {
         borderWidth: 1,
         type: "pie",
