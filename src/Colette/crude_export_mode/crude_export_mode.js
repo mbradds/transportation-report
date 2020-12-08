@@ -3,16 +3,12 @@ import {
   creditsClick,
   prepareSeriesPie,
   numberFormat,
+  setTitle,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import crudeModeData from "./crude_mode.json";
 
 export const coletteCrudeMode = () => {
-  const setTitle = (figure_title, filters) => {
-    figure_title.innerText = `Figure 5: ${String(
-      filters.Year
-    ).trim()} Crude Oil Exports by Mode`;
-  };
   const crudeModeFilters = { Year: 2019 };
   const crudeModeColors = {
     Pipeline: cerPalette["Night Sky"],
@@ -62,6 +58,7 @@ export const coletteCrudeMode = () => {
       plotOptions: {
         pie: {
           cursor: "pointer",
+          size: "80%",
           dataLabels: {
             enabled: true,
             format: "<b>{point.name}</b>: {point.percentage:.1f} %",
@@ -74,7 +71,12 @@ export const coletteCrudeMode = () => {
   };
   try {
     var figure_title = document.getElementById("crude_mode_title");
-    setTitle(figure_title, crudeModeFilters);
+    setTitle(
+      figure_title,
+      "5",
+      crudeModeFilters.Year,
+      "Crude Oil Exports by Mode"
+    );
 
     const seriesData = prepareSeriesPie(
       crudeModeData,
@@ -94,7 +96,12 @@ export const coletteCrudeMode = () => {
       var btnValue = thisBtn.val();
       $("#selectedVal").text(btnValue);
       crudeModeFilters.Year = btnText;
-      setTitle(figure_title, crudeModeFilters);
+      setTitle(
+        figure_title,
+        "5",
+        crudeModeFilters.Year,
+        "Crude Oil Exports by Mode"
+      );
       crudeModePie.update({
         series: prepareSeriesPie(
           crudeModeData,

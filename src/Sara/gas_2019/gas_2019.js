@@ -5,6 +5,7 @@ import {
   mouseOverFunction,
   mouseOutFunction,
   conversions,
+  setTitle,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import gas2019Data from "./gas_2019.json";
@@ -17,10 +18,6 @@ export const sara2019 = () => {
 
   var units = conversions("Million m3/d to Bcf/d", "Bcf/d", "Million m3/d");
   var pointsFilters = { Year: "2019" };
-
-  const setTitle = (figure_title, filters) => {
-    figure_title.innerText = `Figure 14: ${filters.Year.trim()} Pipeline Throughput & Capacity at Key Points`;
-  };
 
   const columnPlacement = (series) => {
     return series.map((s) => {
@@ -401,7 +398,12 @@ export const sara2019 = () => {
       gas2019Colors
     );
     var figure_title = document.getElementById("gas_points_title");
-    setTitle(figure_title, pointsFilters);
+    setTitle(
+      figure_title,
+      "14",
+      pointsFilters.Year,
+      "Pipeline Throughput & Capacity at Key Points"
+    );
     var gasPointsMap = createGas2019Map();
     var chartGas2019 = createGas2019Chart(seriesData, units);
     var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
@@ -428,7 +430,12 @@ export const sara2019 = () => {
       var btnValue = thisBtn.val();
       $("#selectedVal").text(btnValue);
       pointsFilters.Year = btnText;
-      setTitle(figure_title, pointsFilters);
+      setTitle(
+        figure_title,
+        "14",
+        pointsFilters.Year,
+        "Pipeline Throughput & Capacity at Key Points"
+      );
       chartGas2019.update({
         series: createGasPointsSeries(
           gas2019Data,
