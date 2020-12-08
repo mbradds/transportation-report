@@ -3,6 +3,7 @@ import {
   prepareSeriesNonTidy,
   conversions,
   tooltipPoint,
+  setTitle,
 } from "../../modules/util.js";
 import { productionChart, errorChart } from "../../modules/charts.js";
 import crudeProdData from "./Crude_Oil_Production.json";
@@ -15,9 +16,6 @@ export const kevinCrudeProduction = () => {
     "Field Condensate": cerPalette["Forest"],
     "Mined Bitumen": cerPalette["Cool Grey"],
     "In Situ Bitumen": cerPalette["Dim Grey"],
-  };
-  const setTitle = (figure_title, filters) => {
-    figure_title.innerText = `Figure 1: ${filters.Region} Crude Oil Production`;
   };
 
   var crudeProdFilters = { Region: "Canada" };
@@ -40,7 +38,6 @@ export const kevinCrudeProduction = () => {
       return 3;
     }
   };
-
 
   const mainCrudeProduction = () => {
     const ticks = (crudeProdFilters, units) => {
@@ -71,7 +68,12 @@ export const kevinCrudeProduction = () => {
     };
 
     var figure_title = document.getElementById("crude_prod_title");
-    setTitle(figure_title, crudeProdFilters);
+    setTitle(
+      figure_title,
+      "1",
+      crudeProdFilters.Region,
+      "Crude Oil Production"
+    );
 
     var seriesData = prepareSeriesNonTidy(
       crudeProdData,
@@ -82,7 +84,7 @@ export const kevinCrudeProduction = () => {
       crudeProdColors,
       roundValues(crudeProdFilters)
     );
-    
+
     var params = {
       div: "container_crude_production",
       sourceLink:
@@ -100,8 +102,12 @@ export const kevinCrudeProduction = () => {
       "change",
       (selectRegionCrudeProd) => {
         crudeProdFilters.Region = selectRegionCrudeProd.target.value;
-
-        setTitle(figure_title, crudeProdFilters);
+        setTitle(
+          figure_title,
+          "1",
+          crudeProdFilters.Region,
+          "Crude Oil Production"
+        );
         var seriesData = prepareSeriesNonTidy(
           crudeProdData,
           crudeProdFilters,

@@ -21,6 +21,10 @@ export const numberFormat = (value) => {
   return Highcharts.numberFormat(value, 0, ".", ",");
 };
 
+export const dateFormat = (value) => {
+  return Highcharts.dateFormat("%b %d, %Y", value);
+};
+
 export const conversions = (conv, current, base) => {
   var cerConversions = {
     "m3/d to b/d": { conversion: 6.2898, type: "*" },
@@ -344,4 +348,15 @@ export const tooltipSymbol = (
       event.series.name
     }: </td><td style="padding:0"><b>${y} ${unitsCurrent}</b></td></tr>`;
   }
+};
+
+export const setTitle = (
+  figure_title,
+  figure_number,
+  filter_value,
+  title_text
+) => {
+  figure_title.innerText = `Figure ${figure_number}: ${String(
+    filter_value
+  ).trim()} ${title_text}`;
 };

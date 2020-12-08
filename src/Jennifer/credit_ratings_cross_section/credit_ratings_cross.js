@@ -2,6 +2,7 @@ import {
   cerPalette,
   prepareSeriesTidy,
   getUnique,
+  setTitle,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import creditData from "../credit_ratings/CreditTables.json";
@@ -15,10 +16,6 @@ export const jenniferRatingsCross = () => {
   };
 
   var ratingsFilter = { Year: "2019" };
-
-  const setTitle = (figure_title, filters) => {
-    figure_title.innerText = `Figure 22: Company Credit Ratings ${filters.Year.trim()}`;
-  };
 
   const addColumns = (data) => {
     return data.map((row) => {
@@ -192,7 +189,7 @@ export const jenniferRatingsCross = () => {
     var sortedSeries = createSortedSeries(creditSeries);
     var yearChart = createChartCross(sortedSeries, minY, maxY);
     var figure_title = document.getElementById("ratings_year_title");
-    setTitle(figure_title, ratingsFilter);
+    setTitle(figure_title, "22", ratingsFilter.Year, "Company Credit Ratings");
 
     $("#credit_years button").on("click", function () {
       $(".btn-credit > .btn").removeClass("active");
@@ -202,7 +199,12 @@ export const jenniferRatingsCross = () => {
       var btnValue = thisBtn.val();
       $("#selectedVal").text(btnValue);
       ratingsFilter.Year = btnText;
-      setTitle(figure_title, ratingsFilter);
+      setTitle(
+        figure_title,
+        "22",
+        ratingsFilter.Year,
+        "Company Credit Ratings"
+      );
       var creditSeries = createCreditSeries(
         creditData,
         ratingsFilter,

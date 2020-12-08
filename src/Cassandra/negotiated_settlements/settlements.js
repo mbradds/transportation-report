@@ -1,9 +1,8 @@
-import { cerPalette, creditsClick } from "../../modules/util.js";
+import { cerPalette, creditsClick, dateFormat } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import settlementsData from "./settlements.json";
 
 export const cassandraSettlements = () => {
-  const dateFormat = "%b %d, %Y";
   const legendNames = {
     company: {
       name: "Active settlement(s)",
@@ -167,7 +166,7 @@ export const cassandraSettlements = () => {
     return [[...seriesSettle, ...companySettles], dates];
   };
 
-  const createSettlements = (seriesData,dates) => {
+  const createSettlements = (seriesData, dates) => {
     return Highcharts.ganttChart("container_settlements", {
       chart: {
         type: "gantt",
@@ -220,10 +219,7 @@ export const cassandraSettlements = () => {
             color: "black",
             label: {
               formatter: function () {
-                return (
-                  Highcharts.dateFormat(dateFormat, this.options.value) +
-                  " (today, UTC)"
-                );
+                return dateFormat(this.options.value) + " (today, UTC)";
               },
             },
           },
@@ -256,7 +252,8 @@ export const cassandraSettlements = () => {
               },
               backgroundColor: "white",
               borderColor: "white",
-              text: "Click on a pipeline name<br>to view individual settlements",
+              text:
+                "Click on a pipeline name<br>to view individual settlements",
             },
           ],
           draggable: "",
@@ -274,18 +271,16 @@ export const cassandraSettlements = () => {
           if (this.color == cerPalette["Cool Grey"]) {
             var endText = "No set end date";
           } else {
-            var endText = Highcharts.dateFormat(dateFormat, this.point.end);
+            var endText = dateFormat(this.point.end);
           }
           if (this.point.parent == null) {
             return (
               `<b>${
                 this.key
-              }</b><table> <tr><td> Active settlement(s) start:</td><td style="padding:0"><b> ${Highcharts.dateFormat(
-                dateFormat,
+              }</b><table> <tr><td> Active settlement(s) start:</td><td style="padding:0"><b> ${dateFormat(
                 this.point.start
               )}</b></td></tr>` +
-              `<tr><td> Active settlement(s) end:</td><td style="padding:0"><b> ${Highcharts.dateFormat(
-                dateFormat,
+              `<tr><td> Active settlement(s) end:</td><td style="padding:0"><b> ${dateFormat(
                 this.point.end
               )}</b></td></tr>` +
               `<tr><td> Active settlement(s) duration:</td><td style="padding:0"><b> ${years} years</b></table>`
@@ -293,8 +288,7 @@ export const cassandraSettlements = () => {
           } else {
             return (
               `<b>${this.point.parent} - ${this.key} </b><table>` +
-              `<tr><td>Start:</td><td style="padding:0"><b> ${Highcharts.dateFormat(
-                dateFormat,
+              `<tr><td>Start:</td><td style="padding:0"><b> ${dateFormat(
                 this.point.start
               )}</b>` +
               `<tr><td>End:</td><td style="padding:0"><b> ${endText}</b>` +
@@ -316,13 +310,13 @@ export const cassandraSettlements = () => {
     var figure_title = document.getElementById("settle_title");
     setTitle(figure_title, filters);
     const [seriesData, dates] = settlementSeries(settlementsData, filters);
-    var settlementChart = createSettlements(seriesData,dates);
+    var settlementChart = createSettlements(seriesData, dates);
     var selectSettle = document.getElementById("select_commodity_settlements");
     selectSettle.addEventListener("change", (selectSettle) => {
       filters.Commodity = selectSettle.target.value;
       setTitle(figure_title, filters);
       const [seriesData, dates] = settlementSeries(settlementsData, filters);
-      settlementChart = createSettlements(seriesData,dates);
+      settlementChart = createSettlements(seriesData, dates);
     });
   };
   try {
