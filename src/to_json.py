@@ -134,6 +134,10 @@ def readCersei(query,name=None):
         max_price,min_price = max(df['Price ($CN/GIG)']),min(df['Price ($CN/GIG)'])
         diff = max_price-min_price
         df['Price ($CN/GIG)'] = [((x-min_price)/diff)+min_price for x in df['Price ($CN/GIG)']]
+        df['Location'] = df['Location'].replace({'Henry Hub TDt Com':'Henry Hub',
+                                                 'Dawn Ontario TDt Com':'Dawn',
+                                                 'TC Alb AECO-C TDt Com Dly':'Alberta NIT',
+                                                 'Westcoast Stn 2 TDt Com':'Station 2'})
         write_path = os.path.join(os.getcwd(),'Rebecca/gas_prices/',name)
     
     if (name != None and name not in ['fin_resource_class_names.json','st_stephen.json','ns_offshore.json']):

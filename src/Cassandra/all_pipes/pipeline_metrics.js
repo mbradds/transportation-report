@@ -3,11 +3,29 @@ import {
   creditsClick,
   cerPalette,
   tooltipPoint,
+  sortObj,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import financialData from "./PipelineProfileTables.json";
 
 export const cassandraAllPipes = () => {
+  const sortLegend = (series) => {
+    const toSort = sortObj(
+      series.map((row) => {
+        return { name: row.name, value: row.data.slice(-1)[0].y };
+      })
+    );
+    const legendOrder = {};
+    toSort.map((legendVal, legendPosition) => {
+      legendOrder[legendVal.name] = legendPosition + 1;
+    });
+
+    return series.map((row) => {
+      row.legendIndex = legendOrder[row.name];
+      return row;
+    });
+  };
+
   const prepareSeriesFinance = (data, filters) => {
     for (const [key, value] of Object.entries(filters)) {
       if (value !== "All") {
@@ -62,8 +80,7 @@ export const cassandraAllPipes = () => {
         return 0;
       }
     };
-
-    return [hcData, yOptions];
+    return [sortLegend(hcData), yOptions];
   };
 
   var defaultMetric = "Deemed Equity Ratio";
@@ -104,12 +121,6 @@ export const cassandraAllPipes = () => {
         text:
           financeFilters.Type + ": " + financeFilters.Category + " pipelines",
       },
-
-      // legend: {
-      //   labelFormatter: function () {
-      //     console.log(this);
-      //   },
-      // },
 
       tooltip: {
         shared: true,
@@ -176,6 +187,7 @@ export const cassandraAllPipes = () => {
   try {
     mainPipeline();
   } catch (err) {
+    console.log(err);
     errorChart("container_financial_metrics");
   }
 };
