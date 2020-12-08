@@ -26,7 +26,7 @@ export const cassandraAllPipes = () => {
     for (const pipe in finPipes) {
       var dataPipe = data.filter((row) => row.Pipeline == finPipes[pipe]);
       var unit = dataPipe[0]["Unit"];
-      dataPipe = dataPipe.map((v, i) => {
+      dataPipe = dataPipe.map((v) => {
         return {
           x: v["Year"],
           y: v["Value"],
@@ -57,6 +57,11 @@ export const cassandraAllPipes = () => {
         return this.value / 1000000;
       };
     }
+    yOptions.yMin = function () {
+      if (filters.Type == "Deemed Equity Ratio") {
+        return 0;
+      }
+    };
 
     return [hcData, yOptions];
   };
@@ -100,6 +105,12 @@ export const cassandraAllPipes = () => {
           financeFilters.Type + ": " + financeFilters.Category + " pipelines",
       },
 
+      // legend: {
+      //   labelFormatter: function () {
+      //     console.log(this);
+      //   },
+      // },
+
       tooltip: {
         shared: true,
         pointFormat: tooltipPoint(yOptions.tooltip),
@@ -108,6 +119,7 @@ export const cassandraAllPipes = () => {
       yAxis: {
         startOnTick: false,
         endOnTick: false,
+        min: yOptions.yMin(),
         title: {
           text: yOptions.yLabel,
         },

@@ -326,12 +326,22 @@ export const tooltipPoint = (unitsCurrent) => {
   return `<tr><td> <span style="color: {series.color}">&#9679</span> {series.name}: </td><td style="padding:0"><b>{point.y} ${unitsCurrent}</b></td></tr>`;
 };
 
-export const tooltipSymbol = (event, unitsCurrent, shared = true) => {
+export const tooltipSymbol = (
+  event,
+  unitsCurrent,
+  shared = true,
+  showY = true
+) => {
+  if (showY) {
+    var y = event.point.y;
+  } else {
+    var y = "";
+  }
   if (shared) {
     return `<tr><td> <span style="color: ${event.series.color}">${symbolHTML(
       event.point.graphic.symbolName
-    )}</span> ${event.series.name}: </td><td style="padding:0"><b>${
-      event.point.y
-    } ${unitsCurrent}</b></td></tr>`;
+    )}</span> ${
+      event.series.name
+    }: </td><td style="padding:0"><b>${y} ${unitsCurrent}</b></td></tr>`;
   }
 };

@@ -68,7 +68,7 @@ export const saraMnp = () => {
 
   const createChartMnp = (seriesData, div, units, yMax) => {
     if (div == "container_mnp") {
-      var titleText = "M&NP Pipeline Traffic";
+      var titleText = "M&NP Pipeline Throughput & Capacity";
       var sourceText = "";
     } else {
       var titleText = "N.S. Offshore Natural Gas Production";

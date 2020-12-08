@@ -1,8 +1,5 @@
 --use CTS;
 --go
---select [Year],[Marine],[Railroad],[Pipeline]
---from
---(
 SELECT 
 [Year],
 [Mode Simple] as [Mode],
@@ -29,8 +26,3 @@ GROUP BY VCALID.OilStreamRouteName, YEAR(VCALID.ReportingPeriod)
 where [Mode Simple] <> 'Truck'
 group by [Year],[Mode Simple]
 ORDER BY [Year], [Mode Simple]
---) as SourceTable
---pivot
---(
---avg([Volume (bbl/d)]) for Mode in ([Marine],[Railroad],[Pipeline])
---) as PivotTable

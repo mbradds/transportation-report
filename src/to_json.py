@@ -79,13 +79,6 @@ def readCersei(query,name=None):
         df['Differential'] = (df['WTI'] - df['WCS'])*-1
         write_path = os.path.join(os.getcwd(),'Kevin/crude_prices/',name)
     if name == 'crude_mode.json':
-        # totals = []
-        # for year in list(set(df['Year'])):
-        #     df_year = df[df['Year']==year].copy()
-        #     df_year['Total'] = df_year['Volume (bbl/d)'].sum()
-        #     df_year['Percent'] = df_year['Volume (bbl/d)']/df_year['Total']
-        #     totals.append(df_year)
-        # df = pd.concat(totals, axis=0, sort=False, ignore_index=True)
         write_path = os.path.join(os.getcwd(),'Colette/crude_export_mode/',name)
     if name == 'crude_by_rail_wcs.json':
         df['Crude by Rail'] = [x/1000 if u=='bbl per day' else x for x,u in zip(df['Crude by Rail'],df['Units'])]
@@ -133,13 +126,14 @@ def readCersei(query,name=None):
         df.loc[df['Corporate Entity'] == 'Maritimes & Northeast Pipeline', 'Pipeline Name'] = 'M&NP Pipeline'
         df['Pipeline Name'] = df['Pipeline Name'].replace({'BC Pipeline':'Enbridge BC Pipeline'})
         df['Key Point'] = df['Key Point'].replace({'Baileyville, Ma. / St. Stephen N.B.':'St. Stephen'})
-        #df['Spare Capacity'] = df['Capacity'] - df['Throughput']
         df['Series Name'] = df['Pipeline Name']+' - '+df['Key Point']+' - '+df['Trade Type']
-        df = df.sort_values(by=['Capacity'], ascending=False)
         delete = ['Corporate Entity','Pipeline Name','Key Point','Trade Type']
         for d in delete:
             del df[d]
     if name == 'gas_prices.json':
+        max_price,min_price = max(df['Price ($CN/GIG)']),min(df['Price ($CN/GIG)'])
+        diff = max_price-min_price
+        df['Price ($CN/GIG)'] = [((x-min_price)/diff)+min_price for x in df['Price ($CN/GIG)']]
         write_path = os.path.join(os.getcwd(),'Rebecca/gas_prices/',name)
     
     if (name != None and name not in ['fin_resource_class_names.json','st_stephen.json','ns_offshore.json']):
@@ -613,7 +607,7 @@ if __name__ == '__main__':
     #colette
     #df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
     #df = readExcel('figures.xlsx',sheet='Available for Export')
-    df = readCersei('crude_mode.sql','crude_mode.json')
+    #df = readCersei('crude_mode.sql','crude_mode.json')
     #df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
     #df = readExcel('marine_exports.xlsx','marine exports')
     
@@ -623,7 +617,7 @@ if __name__ == '__main__':
     #dfmnp,dfoffshore = st_stephen()
     
     #rebecca
-    #df = readCersei('platts_gas.sql','gas_prices.json')
+    df = readCersei('platts_gas.sql','gas_prices.json')
     #df = readExcel('Natural_Gas_Production.xlsx')
     #df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
     
@@ -646,7 +640,5 @@ if __name__ == '__main__':
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx',sql=True)
-    #df = crudeThroughput(name='oil_throughput.sql')
-    #df = crudeCapacity(name='oil_capacity.sql')
     
 #%%
