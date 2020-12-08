@@ -21,8 +21,8 @@ export const numberFormat = (value) => {
   return Highcharts.numberFormat(value, 0, ".", ",");
 };
 
-export const dateFormat = (value) => {
-  return Highcharts.dateFormat("%b %d, %Y", value);
+export const dateFormat = (value, format = "%b %d, %Y") => {
+  return Highcharts.dateFormat(format, value);
 };
 
 export const conversions = (conv, current, base) => {
@@ -39,6 +39,10 @@ export const conversions = (conv, current, base) => {
   units.unitsCurrent = current;
   units.unitsBase = base;
   return units;
+};
+
+export const sortObj = (obj) => {
+  return obj.slice().sort((a, b) => b.value - a.value);
 };
 
 //takes in a json object and checks if the column has data

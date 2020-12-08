@@ -1,4 +1,3 @@
-//TODO: add Highcharts number/date format to util
 import { generalTheme } from "./modules/themes";
 generalTheme();
 import { instructionsChart } from "./modules/charts.js";

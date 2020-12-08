@@ -5,16 +5,17 @@ import {
   mouseOverFunction,
   mouseOutFunction,
   tooltipSymbol,
+  dateFormat,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import gasPriceData from "./gas_prices.json";
 
 export const rebeccaGasPrices = () => {
   const gasPriceColors = {
-    ["Dawn Ontario TDt Com"]: cerPalette["Sun"],
-    ["TC Alb AECO-C TDt Com Dly"]: cerPalette["Forest"],
-    ["Henry Hub TDt Com"]: cerPalette["Night Sky"],
-    ["Westcoast Stn 2 TDt Com"]: cerPalette["Ocean"],
+    ["Dawn"]: cerPalette["Sun"],
+    ["Alberta NIT"]: cerPalette["Forest"],
+    ["Henry Hub"]: cerPalette["Night Sky"],
+    ["Station 2"]: cerPalette["Ocean"],
   };
 
   var gasPriceFilters = { Units: "Price ($CN/GIG)", unitsCurrent: "$CN/GIG" };
@@ -96,8 +97,8 @@ export const rebeccaGasPrices = () => {
         },
         {
           type: "mappoint",
-          name: "Dawn Ontario TDt Com",
-          color: gasPriceColors["Dawn Ontario TDt Com"],
+          name: "Dawn",
+          color: gasPriceColors["Dawn"],
           data: [
             {
               lat: 42.7071,
@@ -110,8 +111,8 @@ export const rebeccaGasPrices = () => {
         },
         {
           type: "mappoint",
-          name: "Henry Hub TDt Com",
-          color: gasPriceColors["Henry Hub TDt Com"],
+          name: "Henry Hub",
+          color: gasPriceColors["Henry Hub"],
           data: [
             {
               lat: 29.9583,
@@ -124,8 +125,8 @@ export const rebeccaGasPrices = () => {
         },
         {
           type: "mappoint",
-          name: "TC Alb AECO-C TDt Com Dly",
-          color: gasPriceColors["TC Alb AECO-C TDt Com Dly"],
+          name: "Alberta NIT",
+          color: gasPriceColors["Alberta NIT"],
           data: [
             {
               lat: 53.5461,
@@ -138,8 +139,8 @@ export const rebeccaGasPrices = () => {
         },
         {
           type: "mappoint",
-          name: "Westcoast Stn 2 TDt Com",
-          color: gasPriceColors["Westcoast Stn 2 TDt Com"],
+          name: "Station 2",
+          color: gasPriceColors["Station 2"],
           data: [
             {
               lat: 55.6977,
@@ -167,10 +168,7 @@ export const rebeccaGasPrices = () => {
       tooltip: {
         shared: true,
         formatter: function () {
-          var toolText = `<b> ${Highcharts.dateFormat(
-            "%B-%Y",
-            this.x
-          )} </b><table>`;
+          var toolText = `<b> ${dateFormat(this.x, "%B-%Y")} </b><table>`;
           this.points.map((p) => {
             toolText += tooltipSymbol(p, "", true, false);
           });
