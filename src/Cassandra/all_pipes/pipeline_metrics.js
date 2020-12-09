@@ -2,7 +2,7 @@ import {
   getUnique,
   creditsClick,
   cerPalette,
-  tooltipPoint,
+  tooltipSorted,
   sortJson,
   sortObj,
 } from "../../modules/util.js";
@@ -189,7 +189,9 @@ export const cassandraAllPipes = () => {
 
       tooltip: {
         shared: true,
-        pointFormat: tooltipPoint(yOptions.tooltip),
+        formatter: function () {
+          return tooltipSorted(this.points, this.x, yOptions.yLabel);
+        },
       },
 
       yAxis: {

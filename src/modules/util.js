@@ -41,8 +41,8 @@ export const conversions = (conv, current, base) => {
   return units;
 };
 
-export const sortJson = (obj) => {
-  return obj.slice().sort((a, b) => b.value - a.value);
+export const sortJson = (obj, colName = "value") => {
+  return obj.slice().sort((a, b) => b[colName] - a[colName]);
 };
 
 export const sortObj = (obj) => {
@@ -357,6 +357,17 @@ export const tooltipSymbol = (
     }: </td><td style="padding:0"><b>${y} ${unitsCurrent}</b></td></tr>`;
   }
 };
+
+export const tooltipSorted = (points,title,units) => {
+  var sortedPoints = sortJson(points, "y");
+  var toolText = `<b>${title}</b> - <i> values sorted from larges to smallest</i>`;
+  toolText += `<table>`;
+  sortedPoints.map((point) => {
+    toolText += `<tr><td> <span style="color: ${point.color}">&#9679</span> ${point.series.name}:</td><td style="padding:0"><b> ${point.y} ${units}</b></td></tr>`;
+  });
+  toolText += `</table>`;
+  return toolText;
+}
 
 export const setTitle = (
   figure_title,

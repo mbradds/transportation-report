@@ -66,7 +66,7 @@ export const rebeccaGasPrices = () => {
           },
           stickyTracking: false,
           marker: {
-            radius: 10,
+            radius: 12,
           },
           point: {
             events: {
@@ -129,8 +129,8 @@ export const rebeccaGasPrices = () => {
           color: gasPriceColors["Alberta NIT"],
           data: [
             {
-              lat: 53.5461,
-              lon: -113.4938,
+              lat: 53.6374,
+              lon: -112.018,
             },
           ],
           dataLabels: {

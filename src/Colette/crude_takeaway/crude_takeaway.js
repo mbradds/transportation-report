@@ -3,6 +3,7 @@ import {
   prepareSeriesNonTidy,
   conversions,
   tooltipPoint,
+  tooltipSorted,
 } from "../../modules/util.js";
 import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudeTakeawayData from "./figures.json";
@@ -79,6 +80,11 @@ export const coletteCrudeTakeaway = () => {
     };
     var crudeTakeawayChart = lineAndStackedArea(params);
     crudeTakeawayChart.update({
+      tooltip: {
+        formatter: function () {
+          return tooltipSorted(this.points, this.x, units.unitsCurrent);
+        },
+      },
       xAxis: {
         plotLines: [
           {
@@ -114,9 +120,6 @@ export const coletteCrudeTakeaway = () => {
           ),
           yAxis: {
             title: { text: units.unitsCurrent },
-          },
-          tooltip: {
-            pointFormat: tooltipPoint(units.unitsCurrent),
           },
         });
       }
