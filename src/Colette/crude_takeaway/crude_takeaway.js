@@ -2,8 +2,8 @@ import {
   cerPalette,
   prepareSeriesNonTidy,
   conversions,
-  tooltipPoint,
   tooltipSorted,
+  lines,
 } from "../../modules/util.js";
 import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudeTakeawayData from "./figures.json";
@@ -87,21 +87,7 @@ export const coletteCrudeTakeaway = () => {
       },
       xAxis: {
         plotLines: [
-          {
-            color: "black",
-            dashStyle: "longDash",
-            value: 2019,
-            width: 3,
-            zIndex: 5,
-            label: {
-              text: "Estimated <br> value",
-              rotation: 0,
-              style: {
-                fontWeight: "bold",
-                color: cerPalette["Cool Grey"],
-              },
-            },
-          },
+          lines("black", "longDash", 2019, "Estimated <br> value", 0),
         ],
       },
     });
