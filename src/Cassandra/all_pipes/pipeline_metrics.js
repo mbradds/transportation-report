@@ -3,6 +3,7 @@ import {
   creditsClick,
   cerPalette,
   tooltipPoint,
+  sortJson,
   sortObj,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
@@ -10,7 +11,7 @@ import financialData from "./PipelineProfileTables.json";
 
 export const cassandraAllPipes = () => {
   const sortLegend = (series) => {
-    const toSort = sortObj(
+    const toSort = sortJson(
       series.map((row) => {
         return { name: row.name, value: row.data.slice(-1)[0].y };
       })
@@ -40,11 +41,18 @@ export const cassandraAllPipes = () => {
 
     var finPipes = getUnique(data, "Pipeline");
     var hcData = [];
+    const overlaps = {};
 
     for (const pipe in finPipes) {
-      var dataPipe = data.filter((row) => row.Pipeline == finPipes[pipe]);
+      var pipeName = finPipes[pipe];
+      var dataPipe = data.filter((row) => row.Pipeline == pipeName);
       var unit = dataPipe[0]["Unit"];
       dataPipe = dataPipe.map((v) => {
+        if (overlaps.hasOwnProperty(pipeName)) {
+          overlaps[pipeName].push(v["Value"]);
+        } else {
+          overlaps[pipeName] = [];
+        }
         return {
           x: v["Year"],
           y: v["Value"],
@@ -52,12 +60,50 @@ export const cassandraAllPipes = () => {
       });
 
       var completedMetric = {
-        name: finPipes[pipe],
+        name: pipeName,
         data: dataPipe,
         color: colors[pipe],
       };
       hcData.push(completedMetric);
     }
+
+    // //handle overlaps
+    const overlapCounts = {};
+    var completed = new Set();
+    for (const [key, value] of Object.entries(overlaps)) {
+      var currentKey = key;
+      var currentData = value;
+      for (const [nextKey, nextVal] of Object.entries(overlaps)) {
+        if (
+          nextKey !== currentKey &&
+          !(
+            completed.has(currentKey + "-" + nextKey) ||
+            completed.has(nextKey + "-" + currentKey)
+          )
+        ) {
+          currentData.map((row, rowNum) => {
+            if (row == nextVal[rowNum]) {
+              if (overlapCounts.hasOwnProperty(currentKey)) {
+                overlapCounts[currentKey]++;
+              } else {
+                overlapCounts[currentKey] = 1;
+              }
+              if (overlapCounts.hasOwnProperty(nextKey)) {
+                overlapCounts[nextKey]++;
+              } else {
+                overlapCounts[nextKey] = 1;
+              }
+            }
+          });
+          completed.add(currentKey + "-" + nextKey);
+          completed.add(nextKey + "-" + currentKey);
+        }
+      }
+    }
+    //overlapCounts = sortObj(overlapCounts);
+    //const maxOverlaps = Object.values(overlapCounts);
+    //const maxPoint
+
 
     var yOptions = {};
     if (unit == "%") {
@@ -80,6 +126,7 @@ export const cassandraAllPipes = () => {
         return 0;
       }
     };
+
     return [sortLegend(hcData), yOptions];
   };
 
@@ -141,6 +188,7 @@ export const cassandraAllPipes = () => {
 
       xAxis: {
         crosshair: true,
+        categories: true,
       },
 
       lang: {
