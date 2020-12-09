@@ -67,6 +67,9 @@
   max-height: 400px;
 }
 .container-chart-large {
+  height: 390px;
+}
+.container-chart-settlements {
   min-height: 400px;
 }
 .container-chart-map {
