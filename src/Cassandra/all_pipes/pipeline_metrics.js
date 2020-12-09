@@ -68,7 +68,7 @@ export const cassandraAllPipes = () => {
     }
 
     // //handle overlaps
-    const overlapCounts = {};
+    var overlapCounts = {};
     var completed = new Set();
     for (const [key, value] of Object.entries(overlaps)) {
       var currentKey = key;
@@ -100,10 +100,25 @@ export const cassandraAllPipes = () => {
         }
       }
     }
-    //overlapCounts = sortObj(overlapCounts);
-    //const maxOverlaps = Object.values(overlapCounts);
-    //const maxPoint
+    overlapCounts = sortObj(overlapCounts);
+    var maxPoint = 10;
+    var z = 3;
+    for (const [key, value] of Object.entries(overlapCounts)) {
+      overlapCounts[key] = { radius: maxPoint, zIndex: z };
+      maxPoint = maxPoint - 2;
+      z++;
+    }
 
+    hcData.map((series) => {
+      if (overlapCounts.hasOwnProperty(series.name)) {
+        series.zIndex = overlapCounts[series.name].zIndex;
+        series.marker = {
+          enabled: true,
+          radius: overlapCounts[series.name].radius,
+        };
+        return series;
+      }
+    });
 
     var yOptions = {};
     if (unit == "%") {
@@ -130,10 +145,7 @@ export const cassandraAllPipes = () => {
     return [sortLegend(hcData), yOptions];
   };
 
-  var defaultMetric = "Deemed Equity Ratio";
-  var financeFilters = { Category: "All", Type: defaultMetric };
-
-  const createFinancialChart = (newData, yOptions) => {
+  const createFinancialChart = (newData, yOptions, filters) => {
     return new Highcharts.chart("container_financial_metrics", {
       chart: {
         type: "line",
@@ -165,8 +177,14 @@ export const cassandraAllPipes = () => {
       },
 
       title: {
-        text:
-          financeFilters.Type + ": " + financeFilters.Category + " pipelines",
+        text: filters.Type + ": " + filters.Category + " pipelines",
+      },
+
+      legend: {
+        title: {
+          text:
+            "Larger symbol size used to show overlapping data. Click on legend items to view less data.",
+        },
       },
 
       tooltip: {
@@ -199,11 +217,17 @@ export const cassandraAllPipes = () => {
   };
 
   const mainPipeline = () => {
+    var defaultMetric = "Deemed Equity Ratio";
+    var financeFilters = { Category: "All", Type: defaultMetric };
     var [seriesData, yOptions] = prepareSeriesFinance(
       financialData,
       financeFilters
     );
-    var chartFinance = createFinancialChart(seriesData, yOptions);
+    var chartFinance = createFinancialChart(
+      seriesData,
+      yOptions,
+      financeFilters
+    );
     var selectMetricFinancial = document.getElementById(
       "select_metric_financial"
     );
@@ -229,7 +253,7 @@ export const cassandraAllPipes = () => {
 
     const graphEvent = (filters) => {
       [seriesData, yOptions] = prepareSeriesFinance(financialData, filters);
-      return createFinancialChart(seriesData, yOptions);
+      return createFinancialChart(seriesData, yOptions, financeFilters);
     };
   };
   try {
