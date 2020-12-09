@@ -368,3 +368,40 @@ export const setTitle = (
     filter_value
   ).trim()} ${title_text}`;
 };
+
+export const bands = (f, t, text, y = 10) => {
+  return {
+    color: cerPalette["Forecast"],
+    from: f,
+    to: t,
+    zIndex: 3,
+    label: {
+      text: text,
+      y: y,
+      align: "center",
+      style: {
+        fontWeight: "bold",
+        color: cerPalette["Cool Grey"],
+      },
+    },
+  };
+};
+
+export const annotation = (x, y, bdColor, text) => {
+  return {
+    labels: [
+      {
+        point: { x: x, y: y },
+        style: {
+          fontWeight: "bold",
+          color: (Highcharts.theme && Highcharts.theme.textColor) || "grey",
+        },
+        shape: "rect",
+        backgroundColor: "white",
+        borderColor: bdColor,
+        text: text,
+      },
+    ],
+    draggable: "",
+  };
+};
