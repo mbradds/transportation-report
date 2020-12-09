@@ -157,6 +157,10 @@ export const jenniferRatingsCross = () => {
             label: {
               text: "Non-Investment Grade Level",
               align: "right",
+              style: {
+                fontWeight: "bold",
+                color: cerPalette["Cool Grey"],
+              },
             },
           },
         ],

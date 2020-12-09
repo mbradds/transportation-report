@@ -3,6 +3,7 @@ import {
   prepareSeriesNonTidy,
   tooltipPoint,
   conversions,
+  lines,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import mnpData from "./st_stephen.json";
@@ -155,26 +156,20 @@ export const saraMnp = () => {
     chartObj.offshore.chart.update({
       xAxis: {
         plotLines: [
-          {
-            color: cerPalette["Ocean"],
-            value: Date.UTC(2018, 5, 7),
-            width: 2,
-            zIndex: 5,
-            label: {
-              text: "Production ceases",
-              align: "left",
-            },
-          },
-          {
-            color: cerPalette["Night Sky"],
-            value: Date.UTC(2018, 12, 1),
-            width: 2,
-            zIndex: 5,
-            label: {
-              text: "Production ceases",
-              align: "left",
-            },
-          },
+          lines(
+            cerPalette["Ocean"],
+            null,
+            Date.UTC(2018, 5, 7),
+            "Production ceases",
+            90
+          ),
+          lines(
+            cerPalette["Night Sky"],
+            null,
+            Date.UTC(2018, 12, 1),
+            "Production ceases",
+            90
+          ),
         ],
       },
     });

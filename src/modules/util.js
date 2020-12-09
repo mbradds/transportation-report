@@ -358,7 +358,7 @@ export const tooltipSymbol = (
   }
 };
 
-export const tooltipSorted = (points,title,units) => {
+export const tooltipSorted = (points, title, units) => {
   var sortedPoints = sortJson(points, "y");
   var toolText = `<b>${title}</b> - <i> values sorted from larges to smallest</i>`;
   toolText += `<table>`;
@@ -367,7 +367,7 @@ export const tooltipSorted = (points,title,units) => {
   });
   toolText += `</table>`;
   return toolText;
-}
+};
 
 export const setTitle = (
   figure_title,
@@ -390,6 +390,24 @@ export const bands = (f, t, text, y = 10) => {
       text: text,
       y: y,
       align: "center",
+      style: {
+        fontWeight: "bold",
+        color: cerPalette["Cool Grey"],
+      },
+    },
+  };
+};
+
+export const lines = (color, dashStyle, value, text, rotation) => {
+  return {
+    color: color,
+    dashStyle: dashStyle,
+    value: value,
+    width: 3,
+    zIndex: 5,
+    label: {
+      text: text,
+      rotation: rotation,
       style: {
         fontWeight: "bold",
         color: cerPalette["Cool Grey"],
