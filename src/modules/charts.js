@@ -1,4 +1,10 @@
-import { tooltipPoint, creditsClick, cerPalette } from "./util.js";
+import {
+  tooltipPoint,
+  creditsClick,
+  cerPalette,
+  bands,
+  annotation,
+} from "./util.js";
 export const productionChart = (params) => {
   return new Highcharts.chart(params.div, {
     chart: {
@@ -17,14 +23,7 @@ export const productionChart = (params) => {
 
     xAxis: {
       categories: true,
-      plotBands: {
-        from: 2019.5,
-        to: 2020.5,
-        label: {
-          text: "Estimated value",
-          y: 10,
-        },
-      },
+      plotBands: bands(2019.5, 2020.5, "Estimated Value", 10),
     },
 
     tooltip: {
@@ -130,23 +129,12 @@ export const instructionsChart = (div = "container-instructions") => {
         },
       },
       annotations: [
-        {
-          labels: [
-            {
-              point: { x: 290, y: 16 },
-              style: {
-                fontWeight: "bold",
-                color:
-                  (Highcharts.theme && Highcharts.theme.textColor) || "grey",
-              },
-              shape: "rect",
-              backgroundColor: "white",
-              borderColor: cerPalette["Dim Grey"],
-              text: "Click on this icon to download chart images/data:",
-            },
-          ],
-          draggable: "",
-        },
+        annotation(
+          290,
+          16,
+          cerPalette["Dim Grey"],
+          "Click on this icon to download chart images/data:"
+        ),
       ],
       series: [
         {

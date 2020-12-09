@@ -41,16 +41,6 @@ export const generalTheme = () => {
           color: cerPalette["Cool Grey"],
         },
       },
-      plotBands: {
-        color: cerPalette["Forecast"],
-        label: {
-          align: "center",
-          style: {
-            fontWeight: "bold",
-            color: cerPalette["Cool Grey"],
-          },
-        },
-      },
     },
 
     yAxis: {

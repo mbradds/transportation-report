@@ -6,6 +6,7 @@ import {
   mouseOutFunction,
   conversions,
   setTitle,
+  bands,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import gas2019Data from "./gas_2019.json";
@@ -355,22 +356,8 @@ export const sara2019 = () => {
             },
           },
           plotBands: [
-            {
-              from: 6.5,
-              to: 7.5,
-              zIndex: 3,
-              label: {
-                text: "Imports",
-              },
-            },
-            {
-              from: 8.5,
-              to: 9.5,
-              zIndex: 3,
-              label: {
-                text: "Imports",
-              },
-            },
+            bands(6.5, 7.5, "Imports", 15),
+            bands(8.5, 9.5, "Imports", 15),
           ],
         },
         {

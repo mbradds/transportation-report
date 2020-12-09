@@ -4,6 +4,7 @@ import {
   conversions,
   tooltipPoint,
   creditsClick,
+  annotation,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import crudeImportsData from "./UScrudeoilimports.json";
@@ -70,23 +71,12 @@ export const kevinUsImports = () => {
       },
 
       annotations: [
-        {
-          labels: [
-            {
-              point: { x: 840, y: 30 },
-              style: {
-                fontWeight: "bold",
-                color:
-                  (Highcharts.theme && Highcharts.theme.textColor) || "grey",
-              },
-              shape: "rect",
-              backgroundColor: "white",
-              borderColor: cerPalette["Sun"],
-              text: "% - Canada's share of U.S. crude oil imports",
-            },
-          ],
-          draggable: "",
-        },
+        annotation(
+          840,
+          30,
+          cerPalette["Sun"],
+          "% - Canada's share of U.S. crude oil imports"
+        ),
       ],
 
       yAxis: {
