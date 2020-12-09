@@ -205,6 +205,8 @@ export const cassandraAllPipes = () => {
       },
 
       xAxis: {
+        min: 2015.5,
+        max: 2018.5,
         crosshair: true,
         categories: true,
       },

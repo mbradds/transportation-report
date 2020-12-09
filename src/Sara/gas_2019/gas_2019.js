@@ -354,20 +354,30 @@ export const sara2019 = () => {
               return companyName.join("<br>");
             },
           },
-          plotBands: {
-            from: 7.5,
-            to: 9.5,
-            zIndex: 3,
-            label: {
-              text: "Imports",
+          plotBands: [
+            {
+              from: 6.5,
+              to: 7.5,
+              zIndex: 3,
+              label: {
+                text: "Imports",
+              },
             },
-          },
+            {
+              from: 8.5,
+              to: 9.5,
+              zIndex: 3,
+              label: {
+                text: "Imports",
+              },
+            },
+          ],
         },
         {
           type: "category",
           linkedTo: 0,
           opposite: true,
-          title: { text: "Key Point" },
+          title: { text: "Key Point (West to East)" },
           labels: {
             autoRotation: 0,
             formatter: function () {

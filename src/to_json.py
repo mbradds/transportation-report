@@ -200,6 +200,8 @@ def readExcel(name,sheet='pq',sql=False):
                                 'Milk River':'Milk River Pipeline',
                                 'Enbridge Mainline':'Enbridge Canadian Mainline',
                                 'Keystone':'Keystone Pipeline'})
+        
+        df = df[df['Year']>=2015]
         write_path = os.path.join(os.getcwd(),'Colette/crude_takeaway/',name.split('.')[0]+'.json')
     
     if name == 'marine_exports.xlsx':
@@ -580,6 +582,7 @@ def st_stephen():
     df_prod = readCersei('offshore_ns.sql','ns_offshore.json')
     for df in [df_traffic,df_prod]:
         df['Date'] = pd.to_datetime(df['Date'])
+        df = df[df['Date'].dt.year >= 2009]
     max_traffic = max(df_traffic['Date'])
     max_prod = max(df_prod['Date'])
     date_col,value_col = [],[]
@@ -618,10 +621,10 @@ if __name__ == '__main__':
     #sara
     #df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
     #df = readCersei('gas_2019_avg.sql','gas_2019.json')
-    #dfmnp,dfoffshore = st_stephen()
+    dfmnp,dfoffshore = st_stephen()
     
     #rebecca
-    df = readCersei('platts_gas.sql','gas_prices.json')
+    #df = readCersei('platts_gas.sql','gas_prices.json')
     #df = readExcel('Natural_Gas_Production.xlsx')
     #df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
     
