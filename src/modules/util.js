@@ -46,7 +46,7 @@ export const sortJson = (obj) => {
 };
 
 export const sortObj = (obj) => {
-  return Object.fromEntries(Object.entries(obj).sort(([, a], [, b]) => a - b));
+  return Object.fromEntries(Object.entries(obj).sort(([, a], [, b]) => b - a));
 };
 
 //takes in a json object and checks if the column has data
