@@ -41,8 +41,12 @@ export const conversions = (conv, current, base) => {
   return units;
 };
 
-export const sortObj = (obj) => {
+export const sortJson = (obj) => {
   return obj.slice().sort((a, b) => b.value - a.value);
+};
+
+export const sortObj = (obj) => {
+  return Object.fromEntries(Object.entries(obj).sort(([, a], [, b]) => a - b));
 };
 
 //takes in a json object and checks if the column has data
