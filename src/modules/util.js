@@ -26,7 +26,7 @@ export const dateFormat = (value, format = "%b %d, %Y") => {
 };
 
 export const conversions = (conv, current, base) => {
-  var cerConversions = {
+  const cerConversions = {
     "m3/d to b/d": { conversion: 6.2898, type: "*" },
     "b/d to m3/d": { conversion: 0.159, type: "*" },
     "Mb/d to m3/d": { conversion: 159, type: "*" },
@@ -35,7 +35,7 @@ export const conversions = (conv, current, base) => {
     "Bcf/d to Million m3/d": { conversion: 28.32, type: "*" },
     "Million m3/d to Bcf/d": { conversion: 1 / 28.32, type: "*" },
   };
-  var units = cerConversions[conv];
+  const units = cerConversions[conv];
   units.unitsCurrent = current;
   units.unitsBase = base;
   return units;
@@ -72,7 +72,6 @@ export const getUnique = (items, filterColumns) => {
       result.push(name);
     }
   }
-
   return result;
 };
 
