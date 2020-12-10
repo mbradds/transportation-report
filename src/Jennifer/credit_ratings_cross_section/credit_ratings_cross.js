@@ -65,16 +65,15 @@ export const jenniferRatingsCross = () => {
     });
 
     var sortedSeries = series.map((s) => {
-      var newSeries = [];
       var oldSeries = {};
       s.data.map((row) => {
         oldSeries[row.name] = row.y;
       });
-      sortableCategories.map((ranked) => {
+      var newSeries = sortableCategories.map((ranked) => {
         if (oldSeries.hasOwnProperty(ranked)) {
-          newSeries.push({ name: ranked, y: oldSeries[ranked] });
+          return { name: ranked, y: oldSeries[ranked] };
         } else {
-          newSeries.push({ name: ranked, y: null });
+          return { name: ranked, y: null };
         }
       });
       return { name: s.name, data: newSeries, color: s.color };

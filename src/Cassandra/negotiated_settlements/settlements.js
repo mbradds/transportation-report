@@ -63,17 +63,6 @@ export const cassandraSettlements = () => {
   };
 
   const settlementSeries = (data, filters) => {
-    var seriesTracker = {};
-    var seriesSettle = [];
-    var dates = [];
-
-    if (filters.Commodity !== "All") {
-      data = data.filter((row) => row.Commodity == filters.Commodity);
-    }
-
-    data = applyEndDateColors(data);
-    data = data.sort(sortByProperty("start"));
-
     const addRow = (row) => {
       return {
         name: row["Settlement Name"],
@@ -85,26 +74,32 @@ export const cassandraSettlements = () => {
       };
     };
 
-    data.map((row) => {
+    var seriesTracker = {};
+
+    if (filters.Commodity !== "All") {
+      data = data.filter((row) => row.Commodity == filters.Commodity);
+    }
+
+    data = applyEndDateColors(data).sort(sortByProperty("start"));
+
+    var dates = [];
+    var seriesSettle = data.map((row) => {
       dates.push(row["Start Date"]);
       dates.push(row["End Date"]);
-
       if (seriesTracker.hasOwnProperty(row.Company)) {
         //the parent company is already in the series, add the sub settlement
         seriesTracker[row.Company].startDate.push(row["Start Date"]);
         seriesTracker[row.Company].endDate.push(row.end);
-        seriesSettle.push(addRow(row));
+        return addRow(row);
       } else {
         //A new company is added to the series as the parent, and the current settlement is also added
         seriesTracker[row.Company] = {
           startDate: [row["Start Date"]],
           endDate: [row.end],
         };
-        seriesSettle.push(addRow(row));
+        return addRow(row);
       }
     });
-
-    const companySettles = [];
 
     const companyCounter = (companyTracker, company) => {
       if (companyTracker.hasOwnProperty(company)) {
@@ -123,12 +118,17 @@ export const cassandraSettlements = () => {
       }
     };
 
+    const companySettles = [];
     var companyTracker = {}; //checks if a company has already been added so that the ID can be changed for other bars
     for (const company in seriesTracker) {
-      var companyStartDates = seriesTracker[company].startDate;
-      var companyEndDates = seriesTracker[company].endDate;
-      var currentStart = companyStartDates[0];
-      var currentEnd = companyEndDates[0];
+      var [companyStartDates, companyEndDates] = [
+        seriesTracker[company].startDate,
+        seriesTracker[company].endDate,
+      ];
+      var [currentStart, currentEnd] = [
+        companyStartDates[0],
+        companyEndDates[0],
+      ];
       //this map creates the timeline for each company
       companyEndDates.map((endDate, endNum) => {
         if (endDate > currentEnd) {

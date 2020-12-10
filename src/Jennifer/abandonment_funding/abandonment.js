@@ -1,6 +1,5 @@
 import { cerPalette, prepareSeriesNonTidy } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-
 import abandonData from "./Modified.json";
 
 export const jenniferAbandonment = () => {
