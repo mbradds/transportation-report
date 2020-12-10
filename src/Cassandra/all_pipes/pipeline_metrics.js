@@ -34,24 +34,20 @@ export const cassandraAllPipes = () => {
       }
     }
 
-    const colors = [];
-    for (const [key, value] of Object.entries(cerPalette)) {
-      colors.push(value);
-    }
+    const colors = Object.values(cerPalette);
 
     var finPipes = getUnique(data, "Pipeline");
-    var hcData = [];
     const overlaps = {};
+    var unit = "";
 
-    for (const pipe in finPipes) {
-      var pipeName = finPipes[pipe];
-      var dataPipe = data.filter((row) => row.Pipeline == pipeName);
-      var unit = dataPipe[0]["Unit"];
+    var hcData = finPipes.map((pipe, pipeIndex) => {
+      var dataPipe = data.filter((row) => row.Pipeline == pipe);
+      unit = dataPipe[0]["Unit"];
       dataPipe = dataPipe.map((v) => {
-        if (overlaps.hasOwnProperty(pipeName)) {
-          overlaps[pipeName].push(v["Value"]);
+        if (overlaps.hasOwnProperty(pipe)) {
+          overlaps[pipe].push(v["Value"]);
         } else {
-          overlaps[pipeName] = [];
+          overlaps[pipe] = [];
         }
         return {
           x: v["Year"],
@@ -59,13 +55,12 @@ export const cassandraAllPipes = () => {
         };
       });
 
-      var completedMetric = {
-        name: pipeName,
+      return {
+        name: pipe,
         data: dataPipe,
-        color: colors[pipe],
+        color: colors[pipeIndex],
       };
-      hcData.push(completedMetric);
-    }
+    });
 
     // //handle overlaps
     var overlapCounts = {};
@@ -263,7 +258,6 @@ export const cassandraAllPipes = () => {
   try {
     mainPipeline();
   } catch (err) {
-    console.log(err);
     errorChart("container_financial_metrics");
   }
 };

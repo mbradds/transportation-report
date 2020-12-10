@@ -149,23 +149,21 @@ const tidyOperation = (
 ) => {
   const dataFiltered = filterData(dataRaw, filters);
   const variableColumn = getUnique(dataFiltered, variableCol);
-  const seriesData = [];
   const yH = yHigherOrder(units, decimals);
-  variableColumn.map((v, iVar) => {
-    const hcData = [];
+  const seriesData = variableColumn.map((v) => {
     const variableSeries = dataFiltered.filter((row) => row[variableCol] == v);
-    variableSeries.map((r) => {
-      hcData.push({
+    const hcData = variableSeries.map((r) => {
+      return {
         [xName]: r[xCol],
         y: yH(r, yCol, units, decimals),
-      });
+      };
     });
 
-    seriesData.push({
+    return {
       name: v,
       data: hcData,
       color: colors[v],
-    });
+    };
   });
 
   return seriesData;

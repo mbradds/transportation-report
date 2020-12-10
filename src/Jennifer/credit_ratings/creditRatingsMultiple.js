@@ -200,8 +200,7 @@ export const jenniferRatingsMulti = () => {
     };
 
     const addCreditSeries = (chart, companyName, agencies) => {
-      var toAdd = creditSeriesSubset(creditSeries, companyName, agencies);
-      toAdd.map((series) => {
+      creditSeriesSubset(creditSeries, companyName, agencies).map((series) => {
         chart.addSeries(series);
       });
       chart.redraw();
@@ -227,8 +226,7 @@ export const jenniferRatingsMulti = () => {
       var [companyNames, agencyNames] = legendItems;
       var legendHTML = "";
       companyNames.map((company) => {
-        legendHTML =
-          legendHTML +
+        legendHTML +=
           '<span style="font-weight:bold; color:' +
           seriesColors[company] +
           '">' +
@@ -239,8 +237,7 @@ export const jenniferRatingsMulti = () => {
 
       var symbolHTML = "";
       agencyNames.map((agency) => {
-        symbolHTML =
-          symbolHTML + symbols[agency] + " " + agency + "&nbsp &nbsp &nbsp";
+        symbolHTML += symbols[agency] + " " + agency + "&nbsp &nbsp &nbsp";
       });
       legendCompany.innerHTML = legendHTML;
       legendSymbol.innerHTML = symbolHTML;
