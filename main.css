@@ -1,3 +1,9 @@
+.tr-tabs {
+  padding-left: 200px;
+  padding-right: 200px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
 .cerlabel {
   position: center;
   font-family: Arial;
