@@ -136,16 +136,11 @@ export const jenniferRatingsCross = () => {
         min: minY - 1,
         labels: {
           formatter: function () {
-            return (
-              scaleData[this.value].creditQuality +
-              "<br><b>" +
-              scaleData[this.value]["S&P"] +
-              ", " +
-              scaleData[this.value]["Moody's"] +
-              ", " +
-              scaleData[this.value]["DBRS"] +
-              "</b>"
-            );
+            return `${scaleData[this.value].creditQuality}<b> - ${
+              scaleData[this.value]["S&P"]
+            },
+              ${scaleData[this.value]["Moody's"]},
+              ${scaleData[this.value]["DBRS"]}</b>`;
           },
         },
         plotLines: [
