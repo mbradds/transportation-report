@@ -1,6 +1,6 @@
 import { generalTheme } from "./modules/themes";
 generalTheme();
-import { instructionsChart } from "./modules/charts.js";
+import { instructionsChart } from "./modules/charts";
 import { oilMap, gasMap } from "./SystemMaps/maps";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
@@ -26,7 +26,7 @@ import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
 import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
 import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
 
-async function introduction() {
+async function tab0() {
   instructionsChart();
 }
 
@@ -70,11 +70,16 @@ async function tab5() {
   jenniferRatingsMulti();
 }
 
+var currentTab = 0;
+
 const tabIndex = () => {
+  $(".wb-tabs").on("wb-ready.wb-tabs", function (event) {
+    tab0();
+  });
   $(".wb-tabs").on("wb-updated.wb-tabs", function (event, ui) {
-    var currentTab = $(ui).index();
+    currentTab = $(ui).index();
     if (currentTab == 0) {
-      introduction();
+      tab0();
     } else if (currentTab == 1) {
       tab1();
     } else if (currentTab == 2) {
@@ -89,5 +94,4 @@ const tabIndex = () => {
   });
 };
 
-introduction();
 tabIndex();

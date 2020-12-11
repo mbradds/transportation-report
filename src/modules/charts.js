@@ -93,65 +93,59 @@ export const errorChart = (div) => {
 };
 
 export const instructionsChart = () => {
-  try {
-    return new Highcharts.chart("container-instructions", {
-      chart: {
-        borderWidth: 1,
-        zoomType: "x",
-      },
+  return new Highcharts.chart("container-instructions", {
+    chart: {
+      borderWidth: 1,
+      zoomType: "x",
+    },
+    title: {
+      text: "",
+    },
+    credits: {
+      text: "",
+    },
+    yAxis: {
+      gridLineWidth: 0,
+      minorGridLineWidth: 0,
       title: {
         text: "",
       },
-      credits: {
-        text: "",
+    },
+    tooltip: {
+      useHTML: true,
+      formatter: function () {
+        var seriesName = this.series.name.split("(")[0].trim();
+        var toolText = `<b>${this.x}</b><br>`;
+        toolText += `<tr><td> <span style="color: ${this.series.color}">&#9679</span> ${seriesName}: </td><td style="padding:0"><b>${this.point.y}</b></td></tr>`;
+        return toolText;
       },
-      yAxis: {
-        gridLineWidth: 0,
-        minorGridLineWidth: 0,
-        title: {
-          text: "",
-        },
+    },
+    xAxis: {},
+    legend: {},
+    plotOptions: {
+      series: {
+        pointStart: 2013,
       },
-      tooltip: {
-        useHTML: true,
-        formatter: function () {
-          var seriesName = this.series.name.split("(")[0].trim();
-          var toolText = `<b>${this.x}</b><br>`;
-          toolText += `<tr><td> <span style="color: ${this.series.color}">&#9679</span> ${seriesName}: </td><td style="padding:0"><b>${this.point.y}</b></td></tr>`;
-          return toolText;
-        },
+    },
+    annotations: [
+      annotation(
+        290,
+        16,
+        cerPalette["Dim Grey"],
+        "Click on this icon to download chart images/data:"
+      ),
+    ],
+    series: [
+      {
+        name: "Data 1 (click to filter)",
+        color: cerPalette["Night Sky"],
+        data: [7, 8, 5, 6, 4, 4, 5, 4],
       },
-      xAxis: {},
-      legend: {},
-      plotOptions: {
-        series: {
-          pointStart: 2013,
-        },
+      {
+        name: "Data 2 (click to filter)",
+        color: cerPalette["Sun"],
+        data: [1, 2, 4, 3, 3, 5, 6, 5],
       },
-      annotations: [
-        annotation(
-          290,
-          16,
-          cerPalette["Dim Grey"],
-          "Click on this icon to download chart images/data:"
-        ),
-      ],
-      series: [
-        {
-          name: "Data 1 (click to filter)",
-          color: cerPalette["Night Sky"],
-          data: [7, 8, 5, 6, 4, 4, 5, 4],
-          zIndex: 5,
-        },
-        {
-          name: "Data 2 (click to filter)",
-          color: cerPalette["Sun"],
-          data: [1, 2, 4, 3, 3, 5, 6, 5],
-          zIndex: 6,
-        },
-      ],
-    });
-  } catch (err) {
-    errorChart(div);
-  }
+    ],
+  });
 };
