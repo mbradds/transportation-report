@@ -26,11 +26,14 @@ import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
 import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
 import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
 
-async function tab0() {
-  instructionsChart();
-}
 
-async function tab1() {
+// Highcharts.charts.map((chart)=>{
+//   chart.destroy()
+// })
+
+var t0Transportation = performance.now();
+async function loadAllCharts() {
+  instructionsChart();
   systemMaps("oil");
   kevinCrudeProduction();
   kevinCrudeExports();
@@ -40,9 +43,6 @@ async function tab1() {
   coletteCrudeByRail();
   coletteMarine();
   coletteCrudeTakeaway();
-}
-
-async function tab2() {
   systemMaps("gas");
   rebeccaGasProd();
   rebeccaGasTrade();
@@ -50,48 +50,18 @@ async function tab2() {
   saraGasTraffic();
   saraMnp();
   sara2019();
-}
-
-async function tab3() {
   ryanNglProduction();
   ryanNglExports();
-}
-
-async function tab4() {
   cassandraSettlements();
   cassandraTolls();
   jenniferFinResources();
   jenniferAbandonment();
-}
-
-async function tab5() {
   cassandraAllPipes();
   jenniferRatingsCross();
   jenniferRatingsMulti();
 }
-
-var currentTab = 0;
-
-const tabIndex = () => {
-  $(".wb-tabs").on("wb-ready.wb-tabs", function (event) {
-    tab0();
-  });
-  $(".wb-tabs").on("wb-updated.wb-tabs", function (event, ui) {
-    currentTab = $(ui).index();
-    if (currentTab == 0) {
-      tab0();
-    } else if (currentTab == 1) {
-      tab1();
-    } else if (currentTab == 2) {
-      tab2();
-    } else if (currentTab == 3) {
-      tab3();
-    } else if (currentTab == 4) {
-      tab4();
-    } else if (currentTab == 5) {
-      tab5();
-    }
-  });
-};
-
-tabIndex();
+loadAllCharts();
+var t1Transportation = performance.now();
+console.log(
+  "Chart Rendering: " + (t1Transportation - t0Transportation) + " milliseconds."
+);
