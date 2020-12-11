@@ -1,7 +1,7 @@
 import { generalTheme } from "./modules/themes";
 generalTheme();
 import { instructionsChart } from "./modules/charts.js";
-import { systemMaps } from "./SystemMaps/maps";
+import { oilMap, gasMap } from "./SystemMaps/maps";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
 import { kevinUsImports } from "./Kevin/us_imports/us_imports";
@@ -26,10 +26,12 @@ import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
 import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
 import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
 
-var t0Transportation = performance.now();
-async function transportationReport() {
+async function introduction() {
   instructionsChart();
-  systemMaps();
+}
+
+async function tab1() {
+  oilMap();
   kevinCrudeProduction();
   kevinCrudeExports();
   kevinUsImports();
@@ -38,24 +40,54 @@ async function transportationReport() {
   coletteCrudeByRail();
   coletteMarine();
   coletteCrudeTakeaway();
+}
+
+async function tab2() {
+  gasMap();
   rebeccaGasProd();
   rebeccaGasTrade();
   rebeccaGasPrices();
   saraGasTraffic();
   saraMnp();
   sara2019();
+}
+
+async function tab3() {
   ryanNglProduction();
   ryanNglExports();
+}
+
+async function tab4() {
   cassandraSettlements();
   cassandraTolls();
   jenniferFinResources();
   jenniferAbandonment();
+}
+
+async function tab5() {
   cassandraAllPipes();
   jenniferRatingsCross();
   jenniferRatingsMulti();
 }
-transportationReport();
-var t1Transportation = performance.now();
-console.log(
-  "Chart Rendering: " + (t1Transportation - t0Transportation) + " milliseconds."
-);
+
+const tabIndex = () => {
+  $(".wb-tabs").on("wb-updated.wb-tabs", function (event, ui) {
+    var currentTab = $(ui).index();
+    if (currentTab == 0) {
+      introduction();
+    } else if (currentTab == 1) {
+      tab1();
+    } else if (currentTab == 2) {
+      tab2();
+    } else if (currentTab == 3) {
+      tab3();
+    } else if (currentTab == 4) {
+      tab4();
+    } else if (currentTab == 5) {
+      tab5();
+    }
+  });
+};
+
+introduction();
+tabIndex();

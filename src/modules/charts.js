@@ -92,9 +92,9 @@ export const errorChart = (div) => {
   });
 };
 
-export const instructionsChart = (div = "container-instructions") => {
+export const instructionsChart = () => {
   try {
-    return new Highcharts.chart(div, {
+    return new Highcharts.chart("container-instructions", {
       chart: {
         borderWidth: 1,
         zoomType: "x",
@@ -141,11 +141,13 @@ export const instructionsChart = (div = "container-instructions") => {
           name: "Data 1 (click to filter)",
           color: cerPalette["Night Sky"],
           data: [7, 8, 5, 6, 4, 4, 5, 4],
+          zIndex: 5,
         },
         {
           name: "Data 2 (click to filter)",
           color: cerPalette["Sun"],
           data: [1, 2, 4, 3, 3, 5, 6, 5],
+          zIndex: 6,
         },
       ],
     });

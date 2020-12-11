@@ -24,327 +24,344 @@ import westcoast from "./pipeline_output/gas/WESTCOAST ENERGY INC, CARRYING ON B
 
 import canadaMap from "./map_output/statsCanFormat.json";
 
-export const systemMaps = () => {
-  const oilFileNames = {
-    "AURORA PIPE LINE COMPANY LTD": {
-      color: cerPalette["Aubergine"],
-      zIndex: 9,
-      data: aurora,
-    },
-    "ENBRIDGE PIPELINES INC": {
-      color: cerPalette["Sun"],
-      zIndex: 2,
-      data: enbridgeML,
-    },
-    "ENBRIDGE PIPELINES (NW) INC": {
-      color: cerPalette["Cool Grey"],
-      zIndex: 9,
-      data: enbridgeNW,
-    },
-    "ENBRIDGE SOUTHERN LIGHTS GP INC ON BEHALF OF ENBRIDGE SOUTHERN LIGHTS LP": {
-      color: cerPalette["Forest"],
-      zIndex: 8,
-      data: enbridgeSL,
-    },
-    "EXPRESS PIPELINE LTD": {
-      color: cerPalette["Night Sky"],
-      zIndex: 7,
-      data: express,
-    },
-    "MONTREAL PIPE LINE LIMITED": {
-      color: cerPalette["hcBlue"],
-      zIndex: 9,
-      data: montreal,
-    },
-    "TEML WESTSPUR PIPELINES LIMITED": {
-      color: cerPalette["hcGreen"],
-      zIndex: 9,
-      data: teml,
-    },
-    "KINDER MORGAN COCHIN ULC": {
-      color: cerPalette["hcLightBlue"],
-      zIndex: 8,
-      data: cochin,
-    },
-    "TRANS MOUNTAIN PIPELINE ULC": {
-      color: cerPalette["Ocean"],
-      zIndex: 6,
-      data: tm,
-    },
-    "TRANS-NORTHERN PIPELINES INC": {
-      color: cerPalette["Flame"],
-      zIndex: 9,
-      data: tn,
-    },
-    "TRANSCANADA KEYSTONE PIPELINE GP LTD": {
-      color: cerPalette["hcRed"],
-      zIndex: 6,
-      data: keystone,
-    },
-  };
+const oilFileNames = {
+  "AURORA PIPE LINE COMPANY LTD": {
+    color: cerPalette["Aubergine"],
+    zIndex: 9,
+    data: aurora,
+  },
+  "ENBRIDGE PIPELINES INC": {
+    color: cerPalette["Sun"],
+    zIndex: 2,
+    data: enbridgeML,
+  },
+  "ENBRIDGE PIPELINES (NW) INC": {
+    color: cerPalette["Cool Grey"],
+    zIndex: 9,
+    data: enbridgeNW,
+  },
+  "ENBRIDGE SOUTHERN LIGHTS GP INC ON BEHALF OF ENBRIDGE SOUTHERN LIGHTS LP": {
+    color: cerPalette["Forest"],
+    zIndex: 8,
+    data: enbridgeSL,
+  },
+  "EXPRESS PIPELINE LTD": {
+    color: cerPalette["Night Sky"],
+    zIndex: 7,
+    data: express,
+  },
+  "MONTREAL PIPE LINE LIMITED": {
+    color: cerPalette["hcBlue"],
+    zIndex: 9,
+    data: montreal,
+  },
+  "TEML WESTSPUR PIPELINES LIMITED": {
+    color: cerPalette["hcGreen"],
+    zIndex: 9,
+    data: teml,
+  },
+  "KINDER MORGAN COCHIN ULC": {
+    color: cerPalette["hcLightBlue"],
+    zIndex: 8,
+    data: cochin,
+  },
+  "TRANS MOUNTAIN PIPELINE ULC": {
+    color: cerPalette["Ocean"],
+    zIndex: 6,
+    data: tm,
+  },
+  "TRANS-NORTHERN PIPELINES INC": {
+    color: cerPalette["Flame"],
+    zIndex: 9,
+    data: tn,
+  },
+  "TRANSCANADA KEYSTONE PIPELINE GP LTD": {
+    color: cerPalette["hcRed"],
+    zIndex: 6,
+    data: keystone,
+  },
+};
 
-  const gasFileNames = {
-    "ALLIANCE PIPELINE LTD": {
-      color: cerPalette["Flame"],
-      zIndex: 9,
-      data: alliance,
-    },
-    "EMERA BRUNSWICK PIPELINE COMPANY LTD": {
-      color: cerPalette["hcAqua"],
-      zIndex: 8,
-      data: emera,
-    },
-    "FOOTHILLS PIPE LINES LTD": {
-      color: cerPalette["Sun"],
-      zIndex: 7,
-      data: foothills,
-    },
-    "MARITIMES & NORTHEAST PIPELINE MANAGEMENT LTD": {
-      color: cerPalette["hcRed"],
-      zIndex: 6,
-      data: mnp,
-    },
-    "NOVA GAS TRANSMISSION LTD": {
-      color: cerPalette["Night Sky"],
-      zIndex: 1,
-      data: nova,
-    },
-    "TRANS QUEBEC AND MARITIMES PIPELINE INC": {
-      color: cerPalette["hcPurple"],
-      zIndex: 5,
-      data: tqm,
-    },
-    "TRANSCANADA PIPELINES LIMITED": {
-      color: cerPalette["Forest"],
-      zIndex: 4,
-      data: tcpl,
-    },
-    "VECTOR PIPELINE LIMITED PARTNERSHIP": {
-      color: cerPalette["Aubergine"],
-      zIndex: 3,
-      data: vector,
-    },
-    "WESTCOAST ENERGY INC, CARRYING ON BUSINESS AS SPECTRA ENERGY TRANSMISSION": {
-      color: cerPalette["Ocean"],
-      zIndex: 2,
-      data: westcoast,
-    },
-  };
+const gasFileNames = {
+  "ALLIANCE PIPELINE LTD": {
+    color: cerPalette["Flame"],
+    zIndex: 9,
+    data: alliance,
+  },
+  "EMERA BRUNSWICK PIPELINE COMPANY LTD": {
+    color: cerPalette["hcAqua"],
+    zIndex: 8,
+    data: emera,
+  },
+  "FOOTHILLS PIPE LINES LTD": {
+    color: cerPalette["Sun"],
+    zIndex: 7,
+    data: foothills,
+  },
+  "MARITIMES & NORTHEAST PIPELINE MANAGEMENT LTD": {
+    color: cerPalette["hcRed"],
+    zIndex: 6,
+    data: mnp,
+  },
+  "NOVA GAS TRANSMISSION LTD": {
+    color: cerPalette["Night Sky"],
+    zIndex: 1,
+    data: nova,
+  },
+  "TRANS QUEBEC AND MARITIMES PIPELINE INC": {
+    color: cerPalette["hcPurple"],
+    zIndex: 5,
+    data: tqm,
+  },
+  "TRANSCANADA PIPELINES LIMITED": {
+    color: cerPalette["Forest"],
+    zIndex: 4,
+    data: tcpl,
+  },
+  "VECTOR PIPELINE LIMITED PARTNERSHIP": {
+    color: cerPalette["Aubergine"],
+    zIndex: 3,
+    data: vector,
+  },
+  "WESTCOAST ENERGY INC, CARRYING ON BUSINESS AS SPECTRA ENERGY TRANSMISSION": {
+    color: cerPalette["Ocean"],
+    zIndex: 2,
+    data: westcoast,
+  },
+};
 
-  const importPipes = (fileNames) => {
-    const shapes = [];
+const importPipes = (fileNames) => {
+  const shapes = [];
 
-    for (const [key, value] of Object.entries(fileNames)) {
-      shapes.push({
-        name: key,
-        data: Highcharts.geojson(value.data),
-        color: value.color,
-        type: "map",
-        borderWidth: 0.2,
-        borderColor: "black",
-        zIndex: value.zIndex,
-        dataLabels: {
-          enabled: true,
-          format: "{point.name}",
-          style: {
-            width: "80px", // force line-wrap
-          },
-        },
-      });
-    }
-
-    const baseMap = {
-      name: "Pipeline Map",
-      data: Highcharts.geojson(canadaMap),
+  for (const [key, value] of Object.entries(fileNames)) {
+    shapes.push({
+      name: key,
+      data: Highcharts.geojson(value.data),
+      color: value.color,
       type: "map",
-      color: "#F0F0F0",
-      borderWidth: 0.5,
+      borderWidth: 0.2,
       borderColor: "black",
-      zIndex: 0,
-      showInLegend: false,
-      enableMouseTracking: false,
-    };
-    shapes.push(baseMap);
-
-    return shapes;
-  };
-
-  const mapTooltip = (e) => {
-    var properties = {};
-    var hasProperties = false;
-    var propertiesList = [
-      "Year",
-      "Pipeline Name",
-      "throughput",
-      "availableCapacity",
-      "Direction of Flow",
-      "product",
-      "tradeType",
-      "Capacity Utilization",
-      "Key Point",
-    ];
-    propertiesList.map((prop) => {
-      if (e.point.properties.hasOwnProperty(prop)) {
-        properties[prop] = e.point.properties[prop];
-        hasProperties = e;
-      } else {
-        properties[prop] = "n/a";
-      }
-    });
-
-    if (hasProperties) {
-      var toolText = `<b> ${e.point.properties.OPERATOR} - ${properties["Pipeline Name"]} ( ${properties["Key Point"]} key point) <b><br>`;
-      return toolText;
-    } else {
-      var toolText = `<b> ${e.point.properties.OPERATOR} <b><br>`;
-      return toolText;
-    }
-  };
-
-  const mapPopUp = (e, container) => {
-    var properties = {};
-    var hasProperties = false;
-    var propertiesList = [
-      "Year",
-      "Pipeline Name",
-      "throughput",
-      "availableCapacity",
-      "Direction of Flow",
-      "product",
-      "tradeType",
-      "Capacity Utilization",
-      "Key Point",
-    ];
-    if (container == "container_map_oil") {
-      var units = "(1000 b/d)";
-    } else {
-      var units = "(1000 m3/d)";
-    }
-    propertiesList.map((prop) => {
-      if (e.properties.hasOwnProperty(prop)) {
-        properties[prop] = e.properties[prop];
-        hasProperties = e;
-      } else {
-        properties[prop] = "n/a";
-      }
-    });
-
-    if (hasProperties) {
-      var toolText = `<span style="color:${e.color};font-size:14px;font-weight:bold">${properties["Pipeline Name"]}  (${properties["Key Point"]} key point) </span><br>`;
-      toolText += `<b>Direction of Flow:</b> ${properties["Direction of Flow"]} <br>`;
-      toolText += `<b>Products on Pipeline:</b> ${properties.product} <br>`;
-      toolText += `<b>Pipeline Trade Type:</b> ${properties.tradeType} <br>`;
-      toolText += `<b>${properties.Year} Average Throughput:</b> ${properties.throughput} ${units} <br>`;
-      toolText += `<b>${properties.Year} Average Capacity:</b> ${properties.availableCapacity} ${units} <br>`;
-      toolText += `<b>${properties.Year} Capacity Utilization:</b> ${
-        properties["Capacity Utilization"] * 100
-      } %`;
-      return toolText;
-    } else {
-      var toolText = `<span style="color:${e.color};font-size:14px;font-weight:bold">${e.properties["OPERATOR"]}</span><br>`;
-      toolText += `<b>CER Group:</b> ${e.properties["NEBGROUP"]}<br>`;
-      toolText += `<b>Pipeline Type:</b> ${e.properties["TYPE"]}`;
-      return toolText;
-    }
-  };
-
-  const createPointMap = (shapes, container) => {
-    return new Highcharts.mapChart(container, {
-      chart: {
-        borderColor: "black",
-        borderWidth: 1,
-        animation: true,
-      },
-
-      credits: {
-        text: "Source: CER",
-      },
-
-      mapNavigation: {
+      zIndex: value.zIndex,
+      dataLabels: {
         enabled: true,
-      },
-
-      title: {
-        text: "",
-      },
-
-      legend: {
-        title: { text: "Click on a legend item to add/remove from map" },
-        borderColor: cerPalette["Dim Grey"],
-        borderWidth: 3,
-        itemWidth: 400,
-      },
-
-      tooltip: {
-        enabled: true,
-        formatter: function () {
-          return mapTooltip(this);
+        format: "{point.name}",
+        style: {
+          width: "80px", // force line-wrap
         },
       },
+    });
+  }
 
-      mapNavigation: {
-        enabled: true,
-        buttonOptions: {
-          verticalAlign: "bottom",
-        },
+  const baseMap = {
+    name: "Pipeline Map",
+    data: Highcharts.geojson(canadaMap),
+    type: "map",
+    color: "#F0F0F0",
+    borderWidth: 0.5,
+    borderColor: "black",
+    zIndex: 0,
+    showInLegend: false,
+    enableMouseTracking: false,
+  };
+  shapes.push(baseMap);
+
+  return shapes;
+};
+
+const mapTooltip = (e) => {
+  var properties = {};
+  var hasProperties = false;
+  var propertiesList = [
+    "Year",
+    "Pipeline Name",
+    "throughput",
+    "availableCapacity",
+    "Direction of Flow",
+    "product",
+    "tradeType",
+    "Capacity Utilization",
+    "Key Point",
+  ];
+  propertiesList.map((prop) => {
+    if (e.point.properties.hasOwnProperty(prop)) {
+      properties[prop] = e.point.properties[prop];
+      hasProperties = e;
+    } else {
+      properties[prop] = "n/a";
+    }
+  });
+
+  if (hasProperties) {
+    var toolText = `<b> ${e.point.properties.OPERATOR} - ${properties["Pipeline Name"]} ( ${properties["Key Point"]} key point) <b><br>`;
+    return toolText;
+  } else {
+    var toolText = `<b> ${e.point.properties.OPERATOR} <b><br>`;
+    return toolText;
+  }
+};
+
+const mapPopUp = (e, container) => {
+  var properties = {};
+  var hasProperties = false;
+  var propertiesList = [
+    "Year",
+    "Pipeline Name",
+    "throughput",
+    "availableCapacity",
+    "Direction of Flow",
+    "product",
+    "tradeType",
+    "Capacity Utilization",
+    "Key Point",
+  ];
+  if (container == "container_map_oil") {
+    var units = "(1000 b/d)";
+  } else {
+    var units = "(1000 m3/d)";
+  }
+  propertiesList.map((prop) => {
+    if (e.properties.hasOwnProperty(prop)) {
+      properties[prop] = e.properties[prop];
+      hasProperties = e;
+    } else {
+      properties[prop] = "n/a";
+    }
+  });
+
+  if (hasProperties) {
+    var toolText = `<span style="color:${e.color};font-size:14px;font-weight:bold">${properties["Pipeline Name"]}  (${properties["Key Point"]} key point) </span><br>`;
+    toolText += `<b>Direction of Flow:</b> ${properties["Direction of Flow"]} <br>`;
+    toolText += `<b>Products on Pipeline:</b> ${properties.product} <br>`;
+    toolText += `<b>Pipeline Trade Type:</b> ${properties.tradeType} <br>`;
+    toolText += `<b>${properties.Year} Average Throughput:</b> ${properties.throughput} ${units} <br>`;
+    toolText += `<b>${properties.Year} Average Capacity:</b> ${properties.availableCapacity} ${units} <br>`;
+    toolText += `<b>${properties.Year} Capacity Utilization:</b> ${
+      properties["Capacity Utilization"] * 100
+    } %`;
+    return toolText;
+  } else {
+    var toolText = `<span style="color:${e.color};font-size:14px;font-weight:bold">${e.properties["OPERATOR"]}</span><br>`;
+    toolText += `<b>CER Group:</b> ${e.properties["NEBGROUP"]}<br>`;
+    toolText += `<b>Pipeline Type:</b> ${e.properties["TYPE"]}`;
+    return toolText;
+  }
+};
+
+const createPointMap = (shapes, container) => {
+  return new Highcharts.mapChart(container, {
+    chart: {
+      borderColor: "black",
+      borderWidth: 1,
+      animation: true,
+    },
+
+    credits: {
+      text: "Source: CER",
+    },
+
+    mapNavigation: {
+      enabled: true,
+    },
+
+    title: {
+      text: "",
+    },
+
+    legend: {
+      title: { text: "Click on a legend item to add/remove from map" },
+      borderColor: cerPalette["Dim Grey"],
+      borderWidth: 3,
+      itemWidth: 400,
+    },
+
+    tooltip: {
+      enabled: true,
+      formatter: function () {
+        return mapTooltip(this);
       },
+    },
 
-      plotOptions: {
-        series: {
-          point: {
-            events: {
-              // click: function () {
-              //   var text = mapPopUp(this, container);
-              //   const chart = this.series.chart;
-              //   if (!chart.clickLabel) {
-              //     chart.clickLabel = chart.renderer
-              //       .text(text, 725, 75, [, true])
-              //       .css({
-              //         width: "350px",
-              //       })
-              //       .add();
-              //   } else {
-              //     chart.clickLabel.attr({
-              //       text: text,
-              //     });
-              //   }
-              // },
-              mouseOver: function () {
-                var text = mapPopUp(this, container);
-                const chart = this.series.chart;
-                if (!chart.mouseOver) {
-                  chart.mouseOver = chart.renderer
-                    .text(text, 640, 50, [, true])
-                    .css({
-                      width: "350px",
-                    })
-                    .add();
-                } else {
-                  chart.mouseOver.attr({
-                    text: text,
-                  });
-                }
-              },
+    mapNavigation: {
+      enabled: true,
+      buttonOptions: {
+        verticalAlign: "bottom",
+      },
+    },
+
+    plotOptions: {
+      series: {
+        point: {
+          events: {
+            // click: function () {
+            //   var text = mapPopUp(this, container);
+            //   const chart = this.series.chart;
+            //   if (!chart.clickLabel) {
+            //     chart.clickLabel = chart.renderer
+            //       .text(text, 725, 75, [, true])
+            //       .css({
+            //         width: "350px",
+            //       })
+            //       .add();
+            //   } else {
+            //     chart.clickLabel.attr({
+            //       text: text,
+            //     });
+            //   }
+            // },
+            mouseOver: function () {
+              var text = mapPopUp(this, container);
+              const chart = this.series.chart;
+              if (!chart.mouseOver) {
+                chart.mouseOver = chart.renderer
+                  .text(text, 640, 50, [, true])
+                  .css({
+                    width: "350px",
+                  })
+                  .add();
+              } else {
+                chart.mouseOver.attr({
+                  text: text,
+                });
+              }
             },
           },
         },
       },
-      series: shapes,
-    });
-  };
-  const mainCharts = () => {
-    try {
-      const oilShapes = importPipes(oilFileNames);
-      const crudePipeMap = createPointMap(oilShapes, "container_map_oil");
-    } catch (err) {
-      errorChart("container_map_oil");
-    }
-    try {
-      const gasShapes = importPipes(gasFileNames);
-      const gasPipeMap = createPointMap(gasShapes, "container_map_gas");
-    } catch (err) {
-      errorChart("container_map_gas");
-    }
-  };
-  mainCharts();
+    },
+    series: shapes,
+  });
 };
+
+export const oilMap = () => {
+  try {
+    const oilShapes = importPipes(oilFileNames);
+    const crudePipeMap = createPointMap(oilShapes, "container_map_oil");
+  } catch (err) {
+    errorChart("container_map_oil");
+  }
+};
+
+export const gasMap = () => {
+  try {
+    const gasShapes = importPipes(gasFileNames);
+    const gasPipeMap = createPointMap(gasShapes, "container_map_gas");
+  } catch (err) {
+    errorChart("container_map_gas");
+  }
+};
+
+// const mainCharts = () => {
+//   try {
+//     const oilShapes = importPipes(oilFileNames);
+//     const crudePipeMap = createPointMap(oilShapes, "container_map_oil");
+//   } catch (err) {
+//     errorChart("container_map_oil");
+//   }
+//   try {
+//     const gasShapes = importPipes(gasFileNames);
+//     const gasPipeMap = createPointMap(gasShapes, "container_map_gas");
+//   } catch (err) {
+//     errorChart("container_map_gas");
+//   }
+// };
+// mainCharts();
