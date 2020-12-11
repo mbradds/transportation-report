@@ -1,7 +1,7 @@
 import { generalTheme } from "./modules/themes";
 generalTheme();
 import { instructionsChart } from "./modules/charts";
-import { oilMap, gasMap } from "./SystemMaps/maps";
+// import { oilMap, gasMap } from "./SystemMaps/maps";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
 import { kevinUsImports } from "./Kevin/us_imports/us_imports";
@@ -31,7 +31,7 @@ async function tab0() {
 }
 
 async function tab1() {
-  oilMap();
+  //oilMap();
   kevinCrudeProduction();
   kevinCrudeExports();
   kevinUsImports();
@@ -43,7 +43,7 @@ async function tab1() {
 }
 
 async function tab2() {
-  gasMap();
+  //gasMap();
   rebeccaGasProd();
   rebeccaGasTrade();
   rebeccaGasPrices();
