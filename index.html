@@ -22,7 +22,9 @@
     </div>
 
     <div class="tab-container-tr">
-      <button onclick="topFunction()" id="btn-to-top" title="Go to top">Return to top</button>
+      <button onclick="topFunction()" id="btn-to-top" title="Go to top">
+        Return to top
+      </button>
       <div class="tab-tr">
         <button
           class="tablinks"
@@ -55,7 +57,7 @@
       </div>
 
       <div id="introduction-tab" class="tabcontent-tr">
-        <h3>TR Introduction</h3>
+        <h3>Introduction Section</h3>
         <div class="container chart-large">
           <div class="row">
             <div class="col-md-12">
@@ -103,7 +105,7 @@
       </div>
 
       <div id="Oil" class="tabcontent-tr">
-        <h3>TR Oil Section</h3>
+        <h3>Crude Oil Section</h3>
         <!-- crude oil pipeline map -->
         <div class="container chart-map">
           <div class="row">
@@ -402,7 +404,7 @@
       </div>
 
       <div id="Gas" class="tabcontent-tr">
-        <h3>TR Gas Section</h3>
+        <h3>Natural Gas Section</h3>
         <!-- natural gas pipeline map -->
         <div class="container chart-map">
           <div class="row">
@@ -665,7 +667,7 @@
       </div>
 
       <div id="Ngl" class="tabcontent-tr">
-        <h3>TR Ngl Section</h3>
+        <h3>NGL's Section</h3>
         <!-- ngl production (figure 15) -->
         <div class="container chart-large">
           <div class="row">
@@ -1118,41 +1120,37 @@
       </div>
     </div>
 
-    <div class="mrgn-tp-xl"></div>
+    <div class="mrgn-tp-lg"></div>
 
     <script>
-      const clickHandle = (evt, tabName) => {
+      "use strict";
+      var clickHandle = function clickHandle(evt, tabName) {
         document.documentElement.scrollTop = 0;
-        let i, tabcontent, tablinks;
-        // This is to clear the previous clicked content.
+        var i, tabcontent, tablinks; // This is to clear the previous clicked content.
         tabcontent = document.getElementsByClassName("tabcontent-tr");
         for (i = 0; i < tabcontent.length; i++) {
           tabcontent[i].style.display = "none";
-        }
-        // Set the tab to be "active".
+        } // Set the tab to be "active".
         tablinks = document.getElementsByClassName("tablinks");
         for (i = 0; i < tablinks.length; i++) {
           tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        // Display the clicked tab and set it to active.
+        } // Display the clicked tab and set it to active.
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
       };
-      const defaultTab = () => {
+      var defaultTab = function defaultTab() {
         document.getElementById("defaultOpen").click();
       };
       defaultTab();
     </script>
 
     <script>
+      "use strict";
       //Get the button
-      var mybutton = document.getElementById("btn-to-top");
-
-      // When the user scrolls down 20px from the top of the document, show the button
+      var mybutton = document.getElementById("btn-to-top"); // When the user scrolls down 20px from the top of the document, show the button
       window.onscroll = function () {
         scrollFunction();
       };
-
       function scrollFunction() {
         if (
           document.body.scrollTop > 20 ||
@@ -1162,9 +1160,7 @@
         } else {
           mybutton.style.display = "none";
         }
-      }
-
-      // When the user clicks on the button, scroll to the top of the document
+      } // When the user clicks on the button, scroll to the top of the document
       function topFunction() {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
