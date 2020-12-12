@@ -167,8 +167,9 @@ export const cassandraSettlements = () => {
   };
 
   const createSettlements = (seriesData, dates) => {
-    return Highcharts.ganttChart("container_settlements", {
+    return new Highcharts.ganttChart("container_settlements", {
       chart: {
+        height: "60%",
         type: "gantt",
         borderWidth: 1,
         events: {
@@ -182,6 +183,9 @@ export const cassandraSettlements = () => {
       },
       plotOptions: {
         series: {
+          pointPadding: 0.1,
+          borderWidth: 0,
+          shadow: false,
           states: {
             hover: {
               enabled: false,
@@ -243,10 +247,10 @@ export const cassandraSettlements = () => {
           },
           labels: [
             {
-              point: { x: -110, y: -30 },
+              point: { x: -92, y: -30 },
               style: {
                 fontWeight: "bold",
-                fontSize: 12,
+                fontSize: 11,
                 color:
                   (Highcharts.theme && Highcharts.theme.textColor) || "grey",
               },

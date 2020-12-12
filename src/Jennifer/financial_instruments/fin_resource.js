@@ -102,6 +102,9 @@ export const jenniferFinResources = () => {
         type: "bar",
         gridLineWidth: 0,
       },
+      title: {
+        text: "",
+      },
       credits: {
         enabled: false,
       },

@@ -1,7 +1,8 @@
 const path = require("path");
-const JsonMinimizerPlugin = require("json-minimizer-webpack-plugin");
-// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-//   .BundleAnalyzerPlugin;
+// const JsonMinimizerPlugin = require("json-minimizer-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
+  
 module.exports = {
   mode: "production",
   target: "es5",
@@ -13,8 +14,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle_[name].js",
   },
-  //plugins: [new BundleAnalyzerPlugin(),new JsonMinimizerPlugin()],
-  plugins: [new JsonMinimizerPlugin()],
+  plugins: [new BundleAnalyzerPlugin()],
   module: {
     rules: [
       {
@@ -26,6 +26,10 @@ module.exports = {
       },
     ],
   },
+  // optimization: {
+  //   minimize: true,
+  //   minimizer: [new JsonMinimizerPlugin()],
+  // },
   resolve: {
     extensions: ["*", ".js"],
   },

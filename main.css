@@ -61,19 +61,19 @@
   height: 250px;
 }
 .container-chart-small {
-  max-height: 400px;
+  height: 350px;
 }
 .container-chart-medium {
   max-height: 400px;
 }
 .container-chart-large {
-  height: 390px;
+  height: 380px;
 }
 .container-chart-settlements {
   min-height: 400px;
 }
 .container-chart-map {
-  min-height: 700px;
+  min-height: 650px;
 }
 .container-chart-insert {
   height: 300px;
@@ -83,6 +83,9 @@
 }
 .container-legend {
   text-align: center;
+}
+#container_fin_totals {
+  height: 75px;
 }
 /* styling for custom tabs */
 .tab-container-tr {
