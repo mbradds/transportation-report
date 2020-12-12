@@ -26,11 +26,6 @@ import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
 import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
 import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
 
-// Highcharts.charts.map((chart)=>{
-//   chart.destroy()
-// })
-//$("#tr-tabs").load(" #tr-tabs > *");
-
 var t0Transportation = performance.now();
 function loadAllCharts() {
   instructionsChart();
