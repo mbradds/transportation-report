@@ -1,82 +1,81 @@
 import { cerPalette } from "../modules/util.js";
 import { errorChart } from "../modules/charts.js";
-// import aurora from "./pipeline_output/oil/AURORA PIPELINE COMPANY LTD.json";
-// import enbridgeNW from "./pipeline_output/oil/ENBRIDGE PIPELINES (NW) INC.json";
-import enbridgeML from "../data_management/Data/pipeline_output/oil/Enbridge Canadian Mainline.json";
-// import enbridgeSL from "./pipeline_output/oil/ENBRIDGE SOUTHERN LIGHTS GP INC ON BEHALF OF ENBRIDGE SOUTHERN LIGHTS LP.json";
-// import express from "./pipeline_output/oil/EXPRESS PIPELINE LTD.json";
-// import cochin from "./pipeline_output/oil/KINDER MORGAN COCHIN ULC.json";
-// import montreal from "./pipeline_output/oil/MONTREAL PIPE LINE LIMITED.json";
-// import teml from "./pipeline_output/oil/TEML WESTSPUR PIPELINES LIMITED.json";
-// import tm from "./pipeline_output/oil/TRANS MOUNTAIN PIPELINE ULC.json";
-// import tn from "./pipeline_output/oil/TRANS-NORTHERN PIPELINES INC.json";
-import keystone from "../data_management/Data/pipeline_output/oil/Keystone Pipeline.json";
+import aurora from "./prototype_output/oil/AuroraPipeline.json";
+import enbridgeNW from "./prototype_output/oil/NormanWellsPipeline.json";
+import enbridgeML from "./prototype_output/oil/EnbridgeCanadianMainline.json";
+import enbridgeSL from "./prototype_output/oil/SouthernLightsPipeline.json";
+import express from "./prototype_output/oil/ExpressPipeline.json";
+import cochin from "./prototype_output/oil/CochinPipeline.json";
+import montreal from "./prototype_output/oil/MontrealPipeline.json";
+import teml from "./prototype_output/oil/WestspurPipeline.json";
+import tm from "./prototype_output/oil/TransMountainPipeline.json";
+import tn from "./prototype_output/oil/Trans-NorthernPipeline.json";
+import keystone from "./prototype_output/oil/KeystonePipeline.json";
 
-// import alliance from "./pipeline_output/gas/ALLIANCE PIPELINE LTD.json";
-// import emera from "./pipeline_output/gas/EMERA BRUNSWICK PIPELINE COMPANY LTD.json";
-// import foothills from "./pipeline_output/gas/FOOTHILLS PIPE LINES LTD.json";
-// import mnp from "./pipeline_output/gas/MARITIMES & NORTHEAST PIPELINE MANAGEMENT LTD.json";
-//import nova from "../data_management/Data/pipeline_output/gas/NGTL System.json";
-// import tqm from "./pipeline_output/gas/TRANS QUEBEC AND MARITIMES PIPELINE INC.json";
-// import tcpl from "./pipeline_output/gas/TRANSCANADA PIPELINES LIMITED.json";
-// import vector from "./pipeline_output/gas/VECTOR PIPELINE LIMITED PARTNERSHIP.json";
-import westcoast from "../data_management/Data/pipeline_output/gas/Enbridge BC Pipeline.json";
+import alliance from "./prototype_output/gas/AlliancePipeline.json";
+import foothills from "./prototype_output/gas/FoothillsSystem.json";
+import mnp from "./prototype_output/gas/MNPPipeline.json";
+import nova from "./prototype_output/gas/NGTLSystem.json";
+import tqm from "./prototype_output/gas/TQMPipeline.json";
+import tcpl from "./prototype_output/gas/TCCanadianMainline.json";
+import vector from "./prototype_output/gas/VectorPipeline.json";
+import westcoast from "./prototype_output/gas/EnbridgeBCPipeline.json";
 
 import canadaMap from "./map_output/base_map.json";
 
 export const systemMaps = () => {
   const oilFileNames = {
-    // "AURORA PIPE LINE COMPANY LTD": {
-    //   color: cerPalette["Aubergine"],
-    //   zIndex: 9,
-    //   data: aurora,
-    // },
-    "ENBRIDGE PIPELINES INC": {
+    "Aurora Pipeline": {
+      color: cerPalette["Aubergine"],
+      zIndex: 9,
+      data: aurora,
+    },
+    "Enbridge Canadian Mainline": {
       color: cerPalette["Sun"],
       zIndex: 2,
       data: enbridgeML,
-     },
-    // "ENBRIDGE PIPELINES (NW) INC": {
-    //   color: cerPalette["Cool Grey"],
-    //   zIndex: 9,
-    //   data: enbridgeNW,
-    // },
-    // "ENBRIDGE SOUTHERN LIGHTS GP INC ON BEHALF OF ENBRIDGE SOUTHERN LIGHTS LP": {
-    //   color: cerPalette["Forest"],
-    //   zIndex: 8,
-    //   data: enbridgeSL,
-    // },
-    // "EXPRESS PIPELINE LTD": {
-    //   color: cerPalette["Night Sky"],
-    //   zIndex: 7,
-    //   data: express,
-    // },
-    // "MONTREAL PIPE LINE LIMITED": {
-    //   color: cerPalette["hcBlue"],
-    //   zIndex: 9,
-    //   data: montreal,
-    // },
-    // "TEML WESTSPUR PIPELINES LIMITED": {
-    //   color: cerPalette["hcGreen"],
-    //   zIndex: 9,
-    //   data: teml,
-    // },
-    // "KINDER MORGAN COCHIN ULC": {
-    //   color: cerPalette["hcLightBlue"],
-    //   zIndex: 8,
-    //   data: cochin,
-    // },
-    // "TRANS MOUNTAIN PIPELINE ULC": {
-    //   color: cerPalette["Ocean"],
-    //   zIndex: 6,
-    //   data: tm,
-    // },
-    // "TRANS-NORTHERN PIPELINES INC": {
-    //   color: cerPalette["Flame"],
-    //   zIndex: 9,
-    //   data: tn,
-    // },
-    "TRANSCANADA KEYSTONE PIPELINE GP LTD": {
+    },
+    "Norman Wells Pipeline": {
+      color: cerPalette["Cool Grey"],
+      zIndex: 9,
+      data: enbridgeNW,
+    },
+    "Southern Lights Pipeline": {
+      color: cerPalette["Forest"],
+      zIndex: 8,
+      data: enbridgeSL,
+    },
+    "Express Pipeline": {
+      color: cerPalette["Night Sky"],
+      zIndex: 7,
+      data: express,
+    },
+    "Montreal Pipeline": {
+      color: cerPalette["hcBlue"],
+      zIndex: 9,
+      data: montreal,
+    },
+    "Westpur Pipeline": {
+      color: cerPalette["hcGreen"],
+      zIndex: 9,
+      data: teml,
+    },
+    "Cochin Pipeline": {
+      color: cerPalette["hcLightBlue"],
+      zIndex: 8,
+      data: cochin,
+    },
+    "Trans Mountain Pipeline": {
+      color: cerPalette["Ocean"],
+      zIndex: 6,
+      data: tm,
+    },
+    "Trans-Northern Pipeline": {
+      color: cerPalette["Flame"],
+      zIndex: 9,
+      data: tn,
+    },
+    "Keystone Pipeline": {
       color: cerPalette["hcRed"],
       zIndex: 6,
       data: keystone,
@@ -84,47 +83,42 @@ export const systemMaps = () => {
   };
 
   const gasFileNames = {
-    // "ALLIANCE PIPELINE LTD": {
-    //   color: cerPalette["Flame"],
-    //   zIndex: 9,
-    //   data: alliance,
-    // },
-    // "EMERA BRUNSWICK PIPELINE COMPANY LTD": {
-    //   color: cerPalette["hcAqua"],
-    //   zIndex: 8,
-    //   data: emera,
-    // },
-    // "FOOTHILLS PIPE LINES LTD": {
-    //   color: cerPalette["Sun"],
-    //   zIndex: 7,
-    //   data: foothills,
-    // },
-    // "MARITIMES & NORTHEAST PIPELINE MANAGEMENT LTD": {
-    //   color: cerPalette["hcRed"],
-    //   zIndex: 6,
-    //   data: mnp,
-    // },
-    // "NOVA GAS TRANSMISSION LTD": {
-    //   color: cerPalette["Night Sky"],
-    //   zIndex: 1,
-    //   data: nova,
-    // },
-    // "TRANS QUEBEC AND MARITIMES PIPELINE INC": {
-    //   color: cerPalette["hcPurple"],
-    //   zIndex: 5,
-    //   data: tqm,
-    // },
-    // "TRANSCANADA PIPELINES LIMITED": {
-    //   color: cerPalette["Forest"],
-    //   zIndex: 4,
-    //   data: tcpl,
-    // },
-    // "VECTOR PIPELINE LIMITED PARTNERSHIP": {
-    //   color: cerPalette["Aubergine"],
-    //   zIndex: 3,
-    //   data: vector,
-    // },
-    "WESTCOAST ENERGY INC, CARRYING ON BUSINESS AS SPECTRA ENERGY TRANSMISSION": {
+    "Alliance Pipeline": {
+      color: cerPalette["Flame"],
+      zIndex: 9,
+      data: alliance,
+    },
+    "Foothills System": {
+      color: cerPalette["Sun"],
+      zIndex: 7,
+      data: foothills,
+    },
+    "M&NP Pipeline": {
+      color: cerPalette["hcRed"],
+      zIndex: 6,
+      data: mnp,
+    },
+    "NGTL System": {
+      color: cerPalette["Night Sky"],
+      zIndex: 1,
+      data: nova,
+    },
+    "TQM Pipeline": {
+      color: cerPalette["hcPurple"],
+      zIndex: 5,
+      data: tqm,
+    },
+    "TC Canadian Mainline": {
+      color: cerPalette["Forest"],
+      zIndex: 4,
+      data: tcpl,
+    },
+    "Vector Pipeline": {
+      color: cerPalette["Aubergine"],
+      zIndex: 3,
+      data: vector,
+    },
+    "Enbridge BC Pipeline": {
       color: cerPalette["Ocean"],
       zIndex: 2,
       data: westcoast,
@@ -207,6 +201,7 @@ export const systemMaps = () => {
     var propertiesList = [
       "Year",
       "Pipeline Name",
+      "Corporate Entity",
       "throughput",
       "availableCapacity",
       "Direction of Flow",
@@ -230,15 +225,19 @@ export const systemMaps = () => {
     });
 
     if (hasProperties) {
-      var toolText = `<span style="color:${e.color};font-size:14px;font-weight:bold">${properties["Pipeline Name"]}  (${properties["Key Point"]} key point) </span><br>`;
-      toolText += `<b>Direction of Flow:</b> ${properties["Direction of Flow"]} <br>`;
-      toolText += `<b>Products on Pipeline:</b> ${properties.product} <br>`;
-      toolText += `<b>Pipeline Trade Type:</b> ${properties.tradeType} <br>`;
-      toolText += `<b>${properties.Year} Average Throughput:</b> ${properties.throughput} ${units} <br>`;
-      toolText += `<b>${properties.Year} Average Capacity:</b> ${properties.availableCapacity} ${units} <br>`;
-      toolText += `<b>${properties.Year} Capacity Utilization:</b> ${
+      
+      var toolText = `<span style="color:${e.color};font-size:14px;font-weight:bold">${properties["Corporate Entity"]}  (${properties["Key Point"]} key point) </span><br>`;
+      toolText += `<table> <tr><td><li> Direction of Flow: &nbsp</td><td style="padding:0"><b>${properties["Direction of Flow"]}</b></li></td></tr>`;
+      toolText += `<tr><td><li> Products: &nbsp</td><td style="padding:0"><b>${properties.product}</b></li></td></tr>`;
+      toolText += `<tr><td><li>Pipeline Trade Type: &nbsp</td><td style="padding:0"><b>${properties.tradeType}</b></li></td></tr>`;
+      toolText += `<tr><td><li>${properties.Year} Average Throughput: &nbsp</td><td style="padding:0"><b>${properties.throughput} ${units}</b></li></td></tr>`;
+      toolText += `<tr><td><li>${properties.Year} Average Capacity: &nbsp</td><td style="padding:0"><b>${properties.availableCapacity} ${units}</b></li></td></tr>`;
+      toolText += `<tr><td><li>${
+        properties.Year
+      } Capacity Utilization: &nbsp</td><td style="padding:0"><b>${
         properties["Capacity Utilization"] * 100
-      } %`;
+      } %</b></li></td></tr>`;
+      toolText += `</table>`;
       return toolText;
     } else {
       var toolText = `<span style="color:${e.color};font-size:14px;font-weight:bold">${e.properties["OPERATOR"]}</span><br>`;
@@ -246,6 +245,11 @@ export const systemMaps = () => {
       toolText += `<b>Pipeline Type:</b> ${e.properties["TYPE"]}`;
       return toolText;
     }
+  };
+
+  const destroyInsert = (chart) => {
+    chart.customTooltip.destroy();
+    chart.customTooltip = undefined;
   };
 
   const createPointMap = (shapes, container) => {
@@ -293,37 +297,38 @@ export const systemMaps = () => {
         series: {
           point: {
             events: {
-              // click: function () {
-              //   var text = mapPopUp(this, container);
-              //   const chart = this.series.chart;
-              //   if (!chart.clickLabel) {
-              //     chart.clickLabel = chart.renderer
-              //       .text(text, 725, 75, [, true])
-              //       .css({
-              //         width: "350px",
-              //       })
-              //       .add();
-              //   } else {
-              //     chart.clickLabel.attr({
-              //       text: text,
-              //     });
-              //   }
-              // },
               mouseOver: function () {
-                var text = mapPopUp(this, container);
                 const chart = this.series.chart;
-                if (!chart.mouseOver) {
-                  chart.mouseOver = chart.renderer
-                    .text(text, 640, 50, [, true])
-                    .css({
-                      width: "350px",
-                    })
-                    .add();
-                } else {
-                  chart.mouseOver.attr({
-                    text: text,
-                  });
+                var text = mapPopUp(this, container);
+                if (chart.customTooltip) {
+                  destroyInsert(chart);
                 }
+                var label = chart.renderer
+                  .label(text, null, null, null, null, null, true)
+                  .css({
+                    width: "500px",
+                  })
+                  .attr({
+                    "stroke-width": 3,
+                    zIndex: 8,
+                    padding: 8,
+                    r: 3,
+                    fill: "white",
+                    stroke: this.color,
+                  })
+                  .add(chart.rGroup);
+                chart.customTooltip = label;
+                label.align(
+                  Highcharts.extend(label.getBBox(), {
+                    align: "right",
+                    x: 0, // offset
+                    verticalAlign: "top",
+                    overflow: "scroll",
+                    y: 0, // offset
+                  }),
+                  null,
+                  "spacingBox"
+                );
               },
             },
           },
