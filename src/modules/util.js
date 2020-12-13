@@ -268,17 +268,15 @@ export const prepareSeriesPie = (
   colors,
   colorByPoint = true
 ) => {
-  const data = filterData(dataRaw, filters)[0];
+  const data = filterData(dataRaw, filters);
   const series = { name: seriesName, colorByPoint: colorByPoint, data: [] };
-  for (const [key, value] of Object.entries(data)) {
-    if (key !== "Year") {
-      series.data.push({
-        name: key,
-        y: value,
-        color: colors[key],
-      });
-    }
-  }
+  series.data = data.map((row) => {
+    return {
+      name: row[nameCol],
+      y: row[yCol],
+      color: colors[row[nameCol]],
+    };
+  });
   return [series];
 };
 

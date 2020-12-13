@@ -238,17 +238,28 @@ def import_one_pipe(name="ENBRIDGE PIPELINES INC.json"):
     df = gpd.read_file(read_path)
     return df
 
+def import_prototype():
+    read_path = os.path.join(os.getcwd(),'Data/pipeline_prototype/prototype.json')
+    df = gpd.read_file(read_path)
+    df = df.set_geometry('geometry')
+    for delete in ['Commodity','Regulator']:
+        del df[delete]
+    df = df[df['Company'] != "N/A"]
+    return df
+
 if __name__ == "__main__":
+    
+    df = import_prototype()
     
     #oil = params(oil_query)
     #gas = params(gas_query)
     #statsCan = import_statsCan_files()
     #process_cer_files()
-    pipe = import_cer_files()
+    #pipe = import_cer_files()
     #pipe_names = list(set(pipe['OPERATOR']))
     #print(sorted(pipe_names))
-    oil_error = filter_shape(pipe,commodity='oil')
-    gas_error = filter_shape(pipe,commodity='gas')
+    #oil_error = filter_shape(pipe,commodity='oil')
+    #gas_error = filter_shape(pipe,commodity='gas')
     #pipe_file_names(r'C:\Users\mossgran\Documents\HighchartsMarkets\src\SystemMaps\pipeline_output\oil')
     #plot_map(statsCan,pipe)
     #enb = import_one_pipe(name="EXPRESS PIPELINE LTD.json")

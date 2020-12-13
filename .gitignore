@@ -9,6 +9,7 @@ connection.py
 **/__pycache__
 **/.vscode
 **/lpr_000b16a_e
+**/pipeline_prototype
 **/pipeline
 **/CER_html
 CER.py

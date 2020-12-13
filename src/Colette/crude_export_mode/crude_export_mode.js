@@ -86,6 +86,7 @@ export const coletteCrudeMode = () => {
       "Volume (bbl/d)",
       crudeModeColors
     );
+
     const crudeModePie = createCrudeModeChart(seriesData, crudeModeFilters);
 
     $("#crude-exp-mode button").on("click", function () {
