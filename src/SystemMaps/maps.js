@@ -22,7 +22,7 @@ import tcpl from "./pipeline_output/gas/TRANSCANADA PIPELINES LIMITED.json";
 import vector from "./pipeline_output/gas/VECTOR PIPELINE LIMITED PARTNERSHIP.json";
 import westcoast from "./pipeline_output/gas/WESTCOAST ENERGY INC, CARRYING ON BUSINESS AS SPECTRA ENERGY TRANSMISSION.json";
 
-import canadaMap from "./map_output/statsCanFormat.json";
+import canadaMap from "./map_output/base_map.json";
 
 export const systemMaps = () => {
   const oilFileNames = {

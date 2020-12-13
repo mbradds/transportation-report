@@ -8,8 +8,7 @@
 connection.py
 **/__pycache__
 **/.vscode
-**/statsCan
-statsCan.geojson
+**/lpr_000b16a_e
 **/pipeline
 **/CER_html
 CER.py

@@ -2,14 +2,16 @@ import pandas as pd
 import json
 import os
 import io
-from connection import cer_connection
 from datetime import date
 from calendar import monthrange
 import calendar
 from dateutil.relativedelta import relativedelta
 import numpy as np
+script_dir = os.path.dirname(__file__)
+os.chdir(script_dir)
+from connection import cer_connection
 
-
+#%%
 def normalize_dates(df,date_list):
     for date_col in date_list:
         df[date_col] = pd.to_datetime(df[date_col])
@@ -155,9 +157,8 @@ def readExcel(name,sheet='pq',sql=False):
         for crude in products:
             df[crude] = df[crude]/1000
         df = normalize_numeric(df, products, 3)
-        #df['Value'] = pd.to_numeric(df['Value'])
-        write_path = os.path.join(os.getcwd(),'Kevin/crude_production/',name.split('.')[0]+'.json')
-        saveJson(df, write_path,precision=3)
+        write_path = os.path.join(os.getcwd(),'../Kevin/crude_production/',name.split('.')[0]+'.json')
+        saveJson(df, write_path, precision=3)
     if name == 'UScrudeoilimports.xlsx':
         df['Attribute'] = [x.strip() for x in df['Attribute']]
         df['Attribute'] = df['Attribute'].replace({'Canadian imports':'U.S. crude oil imports from Canada', 
@@ -165,7 +166,7 @@ def readExcel(name,sheet='pq',sql=False):
                                                    'U.S crude oil exports':'U.S. crude oil exports'})
 
         df['Value'] = df['Value'].round(2)
-        write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
+        write_path = os.path.join(os.getcwd(),'../Kevin/us_imports/',name.split('.')[0]+'.json')
     if name == 'natural-gas-liquids-exports-monthly.xlsx':
         df['Period'] = pd.to_datetime(df['Period'],errors='raise')
         df['Days in Month'] = [monthrange(x.year,x.month)[-1] for x in df['Period']]
@@ -179,7 +180,7 @@ def readExcel(name,sheet='pq',sql=False):
             df[col] = ((df[col]/df['Days in Month'])/1000).round(1)
         del df['Days in Month']
         df = normalize_dates(df, ['Period'])
-        write_path = os.path.join(os.getcwd(),'Ryan/ngl_exports/',name.split('.')[0]+'.json')
+        write_path = os.path.join(os.getcwd(),'../Ryan/ngl_exports/',name.split('.')[0]+'.json')
         #df.to_json(write_path,orient='records',force_ascii=False)
         
     if name == 'crude-oil-exports-by-destination-annual.xlsx':
@@ -187,11 +188,11 @@ def readExcel(name,sheet='pq',sql=False):
         df = df[df['Unit']!='m3/d']
         df['Value'] = (df['Value']/1000000).round(2)
         df['Unit'] = df['Unit'].replace({'bbl/d':'MMb/d'})
-        write_path = os.path.join(os.getcwd(),'Kevin/crude_exports/',name.split('.')[0]+'.json')
+        write_path = os.path.join(os.getcwd(),'../Kevin/crude_exports/',name.split('.')[0]+'.json')
     
     if name == 'UScrudeoilimports.xlsx':
         df['Value'] = [round(x,2) for x in df['Value']]
-        write_path = os.path.join(os.getcwd(),'Kevin/us_imports/',name.split('.')[0]+'.json')
+        write_path = os.path.join(os.getcwd(),'../Kevin/us_imports/',name.split('.')[0]+'.json')
     
     if name == 'figures.xlsx' and sheet=='Available for Export':
         df = df.rename(columns={'TransMountain':'Trans Mountain Pipeline',
@@ -202,10 +203,10 @@ def readExcel(name,sheet='pq',sql=False):
                                 'Keystone':'Keystone Pipeline'})
         
         df = df[df['Year']>=2015]
-        write_path = os.path.join(os.getcwd(),'Colette/crude_takeaway/',name.split('.')[0]+'.json')
+        write_path = os.path.join(os.getcwd(),'../Colette/crude_takeaway/',name.split('.')[0]+'.json')
     
     if name == 'marine_exports.xlsx':
-        write_path = os.path.join(os.getcwd(),'Colette/marine_exports/',name.split('.')[0]+'.json')
+        write_path = os.path.join(os.getcwd(),'../Colette/marine_exports/',name.split('.')[0]+'.json')
         del df['b/d']
         df['Thousand m3/d'] = df['Mb/d']
         df = normalize_numeric(df, ['Mb/d'], 1)
@@ -214,7 +215,7 @@ def readExcel(name,sheet='pq',sql=False):
     if name == 'figures.xlsx' and sheet=='ngl production':
         products = ['Ethane','Propane','Butanes']
         df = normalize_numeric(df, products, 1)
-        write_path = os.path.join(os.getcwd(),'Ryan/ngl_production/',name.split('.')[0]+'.json')
+        write_path = os.path.join(os.getcwd(),'../Ryan/ngl_production/',name.split('.')[0]+'.json')
     
     if name == 'CrudeRawData-2019-01-01-2019-12-01.xlsx':
         df['Percent'] = df['Percent'].round(2)
@@ -222,11 +223,11 @@ def readExcel(name,sheet='pq',sql=False):
             del df[delete]
         df = df[df['Attribute']!='Truck']
         df['Attribute'] = df['Attribute'].replace({'Railroad':'Rail'})
-        write_path = os.path.join(os.getcwd(),'Colette/crude_export_mode/',name.split('.')[0]+'.json')
+        write_path = os.path.join(os.getcwd(),'../Colette/crude_export_mode/',name.split('.')[0]+'.json')
     
     if name == 'Natural_Gas_Production.xlsx':
         df['Production Type'] = df['Production Type'].replace({'Non Associated':'Conventional Non-tight'})
-        write_path = os.path.join(os.getcwd(),'Rebecca/gas_production/',name.split('.')[0]+'.json')
+        write_path = os.path.join(os.getcwd(),'../Rebecca/gas_production/',name.split('.')[0]+'.json')
     if name == 'natural-gas-exports-and-imports-annual.xlsx':
         cal = calendar.Calendar()
         df['Days in Year'] = [daysInYear(x) for x in df['Year']]
@@ -235,7 +236,7 @@ def readExcel(name,sheet='pq',sql=False):
         for delete in ['Volume (MCF)','Days in Year','Volume (Thousand m3)']:
             del df[delete]
         df = normalize_numeric(df,['Volume (Bcf/d)','Volume (Million m3/d)'],2)
-        write_path = os.path.join(os.getcwd(),'Rebecca/gas_trade/',name.split('.')[0]+'.json')
+        write_path = os.path.join(os.getcwd(),'../Rebecca/gas_trade/',name.split('.')[0]+'.json')
     if name == 'CreditTables.xlsx':
         if sheet == 'ratings categories':
             df = normalize_text(df, ['Corporate Entity','Type','Credit Quality'])
@@ -253,9 +254,9 @@ def readExcel(name,sheet='pq',sql=False):
                 del df[delete]
             
             df = df[df['Year']>=2015]
-            write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',name.split('.')[0]+'.json')
+            write_path = os.path.join(os.getcwd(),'../Jennifer/credit_ratings/',name.split('.')[0]+'.json')
         if sheet == 'Scale':
-            write_path = os.path.join(os.getcwd(),'Jennifer/credit_ratings/',sheet+'.json')
+            write_path = os.path.join(os.getcwd(),'../Jennifer/credit_ratings/',sheet+'.json')
             del df['Level']
             df = df.rename(columns={'DBRS Morningstar':'DBRS','Level Inverted':'Level'})
             df = normalize_text(df, ["Credit Quality","DBRS","S&P","Investment Grade","Moody's"])
@@ -301,7 +302,7 @@ def readExcel(name,sheet='pq',sql=False):
                                                 'PKM Cochin ULC':'Cochin Pipeline',
                                                 'Total CER Regulated Pipelines':'Total CER Pipelines'})
         df = df.sort_values(by=['ACE'],ascending=False)
-        write_path = os.path.join(os.getcwd(),'Jennifer/abandonment_funding/',sheet+'.json')
+        write_path = os.path.join(os.getcwd(),'../Jennifer/abandonment_funding/',sheet+'.json')
         if sql:
             conn,engine = cer_connection()
             df.to_sql("Pipelines_Abandonment_Totals",con=conn,index=False,if_exists='replace')
@@ -361,7 +362,7 @@ def readExcelPipeline(name,sheet='Data',sql=False):
     df['Year'] = pd.to_numeric(df['Year'])
     df = df[df['Year']>=2015]
     df = df.sort_values(by=['Type','Category','Year','Value'])
-    write_path = os.path.join(os.getcwd(),'Cassandra/all_pipes/',name.split('.')[0]+'.json')
+    write_path = os.path.join(os.getcwd(),'../Cassandra/all_pipes/',name.split('.')[0]+'.json')
     del df['Owner']
     saveJson(df, write_path)
    
@@ -542,7 +543,7 @@ def tolls(name):
                                              'Westcoast':'Enbridge BC Pipeline'})
     df = df.sort_values(by=['Commodity','Pipeline','Start','End'])
     df = normalize_dates(df, ['Start','End'])
-    write_path = os.path.join(os.getcwd(),'Cassandra/tolls/','tolls.json')
+    write_path = os.path.join(os.getcwd(),'../Cassandra/tolls/','tolls.json')
     saveJson(df, write_path)
     return df
 
@@ -567,7 +568,7 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
     del df['Group']
     df['Company'] = df['Company'].replace(pipeline_names())
     df['Settlement Name'] = df['Settlement Name'].replace({np.nan:"Unnamed Settlement"})
-    write_path = os.path.join(os.getcwd(),'Cassandra/negotiated_settlements/','settlements.json')
+    write_path = os.path.join(os.getcwd(),'../Cassandra/negotiated_settlements/','settlements.json')
     saveJson(df, write_path)
     return df
 
@@ -604,9 +605,9 @@ def st_stephen():
 
 
 if __name__ == '__main__':
-        
+    print('Starting to json process...')        
     #kevin
-    #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
+    df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
     #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
@@ -615,13 +616,12 @@ if __name__ == '__main__':
     #df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
     #df = readExcel('figures.xlsx',sheet='Available for Export')
     #df = readCersei('crude_mode.sql','crude_mode.json')
-    #df = readExcel('CrudeRawData-2019-01-01-2019-12-01.xlsx','Oil Mode')
     #df = readExcel('marine_exports.xlsx','marine exports')
     
     #sara
     #df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
     #df = readCersei('gas_2019_avg.sql','gas_2019.json')
-    dfmnp,dfoffshore = st_stephen()
+    #dfmnp,dfoffshore = st_stephen()
     
     #rebecca
     #df = readCersei('platts_gas.sql','gas_prices.json')
@@ -647,5 +647,6 @@ if __name__ == '__main__':
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx',sql=True)
+    print('Finished saving json data')
     
 #%%

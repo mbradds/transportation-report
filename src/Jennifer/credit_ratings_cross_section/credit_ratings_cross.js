@@ -3,6 +3,7 @@ import {
   prepareSeriesTidy,
   getUnique,
   setTitle,
+  sortObj,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import creditData from "../credit_ratings/CreditTables.json";
@@ -60,9 +61,8 @@ export const jenniferRatingsCross = () => {
     for (const company in category) {
       category[company] = average(category[company]);
     }
-    var sortableCategories = Object.keys(category).sort(function (a, b) {
-      return category[b] - category[a];
-    });
+
+    var sortableCategories = Object.keys(sortObj(category));
 
     var sortedSeries = series.map((s) => {
       var oldSeries = {};

@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "start": "webpack-dev-server --output-public-path=/dist/"
+    "start": "webpack-dev-server --output-public-path=/dist/",
+    "data": "./src/data_management/run_data.sh",
+    "maps": "./src/data_management/run_maps.sh"
   },
   "repository": {
     "type": "git",
@@ -19,7 +21,8 @@
   },
   "homepage": "https://github.com/mbradds/HighchartsMarkets#readme",
   "dependencies": {
-    "all": "0.0.0"
+    "all": "0.0.0",
+    "mapshaper": "^0.5.26"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
@@ -29,7 +32,6 @@
     "copy-webpack-plugin": "^6.3.0",
     "core-js": "^3.7.0",
     "json-minimizer-webpack-plugin": "^2.0.0",
-    "mapshaper": "^0.5.26",
     "webpack": "^5.4.0",
     "webpack-bundle-analyzer": "^4.1.0",
     "webpack-cli": "^3.3.12",

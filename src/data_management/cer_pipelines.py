@@ -7,8 +7,8 @@ from os.path import isfile, join
 import pyproj #for checking the epsg code of projected CRS
 import matplotlib.pyplot as plt
 import sys
-if ".." not in sys.path:
-    sys.path.append("..") # Adds higher directory to python modules path.
+script_dir = os.path.dirname(__file__)
+os.chdir(script_dir)
 from connection import cer_connection
 #%%
 crs_geo = 'EPSG:4269' #geographic CRS
@@ -237,7 +237,6 @@ def import_one_pipe(name="ENBRIDGE PIPELINES INC.json"):
     read_path = os.path.join(os.getcwd(),'pipeline_output/oil/',name)
     df = gpd.read_file(read_path)
     return df
-
 
 if __name__ == "__main__":
     
