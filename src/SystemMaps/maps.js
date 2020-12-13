@@ -24,7 +24,7 @@ import westcoast from "./pipeline_output/gas/WESTCOAST ENERGY INC, CARRYING ON B
 
 import canadaMap from "./map_output/statsCanFormat.json";
 
-export const systemMaps = (commodity) => {
+export const systemMaps = () => {
   const oilFileNames = {
     "AURORA PIPE LINE COMPANY LTD": {
       color: cerPalette["Aubergine"],
@@ -352,11 +352,8 @@ export const systemMaps = (commodity) => {
   };
 
   const mainCharts = () => {
-    if (commodity == "oil") {
-      oilMap();
-    } else if (commodity == "gas") {
-      gasMap();
-    }
+    oilMap();
+    gasMap();
   };
   mainCharts();
 };

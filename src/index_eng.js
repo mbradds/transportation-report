@@ -27,9 +27,8 @@ import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/cr
 import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
 
 var t0Transportation = performance.now();
-function loadAllCharts() {
+async function loadAllCharts() {
   instructionsChart();
-  systemMaps("oil");
   kevinCrudeProduction();
   kevinCrudeExports();
   kevinUsImports();
@@ -38,7 +37,7 @@ function loadAllCharts() {
   coletteCrudeByRail();
   coletteMarine();
   coletteCrudeTakeaway();
-  systemMaps("gas");
+  systemMaps();
   rebeccaGasProd();
   rebeccaGasTrade();
   rebeccaGasPrices();

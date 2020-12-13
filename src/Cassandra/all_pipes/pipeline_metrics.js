@@ -234,8 +234,7 @@ export const cassandraAllPipes = () => {
     selectMetricFinancial.addEventListener(
       "change",
       (selectMetricFinancial) => {
-        var metric = selectMetricFinancial.target.value;
-        financeFilters.Type = metric;
+        financeFilters.Type = selectMetricFinancial.target.value;
         chartFinance = graphEvent(financeFilters);
       }
     );
@@ -245,8 +244,7 @@ export const cassandraAllPipes = () => {
     );
 
     selectPipeFinancial.addEventListener("change", (selectPipeFinancial) => {
-      var pipeGroup = selectPipeFinancial.target.value;
-      financeFilters.Category = pipeGroup;
+      financeFilters.Category = selectPipeFinancial.target.value;
       chartFinance = graphEvent(financeFilters);
     });
 
