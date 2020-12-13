@@ -74,33 +74,33 @@ def saveJson(df,write_path,precision=2):
     df.to_json(write_path,orient='records',double_precision=precision,compression='infer')
 
 def readCersei(query,name=None):
-
     df = execute_sql(query)
+    
     if name == 'oil_prices.json':
         df = normalize_dates(df, ['Date'])
         df['Differential'] = (df['WTI'] - df['WCS'])*-1
-        write_path = os.path.join(os.getcwd(),'Kevin/crude_prices/',name)
+        write_path = os.path.join(os.getcwd(),'../Kevin/crude_prices/',name)
     if name == 'crude_mode.json':
-        write_path = os.path.join(os.getcwd(),'Colette/crude_export_mode/',name)
+        write_path = os.path.join(os.getcwd(),'../Colette/crude_export_mode/',name)
     if name == 'crude_by_rail_wcs.json':
         df['Crude by Rail'] = [x/1000 if u=='bbl per day' else x for x,u in zip(df['Crude by Rail'],df['Units'])]
         df['Units'] = df['Units'].replace({'bbl per day':'Mb/d','m3 per day':'m3/d'})
         df = normalize_numeric(df, ['Crude by Rail'], 1)
-        write_path = os.path.join(os.getcwd(),'Colette/crude_by_rail/',name)
+        write_path = os.path.join(os.getcwd(),'../Colette/crude_by_rail/',name)
     if name == 'gas_traffic.json':
         df = normalize_dates(df, ['Date'])
-        write_path = os.path.join(os.getcwd(),'Sara/gas_traffic/',name)
+        write_path = os.path.join(os.getcwd(),'../Sara/gas_traffic/',name)
     if name == 'fin_resource_totals.json':
         write_path = os.path.join(os.getcwd(),'Jennifer/financial_instruments/',name)
         for text_col in ['Financial Instrument','Commodity']:
             df[text_col] = [x.strip() for x in df[text_col]]
     if name == 'fin_resource_class.json':
-        write_path = os.path.join(os.getcwd(),'Jennifer/financial_instruments/',name)
+        write_path = os.path.join(os.getcwd(),'../Jennifer/financial_instruments/',name)
         for text_col in ['Pipeline Group','Commodity']:
             df[text_col] = [x.strip() for x in df[text_col]]
         df['Financial Resource'] = pd.to_numeric(df['Financial Resource'])
     if name == 'fin_resource_class_names.json':
-        write_path = os.path.join(os.getcwd(),'Jennifer/financial_instruments/',name)
+        write_path = os.path.join(os.getcwd(),'../Jennifer/financial_instruments/',name)
         df = normalize_text(df, ['ALL Class','Company'])
         df['Company'] = df['Company'].replace(pipeline_names())
         df['Company'] = df['Company'].replace({'Alliance Pipeline Limited Partnership':'Alliance Pipeline',
@@ -123,7 +123,7 @@ def readCersei(query,name=None):
             json.dump(names, f)
         
     if name == 'gas_2019.json':
-        write_path = os.path.join(os.getcwd(),'Sara/gas_2019/',name)
+        write_path = os.path.join(os.getcwd(),'../Sara/gas_2019/',name)
         df.loc[df['Corporate Entity'] == 'TransCanada PipeLines Limited', 'Pipeline Name'] = 'TC Canadian Mainline'
         df.loc[df['Corporate Entity'] == 'Maritimes & Northeast Pipeline', 'Pipeline Name'] = 'M&NP Pipeline'
         df['Pipeline Name'] = df['Pipeline Name'].replace({'BC Pipeline':'Enbridge BC Pipeline'})
@@ -140,7 +140,7 @@ def readCersei(query,name=None):
                                                  'Dawn Ontario TDt Com':'Dawn',
                                                  'TC Alb AECO-C TDt Com Dly':'Alberta NIT',
                                                  'Westcoast Stn 2 TDt Com':'Station 2'})
-        write_path = os.path.join(os.getcwd(),'Rebecca/gas_prices/',name)
+        write_path = os.path.join(os.getcwd(),'../Rebecca/gas_prices/',name)
     
     if (name != None and name not in ['fin_resource_class_names.json','st_stephen.json','ns_offshore.json']):
         saveJson(df, write_path)
@@ -583,7 +583,6 @@ def st_stephen():
     df_prod = readCersei('offshore_ns.sql','ns_offshore.json')
     for df in [df_traffic,df_prod]:
         df['Date'] = pd.to_datetime(df['Date'])
-        df = df[df['Date'].dt.year >= 2009]
     max_traffic = max(df_traffic['Date'])
     max_prod = max(df_prod['Date'])
     date_col,value_col = [],[]
@@ -598,7 +597,7 @@ def st_stephen():
         df = output[0]
         df = df.sort_values(by=['Date'])
         df = normalize_dates(df, ['Date'])
-        write_path = os.path.join(os.getcwd(),'Sara/st_stephen/',output[-1])
+        write_path = os.path.join(os.getcwd(),'../Sara/st_stephen/',output[-1])
         saveJson(df, write_path)
     
     return df_traffic,df_prod
@@ -607,7 +606,7 @@ def st_stephen():
 if __name__ == '__main__':
     print('Starting to json process...')        
     #kevin
-    df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
+    #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
     #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
@@ -621,7 +620,7 @@ if __name__ == '__main__':
     #sara
     #df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
     #df = readCersei('gas_2019_avg.sql','gas_2019.json')
-    #dfmnp,dfoffshore = st_stephen()
+    dfmnp,dfoffshore = st_stephen()
     
     #rebecca
     #df = readCersei('platts_gas.sql','gas_prices.json')
