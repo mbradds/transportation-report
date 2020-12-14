@@ -20,7 +20,6 @@ import tqm from "./prototype_output/gas/TQMPipeline.json";
 import tcpl from "./prototype_output/gas/TCCanadianMainline.json";
 import vector from "./prototype_output/gas/VectorPipeline.json";
 import westcoast from "./prototype_output/gas/EnbridgeBCPipeline.json";
-
 import canadaMap from "./map_output/base_map.json";
 
 export const systemMaps = () => {
@@ -126,8 +125,19 @@ export const systemMaps = () => {
   };
 
   const importPipes = (fileNames) => {
-    const shapes = [];
-
+    const shapes = [
+      {
+        name: "Pipeline Map",
+        data: Highcharts.geojson(canadaMap),
+        type: "map",
+        color: "#F0F0F0",
+        borderWidth: 0.5,
+        borderColor: "black",
+        zIndex: 0,
+        showInLegend: false,
+        enableMouseTracking: false,
+      },
+    ];
     for (const [key, value] of Object.entries(fileNames)) {
       shapes.push({
         name: key,
@@ -137,72 +147,34 @@ export const systemMaps = () => {
         borderWidth: 0.2,
         borderColor: "black",
         zIndex: value.zIndex,
-        dataLabels: {
-          enabled: true,
-          format: "{point.name}",
-          style: {
-            width: "80px", // force line-wrap
-          },
-        },
       });
     }
-
-    const baseMap = {
-      name: "Pipeline Map",
-      data: Highcharts.geojson(canadaMap),
-      type: "map",
-      color: "#F0F0F0",
-      borderWidth: 0.5,
-      borderColor: "black",
-      zIndex: 0,
-      showInLegend: false,
-      enableMouseTracking: false,
-    };
-    shapes.push(baseMap);
-
     return shapes;
   };
 
   const mapTooltip = (e) => {
-    var properties = {};
     var hasProperties = false;
-    var propertiesList = [
-      "Year",
-      "Pipeline Name",
-      "throughput",
-      "availableCapacity",
-      "Direction of Flow",
-      "product",
-      "tradeType",
-      "Capacity Utilization",
-      "Key Point",
-    ];
-    propertiesList.map((prop) => {
-      if (e.point.properties.hasOwnProperty(prop)) {
-        properties[prop] = e.point.properties[prop];
-        hasProperties = e;
-      } else {
-        properties[prop] = "n/a";
-      }
-    });
-
+    if (e.point.properties.hasOwnProperty("Key Point")) {
+      var hasProperties = true;
+    }
     if (hasProperties) {
-      var toolText = `<b> ${e.point.properties.OPERATOR} - ${properties["Pipeline Name"]} ( ${properties["Key Point"]} key point) <b><br>`;
+      var toolText = `<b> ${e.point.properties.Company} - ${e.point.properties["Corporate Entity"]}<b><br>`;
       return toolText;
     } else {
-      var toolText = `<b> ${e.point.properties.OPERATOR} <b><br>`;
+      var toolText = `<b> ${e.point.properties["Pipeline_S"]} <b><br>`;
       return toolText;
     }
   };
 
   const mapPopUp = (e, container) => {
     var properties = {};
-    var hasProperties = false;
+
     var propertiesList = [
       "Year",
       "Pipeline Name",
       "Corporate Entity",
       "throughput",
+      "Shape_Leng",
       "availableCapacity",
       "Direction of Flow",
       "product",
@@ -218,19 +190,26 @@ export const systemMaps = () => {
     propertiesList.map((prop) => {
       if (e.properties.hasOwnProperty(prop)) {
         properties[prop] = e.properties[prop];
-        hasProperties = e;
       } else {
         properties[prop] = "n/a";
       }
     });
 
+    var hasProperties = false;
+    if (e.properties.hasOwnProperty("Key Point")) {
+      var hasProperties = true;
+    }
+
     if (hasProperties) {
-      
-      var toolText = `<span style="color:${e.color};font-size:14px;font-weight:bold">${properties["Corporate Entity"]}  (${properties["Key Point"]} key point) </span><br>`;
-      toolText += `<table> <tr><td><li> Direction of Flow: &nbsp</td><td style="padding:0"><b>${properties["Direction of Flow"]}</b></li></td></tr>`;
+      var toolText = `<span style="color:${e.color};font-size:14px;font-weight:bold">${properties["Corporate Entity"]}</span><br>`;
+      toolText += `<i>System Information</i>`;
+      toolText += `<table><tr><td><li> Estimated Length: &nbsp</td><td style="padding:0"><b>Coming soon!</b></li></td></tr>`;
+      toolText += `<tr><td><li> Direction of Flow: &nbsp</td><td style="padding:0"><b>${properties["Direction of Flow"]}</b></li></td></tr>`;
       toolText += `<tr><td><li> Products: &nbsp</td><td style="padding:0"><b>${properties.product}</b></li></td></tr>`;
       toolText += `<tr><td><li>Pipeline Trade Type: &nbsp</td><td style="padding:0"><b>${properties.tradeType}</b></li></td></tr>`;
-      toolText += `<tr><td><li>${properties.Year} Average Throughput: &nbsp</td><td style="padding:0"><b>${properties.throughput} ${units}</b></li></td></tr>`;
+      toolText += `</table><br>`;
+      toolText += `<i>System Info at ${properties["Key Point"]} Key Point<i>`;
+      toolText += `<table><tr><td><li>${properties.Year} Average Throughput: &nbsp</td><td style="padding:0"><b>${properties.throughput} ${units}</b></li></td></tr>`;
       toolText += `<tr><td><li>${properties.Year} Average Capacity: &nbsp</td><td style="padding:0"><b>${properties.availableCapacity} ${units}</b></li></td></tr>`;
       toolText += `<tr><td><li>${
         properties.Year
@@ -240,9 +219,8 @@ export const systemMaps = () => {
       toolText += `</table>`;
       return toolText;
     } else {
-      var toolText = `<span style="color:${e.color};font-size:14px;font-weight:bold">${e.properties["OPERATOR"]}</span><br>`;
-      toolText += `<b>CER Group:</b> ${e.properties["NEBGROUP"]}<br>`;
-      toolText += `<b>Pipeline Type:</b> ${e.properties["TYPE"]}`;
+      var toolText = `<span style="color:${e.color};font-size:14px;font-weight:bold">${e.properties["Pipeline_S"]}</span><br>`;
+      toolText += `<b>CER Group:</b>Group 2<br>`;
       return toolText;
     }
   };
@@ -255,17 +233,17 @@ export const systemMaps = () => {
   const createPointMap = (shapes, container) => {
     return new Highcharts.mapChart(container, {
       chart: {
+        type: "map",
         borderColor: "black",
         borderWidth: 1,
-        animation: true,
+        panning: {
+          enabled: true,
+          type: "xy",
+        },
       },
 
       credits: {
         text: "Source: CER",
-      },
-
-      mapNavigation: {
-        enabled: true,
       },
 
       title: {
@@ -276,7 +254,7 @@ export const systemMaps = () => {
         title: { text: "Click on a legend item to add/remove from map" },
         borderColor: cerPalette["Dim Grey"],
         borderWidth: 3,
-        itemWidth: 400,
+        itemDistance: 5,
       },
 
       tooltip: {
