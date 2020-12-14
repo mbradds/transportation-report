@@ -236,14 +236,45 @@ export const systemMaps = () => {
         type: "map",
         borderColor: "black",
         borderWidth: 1,
+        marginTop: 3,
         panning: {
           enabled: true,
           type: "xy",
         },
+        events: {
+          load: function () {
+            const chart = this;
+            var text = `<b>Hover over a pipeline to view system info</b><br>`;
+            text += `<i>Click legend item to add/remove pipelines</i><br>`;
+            text += `<i>Scroll in chart area to zoom</i>`;
+            var label = chart.renderer
+              .label(text, null, null, null, null, null, true)
+              .css({
+                width: "300px",
+              })
+              .attr({
+                zIndex: 8,
+                padding: 8,
+                r: 3,
+                fill: "white",
+              })
+              .add(chart.rGroup);
+            label.align(
+              Highcharts.extend(label.getBBox(), {
+                align: "left",
+                x: 0, // offset
+                verticalAlign: "top",
+                y: 0, // offset
+              }),
+              null,
+              "spacingBox"
+            );
+          },
+        },
       },
 
       credits: {
-        text: "Source: CER",
+        text: "",
       },
 
       title: {
@@ -251,8 +282,9 @@ export const systemMaps = () => {
       },
 
       legend: {
-        title: { text: "Click on a legend item to add/remove from map" },
         borderColor: cerPalette["Dim Grey"],
+        margin: 5,
+        y: 5,
         borderWidth: 3,
         itemDistance: 5,
       },
