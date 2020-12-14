@@ -10,15 +10,10 @@ import tollsData from "./tolls.json";
 
 export const cassandraTolls = () => {
   const setTitle = (figure_title, filters) => {
-    if (filters.Commodity == "Oil & Gas") {
-      figure_title.innerText =
-        "Figure 18: Crude Oil & Natural Gas Average Tolls Index";
-    } else {
-      figure_title.innerText = `Figure 18: ${filters.Commodity.replace(
-        "Breakdown",
-        ""
-      )} Pipeline Tolls`;
-    }
+    figure_title.innerText = `Figure 18: ${filters.Commodity.replace(
+      "Breakdown",
+      ""
+    )} Pipeline Tolls`;
   };
 
   const tollChartTypes = (series) => {
@@ -34,22 +29,19 @@ export const cassandraTolls = () => {
     return series;
   };
 
-  var tollFilters = { Commodity: "Oil & Gas" };
+  var tollFilters = { Commodity: "Crude Oil Breakdown" };
   var tollDate = { Date: "Start" };
 
   const tollColors = {
-    "Gas Tolls": cerPalette["Sun"],
-    "Oil Tolls": cerPalette["Night Sky"],
-    "Oil Tolls (omit TNPI)": cerPalette["Ocean"],
     "GDP Deflator": cerPalette["Cool Grey"],
-    "TransCanada Mainline": cerPalette["Forest"],
+    "TC Canadian Mainline": cerPalette["Forest"],
     "Enbridge BC Pipeline": cerPalette["Aubergine"],
     "TQM Pipeline": cerPalette["Dim Grey"],
     "Alliance Pipeline": cerPalette["Ocean"],
     "M&NP Pipeline": cerPalette["Sun"],
     "NGTL System": cerPalette["Flame"],
     "Trans-Northern Pipeline": cerPalette["Aubergine"],
-    "Keystone Pipeline": cerPalette["Ocean"],
+    "Keystone Pipeline": cerPalette["Forest"],
     "Express Pipeline": cerPalette["Cool Grey"],
     "Enbridge Canadian Mainline": cerPalette["Flame"],
   };

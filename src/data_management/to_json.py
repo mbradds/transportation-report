@@ -524,11 +524,11 @@ def tolls(name):
     gas = normalize(gas_sheets,'Natural Gas Breakdown',read_path)
     
     #add in the commodity toll averages
-    all_tolls = pd.read_excel(read_path,sheet_name='All Tolls')
-    all_tolls['Commodity'] = 'Oil & Gas'
-    all_tolls = normalize_dates(all_tolls,['Start','End'])
+    # all_tolls = pd.read_excel(read_path,sheet_name='All Tolls')
+    # all_tolls['Commodity'] = 'Oil & Gas'
+    # all_tolls = normalize_dates(all_tolls,['Start','End'])
     
-    df = pd.concat([oil,gas,all_tolls], axis=0, sort=False, ignore_index=True)
+    df = pd.concat([oil,gas], axis=0, sort=False, ignore_index=True)
     df['Rate Normalized'] = df['Rate Normalized'].round(2)
     df['Pipeline'] = df['Pipeline'].replace({'Enbridge ML':'Enbridge Canadian Mainline',
                                              'Express':'Express Pipeline',
@@ -620,7 +620,7 @@ if __name__ == '__main__':
     #sara
     #df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
     #df = readCersei('gas_2019_avg.sql','gas_2019.json')
-    dfmnp,dfoffshore = st_stephen()
+    #dfmnp,dfoffshore = st_stephen()
     
     #rebecca
     #df = readCersei('platts_gas.sql','gas_prices.json')
@@ -629,7 +629,7 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     #df = negotiated_settlements()
     
     #ryan
