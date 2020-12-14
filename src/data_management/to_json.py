@@ -81,6 +81,7 @@ def readCersei(query,name=None):
         df['Differential'] = (df['WTI'] - df['WCS'])*-1
         write_path = os.path.join(os.getcwd(),'../Kevin/crude_prices/',name)
     if name == 'crude_mode.json':
+        df['Mode'] = df['Mode'].replace({'Railroad':'Rail'})
         write_path = os.path.join(os.getcwd(),'../Colette/crude_export_mode/',name)
     if name == 'crude_by_rail_wcs.json':
         df['Crude by Rail'] = [x/1000 if u=='bbl per day' else x for x,u in zip(df['Crude by Rail'],df['Units'])]
@@ -288,6 +289,7 @@ def readExcel(name,sheet='pq',sql=False):
                 commodity.append('All')
             else:
                 commodity.append('Oil')
+                
         df['Commodity'] = commodity
         df['Remaining Estimate'] = df['ACE'] - df['Amounts Set Aside']
         df['Company'] = df['Company'].replace(pipeline_names())
@@ -300,7 +302,8 @@ def readExcel(name,sheet='pq',sql=False):
                                                 'Maritimes & Northeast Pipeline Management Limited':'M&NP Pipeline',
                                                 'Trans Quebec & Maritimes Pipeline (TQM) Inc.':'TQM Pipeline',
                                                 'PKM Cochin ULC':'Cochin Pipeline',
-                                                'Total CER Regulated Pipelines':'Total CER Pipelines'})
+                                                'Total CER Regulated Pipelines':'All CER Regulated Pipeline Companies',
+                                                'Total Group 2 Pipelines':'Group 2 Pipeline Companies'})
         df = df.sort_values(by=['ACE'],ascending=False)
         write_path = os.path.join(os.getcwd(),'../Jennifer/abandonment_funding/',sheet+'.json')
         if sql:
@@ -606,7 +609,7 @@ def st_stephen():
 if __name__ == '__main__':
     print('Starting to json process...')        
     #kevin
-    #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
+    df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
     #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
@@ -629,7 +632,7 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
-    df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     #df = negotiated_settlements()
     
     #ryan
@@ -642,7 +645,7 @@ if __name__ == '__main__':
     #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
     #df,scale = creditRatings()
-    #df = readExcel("abandonment funding data.xlsx","Modified",sql=True)
+    #df = readExcel("abandonment funding data.xlsx","Modified",sql=False)
 
     #other
     #df = writeExcelCredit(name='CreditTables.xlsx',sql=True)

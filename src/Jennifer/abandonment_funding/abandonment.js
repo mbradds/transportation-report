@@ -12,16 +12,18 @@ export const jenniferAbandonment = () => {
 
   const g1SeriesName = (filters) => {
     if (filters.commodity == "All") {
-      var company = "Total Group 1 Pipelines";
+      return "Group 1 Pipeline Companies";
     } else {
-      var company = `Total Group 1 ${filters.commodity} Pipelines`;
+      return `Group 1 ${filters.commodity} Pipelines`;
     }
-    return company;
   };
 
   const filterData = (data, filters) => {
     const totals = (data) => {
-      const exclude = ["Total CER Pipelines", "Total Group 2 Pipelines"];
+      const exclude = [
+        "All CER Regulated Pipeline Companies",
+        "Group 2 Pipeline Companies",
+      ];
       var totals = {
         ACE: 0,
         "Amounts Set Aside": 0,
@@ -59,8 +61,8 @@ export const jenniferAbandonment = () => {
   const filterSeries = (seriesData, filters) => {
     var exclude = [
       g1SeriesName(filters),
-      "Total Group 2 Pipelines",
-      "Total CER Pipelines",
+      "Group 2 Pipeline Companies",
+      "All CER Regulated Pipeline Companies",
     ];
 
     var seriesTotals = [];
@@ -131,7 +133,7 @@ export const jenniferAbandonment = () => {
         gridLineWidth: 0,
       },
 
-      title: { text: "Abandonment Funding Totals" },
+      title: { text: "Costs to Abandon CER-Regulated Pipelines", margin: 0 },
 
       credits: {
         enabled: false,
@@ -145,7 +147,7 @@ export const jenniferAbandonment = () => {
           dataLabels: {
             enabled: true,
             formatter: function () {
-              if (this.key !== "Total Group 2 Pipelines") {
+              if (this.key !== "Group 2 Pipeline Companies") {
                 return `${(this.point.y / 1000000000).toFixed(1)} Billion`;
               } else {
                 return null;
@@ -213,7 +215,12 @@ export const jenniferAbandonment = () => {
         type: "column",
       },
 
-      title: { text: "Group 1 Abandonment Breakdown" },
+      title: {
+        text: "Group 1 Abandonment Breakdown",
+        margin: 0,
+        floating: true,
+        y: 25,
+      },
 
       plotOptions: {
         series: {
@@ -230,6 +237,14 @@ export const jenniferAbandonment = () => {
       },
       xAxis: {
         categories: true,
+      },
+
+      legend: {
+        margin: 0,
+        y: 0,
+        padding: 0,
+        itemMarginTop: 0,
+        itemMarginBottom: 0,
       },
 
       tooltip: {

@@ -9,13 +9,6 @@ import { errorChart } from "../../modules/charts.js";
 import tollsData from "./tolls.json";
 
 export const cassandraTolls = () => {
-  const setTitle = (figure_title, filters) => {
-    figure_title.innerText = `Figure 18: ${filters.Commodity.replace(
-      "Breakdown",
-      ""
-    )} Pipeline Tolls`;
-  };
-
   const tollChartTypes = (series) => {
     series.map((data) => {
       if (data.name == "GDP Deflator") {
@@ -29,8 +22,19 @@ export const cassandraTolls = () => {
     return series;
   };
 
-  var tollFilters = { Commodity: "Crude Oil Breakdown" };
   var tollDate = { Date: "Start" };
+
+  const splitCommodity = (data) => {
+    const [oil, gas] = [[], []];
+    data.map((row) => {
+      if (row.Commodity == "Crude Oil Breakdown") {
+        oil.push(row);
+      } else {
+        gas.push(row);
+      }
+    });
+    return [oil, gas];
+  };
 
   const tollColors = {
     "GDP Deflator": cerPalette["Cool Grey"],
@@ -46,11 +50,11 @@ export const cassandraTolls = () => {
     "Enbridge Canadian Mainline": cerPalette["Flame"],
   };
 
-  const createTollSeries = (tollsData, tollFilters, tollDate, tollColors) => {
+  const createTollSeries = (tollsData, tollDate, tollColors) => {
     return tollChartTypes(
       prepareSeriesTidy(
         tollsData,
-        tollFilters,
+        false,
         false,
         "Pipeline",
         tollDate.Date,
@@ -59,8 +63,8 @@ export const cassandraTolls = () => {
       )
     );
   };
-  const createTollsChart = (seriesData, tollDate) => {
-    return new Highcharts.chart("container_tolls", {
+  const createTollsChart = (seriesData, tollDate, div) => {
+    return new Highcharts.chart(div, {
       chart: {
         zoomType: "x",
         borderWidth: 1,
@@ -98,32 +102,35 @@ export const cassandraTolls = () => {
   };
 
   const mainTolls = () => {
-    var seriesData = createTollSeries(
-      tollsData,
-      tollFilters,
-      tollDate,
-      tollColors
-    );
-    var figure_title = document.getElementById("tolls_title");
-    setTitle(figure_title, tollFilters);
-    var chartTolls = createTollsChart(seriesData, tollDate);
-
-    var selectTolls = document.getElementById("select_commodity_tolls");
-    selectTolls.addEventListener("change", (selectTolls) => {
-      tollFilters.Commodity = selectTolls.target.value;
-      setTitle(figure_title, tollFilters);
-      var seriesData = createTollSeries(
-        tollsData,
-        tollFilters,
+    const commoditySeries = () => {
+      try {
+        return splitCommodity(tollsData);
+      } catch (err) {
+        errorChart("container_tolls_oil");
+        errorChart("container_tolls_gas");
+      }
+    };
+    const [oilTolls, gasTolls] = commoditySeries(tollsData);
+    try {
+      var chartTollsOil = createTollsChart(
+        createTollSeries(oilTolls, tollDate, tollColors),
         tollDate,
-        tollColors
+        "container_tolls_oil"
       );
-      chartTolls = createTollsChart(seriesData, tollDate);
-    });
+    } catch (err) {
+      errorChart("container_tolls_oil");
+    }
+
+    try {
+      var chartTollsGas = createTollsChart(
+        createTollSeries(gasTolls, tollDate, tollColors),
+        tollDate,
+        "container_tolls_gas"
+      );
+    } catch (err) {
+      errorChart("container_tolls_gas");
+    }
   };
-  try {
-    mainTolls();
-  } catch (err) {
-    errorChart("container_tolls");
-  }
+
+  mainTolls();
 };

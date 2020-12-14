@@ -98,9 +98,10 @@ export const jenniferFinResources = () => {
   const createFinResourceTotals = (seriesData) => {
     return new Highcharts.chart("container_fin_totals", {
       chart: {
-        height: "10%",
+        //height: "10%",
         type: "bar",
         gridLineWidth: 0,
+        margin: [0, 0, 0, 50],
       },
       title: {
         text: "",
@@ -164,6 +165,9 @@ export const jenniferFinResources = () => {
 
   const createResChart = (seriesData, resFilters) => {
     return new Highcharts.chart("container_fin_resources", {
+      chart: {
+        //marginTop: 0,
+      },
       credits: {
         enabled: false,
       },
@@ -179,8 +183,16 @@ export const jenniferFinResources = () => {
         pointFormat: tooltipPoint(""),
       },
 
+      legend: {
+        enabled: true,
+        marginTop: 5,
+        y: 0,
+        itemDistance: 10,
+      },
+
       title: {
         text: `Financial Instruments Utilized in Financial Resource Plan: ${resFilters.Commodity} Pipelines`,
+        margin: 0,
       },
 
       xAxis: {
