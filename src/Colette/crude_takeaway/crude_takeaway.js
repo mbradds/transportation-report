@@ -87,7 +87,7 @@ export const coletteCrudeTakeaway = () => {
       },
       xAxis: {
         plotLines: [
-          lines("black", "longDash", 2019, "Estimated <br> value", 0),
+          lines("black", "longDash", 2019, "Estimated <br> values start", 0),
         ],
       },
     });

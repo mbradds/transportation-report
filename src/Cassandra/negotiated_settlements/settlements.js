@@ -16,16 +16,6 @@ export const cassandraSettlements = () => {
     "Settlements without fixed end date": cerPalette["Cool Grey"],
   };
 
-  const filters = { Commodity: "All" };
-
-  const setTitle = (figure_title, filters) => {
-    if (filters.Commodity == "All") {
-      figure_title.innerText = "Figure 17: Negotiated Settlement Timelines";
-    } else {
-      figure_title.innerText = `Figure 17: Negotiated Settlement Timelines - ${filters.Commodity}`;
-    }
-  };
-
   const currentDate = () => {
     var today = new Date();
     today.setUTCHours(0);
@@ -62,7 +52,7 @@ export const cassandraSettlements = () => {
     });
   };
 
-  const settlementSeries = (data, filters) => {
+  const settlementSeries = (data) => {
     const addRow = (row) => {
       return {
         name: row["Settlement Name"],
@@ -71,21 +61,20 @@ export const cassandraSettlements = () => {
         color: row.color,
         start: row["Start Date"],
         end: row.end,
+        commodity: row.Commodity,
       };
     };
 
     var seriesTracker = {};
-
-    if (filters.Commodity !== "All") {
-      data = data.filter((row) => row.Commodity == filters.Commodity);
-    }
-
     data = applyEndDateColors(data).sort(sortByProperty("start"));
 
-    var dates = [];
+    var dates = { oil: [], gas: [] };
     var seriesSettle = data.map((row) => {
-      dates.push(row["Start Date"]);
-      dates.push(row["End Date"]);
+      if (row.Commodity == "Oil") {
+        dates.oil.push(...[row["Start Date"], row["End Date"]]);
+      } else {
+        dates.gas.push(...[row["Start Date"], row["End Date"]]);
+      }
       if (seriesTracker.hasOwnProperty(row.Company)) {
         //the parent company is already in the series, add the sub settlement
         seriesTracker[row.Company].startDate.push(row["Start Date"]);
@@ -96,6 +85,7 @@ export const cassandraSettlements = () => {
         seriesTracker[row.Company] = {
           startDate: [row["Start Date"]],
           endDate: [row.end],
+          commodity: row.Commodity,
         };
         return addRow(row);
       }
@@ -120,10 +110,11 @@ export const cassandraSettlements = () => {
 
     const companySettles = [];
     var companyTracker = {}; //checks if a company has already been added so that the ID can be changed for other bars
-    for (const company in seriesTracker) {
+
+    for (var [company, companyInfo] of Object.entries(seriesTracker)) {
       var [companyStartDates, companyEndDates] = [
-        seriesTracker[company].startDate,
-        seriesTracker[company].endDate,
+        companyInfo.startDate,
+        companyInfo.endDate,
       ];
       var [currentStart, currentEnd] = [
         companyStartDates[0],
@@ -142,6 +133,7 @@ export const cassandraSettlements = () => {
             id: companyId(companyTracker, company),
             start: currentStart,
             end: currentEnd,
+            commodity: companyInfo.commodity,
           });
           companyTracker = companyCounter(companyTracker, company);
           currentStart = companyStartDates[endNum + 1];
@@ -154,6 +146,7 @@ export const cassandraSettlements = () => {
               id: companyId(companyTracker, company),
               start: currentStart,
               end: currentEnd,
+              commodity: companyInfo.commodity,
             });
             companyTracker = companyCounter(companyTracker, company);
           }
@@ -161,15 +154,28 @@ export const cassandraSettlements = () => {
       });
     }
 
-    dates = dates.filter((row) => row !== null);
     companySettles.sort(sortByProperty("start"));
-    return [[...seriesSettle, ...companySettles], dates];
+    const commoditySeries = splitSeries([...seriesSettle, ...companySettles]);
+    commoditySeries.oil.dates = dates.oil.filter((row) => row !== null);
+    commoditySeries.gas.dates = dates.gas.filter((row) => row !== null);
+    return commoditySeries;
   };
 
-  const createSettlements = (seriesData, dates) => {
-    return new Highcharts.ganttChart("container_settlements", {
+  const splitSeries = (series) => {
+    var [oilData, gasData] = [[], []];
+    series.map((row) => {
+      if (row.commodity == "Oil") {
+        oilData.push(row);
+      } else if (row.commodity == "Gas") {
+        gasData.push(row);
+      }
+    });
+    return { oil: { data: oilData }, gas: { data: gasData } };
+  };
+
+  const createSettlements = (seriesData, dates, div) => {
+    return new Highcharts.ganttChart(div, {
       chart: {
-        height: "60%",
         type: "gantt",
         borderWidth: 1,
         events: {
@@ -183,7 +189,7 @@ export const cassandraSettlements = () => {
       },
       plotOptions: {
         series: {
-          pointPadding: 0.1,
+          //pointPadding: 0.1,
           borderWidth: 0,
           shadow: false,
           states: {
@@ -222,6 +228,8 @@ export const cassandraSettlements = () => {
             zIndex: 2,
             color: "black",
             label: {
+              align: "right",
+              x: -5,
               formatter: function () {
                 return dateFormat(this.options.value) + " (today, UTC)";
               },
@@ -311,21 +319,38 @@ export const cassandraSettlements = () => {
     });
   };
   const mainSettlements = () => {
-    var figure_title = document.getElementById("settle_title");
-    setTitle(figure_title, filters);
-    const [seriesData, dates] = settlementSeries(settlementsData, filters);
-    var settlementChart = createSettlements(seriesData, dates);
-    var selectSettle = document.getElementById("select_commodity_settlements");
-    selectSettle.addEventListener("change", (selectSettle) => {
-      filters.Commodity = selectSettle.target.value;
-      setTitle(figure_title, filters);
-      const [seriesData, dates] = settlementSeries(settlementsData, filters);
-      settlementChart = createSettlements(seriesData, dates);
-    });
+    const getSeries = () => {
+      try {
+        return settlementSeries(settlementsData);
+      } catch (err) {
+        console.log(err);
+        errorChart("container_settlements_oil");
+        errorChart("container_settlements_gas");
+      }
+    };
+
+    const seriesData = getSeries();
+
+    try {
+      const settlementChartOil = createSettlements(
+        seriesData.oil.data,
+        seriesData.oil.dates,
+        "container_settlements_oil"
+      );
+    } catch (err) {
+      errorChart("container_settlements_oil");
+    }
+
+    try {
+      const settlementChartGas = createSettlements(
+        seriesData.gas.data,
+        seriesData.gas.dates,
+        "container_settlements_gas"
+      );
+    } catch (err) {
+      errorChart("container_settlements_gas");
+    }
   };
-  try {
-    mainSettlements();
-  } catch (err) {
-    errorChart("container_settlements");
-  }
+
+  mainSettlements();
 };
