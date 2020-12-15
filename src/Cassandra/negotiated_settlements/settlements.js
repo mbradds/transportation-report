@@ -217,11 +217,12 @@ export const cassandraSettlements = () => {
 
   const inServiceLegend = (chartData, legendItem) => {
     let legendText = "";
-    chartData.map((row) => {
-      if (row.color == dateColors[legendItem]) {
+    for (var i = 0; i < chartData.length; i++) {
+      if (chartData[i].color == dateColors[legendItem]) {
         legendText = `<span style="font-weight:bold; color: ${dateColors[legendItem]}">&#9679 ${legendItem} date &nbsp &nbsp</span>`;
+        break;
       }
-    });
+    }
     return legendText;
   };
 
@@ -385,19 +386,17 @@ export const cassandraSettlements = () => {
       ],
     });
   };
+
   const mainSettlements = () => {
     const getSeries = () => {
       try {
         return settlementSeries(settlementsData);
       } catch (err) {
-        console.log(err);
         errorChart("container_settlements_oil");
         errorChart("container_settlements_gas");
       }
     };
-
     const seriesData = getSeries();
-
     try {
       const settlementChartOil = createSettlements(
         seriesData.oil.data,
@@ -406,10 +405,8 @@ export const cassandraSettlements = () => {
       );
       settlementChartOil.redraw();
     } catch (err) {
-      console.log(err);
       errorChart("container_settlements_oil");
     }
-
     try {
       const settlementChartGas = createSettlements(
         seriesData.gas.data,
@@ -421,6 +418,5 @@ export const cassandraSettlements = () => {
       errorChart("container_settlements_gas");
     }
   };
-
   mainSettlements();
 };

@@ -69,6 +69,7 @@ export const lineAndStackedArea = (params) => {
 
     yAxis: {
       title: { text: params.units.unitsCurrent },
+      endOnTick: false,
     },
 
     series: params.series,

@@ -182,6 +182,7 @@ export const rebeccaGasPrices = () => {
       },
 
       yAxis: {
+        endOnTick: false,
         title: { text: "Prices (Normalized)" },
         labels: {
           enabled: false,

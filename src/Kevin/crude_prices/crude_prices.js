@@ -4,7 +4,7 @@ import crudePriceData from "./oil_prices.json";
 
 export const kevinCrudePrices = () => {
   const crudePriceChartTypes = (series) => {
-    series.map((data, seriesNum) => {
+    series.map((data) => {
       if (data.name == "Differential") {
         data.type = "area";
       } else {

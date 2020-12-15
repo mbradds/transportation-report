@@ -46,7 +46,10 @@ async function loadAllCharts() {
   sara2019();
   ryanNglProduction();
   ryanNglExports();
+  var t0Settle = performance.now();
   cassandraSettlements();
+  var t1Settle = performance.now();
+  console.log("Settle Rendering: " + (t1Settle - t0Settle) + " milliseconds.");
   cassandraTolls();
   jenniferFinResources();
   jenniferAbandonment();

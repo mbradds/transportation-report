@@ -82,6 +82,7 @@ export const ryanNglExports = () => {
 
       yAxis: {
         title: { text: units.unitsCurrent },
+        endOnTick: false,
       },
 
       lang: {

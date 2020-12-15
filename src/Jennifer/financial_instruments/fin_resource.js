@@ -165,9 +165,6 @@ export const jenniferFinResources = () => {
 
   const createResChart = (seriesData, resFilters) => {
     return new Highcharts.chart("container_fin_resources", {
-      chart: {
-        //marginTop: 0,
-      },
       credits: {
         enabled: false,
       },
@@ -279,6 +276,7 @@ export const jenniferFinResources = () => {
         type: "category",
       },
       yAxis: {
+        endOnTick: false,
         title: {
           text: "Financial resource requirement (Billion $CAD)",
         },
