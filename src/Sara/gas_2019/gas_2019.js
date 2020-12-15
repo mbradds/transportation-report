@@ -264,7 +264,7 @@ export const sara2019 = () => {
           load: function () {
             creditsClick(
               this,
-              "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english"
+              "https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34"
             );
           },
         },
@@ -297,7 +297,7 @@ export const sara2019 = () => {
       },
 
       credits: {
-        text: "Source: CER Commodity Tracking System",
+        text: "Source: Open Government Throughput and Capacity Data",
       },
 
       yAxis: {

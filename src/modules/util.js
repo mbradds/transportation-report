@@ -17,6 +17,33 @@ export const cerPalette = {
   Forecast: "#F0F8FF",
 };
 
+// export const runHeights = (
+//   chart,
+//   chartId,
+//   smallSize,
+//   largeSize,
+//   cutoff = 620
+// ) => {
+//   const setHeights = () => {
+//     const userHeight = window.innerHeight;
+//     if (userHeight <= cutoff) {
+//       $(chartId).css("height", smallSize);
+//       chart.reflow();
+//     } else {
+//       $(chartId).css("height", largeSize);
+//       chart.reflow();
+//     }
+//   };
+//   $(document).ready(function () {
+//     setHeights();
+//     chart.reflow();
+//   });
+//   window.onresize = function (event) {
+//     setHeights();
+//     chart.reflow();
+//   };
+// };
+
 export const numberFormat = (value) => {
   return Highcharts.numberFormat(value, 0, ".", ",");
 };

@@ -351,8 +351,9 @@ export const systemMaps = () => {
   const oilMap = () => {
     try {
       const oilShapes = importPipes(oilFileNames);
-      const crudePipeMap = createPointMap(oilShapes, "container_map_oil");
+      var crudePipeMap = createPointMap(oilShapes, "container_map_oil");
     } catch (err) {
+      console.log(err);
       errorChart("container_map_oil");
     }
   };

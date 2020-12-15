@@ -163,10 +163,35 @@ export const kevinCrudeProduction = () => {
         },
       });
     });
+    return chartCrude;
   };
 
   try {
-    mainCrudeProduction();
+    const chart = mainCrudeProduction();
+    // const runHeights = (chart, cutoff = 620) => {
+    //   const setHeights = () => {
+    //     const userHeight = window.innerHeight;
+    //     var chartId = chart.renderTo.id;
+    //     if (userHeight <= cutoff) {
+    //       $(`#${chartId}`).css("height", 320);
+    //       chart.setSize(false, 320);
+    //       //chart.redraw();
+    //       chart.reflow();
+    //     } else {
+    //       $(`#${chartId}`).css("height", 400);
+    //       chart.setSize(false, 400);
+    //       //chart.redraw();
+    //       chart.reflow();
+    //     }
+    //   };
+    //   $(document).ready(function () {
+    //     setHeights();
+    //   });
+    //   window.onresize = function (event) {
+    //     setHeights();
+    //   };
+    // };
+    // runHeights(chart);
   } catch (err) {
     errorChart("container_crude_production");
   }

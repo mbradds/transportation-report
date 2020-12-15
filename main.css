@@ -36,25 +36,21 @@
 }
 .chart-small {
   max-width: 400px;
-  margin: auto;
 }
 .chart-insert {
   max-width: 700px;
-  margin: auto;
 }
 .chart-medium {
   max-width: 800px;
-  margin: auto;
 }
 .chart-large {
   max-width: 1100px;
-  margin: auto;
 }
 .chart-map {
   max-width: 1000px;
-  margin: auto;
 }
 #container_abandonment_totals {
+  max-width: 1100px;
   height: 200px;
 }
 .container-chart-xs {
@@ -67,7 +63,7 @@
   max-height: 400px;
 }
 .container-chart-large {
-  height: 380px;
+  height: 400px;
 }
 .container-chart-settlements {
   min-height: 400px;
