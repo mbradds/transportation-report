@@ -554,6 +554,9 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
     read_path = os.path.join(os.getcwd(),'Data/',name)
     df = pd.read_excel(read_path,sheet_name='Settlements Data',skiprows=2)
     # df = df[df['Approved pursuant to the Negotiated Settlement Guidelines?'] == "Yes"]
+    df_service = df[df['Category']=="in service"].copy()
+    df_service = df_service[['Company','Settlement Name and/or Reference','End Date (specified, or effective)','Oil/Gas']]
+    df = df[df['Category']=="settlement"]
     df = df[['Company', 'Group', 'Oil/Gas',
        'Settlement Name and/or Reference', 'Original Settlement Approval',
        'Start Date', 'End Date (specified, or effective)',
@@ -561,19 +564,25 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
     df = df[~df['Start Date'].isnull()]
     for delete in ['Original Settlement Approval','Toll Design, Revenue Requirment, or Both','Notes']:
         del df[delete]
-    df = df.rename(columns={'Settlement Name and/or Reference':'Settlement Name',
-                            'End Date (specified, or effective)':'End Date',
-                            'Oil/Gas':'Commodity'})
+    
+    to_replace = {'Settlement Name and/or Reference':'Settlement Name',
+                                'End Date (specified, or effective)':'End Date',
+                                'Oil/Gas':'Commodity'}
+    df = df.rename(columns=to_replace)
+    df_service = df_service.rename(columns=to_replace)
     
     df['End Date'] = df['End Date'].replace('Not Fixed',np.nan)
     df = normalize_dates(df, ['Start Date','End Date'])
     df = df.sort_values(by=['Company','Start Date','End Date'])
     del df['Group']
     df['Company'] = df['Company'].replace(pipeline_names())
+    df_service['Company'] = df_service['Company'].replace(pipeline_names())
     df['Settlement Name'] = df['Settlement Name'].replace({np.nan:"Unnamed Settlement"})
-    write_path = os.path.join(os.getcwd(),'../Cassandra/negotiated_settlements/','settlements.json')
-    saveJson(df, write_path)
-    return df
+    write_path_settlements = os.path.join(os.getcwd(),'../Cassandra/negotiated_settlements/','settlements.json')
+    write_path_inservice = os.path.join(os.getcwd(),'../Cassandra/negotiated_settlements/','in_service.json')
+    saveJson(df, write_path_settlements)
+    saveJson(df_service,write_path_inservice)
+    return df,df_service
 
 def creditRatings():
     df = readExcel('CreditTables.xlsx',sheet='ratings categories')
@@ -609,7 +618,7 @@ def st_stephen():
 if __name__ == '__main__':
     print('Starting to json process...')        
     #kevin
-    df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
+    #df = readExcel('Crude_Oil_Production.xlsx',sheet='pq')
     #df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     #df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     #df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
@@ -633,7 +642,7 @@ if __name__ == '__main__':
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    #df = negotiated_settlements()
+    df,df_service = negotiated_settlements()
     
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx')

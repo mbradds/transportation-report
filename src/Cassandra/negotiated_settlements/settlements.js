@@ -1,8 +1,21 @@
 import { cerPalette, creditsClick, dateFormat } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import settlementsData from "./settlements.json";
+import inService from "./in_service.json";
 
 export const cassandraSettlements = () => {
+  const currentDate = () => {
+    var today = new Date();
+    today.setUTCHours(0);
+    today.setUTCMinutes(0);
+    today.setUTCSeconds(0);
+    today.setUTCMilliseconds(0);
+    return today.getTime();
+  };
+
+  const oneDay = 86400000;
+  const today = currentDate();
+
   const legendNames = {
     company: {
       name: "Active settlement(s)",
@@ -16,16 +29,39 @@ export const cassandraSettlements = () => {
     "Settlements without fixed end date": cerPalette["Cool Grey"],
   };
 
-  const currentDate = () => {
-    var today = new Date();
-    today.setUTCHours(0);
-    today.setUTCMinutes(0);
-    today.setUTCSeconds(0);
-    today.setUTCMilliseconds(0);
-    return today.getTime();
+  const dateColors = {
+    "Pipeline in-service": cerPalette["Sun"],
+    "Pipeline enters CER/NEB Jurisdiction": cerPalette["hcRed"],
   };
 
-  var today = currentDate();
+  const createInServiceSeries = (data, dates) => {
+    const series = data.map((row) => {
+      if (row.commodity == "Oil") {
+        dates.oil.push(row["End Date"]);
+      } else {
+        dates.gas.push(row["End Date"]);
+      }
+      const determineColor = (row) => {
+        if (row["Settlement Name"] == "Not in Service") {
+          return dateColors["Pipeline in-service"];
+        } else {
+          return dateColors["Pipeline enters CER/NEB Jurisdiction"];
+        }
+      };
+      return {
+        name: row.Company,
+        dateType: row["Settlement Name"],
+        collapsed: true,
+        color: determineColor(row),
+        id: row.Company + "_inService",
+        start: row["End Date"],
+        end: row["End Date"] + oneDay * 70,
+        commodity: row.Commodity,
+        zIndex: 50,
+      };
+    });
+    return [series, dates];
+  };
 
   const getEndDate = (date) => {
     if (date === null) {
@@ -48,6 +84,7 @@ export const cassandraSettlements = () => {
       var [endDate, seriesColor] = getEndDate(row["End Date"]);
       row.color = seriesColor;
       row.end = endDate;
+      //row.end = endDate + oneDay * 900;
       return row;
     });
   };
@@ -125,7 +162,7 @@ export const cassandraSettlements = () => {
         if (endDate > currentEnd) {
           currentEnd = endDate;
         }
-        if (companyStartDates[endNum + 1] - endDate > 86400000) {
+        if (companyStartDates[endNum + 1] - endDate > oneDay) {
           companySettles.push({
             name: company,
             collapsed: true,
@@ -155,7 +192,12 @@ export const cassandraSettlements = () => {
     }
 
     companySettles.sort(sortByProperty("start"));
-    const commoditySeries = splitSeries([...seriesSettle, ...companySettles]);
+    var [serviceSeries, dates] = createInServiceSeries(inService, dates);
+    const commoditySeries = splitSeries([
+      ...seriesSettle,
+      ...companySettles,
+      ...serviceSeries,
+    ]);
     commoditySeries.oil.dates = dates.oil.filter((row) => row !== null);
     commoditySeries.gas.dates = dates.gas.filter((row) => row !== null);
     return commoditySeries;
@@ -171,6 +213,16 @@ export const cassandraSettlements = () => {
       }
     });
     return { oil: { data: oilData }, gas: { data: gasData } };
+  };
+
+  const inServiceLegend = (chartData, legendItem) => {
+    let legendText = "";
+    chartData.map((row) => {
+      if (row.color == dateColors[legendItem]) {
+        legendText = `<span style="font-weight:bold; color: ${dateColors[legendItem]}">&#9679 ${legendItem} date &nbsp &nbsp</span>`;
+      }
+    });
+    return legendText;
   };
 
   const createSettlements = (seriesData, dates, div) => {
@@ -189,7 +241,6 @@ export const cassandraSettlements = () => {
       },
       plotOptions: {
         series: {
-          //pointPadding: 0.1,
           borderWidth: 0,
           shadow: false,
           states: {
@@ -214,8 +265,15 @@ export const cassandraSettlements = () => {
         labelFormatter: function () {
           var legendText = "";
           for (const legendName in legendColors) {
-            legendText += `<span style="font-weight:bold; color: ${legendColors[legendName]}">&#9679 ${legendName} &nbsp &nbsp &nbsp </span>`;
+            legendText += `<span style="font-weight:bold; color: ${legendColors[legendName]}">&#9679 ${legendName} &nbsp &nbsp</span>`;
           }
+          legendText += `<br>`;
+          const chartData = this.data;
+          legendText += inServiceLegend(chartData, "Pipeline in-service");
+          legendText += inServiceLegend(
+            chartData,
+            "Pipeline enters CER/NEB Jurisdiction"
+          );
           return legendText;
         },
       },
@@ -279,29 +337,38 @@ export const cassandraSettlements = () => {
             years = 1000 * 60 * 60 * 24 * 365,
             number = (point.x2 - point.x) / years;
           var years = Math.round(number * 100) / 100;
-
           if (this.color == cerPalette["Cool Grey"]) {
             var endText = "No set end date";
           } else {
-            var endText = dateFormat(this.point.end);
+            var endText = dateFormat(point.end);
           }
-          if (this.point.parent == null) {
+          if (point.parent == null && point.dateType == null) {
             return (
               `<b>${
                 this.key
-              }</b><table> <tr><td> Active settlement(s) start:</td><td style="padding:0"><b> ${dateFormat(
-                this.point.start
+              }</b><table><tr><td>Active settlement(s) start:</td><td style="padding:0"><b>${dateFormat(
+                point.start
               )}</b></td></tr>` +
-              `<tr><td> Active settlement(s) end:</td><td style="padding:0"><b> ${dateFormat(
-                this.point.end
+              `<tr><td>Active settlement(s) end:</td><td style="padding:0"><b>${dateFormat(
+                point.end
               )}</b></td></tr>` +
-              `<tr><td> Active settlement(s) duration:</td><td style="padding:0"><b> ${years} years</b></table>`
+              `<tr><td> Active settlement(s) duration:</td><td style="padding:0"><b>${years} years</b></table>`
             );
+          } else if (point.parent == null && point.dateType != null) {
+            let dateTypeText = "";
+            if (point.dateType == "Not in Service") {
+              dateTypeText = "in-service date";
+            } else {
+              dateTypeText = "enter CER/NEB Jurisdiction date";
+            }
+            return `<b> ${point.name} - ${dateTypeText} </b><br> ${dateFormat(
+              point.start
+            )}`;
           } else {
             return (
-              `<b>${this.point.parent} - ${this.key} </b><table>` +
+              `<b>${point.parent} - ${this.key} </b><table>` +
               `<tr><td>Start:</td><td style="padding:0"><b> ${dateFormat(
-                this.point.start
+                point.start
               )}</b>` +
               `<tr><td>End:</td><td style="padding:0"><b> ${endText}</b>` +
               `<tr><td>Duration:</td><td style="padding:0"><b> ${years} years</b>`
@@ -337,7 +404,9 @@ export const cassandraSettlements = () => {
         seriesData.oil.dates,
         "container_settlements_oil"
       );
+      settlementChartOil.redraw();
     } catch (err) {
+      console.log(err);
       errorChart("container_settlements_oil");
     }
 
@@ -347,6 +416,7 @@ export const cassandraSettlements = () => {
         seriesData.gas.dates,
         "container_settlements_gas"
       );
+      settlementChartGas.redraw();
     } catch (err) {
       errorChart("container_settlements_gas");
     }

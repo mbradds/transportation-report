@@ -98,6 +98,9 @@
 .ratings-legend {
   text-align: center;
 }
+.source-code {
+  max-width: 600px;
+}
 /* styling for custom tabs */
 .tab-container-tr {
   padding-left: 100px;
