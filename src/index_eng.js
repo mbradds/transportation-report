@@ -55,7 +55,6 @@ async function loadAllCharts() {
   jenniferRatingsMulti();
 }
 loadAllCharts();
-
 var t1Transportation = performance.now();
 console.log(
   "Chart Rendering: " + (t1Transportation - t0Transportation) + " milliseconds."

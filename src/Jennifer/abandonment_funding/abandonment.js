@@ -127,7 +127,7 @@ export const jenniferAbandonment = () => {
   };
 
   const createAbandonmentTotals = (seriesData) => {
-    new Highcharts.chart("container_abandonment_totals", {
+    new Highcharts.chart("hc-abanbdon-totals", {
       chart: {
         type: "bar",
         gridLineWidth: 0,
@@ -307,7 +307,7 @@ export const jenniferAbandonment = () => {
   try {
     mainAbandon();
   } catch (err) {
-    errorChart("container_abandonment_totals");
+    errorChart("hc-abanbdon-totals");
     errorChart("container_abandonment");
   }
 };

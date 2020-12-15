@@ -93,7 +93,7 @@ export const errorChart = (div) => {
 };
 
 export const instructionsChart = () => {
-  return new Highcharts.chart("container-instructions", {
+  return new Highcharts.chart("hc-instructions", {
     chart: {
       borderWidth: 1,
       zoomType: "x",

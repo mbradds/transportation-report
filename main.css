@@ -31,17 +31,11 @@
 .my-container-border {
   border: 1px solid black;
 }
-#container-instructions {
-  height: 290px;
-}
 .chart-small {
   max-width: 400px;
 }
 .chart-insert {
   max-width: 700px;
-}
-.chart-medium {
-  max-width: 800px;
 }
 .chart-large {
   max-width: 1100px;
@@ -49,39 +43,60 @@
 .chart-map {
   max-width: 1000px;
 }
-#container_abandonment_totals {
-  max-width: 1100px;
-  height: 200px;
+@media only screen and (max-height: 650px) {
+  .hc-small {
+    height: 300px;
+  }
+  .hc-large {
+    height: 300px;
+  }
+  .hc-map {
+    height: 450px;
+  }
+  .hc-insert {
+    height: 225px;
+  }
+  .hc-ratings {
+    height: 400px;
+  }
+  #hc-abanbdon-totals {
+    height: 175px;
+  }
+  #hc-fin-totals {
+    height: 60px;
+  }
 }
-.container-chart-xs {
-  height: 250px;
+@media only screen and (min-height: 650px) {
+  .hc-large {
+    height: 380px;
+  }
+  .hc-map {
+    height: 600px;
+  }
+  .hc-insert {
+    height: 275px;
+  }
+  .hc-ratings {
+    height: 450px;
+  }
+  #hc-abanbdon-totals {
+    height: 200px;
+  }
+  .hc-small {
+    height: 350px;
+  }
+  #hc-fin-totals {
+    height: 75px;
+  }
 }
-.container-chart-small {
-  height: 350px;
+#hc-instructions {
+  height: 290px;
 }
-.container-chart-medium {
-  max-height: 400px;
-}
-.container-chart-large {
-  height: 400px;
-}
-.container-chart-settlements {
+.hc-settlements {
   min-height: 400px;
 }
-.container-chart-map {
-  height: 600px;
-}
-.container-chart-insert {
-  height: 300px;
-}
-.container-chart-ratings {
-  height: 450px;
-}
-.container-legend {
+.ratings-legend {
   text-align: center;
-}
-#container_fin_totals {
-  height: 75px;
 }
 /* styling for custom tabs */
 .tab-container-tr {
@@ -139,7 +154,6 @@
   transition: 0.3s;
   font-size: 17px;
 }
-
 #btn-to-top:hover {
   background-color: #ccc;
 }

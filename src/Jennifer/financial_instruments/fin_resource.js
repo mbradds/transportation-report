@@ -96,7 +96,7 @@ export const jenniferFinResources = () => {
   };
 
   const createFinResourceTotals = (seriesData) => {
-    return new Highcharts.chart("container_fin_totals", {
+    return new Highcharts.chart("hc-fin-totals", {
       chart: {
         //height: "10%",
         type: "bar",
