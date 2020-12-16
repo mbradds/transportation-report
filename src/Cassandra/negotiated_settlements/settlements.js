@@ -65,9 +65,9 @@ export const cassandraSettlements = () => {
 
   const getEndDate = (date) => {
     if (date === null) {
-      return [today, cerPalette["Cool Grey"]];
+      return [today, legendColors["Settlements without fixed end date"]];
     } else {
-      return [date, cerPalette["Ocean"]];
+      return [date, legendColors["Settlements with fixed end date"]];
     }
   };
 
@@ -258,9 +258,9 @@ export const cassandraSettlements = () => {
       },
       legend: {
         enabled: true,
-        symbolPadding: 0,
-        symbolWidth: 0,
-        symbolHeight: 0,
+        symbolPadding: 1,
+        symbolWidth: 1,
+        symbolHeight: 1,
         squareSymbol: false,
         useHTML: true,
         labelFormatter: function () {
@@ -338,8 +338,11 @@ export const cassandraSettlements = () => {
             years = 1000 * 60 * 60 * 24 * 365,
             number = (point.x2 - point.x) / years;
           var years = Math.round(number * 100) / 100;
-          if (this.color == cerPalette["Cool Grey"]) {
-            var endText = "No set end date";
+          if (
+            this.color == legendColors["Settlements without fixed end date"]
+          ) {
+            var endText =
+              "No set end date <i>(chart end date updates daily, and the settlement does not necessarily terminate today)</i>";
           } else {
             var endText = dateFormat(point.end);
           }

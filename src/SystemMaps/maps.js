@@ -246,17 +246,17 @@ export const systemMaps = () => {
             const chart = this;
             var text = `<b>Hover over a pipeline to view system info</b>`;
             text += `<i><li>Click legend item to add/remove pipelines</i></li>`;
-            text += `<i><li>Scroll in chart area to zoom</i></li>`;
-            text += `<br><b>Disclaimer:</b>`;
+            text += `<i><li>Scroll in chart area to zoom</i></li><br>`;
+            text += `<b>Disclaimer:</b>`;
             text += `<i>Pipeline location data is derived from public sources and is for information purposes only.</i>`;
             var label = chart.renderer
               .label(text, null, null, null, null, null, true)
               .css({
-                width: "240px",
+                width: "250px",
               })
               .attr({
                 zIndex: 8,
-                padding: 8,
+                padding: 3,
                 r: 3,
                 fill: "white",
               })
