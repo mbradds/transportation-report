@@ -547,7 +547,6 @@ def tolls(name):
 def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX'):
     read_path = os.path.join(os.getcwd(),'Data/',name)
     df = pd.read_excel(read_path,sheet_name='Settlements Data',skiprows=2)
-    # df = df[df['Approved pursuant to the Negotiated Settlement Guidelines?'] == "Yes"]
     df_service = df[df['Category']=="in service"].copy()
     df_service = df_service[['Company','Settlement Name and/or Reference','End Date (specified, or effective)','Oil/Gas']]
     df = df[df['Category']=="settlement"]
@@ -566,17 +565,44 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
     df_service = df_service.rename(columns=to_replace)
     
     df['End Date'] = df['End Date'].replace('Not Fixed',np.nan)
-    df = normalize_dates(df, ['Start Date','End Date'])
+    #df = normalize_dates(df, ['Start Date','End Date'])
+    for dateCol in ['Start Date','End Date']:
+        df[dateCol] = pd.to_datetime(df[dateCol])
+
     df = df.sort_values(by=['Company','Start Date','End Date'])
     del df['Group']
     df['Company'] = df['Company'].replace(pipeline_names())
     df_service['Company'] = df_service['Company'].replace(pipeline_names())
     df['Settlement Name'] = df['Settlement Name'].replace({np.nan:"Unnamed Settlement"})
-    write_path_settlements = os.path.join(os.getcwd(),'../Cassandra/negotiated_settlements/','settlements.json')
-    write_path_inservice = os.path.join(os.getcwd(),'../Cassandra/negotiated_settlements/','in_service.json')
-    saveJson(df, write_path_settlements)
-    saveJson(df_service,write_path_inservice)
-    return df,df_service
+    
+    settleJson = {}
+    settleJson['oil'] = {'dateSeries':df_service[df_service['Commodity']=='Oil'].to_json(orient='records',double_precision=2),
+                         'dataSeries':df[df['Commodity']=="Oil"].to_json(orient='records',double_precision=2),
+                         'minDate':pd.DataFrame.from_dict({'date':
+                                                           [df[df['Commodity']=="Oil"]['Start Date'].min()]
+                                                           }).to_json(orient='records'),
+                         'maxDate':pd.DataFrame.from_dict({'date':
+                                                           [df[df['Commodity']=="Oil"]['End Date'].max()]
+                                                           }).to_json(orient='records')}
+    settleJson['gas'] = {'dateSeries':df_service[df_service['Commodity']=='Gas'].to_json(orient='records',double_precision=2),
+                         'dataSeries':df[df['Commodity']=="Gas"].to_json(orient='records',double_precision=2),
+                         'minDate':pd.DataFrame.from_dict({'date':
+                                                           [df[df['Commodity']=="Gas"]['Start Date'].min()]
+                                                           }).to_json(orient='records'),
+                         'maxDate':pd.DataFrame.from_dict({'date':
+                                                           [df[df['Commodity']=="Gas"]['End Date'].max()]
+                                                           }).to_json(orient='records')}
+    
+    
+    write_path_json = os.path.join(os.getcwd(),'../Cassandra/negotiated_settlements/','settleJson.json')
+    with open(write_path_json, 'w') as f:
+        json.dump(settleJson, f)
+    
+    # write_path_settlements = os.path.join(os.getcwd(),'../Cassandra/negotiated_settlements/','settlements.json')
+    # write_path_inservice = os.path.join(os.getcwd(),'../Cassandra/negotiated_settlements/','in_service.json')
+    # saveJson(df, write_path_settlements)
+    # saveJson(df_service,write_path_inservice)
+    return settleJson
 
 def creditRatings():
     df = readExcel('CreditTables.xlsx',sheet='ratings categories')
@@ -636,10 +662,10 @@ if __name__ == '__main__':
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    #df,df_service = negotiated_settlements()
+    settleJson = negotiated_settlements()
     
     #ryan
-    df = readExcel('natural-gas-liquids-exports-monthly.xlsx')
+    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx')
     #df = readExcel('figures.xlsx',sheet='ngl production')
     
     #jennifer
@@ -655,3 +681,9 @@ if __name__ == '__main__':
     print('Finished saving json data')
     
 #%%
+
+
+
+
+
+

@@ -1,7 +1,6 @@
 import { cerPalette, creditsClick, dateFormat } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-import settlementsData from "./settlements.json";
-import inService from "./in_service.json";
+import settleJson from "./settleJson.json";
 
 export const cassandraSettlements = () => {
   const currentDate = () => {
@@ -34,13 +33,8 @@ export const cassandraSettlements = () => {
     "Pipeline enters CER/NEB Jurisdiction": cerPalette["hcRed"],
   };
 
-  const createInServiceSeries = (data, dates) => {
+  const createInServiceSeries = (data) => {
     const series = data.map((row) => {
-      if (row.commodity == "Oil") {
-        dates.oil.push(row["End Date"]);
-      } else {
-        dates.gas.push(row["End Date"]);
-      }
       const determineColor = (row) => {
         if (row["Settlement Name"] == "Not in Service") {
           return dateColors["Pipeline in-service"];
@@ -56,16 +50,18 @@ export const cassandraSettlements = () => {
         id: row.Company + "_inService",
         start: row["End Date"],
         end: row["End Date"] + oneDay * 70,
-        commodity: row.Commodity,
         zIndex: 50,
       };
     });
-    return [series, dates];
+    return series;
   };
 
-  const getEndDate = (date) => {
+  const getEndDate = (date, maxDate) => {
     if (date === null) {
-      return [today, legendColors["Settlements without fixed end date"]];
+      return [
+        maxDate + oneDay * 365,
+        legendColors["Settlements without fixed end date"],
+      ];
     } else {
       return [date, legendColors["Settlements with fixed end date"]];
     }
@@ -79,17 +75,16 @@ export const cassandraSettlements = () => {
     };
   }
 
-  const applyEndDateColors = (data) => {
+  const applyEndDateColors = (data, maxDate) => {
     return data.map((row) => {
-      var [endDate, seriesColor] = getEndDate(row["End Date"]);
+      var [endDate, seriesColor] = getEndDate(row["End Date"], maxDate);
       row.color = seriesColor;
       row.end = endDate;
-      //row.end = endDate + oneDay * 900;
       return row;
     });
   };
 
-  const settlementSeries = (data) => {
+  const settlementSeries = (dataJson) => {
     const addRow = (row) => {
       return {
         name: row["Settlement Name"],
@@ -102,16 +97,16 @@ export const cassandraSettlements = () => {
       };
     };
 
-    var seriesTracker = {};
-    data = applyEndDateColors(data).sort(sortByProperty("start"));
+    const minDate = JSON.parse(dataJson["minDate"])[0]["date"];
+    const maxDate = JSON.parse(dataJson["maxDate"])[0]["date"];
 
-    var dates = { oil: [], gas: [] };
+    var seriesTracker = {};
+    var data = applyEndDateColors(
+      JSON.parse(dataJson["dataSeries"]),
+      maxDate
+    ).sort(sortByProperty("start"));
+
     var seriesSettle = data.map((row) => {
-      if (row.Commodity == "Oil") {
-        dates.oil.push(...[row["Start Date"], row["End Date"]]);
-      } else {
-        dates.gas.push(...[row["Start Date"], row["End Date"]]);
-      }
       if (seriesTracker.hasOwnProperty(row.Company)) {
         //the parent company is already in the series, add the sub settlement
         seriesTracker[row.Company].startDate.push(row["Start Date"]);
@@ -127,7 +122,6 @@ export const cassandraSettlements = () => {
         return addRow(row);
       }
     });
-
     const companyCounter = (companyTracker, company) => {
       if (companyTracker.hasOwnProperty(company)) {
         companyTracker[company]++;
@@ -192,27 +186,15 @@ export const cassandraSettlements = () => {
     }
 
     companySettles.sort(sortByProperty("start"));
-    var [serviceSeries, dates] = createInServiceSeries(inService, dates);
-    const commoditySeries = splitSeries([
+    var serviceSeries = createInServiceSeries(
+      JSON.parse(dataJson["dateSeries"])
+    );
+    const commoditySeries = [
       ...seriesSettle,
       ...companySettles,
       ...serviceSeries,
-    ]);
-    commoditySeries.oil.dates = dates.oil.filter((row) => row !== null);
-    commoditySeries.gas.dates = dates.gas.filter((row) => row !== null);
-    return commoditySeries;
-  };
-
-  const splitSeries = (series) => {
-    var [oilData, gasData] = [[], []];
-    series.map((row) => {
-      if (row.commodity == "Oil") {
-        oilData.push(row);
-      } else if (row.commodity == "Gas") {
-        gasData.push(row);
-      }
-    });
-    return { oil: { data: oilData }, gas: { data: gasData } };
+    ];
+    return [commoditySeries, minDate, maxDate];
   };
 
   const inServiceLegend = (chartData, legendItem) => {
@@ -226,10 +208,11 @@ export const cassandraSettlements = () => {
     return legendText;
   };
 
-  const createSettlements = (seriesData, dates, div) => {
+  const createSettlements = (seriesData, minDate, maxDate, div) => {
     return new Highcharts.ganttChart(div, {
       chart: {
         type: "gantt",
+        marginRight: 0,
         borderWidth: 1,
         events: {
           load: function () {
@@ -280,8 +263,8 @@ export const cassandraSettlements = () => {
       },
       xAxis: [
         {
-          min: Math.min(...dates),
-          max: Math.max(...dates),
+          min: minDate,
+          max: maxDate + oneDay * 365,
           currentDateIndicator: {
             width: 2,
             zIndex: 2,
@@ -341,8 +324,8 @@ export const cassandraSettlements = () => {
           if (
             this.color == legendColors["Settlements without fixed end date"]
           ) {
-            var endText =
-              "No set end date <i>(chart end date updates daily, and the settlement does not necessarily terminate today)</i>";
+            var endText = `No set end date <i>(Chart end date/duration is projected into the future, <br> 
+                and does not necessarily terminate at the date indicated.)</i>`;
           } else {
             var endText = dateFormat(point.end);
           }
@@ -391,19 +374,14 @@ export const cassandraSettlements = () => {
   };
 
   const mainSettlements = () => {
-    const getSeries = () => {
-      try {
-        return settlementSeries(settlementsData);
-      } catch (err) {
-        errorChart("container_settlements_oil");
-        errorChart("container_settlements_gas");
-      }
-    };
-    const seriesData = getSeries();
     try {
+      const [seriesData, minDate, maxDate] = settlementSeries(
+        settleJson["oil"]
+      );
       const settlementChartOil = createSettlements(
-        seriesData.oil.data,
-        seriesData.oil.dates,
+        seriesData,
+        minDate,
+        maxDate,
         "container_settlements_oil"
       );
       settlementChartOil.redraw();
@@ -411,9 +389,13 @@ export const cassandraSettlements = () => {
       errorChart("container_settlements_oil");
     }
     try {
+      const [seriesData, minDate, maxDate] = settlementSeries(
+        settleJson["gas"]
+      );
       const settlementChartGas = createSettlements(
-        seriesData.gas.data,
-        seriesData.gas.dates,
+        seriesData,
+        minDate,
+        maxDate,
         "container_settlements_gas"
       );
       settlementChartGas.redraw();
