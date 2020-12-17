@@ -598,10 +598,6 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
     with open(write_path_json, 'w') as f:
         json.dump(settleJson, f)
     
-    # write_path_settlements = os.path.join(os.getcwd(),'../Cassandra/negotiated_settlements/','settlements.json')
-    # write_path_inservice = os.path.join(os.getcwd(),'../Cassandra/negotiated_settlements/','in_service.json')
-    # saveJson(df, write_path_settlements)
-    # saveJson(df_service,write_path_inservice)
     return settleJson
 
 def creditRatings():
@@ -660,9 +656,9 @@ if __name__ == '__main__':
     #df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
     
     #cassandra
-    #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
+    #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data',sql=True)
     #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    settleJson = negotiated_settlements()
+    #settleJson = negotiated_settlements()
     
     #ryan
     #df = readExcel('natural-gas-liquids-exports-monthly.xlsx')
@@ -673,7 +669,7 @@ if __name__ == '__main__':
     #df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    #df,scale = creditRatings()
+    df,scale = creditRatings()
     #df = readExcel("abandonment funding data.xlsx","Modified",sql=False)
 
     #other
