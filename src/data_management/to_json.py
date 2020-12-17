@@ -181,6 +181,8 @@ def readExcel(name,sheet='pq',sql=False):
             df[col] = ((df[col]/df['Days in Month'])/1000).round(1)
         del df['Days in Month']
         df = normalize_dates(df, ['Period'])
+        df = df[~df['Region'].isin(['Yukon','Newfoundland and Labrador'])]
+        print(list(set(df['Region'])))
         write_path = os.path.join(os.getcwd(),'../Ryan/ngl_exports/',name.split('.')[0]+'.json')
         #df.to_json(write_path,orient='records',force_ascii=False)
         
@@ -217,14 +219,6 @@ def readExcel(name,sheet='pq',sql=False):
         products = ['Ethane','Propane','Butanes']
         df = normalize_numeric(df, products, 1)
         write_path = os.path.join(os.getcwd(),'../Ryan/ngl_production/',name.split('.')[0]+'.json')
-    
-    if name == 'CrudeRawData-2019-01-01-2019-12-01.xlsx':
-        df['Percent'] = df['Percent'].round(2)
-        for delete in ['Value','Total Volume']:
-            del df[delete]
-        df = df[df['Attribute']!='Truck']
-        df['Attribute'] = df['Attribute'].replace({'Railroad':'Rail'})
-        write_path = os.path.join(os.getcwd(),'../Colette/crude_export_mode/',name.split('.')[0]+'.json')
     
     if name == 'Natural_Gas_Production.xlsx':
         df['Production Type'] = df['Production Type'].replace({'Non Associated':'Conventional Non-tight'})
@@ -642,10 +636,10 @@ if __name__ == '__main__':
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data')
     #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    df,df_service = negotiated_settlements()
+    #df,df_service = negotiated_settlements()
     
     #ryan
-    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx')
+    df = readExcel('natural-gas-liquids-exports-monthly.xlsx')
     #df = readExcel('figures.xlsx',sheet='ngl production')
     
     #jennifer
