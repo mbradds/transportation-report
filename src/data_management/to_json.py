@@ -184,7 +184,6 @@ def readExcel(name,sheet='pq',sql=False):
         df = df[~df['Region'].isin(['Yukon','Newfoundland and Labrador'])]
         print(list(set(df['Region'])))
         write_path = os.path.join(os.getcwd(),'../Ryan/ngl_exports/',name.split('.')[0]+'.json')
-        #df.to_json(write_path,orient='records',force_ascii=False)
         
     if name == 'crude-oil-exports-by-destination-annual.xlsx':
         df = df[df['PADD'] != 'Total']
@@ -244,6 +243,26 @@ def readExcel(name,sheet='pq',sql=False):
             df['Corporate Entity'] = df['Corporate Entity'].replace({'Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC':'Kinder Morgan Canada Limited',
                                                                      'Trans Quebec & Maritimes Pipeline Inc.':'TQM Pipeline Inc.',
                                                                      'Alliance Pipeline Limited Partnership':'Alliance Pipeline L.P.'})
+            
+            print(list(set(df['Corporate Entity'])))
+            entities = {'Enbridge Pipelines Inc.':['Enbridge & Subsidiaries',1], 
+                        'NOVA Chemicals Corp.':['Other Entities',4], 
+                        'Emera Inc.':['Other Entities',0], 
+                        'Maritimes & Northeast Pipeline Limited Partnership':['Other Entities',-10], 
+                        'NOVA Gas Transmission Ltd.':['TC Energy & Subsidiaries',2], 
+                        'Kinder Morgan Canada Limited':['Other Entities',1], 
+                        'Westcoast Energy Inc.':['Enbridge & Subsidiaries',2], 
+                        'TC Energy Corporation':['TC Energy & Subsidiaries',0], 
+                        'Alliance Pipeline L.P.':['Other Entities',2], 
+                        'TransCanada PipeLines Limited':['TC Energy & Subsidiaries',1], 
+                        'Enbridge Inc.':['Enbridge & Subsidiaries',0], 
+                        'TQM Pipeline Inc.':['TC Energy & Subsidiaries',3]}
+            
+            df['Entities'] = [entities[x] for x in df['Corporate Entity']]
+            df['Entity'],df['Entity Order'] = [x[0] for x in df['Entities']],[x[-1] for x in df['Entities']]
+            df = df.sort_values(by=['Year','Entity','Entity Order'])
+            for delete in ['Entities','Entity Order']:
+                del df[delete]
             df['series'] = df['Corporate Entity']+' - '+df['Type']
             for delete in ['Credit Quality','Corporate Entity','Type']:
                 del df[delete]

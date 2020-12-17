@@ -1,10 +1,4 @@
-import {
-  cerPalette,
-  prepareSeriesTidy,
-  getUnique,
-  setTitle,
-  sortObj,
-} from "../../modules/util.js";
+import { cerPalette, getUnique, setTitle, bands } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import creditData from "../credit_ratings/CreditTables.json";
 import scaleData from "../credit_ratings/Scale.json";
@@ -16,70 +10,62 @@ export const jenniferRatingsCross = () => {
     "Moody's": cerPalette["Forest"],
   };
 
-  var ratingsFilter = { Year: "2019" };
+  var ratingsFilter = { Year: 2019 };
 
-  const addColumns = (data) => {
-    return data.map((row) => {
+  const addColumns = (data, entities, agencies) => {
+    const series = {};
+    entities.map((company) => {
+      agencies.map((agent) => {
+        series[company + " - " + agent] = { name: company, y: null };
+      });
+    });
+    data.map((row) => {
       row["Corporate Entity"] = row.series.split(" - ")[0];
       row["Type"] = row.series.split(" - ").slice(-1)[0];
-      return row;
+      series[row["series"]] = {
+        name: row["Corporate Entity"],
+        y: row["Level"],
+      };
     });
+    const cS = { DBRS: [], "Moody's": [], "S&P": [] };
+    for (const [key, value] of Object.entries(series)) {
+      agencies.map((agent) => {
+        if (key.includes(agent)) {
+          cS[agent].push(value);
+        }
+      });
+    }
+    return [
+      { name: "Moody's", data: cS["Moody's"], color: ratingsColors["Moody's"] },
+      { name: "S&P", data: cS["S&P"], color: ratingsColors["S&P"] },
+      { name: "DBRS", data: cS["DBRS"], color: ratingsColors["DBRS"] },
+    ];
   };
 
-  const createCreditSeries = (creditData, ratingsFilter, ratingsColors) => {
-    return prepareSeriesTidy(
-      addColumns(creditData),
-      ratingsFilter,
-      false,
-      "Type",
-      "Corporate Entity",
-      "Level",
-      ratingsColors,
-      1,
-      "name"
-    );
+  const applyMissing = (data, filter) => {
+    var creditEntity = data.filter((row) => row.Year == filter.Year);
+    const entities = [
+      "Enbridge Inc.",
+      "Enbridge Pipelines Inc.",
+      "Westcoast Energy Inc.",
+      "TC Energy Corporation",
+      "TransCanada PipeLines Limited",
+      "NOVA Gas Transmission Ltd.",
+      "TQM Pipeline Inc.",
+      "Emera Inc.",
+      "Maritimes & Northeast Pipeline Limited Partnership",
+      "Kinder Morgan Canada Limited",
+      "Alliance Pipeline L.P.",
+      "NOVA Chemicals Corp.",
+    ];
+    const agencies = ["S&P", "Moody's", "DBRS"];
+    creditEntity = addColumns(creditEntity, entities, agencies);
+    return creditEntity;
   };
 
   const yRange = (creditData) => {
     const creditRange = getUnique(creditData, "Level");
     return [Math.min(...creditRange), 26];
-  };
-
-  const createSortedSeries = (series) => {
-    let average = (array) => array.reduce((a, b) => a + b) / array.length;
-    var category = {};
-    series.map((s) => {
-      s.data.map((row) => {
-        if (category.hasOwnProperty(row.name)) {
-          category[row.name].push(row.y);
-        } else {
-          category[row.name] = [row.y];
-        }
-      });
-    });
-
-    for (const company in category) {
-      category[company] = average(category[company]);
-    }
-
-    var sortableCategories = Object.keys(sortObj(category));
-
-    var sortedSeries = series.map((s) => {
-      var oldSeries = {};
-      s.data.map((row) => {
-        oldSeries[row.name] = row.y;
-      });
-      var newSeries = sortableCategories.map((ranked) => {
-        if (oldSeries.hasOwnProperty(ranked)) {
-          return { name: ranked, y: oldSeries[ranked] };
-        } else {
-          return { name: ranked, y: null };
-        }
-      });
-      return { name: s.name, data: newSeries, color: s.color };
-    });
-
-    return sortedSeries;
   };
 
   const createChartCross = (series, minY, maxY) => {
@@ -108,22 +94,23 @@ export const jenniferRatingsCross = () => {
       },
 
       legend: {
-        align: "right",
-        verticalAlign: "top",
+        align: "left",
+        verticalAlign: "bottom",
         backgroundColor: "white",
         borderColor: cerPalette["Dim Grey"],
         borderWidth: 3,
-        x: -15,
-        y: 55,
+        y: -50,
         floating: true,
-        title: {
-          text: "Higher average rating to the left",
-        },
       },
 
       xAxis: {
         categories: true,
         crosshair: true,
+        plotBands: [
+          bands(-0.5, 2.5, "Enbridge & Subsidiaries", 15, 0),
+          bands(2.5, 7.5, "TC Energy & Subsidiaries", 15, 0, "#bde0ff"),
+          bands(7.5, 11.5, "Other Entities", 15, 0),
+        ],
       },
 
       yAxis: {
@@ -151,9 +138,12 @@ export const jenniferRatingsCross = () => {
             label: {
               text: "Non-Investment Grade Level",
               align: "right",
+              x: -10,
+              rotation: 90,
               style: {
+                fontSize: 14,
+                color: cerPalette["Ocean"],
                 fontWeight: "bold",
-                color: cerPalette["Cool Grey"],
               },
             },
           },
@@ -179,13 +169,11 @@ export const jenniferRatingsCross = () => {
 
   const mainCreditYear = () => {
     const [minY, maxY] = yRange(creditData);
-    var creditSeries = createCreditSeries(
-      creditData,
-      ratingsFilter,
-      ratingsColors
+    var yearChart = createChartCross(
+      applyMissing(creditData, ratingsFilter),
+      minY,
+      maxY
     );
-    var sortedSeries = createSortedSeries(creditSeries);
-    var yearChart = createChartCross(sortedSeries, minY, maxY);
     var figure_title = document.getElementById("ratings_year_title");
     setTitle(figure_title, "22", ratingsFilter.Year, "Company Credit Ratings");
 
@@ -203,21 +191,14 @@ export const jenniferRatingsCross = () => {
         ratingsFilter.Year,
         "Company Credit Ratings"
       );
-      var creditSeries = createCreditSeries(
-        creditData,
-        ratingsFilter,
-        ratingsColors
-      );
-      sortedSeries = createSortedSeries(creditSeries);
       yearChart.update({
-        series: sortedSeries,
+        series: applyMissing(creditData, ratingsFilter),
       });
     });
   };
   try {
     mainCreditYear();
   } catch (err) {
-    console.log(err);
     errorChart("container_ratings_cross");
   }
 };

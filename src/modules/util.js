@@ -17,33 +17,6 @@ export const cerPalette = {
   Forecast: "#F0F8FF",
 };
 
-// export const runHeights = (
-//   chart,
-//   chartId,
-//   smallSize,
-//   largeSize,
-//   cutoff = 620
-// ) => {
-//   const setHeights = () => {
-//     const userHeight = window.innerHeight;
-//     if (userHeight <= cutoff) {
-//       $(chartId).css("height", smallSize);
-//       chart.reflow();
-//     } else {
-//       $(chartId).css("height", largeSize);
-//       chart.reflow();
-//     }
-//   };
-//   $(document).ready(function () {
-//     setHeights();
-//     chart.reflow();
-//   });
-//   window.onresize = function (event) {
-//     setHeights();
-//     chart.reflow();
-//   };
-// };
-
 export const numberFormat = (value) => {
   return Highcharts.numberFormat(value, 0, ".", ",");
 };
@@ -402,12 +375,19 @@ export const setTitle = (
   ).trim()} ${title_text}`;
 };
 
-export const bands = (f, t, text, y = 10) => {
+export const bands = (
+  f,
+  t,
+  text,
+  y = 10,
+  zIndex = 3,
+  color = cerPalette["Forecast"]
+) => {
   return {
-    color: cerPalette["Forecast"],
+    color: color,
     from: f,
     to: t,
-    zIndex: 3,
+    zIndex: zIndex,
     label: {
       text: text,
       y: y,
