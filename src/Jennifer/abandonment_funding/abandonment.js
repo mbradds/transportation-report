@@ -107,7 +107,7 @@ export const jenniferAbandonment = () => {
       calc[p.series.name] = p.y;
       toolText += `<tr><td> <span style="color: ${p.color}">\u25CF</span> ${
         p.series.name
-      }: </td><td style="padding:0"><b>${Highcharts.numberFormat(
+      }: </td><td style="padding:0"><b>$${Highcharts.numberFormat(
         p.y,
         0,
         ".",
@@ -148,7 +148,7 @@ export const jenniferAbandonment = () => {
             enabled: true,
             formatter: function () {
               if (this.key !== "Group 2 Pipeline Companies") {
-                return `${(this.point.y / 1000000000).toFixed(1)} Billion`;
+                return `$${(this.point.y / 1000000000).toFixed(1)} Billion`;
               } else {
                 return null;
               }
