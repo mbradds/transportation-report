@@ -18,6 +18,7 @@ import { saraMnp } from "./Sara/st_stephen/st_stephen";
 import { sara2019 } from "./Sara/gas_2019/gas_2019";
 import { ryanNglProduction } from "./Ryan/ngl_production/ngl_production";
 import { ryanNglExports } from "./Ryan/ngl_exports/ngl_exports";
+import { ryanNglDestination } from "./Ryan/ngl_exports/ngl_destination";
 import { cassandraSettlements } from "./Cassandra/negotiated_settlements/settlements";
 import { cassandraTolls } from "./Cassandra/tolls/tolls";
 import { jenniferFinResources } from "./Jennifer/financial_instruments/fin_resource";
@@ -46,6 +47,7 @@ async function loadAllCharts() {
   sara2019();
   ryanNglProduction();
   ryanNglExports();
+  ryanNglDestination();
   cassandraSettlements();
   cassandraTolls();
   jenniferFinResources();

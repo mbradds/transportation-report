@@ -168,22 +168,6 @@ def readExcel(name,sheet='pq',sql=False):
 
         df['Value'] = df['Value'].round(2)
         write_path = os.path.join(os.getcwd(),'../Kevin/us_imports/',name.split('.')[0]+'.json')
-    if name == 'natural-gas-liquids-exports-monthly.xlsx':
-        df['Period'] = pd.to_datetime(df['Period'],errors='raise')
-        df['Days in Month'] = [monthrange(x.year,x.month)[-1] for x in df['Period']]
-        df['Region'] = df['Region'].replace({'Québec':'Quebec'})
-        df = df[df['Period'].dt.year >= 2015]
-        df = df[df['Units']=='bbl'].copy()
-        for delete in ['Units','Total']:
-            del df[delete]
-        
-        for col in ['Pipeline','Railway','Truck','Marine']:
-            df[col] = ((df[col]/df['Days in Month'])/1000).round(1)
-        del df['Days in Month']
-        df = normalize_dates(df, ['Period'])
-        df = df[~df['Region'].isin(['Yukon','Newfoundland and Labrador'])]
-        print(list(set(df['Region'])))
-        write_path = os.path.join(os.getcwd(),'../Ryan/ngl_exports/',name.split('.')[0]+'.json')
         
     if name == 'crude-oil-exports-by-destination-annual.xlsx':
         df = df[df['PADD'] != 'Total']
@@ -630,6 +614,44 @@ def st_stephen():
     
     return df_traffic,df_prod
 
+def ngl_exports(name="natural-gas-liquids-exports-monthly.csv"):
+    read_path = os.path.join(os.getcwd(),'Data/',name)
+    df = pd.read_csv(read_path,engine='python')
+    df['Period'] = pd.to_datetime(df['Period'])
+    df = df[df['Period'].dt.year >= 2015]
+    for delete in ['Value (CN$)','Value (US$)', 'Price (CN cents/L)', 'Price (US cents/gallon)','Year','Volume (m3)','Month']:
+        del df[delete]
+    df['Origin'] = df['Origin'].replace({'Total':'Canada','Qu�bec':'Quebec'})
+    df = df[~df['Origin'].isin(['Yukon'])]
+    df = df.rename(columns={'Destination / PADD':'Destination'})
+    df['Days in Month'] = [monthrange(x.year,x.month)[-1] for x in df['Period']]
+    df['Volume (Mb/d)'] = [(x/days)/1000 for x,days in zip(df['Volume (bbl)'],df['Days in Month'])]
+    df['Volume (Mb/d)'] = df['Volume (Mb/d)'].round(2) 
+    del df['Days in Month']
+    del df['Volume (bbl)']
+    for remove_total in ['Destination','Mode of Transportation']:
+        df = df[df[remove_total]!='Total']
+    
+    df_origin = df.groupby(by=['Period','Product','Origin','Mode of Transportation']).sum().reset_index()
+    df_destination = df.groupby(by=['Period','Product','Destination']).sum().reset_index()
+    
+    df_origin = pd.pivot_table(df_origin,
+                               values='Volume (Mb/d)',
+                               index=['Period','Product','Origin'],
+                               columns='Mode of Transportation').reset_index()
+    df_destination = pd.pivot_table(df_destination,
+                                values='Volume (Mb/d)',
+                                index=['Period','Product'],
+                                columns='Destination').reset_index()    
+    
+    df_origin = df_origin.sort_values(by=['Period','Product','Origin'])
+    df_destination = df_destination.sort_values(by=['Period','Product'])
+    write_path_origin = os.path.join(os.getcwd(),'../Ryan/ngl_exports/','origin.json')
+    write_path_destination = os.path.join(os.getcwd(),'../Ryan/ngl_exports/','destination.json')
+    saveJson(df_origin, write_path_origin)
+    saveJson(df_destination, write_path_destination)
+    return df_origin,df_destination
+
 
 if __name__ == '__main__':
     print('Starting to json process...')        
@@ -661,7 +683,7 @@ if __name__ == '__main__':
     #settleJson = negotiated_settlements()
     
     #ryan
-    #df = readExcel('natural-gas-liquids-exports-monthly.xlsx')
+    df_origin,df_destination = ngl_exports()
     #df = readExcel('figures.xlsx',sheet='ngl production')
     
     #jennifer
@@ -669,7 +691,7 @@ if __name__ == '__main__':
     #df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     #df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     #df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    df,scale = creditRatings()
+    #df,scale = creditRatings()
     #df = readExcel("abandonment funding data.xlsx","Modified",sql=False)
 
     #other

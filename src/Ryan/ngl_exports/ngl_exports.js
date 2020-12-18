@@ -6,17 +6,16 @@ import {
   tooltipPoint,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-
-import nglData from "./natural-gas-liquids-exports-monthly.json";
+import nglData from "./origin.json";
 
 export const ryanNglExports = () => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
   const nglFilters = {
     Product: "Propane",
-    Region: "Canada",
+    Origin: "Canada",
   };
   const setTitle = (figure_title, filters) => {
-    figure_title.innerText = `Figure 16: ${filters.Region} ${filters.Product} Exports`;
+    figure_title.innerText = `Figure 16 a: ${filters.Origin} ${filters.Product} Exports`;
   };
   const nglColors = {
     Pipeline: cerPalette["Sun"],
@@ -111,7 +110,7 @@ export const ryanNglExports = () => {
 
     var selectRegionNgl = document.getElementById("select_region_ngl");
     selectRegionNgl.addEventListener("change", (selectRegionNgl) => {
-      nglFilters.Region = selectRegionNgl.target.value;
+      nglFilters.Origin = selectRegionNgl.target.value;
       setTitle(figure_title, nglFilters);
       nglChart = createNglChart(
         createNglExpSeries(nglData, nglFilters, units, nglColors),
