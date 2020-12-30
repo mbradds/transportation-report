@@ -1,6 +1,5 @@
 import {
   cerPalette,
-  prepareSeriesNonTidy,
   tooltipPoint,
   conversions,
   lines,
@@ -23,7 +22,7 @@ export const saraMnp = () => {
     Capacity: "line",
   };
 
-  var units = conversions("Million m3/d to Bcf/d", "Bcf/d", "Million m3/d");
+  var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
 
   var yMax = 0.5;
   const ticks = (units) => {
@@ -40,47 +39,6 @@ export const saraMnp = () => {
     "Deep Panuke": cerPalette["Ocean"],
     "Sable Island": cerPalette["Night Sky"],
   };
-
-  const createMnpSeries = (mnpData, units) => {
-    const mnpSeries = prepareSeriesNonTidy(
-      mnpData,
-      false,
-      units,
-      ["Exports", "Imports", "Capacity"],
-      "Date",
-      mnpColors,
-      3
-    );
-    return mnpSeries.map((series) => {
-      if (series.name == "Capacity") {
-        series.type = "line";
-      } else {
-        series.type = "area";
-      }
-      return series;
-    });
-  };
-
-  const createOffshoreSeries = (offshoreData, units) => {
-    const offshoreSeries = prepareSeriesNonTidy(
-      offshoreData,
-      false,
-      units,
-      ["Deep Panuke", "Sable Island"],
-      "Date",
-      offshoreColors,
-      3
-    );
-    return offshoreSeries;
-  };
-
-  // let mnpseries = new Series({
-  //   data: mnpData,
-  //   xCol: "Date",
-  //   yCols: ["Exports", "Imports", "Capacity"],
-  //   colors: mnpColors,
-  //   seriesTypes: mnpTypes,
-  // });
 
   const createChartMnp = (seriesData, div, units, yMax) => {
     if (div == "container_mnp") {
@@ -130,9 +88,22 @@ export const saraMnp = () => {
   };
 
   const mainMnp = () => {
+    let mnpseries = new Series({
+      data: mnpData,
+      xCol: "Date",
+      yCols: ["Exports", "Imports", "Capacity"],
+      colors: mnpColors,
+      seriesTypes: mnpTypes,
+    });
+    let offseries = new Series({
+      data: offshoreData,
+      xCol: "Date",
+      yCols: ["Deep Panuke", "Sable Island"],
+      colors: offshoreColors,
+    });
     const chartObj = {};
-    chartObj.mnp = { series: createMnpSeries(mnpData, units) };
-    chartObj.offshore = { series: createOffshoreSeries(offshoreData, units) };
+    chartObj.mnp = { series: mnpseries.hcSeries };
+    chartObj.offshore = { series: offseries.hcSeries };
     chartObj.mnp.chart = createChartMnp(
       chartObj.mnp.series,
       "container_mnp",
@@ -151,8 +122,39 @@ export const saraMnp = () => {
     );
     selectUnitsGasInsert.addEventListener("change", (selectUnitsGasInsert) => {
       units.unitsCurrent = selectUnitsGasInsert.target.value;
-      chartObj.mnp.series = createMnpSeries(mnpData, units);
-      chartObj.offshore.series = createOffshoreSeries(offshoreData, units);
+      if (units.unitsCurrent !== units.unitsBase) {
+        mnpseries.update({
+          data: mnpData,
+          transform: {
+            conv: [units.conversion, units.type],
+            decimals: 1,
+          },
+        });
+        offseries.update({
+          data: offshoreData,
+          transform: {
+            conv: [units.conversion, units.type],
+            decimals: 1,
+          },
+        });
+      } else {
+        mnpseries.update({
+          data: mnpData,
+          transform: {
+            conv: undefined,
+            decimals: undefined,
+          },
+        });
+        offseries.update({
+          data: offshoreData,
+          transform: {
+            conv: undefined,
+            decimals: undefined,
+          },
+        });
+      }
+      chartObj.mnp.series = mnpseries.hcSeries;
+      chartObj.offshore.series = offseries.hcSeries;
       for (const [key, value] of Object.entries(chartObj)) {
         value.chart.update({
           series: value.series,

@@ -141,6 +141,10 @@ def readCersei(query,name=None):
                                                  'Dawn Ontario TDt Com':'Dawn',
                                                  'TC Alb AECO-C TDt Com Dly':'Alberta NIT',
                                                  'Westcoast Stn 2 TDt Com':'Station 2'})
+        
+        df['Price ($CN/GIG)'] = df['Price ($CN/GIG)'].round(2)
+        df = pd.pivot_table(df,values='Price ($CN/GIG)',index='Date',columns='Location')
+        df = df.reset_index()
         write_path = os.path.join(os.getcwd(),'../Rebecca/gas_prices/',name)
     
     if (name != None and name not in ['fin_resource_class_names.json','st_stephen.json','ns_offshore.json']):
@@ -606,6 +610,11 @@ def st_stephen():
         value_col.append(None)
     df_none = pd.DataFrame.from_dict({'Date':date_col,'Deep Panuke':value_col,'Sable Island':value_col})
     df_prod = pd.concat([df_prod,df_none], axis=0, sort=False, ignore_index=True)
+    for convert in ['Deep Panuke','Sable Island']:
+        df_prod[convert] = df_prod[convert]*(1/28.32)
+    for convert in ['Capacity','Imports','Exports']:
+        df_traffic[convert] = df_traffic[convert]*(1/28.32)
+    
     
     for output in [[df_traffic,'st_stephen.json'],[df_prod,'ns_offshore.json']]:
         df = output[0]
@@ -672,7 +681,7 @@ if __name__ == '__main__':
     #sara
     #df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
     #df = readCersei('gas_2019_avg.sql','gas_2019.json')
-    #dfmnp,dfoffshore = st_stephen()
+    dfmnp,dfoffshore = st_stephen()
     
     #rebecca
     #df = readCersei('platts_gas.sql','gas_prices.json')
@@ -681,7 +690,7 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data',sql=True)
-    df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     #settleJson = negotiated_settlements()
     
     #ryan

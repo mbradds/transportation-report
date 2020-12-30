@@ -1,12 +1,12 @@
 import {
   cerPalette,
-  prepareSeriesTidy,
   creditsClick,
   mouseOverFunction,
   mouseOutFunction,
   tooltipSymbol,
   dateFormat,
 } from "../../modules/util.js";
+import Series from "../../../../highseries/dist/index.js";
 import { errorChart } from "../../modules/charts.js";
 import gasPriceData from "./gas_prices.json";
 
@@ -19,22 +19,6 @@ export const rebeccaGasPrices = () => {
   };
 
   var gasPriceFilters = { Units: "Price ($CN/GIG)", unitsCurrent: "$CN/GIG" };
-
-  const createGasPriceSeries = (
-    gasPriceData,
-    gasPriceFilters,
-    gasPriceColors
-  ) => {
-    return prepareSeriesTidy(
-      gasPriceData,
-      false,
-      false,
-      "Location",
-      "Date",
-      gasPriceFilters.Units,
-      gasPriceColors
-    );
-  };
 
   const createGasPriceMap = () => {
     return Highcharts.mapChart("container_gas_map", {
@@ -193,13 +177,14 @@ export const rebeccaGasPrices = () => {
   };
 
   try {
-    var seriesData = createGasPriceSeries(
-      gasPriceData,
-      gasPriceFilters,
-      gasPriceColors
-    );
+    var series = new Series({
+      data: gasPriceData,
+      xCol: "Date",
+      yCols: ["Alberta NIT", "Dawn", "Henry Hub", "Station 2"],
+      colors:gasPriceColors
+    });
     var gasMap = createGasPriceMap();
-    var chartGasPrice = createGasPriceChart(seriesData, gasPriceFilters);
+    var chartGasPrice = createGasPriceChart(series.hcSeries, gasPriceFilters);
   } catch (err) {
     console.log(err);
     errorChart("container_gas_map");
