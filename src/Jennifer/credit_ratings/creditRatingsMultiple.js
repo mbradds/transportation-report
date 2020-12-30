@@ -1,11 +1,8 @@
-import {
-  cerPalette,
-  prepareSeriesTidy,
-  getUnique,
-} from "../../modules/util.js";
+import { cerPalette, getUnique } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import creditData from "./CreditTables.json";
 import scaleData from "./Scale.json";
+import Series from "../../../../highseries/dist/index.js";
 
 export const jenniferRatingsMulti = () => {
   var ratingAgencies = ["S&P", "Moody's", "DBRS"];
@@ -47,17 +44,7 @@ export const jenniferRatingsMulti = () => {
     "TC Energy Corporation": cerPalette["hcLightBlue"],
   };
 
-  const createCreditSeries = (creditData) => {
-    var creditSeriesTidy = prepareSeriesTidy(
-      creditData,
-      false,
-      false,
-      "series",
-      "Year",
-      "Level",
-      false
-    );
-
+  const createCreditSeries = (creditSeriesTidy) => {
     creditSeriesTidy.map((series) => {
       series.type = "line";
       series.color = seriesColors[series.name.split(" - ")[0]];
@@ -185,7 +172,14 @@ export const jenniferRatingsMulti = () => {
   };
 
   const mainRatingsMultiple = () => {
-    var creditSeries = createCreditSeries(creditData);
+    let series = new Series({
+      data: creditData,
+      xCol: "Year",
+      yCols: "series",
+      valuesCol: "Level",
+      colors: seriesColors,
+    });
+    var creditSeries = createCreditSeries(series.hcSeries);
     var seriesSubset = creditSeriesSubset(creditSeries, onLoadCompanies, false);
     const getChartSeriesName = (chart) => {
       var [companyNames, agencyNames] = [[], []];

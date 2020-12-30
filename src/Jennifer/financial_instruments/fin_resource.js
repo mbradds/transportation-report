@@ -1,10 +1,5 @@
-import {
-  cerPalette,
-  prepareSeriesNonTidy,
-  prepareSeriesTidy,
-  creditsClick,
-  tooltipPoint,
-} from "../../modules/util.js";
+import { cerPalette, creditsClick, tooltipPoint } from "../../modules/util.js";
+import Series from "../../../../highseries/dist/index.js";
 import { errorChart } from "../../modules/charts.js";
 import finResData from "./fin_resource_totals.json";
 import finClassData from "./fin_resource_class.json";
@@ -25,6 +20,16 @@ export const jenniferFinResources = () => {
     });
 
     return series;
+  };
+
+  const resChartTypes = {
+    "Companies using Financial Instrument": "column",
+    "Financial Instrument Total": "line",
+  };
+
+  const resyAxis = {
+    "Companies using Financial Instrument": 0,
+    "Financial Instrument Total": 1,
   };
 
   const commodityTotals = (data, colors) => {
@@ -61,44 +66,9 @@ export const jenniferFinResources = () => {
     "Financial Instrument Total": cerPalette["Sun"],
   };
 
-  const createResSeries = (data, filters, colors) => {
-    return finResourceChartTypes(
-      prepareSeriesNonTidy(
-        data,
-        filters,
-        false,
-        ["Companies using Financial Instrument", "Financial Instrument Total"],
-        "Financial Instrument",
-        colors,
-        1,
-        "name"
-      )
-    );
-  };
-
-  const createClassSeries = (classData, colors, filters) => {
-    if (filters.Commodity == "All") {
-      var classFilters = false;
-    } else {
-      var classFilters = filters;
-    }
-    return prepareSeriesTidy(
-      classData,
-      classFilters,
-      false,
-      "Commodity",
-      "Pipeline Group",
-      "Financial Resource",
-      colors,
-      1,
-      "name"
-    );
-  };
-
   const createFinResourceTotals = (seriesData) => {
     return new Highcharts.chart("hc-fin-totals", {
       chart: {
-        //height: "10%",
         type: "bar",
         gridLineWidth: 0,
         margin: [0, 0, 0, 50],
@@ -294,22 +264,47 @@ export const jenniferFinResources = () => {
     });
   };
 
-  const loadInitialCharts = () => {
-    const totals = commodityTotals(finResData, prodColors);
-    const seriesFin = createResSeries(finResData, resFilters, finResColors);
-    const seriesClass = createClassSeries(finClassData, prodColors, resFilters);
-
-    const chartFinTotals = createFinResourceTotals(totals);
-    var chartFinResource = createResChart(seriesFin, resFilters);
-    var chartfinClassData = createClassChart(seriesClass, resFilters);
+  const getClassFilters = (filters) => {
+    if (filters.Commodity == "All") {
+      return false;
+    } else {
+      return filters;
+    }
   };
 
-  const commodityListener = () => {
+  const loadInitialCharts = () => {
+    const totals = commodityTotals(finResData, prodColors);
+    var seriesFin = new Series({
+      data: finResData,
+      xCol: "Financial Instrument",
+      yCols: [
+        "Companies using Financial Instrument",
+        "Financial Instrument Total",
+      ],
+      xName: "name",
+      colors: finResColors,
+      seriesTypes: resChartTypes,
+      filters: resFilters,
+      yAxis: resyAxis,
+    });
+    var seriesClass = new Series({
+      data: finClassData,
+      colors: prodColors,
+      filters: getClassFilters(resFilters),
+      xCol: "Pipeline Group",
+      yCols: "Commodity",
+      valuesCol: "Financial Resource",
+      xName: "name",
+    });
+
+    const chartFinTotals = createFinResourceTotals(totals);
+    var chartFinResource = createResChart(seriesFin.hcSeries, resFilters);
+    var chartfinClassData = createClassChart(seriesClass.hcSeries, resFilters);
+
     var selectCommodityFin = document.getElementById(
       "select_units_fin_resource"
     );
     selectCommodityFin.addEventListener("change", (selectCommodityFin) => {
-      var tempScrollTop = $(window).scrollTop(); //saves the scroll location so that HC doesnt scroll up on chart changes
       var commodity = selectCommodityFin.target.value;
       resFilters.Commodity = commodity;
       if (commodity == "Oil") {
@@ -323,21 +318,23 @@ export const jenniferFinResources = () => {
           cerPalette["Cool Grey"];
       }
       //create new series after commodity is selected
-      const seriesClass = createClassSeries(
-        finClassData,
-        prodColors,
+      seriesClass.update({
+        data: finClassData,
+        colors: prodColors,
+        filters: getClassFilters(resFilters),
+      });
+      seriesFin.update({ data: finResData, filters: resFilters });
+      //create new charts after commodity is selected
+      var chartFinResource = createResChart(seriesFin.hcSeries, resFilters);
+      var chartfinClassData = createClassChart(
+        seriesClass.hcSeries,
         resFilters
       );
-      const seriesFin = createResSeries(finResData, resFilters, finResColors);
-      //create new charts after commodity is selected
-      var chartFinResource = createResChart(seriesFin, resFilters);
-      var chartfinClassData = createClassChart(seriesClass, resFilters);
-      $(window).scrollTop(tempScrollTop);
     });
   };
+
   try {
     loadInitialCharts();
-    commodityListener();
   } catch (err) {
     errorChart("container_fin_totals");
     errorChart("container_fin_resources");

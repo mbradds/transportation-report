@@ -8,12 +8,19 @@ import {
 import { errorChart } from "../../modules/charts.js";
 import mnpData from "./st_stephen.json";
 import offshoreData from "./ns_offshore.json";
+import Series from "../../../../highseries/dist/index.js";
 
 export const saraMnp = () => {
   const mnpColors = {
     Exports: cerPalette["Night Sky"],
     Imports: cerPalette["Sun"],
     Capacity: cerPalette["Dim Grey"],
+  };
+
+  const mnpTypes = {
+    Exports: "area",
+    Imports: "area",
+    Capacity: "line",
   };
 
   var units = conversions("Million m3/d to Bcf/d", "Bcf/d", "Million m3/d");
@@ -66,6 +73,14 @@ export const saraMnp = () => {
     );
     return offshoreSeries;
   };
+
+  // let mnpseries = new Series({
+  //   data: mnpData,
+  //   xCol: "Date",
+  //   yCols: ["Exports", "Imports", "Capacity"],
+  //   colors: mnpColors,
+  //   seriesTypes: mnpTypes,
+  // });
 
   const createChartMnp = (seriesData, div, units, yMax) => {
     if (div == "container_mnp") {

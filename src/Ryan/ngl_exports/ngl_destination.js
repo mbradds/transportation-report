@@ -1,9 +1,5 @@
-import {
-  cerPalette,
-  prepareSeriesNonTidy,
-  conversions,
-  tooltipPoint,
-} from "../../modules/util.js";
+import { cerPalette, conversions, tooltipPoint } from "../../modules/util.js";
+import Series from "../../../../highseries/dist/index.js";
 import { errorChart, createPaddMap } from "../../modules/charts.js";
 import nglData from "./destination.json";
 
@@ -25,16 +21,6 @@ export const ryanNglDestination = () => {
     "PADD IV": cerPalette["Forest"],
     "PADD V": cerPalette["Cool Grey"],
     Other: cerPalette["Flame"],
-  };
-  const createNglDestSeries = (nglData, nglFilters, units, nglColors) => {
-    return prepareSeriesNonTidy(
-      nglData,
-      nglFilters,
-      units,
-      ["PADD I", "PADD II", "PADD III", "PADD IV", "PADD V", "Other"],
-      "Period",
-      nglColors
-    );
   };
 
   const createNglChart = (seriesData, units) => {
@@ -81,10 +67,14 @@ export const ryanNglDestination = () => {
   };
 
   try {
-    var nglDestChart = createNglChart(
-      createNglDestSeries(nglData, nglFilters, units, nglDestinationColors),
-      units
-    );
+    var series = new Series({
+      data: nglData,
+      xCol: "Period",
+      yCols: ["PADD I", "PADD II", "PADD III", "PADD IV", "PADD V", "Other"],
+      filters: nglFilters,
+      colors: nglDestinationColors,
+    });
+    var nglDestChart = createNglChart(series.hcSeries, units);
   } catch (err) {
     errorChart("container_ngl_destination");
   }
@@ -108,13 +98,9 @@ export const ryanNglDestination = () => {
   selectProductNgl.addEventListener("change", (selectProductNgl) => {
     nglFilters.Product = selectProductNgl.target.value;
     setTitle(figure_title, nglFilters);
+    series.update({ data: nglData, filters: nglFilters });
     nglDestChart.update({
-      series: createNglDestSeries(
-        nglData,
-        nglFilters,
-        units,
-        nglDestinationColors
-      ),
+      series: series.hcSeries,
     });
   });
 
@@ -130,13 +116,25 @@ export const ryanNglDestination = () => {
   var selectUnitsNgl = document.getElementById("select_units_ngl_destination");
   selectUnitsNgl.addEventListener("change", (selectUnitsNgl) => {
     units.unitsCurrent = selectUnitsNgl.target.value;
+    if (units.unitsCurrent !== units.unitsBase) {
+      series.update({
+        data: nglData,
+        transform: {
+          conv: [units.conversion, units.type],
+          decimals: 2,
+        },
+      });
+    } else {
+      series.update({
+        data: nglData,
+        transform: {
+          conv: undefined,
+          decimals: undefined,
+        },
+      });
+    }
     nglDestChart.update({
-      series: createNglDestSeries(
-        nglData,
-        nglFilters,
-        units,
-        nglDestinationColors
-      ),
+      series: series.hcSeries,
       yAxis: {
         title: { text: units.unitsCurrent },
       },

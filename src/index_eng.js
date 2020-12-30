@@ -29,6 +29,7 @@ import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMul
 
 var t0Transportation = performance.now();
 async function loadAllCharts() {
+  var async0 = performance.now();
   instructionsChart();
   kevinCrudeProduction();
   kevinCrudeExports();
@@ -55,6 +56,8 @@ async function loadAllCharts() {
   cassandraAllPipes();
   jenniferRatingsCross();
   jenniferRatingsMulti();
+  var async1 = performance.now();
+  console.log("async time difference: " + (async1 - async0) + " milliseconds.");
 }
 loadAllCharts();
 var t1Transportation = performance.now();

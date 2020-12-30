@@ -1,6 +1,7 @@
-import { cerPalette, prepareSeriesNonTidy } from "../../modules/util.js";
+import { cerPalette } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import abandonData from "./Modified.json";
+import Series from "../../../../highseries/dist/index.js";
 
 export const jenniferAbandonment = () => {
   const colors = {
@@ -80,23 +81,6 @@ export const jenniferAbandonment = () => {
         color: series.color,
       };
     });
-    return [seriesData, seriesTotals];
-  };
-
-  const createAbandSeries = (abandonData, filters, colors) => {
-    var [seriesData, seriesTotals] = filterSeries(
-      prepareSeriesNonTidy(
-        filterData(abandonData, filters),
-        false,
-        false,
-        ["Amounts Set Aside", "Remaining Estimate"],
-        "Company",
-        colors,
-        2,
-        "name"
-      ),
-      filters
-    );
     return [seriesData, seriesTotals];
   };
 
@@ -272,11 +256,14 @@ export const jenniferAbandonment = () => {
   };
 
   const mainAbandon = () => {
-    var [seriesData, seriesTotals] = createAbandSeries(
-      abandonData,
-      filters,
-      colors
-    );
+    let series = new Series({
+      data: filterData(abandonData, filters),
+      xCol: "Company",
+      yCols: ["Amounts Set Aside", "Remaining Estimate"],
+      colors: colors,
+      xName: "name",
+    });
+    var [seriesData, seriesTotals] = filterSeries(series.hcSeries, filters);
     createAbandonmentTotals(seriesTotals);
     createAbandonmentChart(seriesData);
     var selectCommodityAbandon = document.getElementById(
@@ -286,11 +273,8 @@ export const jenniferAbandonment = () => {
       "change",
       (selectCommodityAbandon) => {
         filters.commodity = selectCommodityAbandon.target.value;
-        var [seriesData, seriesTotals] = createAbandSeries(
-          abandonData,
-          filters,
-          colors
-        );
+        series.update({ data: filterData(abandonData, filters) });
+        var [seriesData, seriesTotals] = filterSeries(series.hcSeries, filters);
         createAbandonmentTotals(seriesTotals);
         var abandonChart = createAbandonmentChart(seriesData);
         if (filters.commodity == "All") {

@@ -525,6 +525,7 @@ def tolls(name):
                                              'Westcoast':'Enbridge BC Pipeline'})
     df = df.sort_values(by=['Commodity','Pipeline','Start','End'])
     df = normalize_dates(df, ['Start','End'])
+    del df['End']
     write_path = os.path.join(os.getcwd(),'../Cassandra/tolls/','tolls.json')
     saveJson(df, write_path)
     return df
@@ -680,7 +681,7 @@ if __name__ == '__main__':
     
     #cassandra
     #df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data',sql=True)
-    #df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
+    df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     #settleJson = negotiated_settlements()
     
     #ryan

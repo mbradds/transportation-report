@@ -1,6 +1,5 @@
 import {
   cerPalette,
-  prepareSeriesNonTidy,
   creditsClick,
   mouseOverFunction,
   mouseOutFunction,
@@ -10,6 +9,7 @@ import {
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import gas2019Data from "./gas_2019.json";
+import Series from "../../../../highseries/dist/index.js";
 
 export const sara2019 = () => {
   const gas2019Colors = {
@@ -33,21 +33,6 @@ export const sara2019 = () => {
       }
       return s;
     });
-  };
-
-  const createGasPointsSeries = (data, filters, units, colors) => {
-    return columnPlacement(
-      prepareSeriesNonTidy(
-        data,
-        filters,
-        units,
-        ["Capacity", "Throughput"],
-        "Series Name",
-        colors,
-        2,
-        "name"
-      )
-    );
   };
 
   const createGas2019Map = () => {
@@ -388,12 +373,15 @@ export const sara2019 = () => {
   };
 
   try {
-    const seriesData = createGasPointsSeries(
-      gas2019Data,
-      pointsFilters,
-      units,
-      gas2019Colors
-    );
+    let series = new Series({
+      data: gas2019Data,
+      xCol: "Series Name",
+      yCols: ["Capacity", "Throughput"],
+      colors: gas2019Colors,
+      filters: pointsFilters,
+      xName: "name",
+    });
+    let seriesData = columnPlacement(series.hcSeries);
     var figure_title = document.getElementById("gas_points_title");
     setTitle(
       figure_title,
@@ -406,13 +394,25 @@ export const sara2019 = () => {
     var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
     selectUnitsGas2019.addEventListener("change", (selectUnitsGas2019) => {
       units.unitsCurrent = selectUnitsGas2019.target.value;
+      if (units.unitsCurrent !== units.unitsBase) {
+        series.update({
+          data: gas2019Data,
+          transform: {
+            conv: [units.conversion, units.type],
+            decimals: 2,
+          },
+        });
+      } else {
+        series.update({
+          data: gas2019Data,
+          transform: {
+            conv: undefined,
+            decimals: undefined,
+          },
+        });
+      }
       chartGas2019.update({
-        series: createGasPointsSeries(
-          gas2019Data,
-          pointsFilters,
-          units,
-          gas2019Colors
-        ),
+        series: columnPlacement(series.hcSeries),
         yAxis: {
           title: { text: units.unitsCurrent },
         },
@@ -433,13 +433,9 @@ export const sara2019 = () => {
         pointsFilters.Year,
         "Pipeline Throughput & Capacity at Key Points"
       );
+      series.update({ data: gas2019Data, filters: pointsFilters });
       chartGas2019.update({
-        series: createGasPointsSeries(
-          gas2019Data,
-          pointsFilters,
-          units,
-          gas2019Colors
-        ),
+        series: columnPlacement(series.hcSeries),
       });
     });
   } catch (err) {

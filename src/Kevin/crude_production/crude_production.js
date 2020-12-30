@@ -172,7 +172,6 @@ export const kevinCrudeProduction = () => {
   try {
     const chart = mainCrudeProduction();
   } catch (err) {
-    console.log(err)
     errorChart("container_crude_production");
   }
 };

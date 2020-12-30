@@ -1,10 +1,10 @@
 import {
   cerPalette,
-  prepareSeriesNonTidy,
   creditsClick,
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
+import Series from "../../../../highseries/dist/index.js";
 import { errorChart } from "../../modules/charts.js";
 import nglData from "./origin.json";
 
@@ -22,17 +22,6 @@ export const ryanNglExports = () => {
     Railway: cerPalette["Night Sky"],
     Truck: cerPalette["Forest"],
     Marine: cerPalette["Ocean"],
-  };
-
-  const createNglExpSeries = (nglData, nglFilters, units, nglColors) => {
-    return prepareSeriesNonTidy(
-      nglData,
-      nglFilters,
-      units,
-      ["Pipeline", "Railway", "Truck", "Marine"],
-      "Period",
-      nglColors
-    );
   };
 
   const createNglChart = (seriesData, units) => {
@@ -93,36 +82,56 @@ export const ryanNglExports = () => {
   };
 
   const mainNglExports = () => {
-    var seriesData = createNglExpSeries(nglData, nglFilters, units, nglColors);
+    let series = new Series({
+      data: nglData,
+      xCol: "Period",
+      yCols: ["Pipeline", "Railway", "Truck", "Marine"],
+      colors: nglColors,
+      filters: nglFilters,
+    });
+
     var figure_title = document.getElementById("ngl_title");
     setTitle(figure_title, nglFilters);
-    var nglChart = createNglChart(seriesData, units);
+    var nglChart = createNglChart(series.hcSeries, units);
 
     var selectProductNgl = document.getElementById("select_product_ngl");
     selectProductNgl.addEventListener("change", (selectProductNgl) => {
       nglFilters.Product = selectProductNgl.target.value;
       setTitle(figure_title, nglFilters);
-      nglChart = createNglChart(
-        createNglExpSeries(nglData, nglFilters, units, nglColors),
-        units
-      );
+      series.update({ data: nglData, filters: nglFilters });
+      nglChart = createNglChart(series.hcSeries, units);
     });
 
     var selectRegionNgl = document.getElementById("select_region_ngl");
     selectRegionNgl.addEventListener("change", (selectRegionNgl) => {
       nglFilters.Origin = selectRegionNgl.target.value;
       setTitle(figure_title, nglFilters);
-      nglChart = createNglChart(
-        createNglExpSeries(nglData, nglFilters, units, nglColors),
-        units
-      );
+      series.update({ data: nglData, filters: nglFilters });
+      nglChart = createNglChart(series.hcSeries, units);
     });
 
     var selectUnitsNgl = document.getElementById("select_units_ngl");
     selectUnitsNgl.addEventListener("change", (selectUnitsNgl) => {
       units.unitsCurrent = selectUnitsNgl.target.value;
+      if (units.unitsCurrent !== units.unitsBase) {
+        series.update({
+          data: nglData,
+          transform: {
+            conv: [units.conversion, units.type],
+            decimals: 2,
+          },
+        });
+      } else {
+        series.update({
+          data: nglData,
+          transform: {
+            conv: undefined,
+            decimals: undefined,
+          },
+        });
+      }
       nglChart.update({
-        series: createNglExpSeries(nglData, nglFilters, units, nglColors),
+        series: series.hcSeries,
         yAxis: {
           title: { text: units.unitsCurrent },
         },

@@ -4,6 +4,7 @@ import {
   creditsClick,
   tooltipPoint,
 } from "../../modules/util.js";
+import Series from "../../../../highseries/dist/index.js";
 import { errorChart } from "../../modules/charts.js";
 
 import tollsData from "./tolls.json";
@@ -50,19 +51,6 @@ export const cassandraTolls = () => {
     "Enbridge Canadian Mainline": cerPalette["Flame"],
   };
 
-  const createTollSeries = (tollsData, tollDate, tollColors) => {
-    return tollChartTypes(
-      prepareSeriesTidy(
-        tollsData,
-        false,
-        false,
-        "Pipeline",
-        tollDate.Date,
-        "Rate Normalized",
-        tollColors
-      )
-    );
-  };
   const createTollsChart = (seriesData, tollDate, div) => {
     return new Highcharts.chart(div, {
       chart: {
@@ -112,8 +100,15 @@ export const cassandraTolls = () => {
     };
     const [oilTolls, gasTolls] = commoditySeries(tollsData);
     try {
+      var oilseries = new Series({
+        data: oilTolls,
+        xCol: "Start",
+        yCols: "Pipeline",
+        valuesCol: "Rate Normalized",
+        colors: tollColors,
+      });
       var chartTollsOil = createTollsChart(
-        createTollSeries(oilTolls, tollDate, tollColors),
+        tollChartTypes(oilseries.hcSeries),
         tollDate,
         "container_tolls_oil"
       );
@@ -122,8 +117,15 @@ export const cassandraTolls = () => {
     }
 
     try {
+      var gasseries = new Series({
+        data: gasTolls,
+        xCol: "Start",
+        yCols: "Pipeline",
+        valuesCol: "Rate Normalized",
+        colors: tollColors,
+      });
       var chartTollsGas = createTollsChart(
-        createTollSeries(gasTolls, tollDate, tollColors),
+        tollChartTypes(gasseries.hcSeries),
         tollDate,
         "container_tolls_gas"
       );
