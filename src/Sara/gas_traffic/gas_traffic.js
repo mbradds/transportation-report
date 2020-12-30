@@ -3,7 +3,7 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import Series from "../../../../highseries/dist/index.js";
 import gasData from "./gas_traffic.json";
 
-export const saraGasTraffic = () => {
+const createChart = () => {
   const gasColors = {
     "Alliance Pipeline - Border": cerPalette["Night Sky"],
     "Foothills System - Kingsgate": cerPalette["Sun"],
@@ -91,3 +91,9 @@ export const saraGasTraffic = () => {
     errorChart("container_gas_traffic");
   }
 };
+
+export function saraGasTraffic() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

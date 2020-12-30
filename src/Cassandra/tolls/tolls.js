@@ -1,15 +1,9 @@
-import {
-  cerPalette,
-  prepareSeriesTidy,
-  creditsClick,
-  tooltipPoint,
-} from "../../modules/util.js";
+import { cerPalette, creditsClick, tooltipPoint } from "../../modules/util.js";
 import Series from "../../../../highseries/dist/index.js";
 import { errorChart } from "../../modules/charts.js";
-
 import tollsData from "./tolls.json";
 
-export const cassandraTolls = () => {
+const createChart = () => {
   const tollChartTypes = (series) => {
     series.map((data) => {
       if (data.name == "GDP Deflator") {
@@ -136,3 +130,9 @@ export const cassandraTolls = () => {
 
   mainTolls();
 };
+
+export function cassandraTolls() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

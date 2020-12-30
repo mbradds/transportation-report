@@ -8,7 +8,7 @@ import { errorChart } from "../../modules/charts.js";
 import Series from "../../../../highseries/dist/index.js";
 import marineData from "./marine_exports.json";
 
-export const coletteMarine = () => {
+const createChart = () => {
   const marineColors = { "Mb/d": cerPalette["Ocean"] };
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
 
@@ -107,3 +107,9 @@ export const coletteMarine = () => {
     errorChart("container_crude_marine");
   }
 };
+
+export function coletteMarine() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

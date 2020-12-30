@@ -9,7 +9,7 @@ import {
 import { errorChart } from "../../modules/charts.js";
 import financialData from "./PipelineProfileTables.json";
 
-export const cassandraAllPipes = () => {
+const createChart = () => {
   const sortLegend = (series) => {
     const toSort = sortJson(
       series.map((row) => {
@@ -259,3 +259,9 @@ export const cassandraAllPipes = () => {
     errorChart("container_financial_metrics");
   }
 };
+
+export function cassandraAllPipes() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

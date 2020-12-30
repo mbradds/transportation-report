@@ -8,7 +8,7 @@ import Series from "../../../../highseries/dist/index.js";
 import { errorChart } from "../../modules/charts.js";
 import nglData from "./origin.json";
 
-export const ryanNglExports = () => {
+const createChart = () => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
   const nglFilters = {
     Product: "Propane",
@@ -147,3 +147,9 @@ export const ryanNglExports = () => {
     errorChart("container_ngl");
   }
 };
+
+export function ryanNglExports() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

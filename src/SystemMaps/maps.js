@@ -22,7 +22,7 @@ import vector from "./prototype_output/gas/VectorPipeline.json";
 import westcoast from "./prototype_output/gas/EnbridgeBCPipeline.json";
 import canadaMap from "./map_output/base_map.json";
 
-export const systemMaps = () => {
+const createMaps = () => {
   const oilFileNames = {
     "Aurora Pipeline": {
       color: cerPalette["Aubergine"],
@@ -375,3 +375,9 @@ export const systemMaps = () => {
   };
   mainCharts();
 };
+
+export function systemMaps() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createMaps()), 0);
+  });
+}

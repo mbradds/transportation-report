@@ -29,35 +29,35 @@ import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMul
 
 var t0Transportation = performance.now();
 async function loadAllCharts() {
-  var async0 = performance.now();
-  instructionsChart();
-  kevinCrudeProduction();
-  kevinCrudeExports();
-  kevinUsImports();
-  kevinCrudePrices();
-  coletteCrudeMode();
-  coletteCrudeByRail();
-  coletteMarine();
-  coletteCrudeTakeaway();
-  systemMaps();
-  rebeccaGasProd();
-  rebeccaGasTrade();
-  rebeccaGasPrices();
-  saraGasTraffic();
-  saraMnp();
-  sara2019();
-  ryanNglProduction();
-  ryanNglExports();
-  ryanNglDestination();
-  cassandraSettlements();
-  cassandraTolls();
-  jenniferFinResources();
-  jenniferAbandonment();
-  cassandraAllPipes();
-  jenniferRatingsCross();
-  jenniferRatingsMulti();
-  var async1 = performance.now();
-  console.log("async time difference: " + (async1 - async0) + " milliseconds.");
+  let arrayOfCharts = [
+    instructionsChart(),
+    kevinCrudeProduction(),
+    kevinCrudeExports(),
+    kevinCrudePrices(),
+    kevinUsImports(),
+    coletteCrudeMode(),
+    coletteCrudeByRail(),
+    coletteMarine(),
+    coletteCrudeTakeaway(),
+    systemMaps(),
+    rebeccaGasProd(),
+    rebeccaGasTrade(),
+    rebeccaGasPrices(),
+    saraGasTraffic(),
+    saraMnp(),
+    sara2019(),
+    ryanNglProduction(),
+    ryanNglExports(),
+    ryanNglDestination(),
+    cassandraSettlements(),
+    cassandraTolls(),
+    jenniferFinResources(),
+    jenniferAbandonment(),
+    cassandraAllPipes(),
+    jenniferRatingsCross(),
+    jenniferRatingsMulti(),
+  ];
+  Promise.all(arrayOfCharts);
 }
 loadAllCharts();
 var t1Transportation = performance.now();

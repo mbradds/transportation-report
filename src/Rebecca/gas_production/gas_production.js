@@ -1,13 +1,9 @@
-import {
-  cerPalette,
-  conversions,
-  tooltipPoint,
-} from "../../modules/util.js";
+import { cerPalette, conversions, tooltipPoint } from "../../modules/util.js";
 import { productionChart, errorChart } from "../../modules/charts.js";
 import gasProdData from "./Natural_Gas_Production.json";
 import Series from "../../../../highseries/dist/index.js";
 
-export const rebeccaGasProd = () => {
+const createChart = () => {
   const gasProdColors = {
     Solution: cerPalette["Aubergine"],
     "Conventional Non-tight": cerPalette["Forest"],
@@ -73,3 +69,9 @@ export const rebeccaGasProd = () => {
     errorChart("container_gas_production");
   }
 };
+
+export function rebeccaGasProd() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

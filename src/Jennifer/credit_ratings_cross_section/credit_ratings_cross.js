@@ -3,7 +3,7 @@ import { errorChart } from "../../modules/charts.js";
 import creditData from "../credit_ratings/CreditTables.json";
 import scaleData from "../credit_ratings/Scale.json";
 
-export const jenniferRatingsCross = () => {
+const createChart = () => {
   const ratingsColors = {
     DBRS: cerPalette["Sun"],
     "S&P": cerPalette["Night Sky"],
@@ -202,3 +202,9 @@ export const jenniferRatingsCross = () => {
     errorChart("container_ratings_cross");
   }
 };
+
+export function jenniferRatingsCross() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

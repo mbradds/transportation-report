@@ -3,19 +3,7 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudePriceData from "./oil_prices.json";
 import Series from "../../../../highseries/dist/index.js";
 
-export const kevinCrudePrices = () => {
-  const crudePriceChartTypes = (series) => {
-    series.map((data) => {
-      if (data.name == "Differential") {
-        data.type = "area";
-      } else {
-        data.type = "line";
-      }
-    });
-
-    return series;
-  };
-
+const createChart = () => {
   const crudePriceColors = {
     WCS: cerPalette["Night Sky"],
     WTI: cerPalette["Sun"],
@@ -50,3 +38,9 @@ export const kevinCrudePrices = () => {
     errorChart("container_crude_prices");
   }
 };
+
+export function kevinCrudePrices() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

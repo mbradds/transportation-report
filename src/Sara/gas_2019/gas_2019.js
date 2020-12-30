@@ -11,7 +11,7 @@ import { errorChart } from "../../modules/charts.js";
 import gas2019Data from "./gas_2019.json";
 import Series from "../../../../highseries/dist/index.js";
 
-export const sara2019 = () => {
+const createChart = () => {
   const gas2019Colors = {
     Throughput: cerPalette["Sun"],
     Capacity: cerPalette["Night Sky"],
@@ -444,3 +444,9 @@ export const sara2019 = () => {
     errorChart("container_gas_2019");
   }
 };
+
+export function sara2019() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

@@ -2,7 +2,7 @@ import { cerPalette, creditsClick, dateFormat } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import settleJson from "./settleJson.json";
 
-export const cassandraSettlements = () => {
+const createChart = () => {
   const currentDate = () => {
     var today = new Date();
     today.setUTCHours(0);
@@ -405,3 +405,9 @@ export const cassandraSettlements = () => {
   };
   mainSettlements();
 };
+
+export function cassandraSettlements() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

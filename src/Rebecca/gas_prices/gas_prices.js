@@ -10,7 +10,7 @@ import Series from "../../../../highseries/dist/index.js";
 import { errorChart } from "../../modules/charts.js";
 import gasPriceData from "./gas_prices.json";
 
-export const rebeccaGasPrices = () => {
+const createChart = () => {
   const gasPriceColors = {
     ["Dawn"]: cerPalette["Sun"],
     ["Alberta NIT"]: cerPalette["Forest"],
@@ -181,7 +181,7 @@ export const rebeccaGasPrices = () => {
       data: gasPriceData,
       xCol: "Date",
       yCols: ["Alberta NIT", "Dawn", "Henry Hub", "Station 2"],
-      colors:gasPriceColors
+      colors: gasPriceColors,
     });
     var gasMap = createGasPriceMap();
     var chartGasPrice = createGasPriceChart(series.hcSeries, gasPriceFilters);
@@ -191,3 +191,9 @@ export const rebeccaGasPrices = () => {
     errorChart("container_gas_prices");
   }
 };
+
+export function rebeccaGasPrices() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

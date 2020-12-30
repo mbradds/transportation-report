@@ -4,7 +4,7 @@ import creditData from "./CreditTables.json";
 import scaleData from "./Scale.json";
 import Series from "../../../../highseries/dist/index.js";
 
-export const jenniferRatingsMulti = () => {
+const createChart = () => {
   var ratingAgencies = ["S&P", "Moody's", "DBRS"];
 
   const selectDefaultMultiple = (select_name, optionsToSelect) => {
@@ -284,3 +284,9 @@ export const jenniferRatingsMulti = () => {
     errorChart("container_ratings_multi");
   }
 };
+
+export function jenniferRatingsMulti() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

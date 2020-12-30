@@ -8,7 +8,7 @@ import {
 import { errorChart } from "../../modules/charts.js";
 import crudeModeData from "./crude_mode.json";
 
-export const coletteCrudeMode = () => {
+const createChart = () => {
   const crudeModeFilters = { Year: 2019 };
   const crudeModeColors = {
     Pipeline: cerPalette["Night Sky"],
@@ -118,3 +118,9 @@ export const coletteCrudeMode = () => {
     errorChart("container_crude_mode");
   }
 };
+
+export function coletteCrudeMode() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

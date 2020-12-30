@@ -234,7 +234,7 @@ export const createPaddMap = (div, actionChart, paddColors) => {
   });
 };
 
-export const instructionsChart = () => {
+const createInstructionChart = () => {
   return new Highcharts.chart("hc-instructions", {
     chart: {
       borderWidth: 1,
@@ -291,3 +291,9 @@ export const instructionsChart = () => {
     ],
   });
 };
+
+export function instructionsChart() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createInstructionChart()), 0);
+  });
+}

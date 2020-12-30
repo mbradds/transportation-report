@@ -9,7 +9,7 @@ import { errorChart } from "../../modules/charts.js";
 import crudeImportsData from "./UScrudeoilimports.json";
 import Series from "../../../../highseries/dist/index.js";
 
-export const kevinUsImports = () => {
+const createChart = () => {
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
   const crudeImportColors = {
@@ -139,3 +139,9 @@ export const kevinUsImports = () => {
     errorChart("container_crude_imports");
   }
 };
+
+export function kevinUsImports() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

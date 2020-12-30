@@ -8,7 +8,7 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudeTakeawayData from "./figures.json";
 import Series from "../../../../highseries/dist/index.js";
 
-export const coletteCrudeTakeaway = () => {
+export const createChart = () => {
   const crudeTakeawayColors = {
     "Total Supply Available for Export": cerPalette["Cool Grey"],
     "Express Pipeline": cerPalette["Aubergine"],
@@ -118,3 +118,9 @@ export const coletteCrudeTakeaway = () => {
     errorChart("container_crude_takeaway");
   }
 };
+
+export function coletteCrudeTakeaway() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}

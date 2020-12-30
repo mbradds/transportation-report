@@ -5,22 +5,8 @@ import finResData from "./fin_resource_totals.json";
 import finClassData from "./fin_resource_class.json";
 import finResNames from "./fin_resource_class_names.json";
 
-export const jenniferFinResources = () => {
+const createChart = () => {
   var resFilters = { Commodity: "All" };
-
-  const finResourceChartTypes = (series) => {
-    series.map((data) => {
-      if (data.name == "Companies using Financial Instrument") {
-        data.type = "column";
-        data.yAxis = 0;
-      } else {
-        data.type = "line";
-        data.yAxis = 1;
-      }
-    });
-
-    return series;
-  };
 
   const resChartTypes = {
     "Companies using Financial Instrument": "column",
@@ -341,3 +327,9 @@ export const jenniferFinResources = () => {
     errorChart("container_fin_resources_class");
   }
 };
+
+export function jenniferFinResources() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart()), 0);
+  });
+}
