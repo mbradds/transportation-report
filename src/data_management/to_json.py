@@ -174,6 +174,7 @@ def readExcel(name,sheet='pq',sql=False):
         df = df[df['Unit']!='m3/d']
         df['Value'] = (df['Value']/1000000).round(2)
         df['Unit'] = df['Unit'].replace({'bbl/d':'MMb/d'})
+        del df['Unit']
         write_path = os.path.join(os.getcwd(),'../Kevin/crude_exports/',name.split('.')[0]+'.json')
     
     if name == 'UScrudeoilimports.xlsx':
@@ -197,7 +198,7 @@ def readExcel(name,sheet='pq',sql=False):
         df['Thousand m3/d'] = df['Mb/d']
         df = normalize_numeric(df, ['Mb/d'], 1)
         df = normalize_dates(df, ['Date'])
-        
+        del df['Thousand m3/d']
     if name == 'figures.xlsx' and sheet=='ngl production':
         products = ['Ethane','Propane','Butanes']
         df = normalize_numeric(df, products, 1)
@@ -683,7 +684,7 @@ if __name__ == '__main__':
     #settleJson = negotiated_settlements()
     
     #ryan
-    df_origin,df_destination = ngl_exports()
+    #df_origin,df_destination = ngl_exports()
     #df = readExcel('figures.xlsx',sheet='ngl production')
     
     #jennifer

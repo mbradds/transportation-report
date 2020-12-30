@@ -1,45 +1,34 @@
-import {
-  cerPalette,
-  prepareSeriesNonTidy,
-  creditsClick,
-} from "../../modules/util.js";
+import { cerPalette, creditsClick } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-
+import Series from "../../../../highseries/dist/index.js";
 import railData from "./crude_by_rail_wcs.json";
 
 export const coletteCrudeByRail = () => {
-  const railChartTypes = (series) => {
-    series.map((data) => {
-      if (data.name == "Crude by Rail") {
-        data.type = "area";
-        data.yAxis = 0;
-      } else {
-        data.type = "line";
-        data.yAxis = 1;
-      }
-    });
-
-    return series;
-  };
-
   const railFilters = { Units: "Mb/d" };
   const railColors = {
     "Crude by Rail": cerPalette["Night Sky"],
     "WCS-WTI Differential": cerPalette["Sun"],
   };
 
-  const createRailSeries = (railData,railFilters,railColors) => {
-    return railChartTypes(
-      prepareSeriesNonTidy(
-        railData,
-        railFilters,
-        false,
-        ["Crude by Rail", "WCS-WTI Differential"],
-        "Date",
-        railColors
-      )
-    );
+  const railTypes = {
+    "Crude by Rail": "area",
+    "WCS-WTI Differential": "line",
   };
+
+  const railAxis = {
+    "Crude by Rail": 0,
+    "WCS-WTI Differential": 1,
+  };
+
+  let series = new Series({
+    data: railData,
+    xCol: "Date",
+    yCols: ["Crude by Rail", "WCS-WTI Differential"],
+    colors: railColors,
+    filters: railFilters,
+    seriesTypes: railTypes,
+    yAxis: railAxis,
+  });
 
   const createRailChart = (seriesData, railFilters) => {
     return new Highcharts.chart("container_crude_by_rail", {
@@ -110,13 +99,13 @@ export const coletteCrudeByRail = () => {
   };
 
   const mainChartRail = () => {
-    const seriesData = createRailSeries(railData,railFilters,railColors)
-    var chartRail = createRailChart(seriesData, railFilters);
+    var chartRail = createRailChart(series.hcSeries, railFilters);
     var selectUnitsRail = document.getElementById("select_units_rail");
     selectUnitsRail.addEventListener("change", (selectUnitsRail) => {
       railFilters.Units = selectUnitsRail.target.value;
+      series.update({ data: railData, filters: railFilters });
       chartRail.update({
-        series: createRailSeries(railData,railFilters,railColors),
+        series: series.hcSeries,
         yAxis: {
           title: { text: `Rail Exports - ${railFilters.Units}` },
         },

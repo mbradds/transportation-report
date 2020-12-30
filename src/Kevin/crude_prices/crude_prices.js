@@ -1,6 +1,7 @@
-import { cerPalette, prepareSeriesNonTidy } from "../../modules/util.js";
+import { cerPalette } from "../../modules/util.js";
 import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudePriceData from "./oil_prices.json";
+import Series from "../../../../highseries/dist/index.js";
 
 export const kevinCrudePrices = () => {
   const crudePriceChartTypes = (series) => {
@@ -21,23 +22,26 @@ export const kevinCrudePrices = () => {
     Differential: cerPalette["Ocean"],
   };
 
+  const crudePriceTypes = {
+    WCS: "line",
+    WTI: "line",
+    Differential: "area",
+  };
+
   try {
-    var seriesData = crudePriceChartTypes(
-      prepareSeriesNonTidy(
-        crudePriceData,
-        false,
-        false,
-        ["WCS", "WTI", "Differential"],
-        "Date",
-        crudePriceColors
-      )
-    );
+    let series = new Series({
+      data: crudePriceData,
+      xCol: "Date",
+      yCols: ["WCS", "WTI", "Differential"],
+      colors: crudePriceColors,
+      seriesTypes: crudePriceTypes,
+    });
     var params = {
       div: "container_crude_prices",
       sourceLink: "https://www.ne2group.com/",
       sourceText: "Source: ne2 Group",
       units: { unitsCurrent: "USD/bbl" },
-      series: seriesData,
+      series: series.hcSeries,
       xAxisType: "datetime",
       crosshair: true,
     };

@@ -1,27 +1,14 @@
 import {
   cerPalette,
-  prepareSeriesNonTidy,
   conversions,
   tooltipSorted,
   lines,
 } from "../../modules/util.js";
 import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudeTakeawayData from "./figures.json";
+import Series from "../../../../highseries/dist/index.js";
 
 export const coletteCrudeTakeaway = () => {
-  const crudeTakeawayChartTypes = (series) => {
-    series.map((data) => {
-      if (data.name == "Total Supply Available for Export") {
-        data.type = "line";
-        data.zIndex = 1;
-      } else {
-        data.type = "area";
-        data.zIndex = 0;
-      }
-    });
-    return series;
-  };
-
   const crudeTakeawayColors = {
     "Total Supply Available for Export": cerPalette["Cool Grey"],
     "Express Pipeline": cerPalette["Aubergine"],
@@ -31,6 +18,21 @@ export const coletteCrudeTakeaway = () => {
     "Enbridge Canadian Mainline": cerPalette["Sun"],
     "Keystone Pipeline": cerPalette["Forest"],
     Rail: cerPalette["Ocean"],
+  };
+
+  const crudeTakeawayTypes = {
+    "Total Supply Available for Export": "line",
+    "Express Pipeline": "area",
+    "Milk River Pipeline": "area",
+    "Aurora Pipeline": "area",
+    "Trans Mountain Pipeline": "area",
+    "Enbridge Canadian Mainline": "area",
+    "Keystone Pipeline": "area",
+    Rail: "area",
+  };
+
+  const z = {
+    "Total Supply Available for Export": 10,
   };
 
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
@@ -46,22 +48,14 @@ export const coletteCrudeTakeaway = () => {
     "Keystone Pipeline",
   ];
 
-  const createTakeawaySeries = (
-    crudeTakeawayData,
-    units,
-    crudeTakeawayColors
-  ) => {
-    return crudeTakeawayChartTypes(
-      prepareSeriesNonTidy(
-        crudeTakeawayData,
-        false,
-        units,
-        columns,
-        "Year",
-        crudeTakeawayColors
-      )
-    );
-  };
+  let series = new Series({
+    data: crudeTakeawayData,
+    xCol: "Year",
+    yCols: columns,
+    colors: crudeTakeawayColors,
+    seriesTypes: crudeTakeawayTypes,
+    zIndex: z,
+  });
 
   const mainCrudeTakeaway = () => {
     var params = {
@@ -70,11 +64,7 @@ export const coletteCrudeTakeaway = () => {
         "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
       sourceText: "Source: Energy Futures",
       units: units,
-      series: createTakeawaySeries(
-        crudeTakeawayData,
-        units,
-        crudeTakeawayColors
-      ),
+      series: series.hcSeries,
       xAxisType: "linear",
       crosshair: true,
     };
@@ -91,25 +81,35 @@ export const coletteCrudeTakeaway = () => {
         ],
       },
     });
-    var selectUnitsCrudeTakeaway = document.getElementById(
+    var selectUnitsTake = document.getElementById(
       "select_units_crude_takeaway"
     );
-    selectUnitsCrudeTakeaway.addEventListener(
-      "change",
-      (selectUnitsCrudeTakeaway) => {
-        units.unitsCurrent = selectUnitsCrudeTakeaway.target.value;
-        crudeTakeawayChart.update({
-          series: createTakeawaySeries(
-            crudeTakeawayData,
-            units,
-            crudeTakeawayColors
-          ),
-          yAxis: {
-            title: { text: units.unitsCurrent },
+    selectUnitsTake.addEventListener("change", (selectUnitsTake) => {
+      units.unitsCurrent = selectUnitsTake.target.value;
+      if (units.unitsCurrent !== units.unitsBase) {
+        series.update({
+          data: crudeTakeawayData,
+          transform: {
+            conv: [units.conversion, units.type],
+            decimals: 1,
+          },
+        });
+      } else {
+        series.update({
+          data: crudeTakeawayData,
+          transform: {
+            conv: undefined,
+            decimals: undefined,
           },
         });
       }
-    );
+      crudeTakeawayChart.update({
+        series: series.hcSeries,
+        yAxis: {
+          title: { text: units.unitsCurrent },
+        },
+      });
+    });
   };
 
   try {

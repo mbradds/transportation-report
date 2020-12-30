@@ -1,7 +1,5 @@
 import {
   cerPalette,
-  prepareSeriesTidy,
-  creditsClick,
   conversions,
   mouseOverFunction,
   mouseOutFunction,
@@ -9,6 +7,7 @@ import {
 } from "../../modules/util.js";
 import { errorChart, createPaddMap } from "../../modules/charts.js";
 import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
+import Series from "../../../../highseries/dist/index.js";
 
 export const kevinCrudeExports = () => {
   const crudeExportColors = {
@@ -62,16 +61,14 @@ export const kevinCrudeExports = () => {
   };
 
   try {
-    var seriesData = prepareSeriesTidy(
-      crudeExportsData,
-      false,
-      units,
-      "PADD",
-      "Year",
-      "Value",
-      crudeExportColors
-    );
-    var chartCrudeExports = createCrudeExportsChart(seriesData, units);
+    var series = new Series({
+      data: crudeExportsData,
+      colors: crudeExportColors,
+      xCol: "Year",
+      yCols: "PADD",
+      valuesCol: "Value",
+    });
+    var chartCrudeExports = createCrudeExportsChart(series.hcSeries, units);
   } catch (err) {
     errorChart("container_crude_exports");
   }
@@ -86,32 +83,37 @@ export const kevinCrudeExports = () => {
     errorChart("container_padd_map");
   }
 
-  var selectUnitsCrudeExports = document.getElementById(
+  var selectCrudeExports = document.getElementById(
     "select_units_crude_exports"
   );
-  selectUnitsCrudeExports.addEventListener(
-    "change",
-    (selectUnitsCrudeExports) => {
-      units.unitsCurrent = selectUnitsCrudeExports.target.value;
-      var seriesData = prepareSeriesTidy(
-        crudeExportsData,
-        false,
-        units,
-        "PADD",
-        "Year",
-        "Value",
-        crudeExportColors
-      );
-
-      chartCrudeExports.update({
-        series: seriesData,
-        yAxis: {
-          title: { text: units.unitsCurrent },
+  selectCrudeExports.addEventListener("change", (selectCrudeExports) => {
+    units.unitsCurrent = selectCrudeExports.target.value;
+    if (units.unitsCurrent !== units.unitsBase) {
+      series.update({
+        data: crudeExportsData,
+        transform: {
+          conv: [units.conversion, units.type],
+          decimals: 2,
         },
-        tooltip: {
-          pointFormat: tooltipPoint(units.unitsCurrent),
+      });
+    } else {
+      series.update({
+        data: crudeExportsData,
+        transform: {
+          conv: undefined,
+          decimals: undefined,
         },
       });
     }
-  );
+
+    chartCrudeExports.update({
+      series: series.hcSeries,
+      yAxis: {
+        title: { text: units.unitsCurrent },
+      },
+      tooltip: {
+        pointFormat: tooltipPoint(units.unitsCurrent),
+      },
+    });
+  });
 };

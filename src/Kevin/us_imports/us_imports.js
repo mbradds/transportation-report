@@ -1,6 +1,5 @@
 import {
   cerPalette,
-  prepareSeriesTidy,
   conversions,
   tooltipPoint,
   creditsClick,
@@ -8,21 +7,9 @@ import {
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import crudeImportsData from "./UScrudeoilimports.json";
+import Series from "../../../../highseries/dist/index.js";
 
 export const kevinUsImports = () => {
-  const crudeImportsChartTypes = (series) => {
-    series.map((data) => {
-      if (data.name == "U.S. crude oil exports") {
-        data.type = "line";
-        data.zIndex = 1;
-      } else {
-        data.type = "column";
-        data.zIndex = 0;
-      }
-    });
-    return series;
-  };
-
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
   const crudeImportColors = {
@@ -30,18 +17,20 @@ export const kevinUsImports = () => {
     "U.S. crude oil exports": cerPalette["Ocean"],
     "U.S. crude oil imports from Canada": cerPalette["Sun"],
   };
+  const seriesTypes = {
+    "U.S. crude oil imports from ROW": "column",
+    "U.S. crude oil exports": "line",
+    "U.S. crude oil imports from Canada": "column",
+  };
 
-  var seriesData = crudeImportsChartTypes(
-    prepareSeriesTidy(
-      crudeImportsData,
-      false,
-      units,
-      "Attribute",
-      "Year",
-      "Value",
-      crudeImportColors
-    )
-  );
+  let series = new Series({
+    data: crudeImportsData,
+    colors: crudeImportColors,
+    xCol: "Year",
+    yCols: "Attribute",
+    valuesCol: "Value",
+  });
+  series.seriesTypes = seriesTypes;
 
   const createUSImports = (params) => {
     return new Highcharts.chart(params.div, {
@@ -103,7 +92,7 @@ export const kevinUsImports = () => {
         "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english",
       sourceText: "Source: CER Commodity Tracking System & EIA",
       units: units,
-      series: seriesData,
+      series: series.hcSeries,
       xAxisType: "linear",
       crosshair: false,
     };
@@ -115,19 +104,25 @@ export const kevinUsImports = () => {
       "change",
       (selectUnitsCrudeImports) => {
         units.unitsCurrent = selectUnitsCrudeImports.target.value;
-        var seriesData = crudeImportsChartTypes(
-          prepareSeriesTidy(
-            crudeImportsData,
-            false,
-            units,
-            "Attribute",
-            "Year",
-            "Value",
-            crudeImportColors
-          )
-        );
+        if (units.unitsCurrent !== units.unitsBase) {
+          series.update({
+            data: crudeImportsData,
+            transform: {
+              conv: [units.conversion, units.type],
+              decimals: 1,
+            },
+          });
+        } else {
+          series.update({
+            data: crudeImportsData,
+            transform: {
+              conv: undefined,
+              decimals: undefined,
+            },
+          });
+        }
         chartCrudeImports.update({
-          series: seriesData,
+          series: series.hcSeries,
           yAxis: {
             title: { text: units.unitsCurrent },
           },

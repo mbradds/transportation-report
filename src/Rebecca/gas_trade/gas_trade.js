@@ -1,6 +1,5 @@
 import {
   cerPalette,
-  prepareSeriesTidy,
   creditsClick,
   mouseOverFunction,
   mouseOutFunction,
@@ -8,6 +7,7 @@ import {
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import gasTradeData from "./natural-gas-exports-and-imports-annual.json";
+import Series from "../../../../highseries/dist/index.js";
 
 export const rebeccaGasTrade = () => {
   const gasTrafficColors = {
@@ -19,22 +19,6 @@ export const rebeccaGasTrade = () => {
   var gasTradeFilters = { Activity: "Exports" };
   var gasTradeUnits = { unitsCol: "Volume (Bcf/d)", unitsCurrent: "Bcf/d" };
 
-  const createGasTradeSeries = (
-    gasTradeData,
-    gasTradeFilters,
-    gasTradeUnits,
-    gasTrafficColors
-  ) => {
-    return prepareSeriesTidy(
-      gasTradeData,
-      gasTradeFilters,
-      false,
-      "Region",
-      "Year",
-      gasTradeUnits.unitsCol,
-      gasTrafficColors
-    );
-  };
   const setTitle = (figure_title, filters) => {
     if (filters.Activity == "Exports") {
       figure_title.innerText =
@@ -195,14 +179,16 @@ export const rebeccaGasTrade = () => {
   };
 
   try {
-    var seriesData = createGasTradeSeries(
-      gasTradeData,
-      gasTradeFilters,
-      gasTradeUnits,
-      gasTrafficColors
-    );
+    var series = new Series({
+      data: gasTradeData,
+      xCol: "Year",
+      yCols: "Region",
+      valuesCol: "Volume (Bcf/d)",
+      filters: gasTradeFilters,
+      colors: gasTrafficColors,
+    });
     var mapGasTraffic = createGasRegionMap();
-    var chartGasTraffic = createGasTrafficChart(seriesData, gasTradeUnits);
+    var chartGasTraffic = createGasTrafficChart(series.hcSeries, gasTradeUnits);
     var figure_title = document.getElementById("gas_trade_title");
     setTitle(figure_title, gasTradeFilters);
     var selectUnitsGasTrade = document.getElementById("select_units_gas_trade");
@@ -214,13 +200,13 @@ export const rebeccaGasTrade = () => {
       } else {
         gasTradeUnits.unitsCol = "Volume (Million m3/d)";
       }
+      series.update({
+        data: gasTradeData,
+        valuesCol: gasTradeUnits.unitsCol,
+        filters: gasTradeFilters,
+      });
       chartGasTraffic.update({
-        series: createGasTradeSeries(
-          gasTradeData,
-          gasTradeFilters,
-          gasTradeUnits,
-          gasTrafficColors
-        ),
+        series: series.hcSeries,
         yAxis: { title: { text: units } },
         tooltip: {
           pointFormat: tooltipPoint(units),
@@ -232,13 +218,8 @@ export const rebeccaGasTrade = () => {
     selectTradeType.addEventListener("change", (selectTradeType) => {
       gasTradeFilters.Activity = selectTradeType.target.value;
       setTitle(figure_title, gasTradeFilters);
-      var seriesData = createGasTradeSeries(
-        gasTradeData,
-        gasTradeFilters,
-        gasTradeUnits,
-        gasTrafficColors
-      );
-      chartGasTraffic = createGasTrafficChart(seriesData, gasTradeUnits);
+      series.update({ data: gasTradeData, filters: gasTradeFilters });
+      chartGasTraffic = createGasTrafficChart(series.hcSeries, gasTradeUnits);
     });
   } catch (err) {
     errorChart("container_gas_trade");

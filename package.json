@@ -12,16 +12,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mbradds/HighchartsMarkets.git"
+    "url": "git+https://github.com/mbradds/transportation-report.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mbradds/HighchartsMarkets/issues"
+    "url": "https://github.com/mbradds/transportation-report/issues"
   },
-  "homepage": "https://github.com/mbradds/HighchartsMarkets#readme",
+  "homepage": "https://github.com/mbradds/transportation-report#readme",
   "dependencies": {
     "all": "0.0.0",
+    "highseries": "^1.0.2",
     "mapshaper": "^0.5.26"
   },
   "devDependencies": {

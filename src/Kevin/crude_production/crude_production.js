@@ -1,12 +1,12 @@
 import {
   cerPalette,
-  prepareSeriesNonTidy,
   conversions,
   tooltipPoint,
   setTitle,
 } from "../../modules/util.js";
 import { productionChart, errorChart } from "../../modules/charts.js";
 import crudeProdData from "./Crude_Oil_Production.json";
+import Series from "../../../../highseries/dist/index.js";
 
 export const kevinCrudeProduction = () => {
   const crudeProdColors = {
@@ -75,15 +75,14 @@ export const kevinCrudeProduction = () => {
       "Crude Oil Production"
     );
 
-    var seriesData = prepareSeriesNonTidy(
-      crudeProdData,
-      crudeProdFilters,
-      units,
-      crudeProdColumns,
-      "Year",
-      crudeProdColors,
-      roundValues(crudeProdFilters)
-    );
+    let series = new Series({
+      data: crudeProdData,
+      colors: crudeProdColors,
+      filters: crudeProdFilters,
+      xCol: "Year",
+      yCols: crudeProdColumns,
+    });
+    series.transform = { decimals: roundValues(crudeProdFilters) };
 
     var params = {
       div: "container_crude_production",
@@ -91,7 +90,7 @@ export const kevinCrudeProduction = () => {
         "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
       sourceText: "Source: Energy Futures",
       units: units,
-      series: seriesData,
+      series: series.hcSeries,
     };
 
     var chartCrude = productionChart(params);
@@ -108,16 +107,12 @@ export const kevinCrudeProduction = () => {
           crudeProdFilters.Region,
           "Crude Oil Production"
         );
-        var seriesData = prepareSeriesNonTidy(
-          crudeProdData,
-          crudeProdFilters,
-          units,
-          crudeProdColumns,
-          "Year",
-          crudeProdColors,
-          roundValues(crudeProdFilters)
-        );
-        params.series = seriesData;
+        series.update({
+          data: crudeProdData,
+          filters: crudeProdFilters,
+          transform: { decimals: roundValues(crudeProdFilters) },
+        });
+        params.series = series.hcSeries;
         chartCrude = productionChart(params);
         chartCrude.update({
           yAxis: {
@@ -138,17 +133,25 @@ export const kevinCrudeProduction = () => {
     );
     selectUnitsCrudeProd.addEventListener("change", (selectUnitsCrudeProd) => {
       units.unitsCurrent = selectUnitsCrudeProd.target.value;
-      var seriesData = prepareSeriesNonTidy(
-        crudeProdData,
-        crudeProdFilters,
-        units,
-        crudeProdColumns,
-        "Year",
-        crudeProdColors,
-        roundValues(crudeProdFilters)
-      );
+      if (units.unitsCurrent !== units.unitsBase) {
+        series.update({
+          data: crudeProdData,
+          transform: {
+            conv: [units.conversion, units.type],
+            decimals: roundValues(crudeProdFilters),
+          },
+        });
+      } else {
+        series.update({
+          data: crudeProdData,
+          transform: {
+            conv: undefined,
+            decimals: roundValues(crudeProdFilters),
+          },
+        });
+      }
       chartCrude.update({
-        series: seriesData,
+        series: series.hcSeries,
         yAxis: {
           title: { text: units.unitsCurrent },
           tickInterval: ticks(crudeProdFilters, units),
@@ -169,6 +172,7 @@ export const kevinCrudeProduction = () => {
   try {
     const chart = mainCrudeProduction();
   } catch (err) {
+    console.log(err)
     errorChart("container_crude_production");
   }
 };

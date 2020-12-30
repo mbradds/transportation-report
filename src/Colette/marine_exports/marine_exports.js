@@ -1,30 +1,16 @@
 import {
   cerPalette,
-  prepareSeriesNonTidy,
   creditsClick,
   conversions,
   tooltipPoint,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-
+import Series from "../../../../highseries/dist/index.js";
 import marineData from "./marine_exports.json";
 
 export const coletteMarine = () => {
   const marineColors = { "Mb/d": cerPalette["Ocean"] };
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
-
-  const createMarineSeries = (marineData, units, marineColors) => {
-    var seriesData = prepareSeriesNonTidy(
-      marineData,
-      false,
-      units,
-      ["Mb/d"],
-      "Date",
-      marineColors
-    );
-    seriesData[0].name = "Marine Volumes";
-    return seriesData;
-  };
 
   const createMarineChart = (seriesData, units) => {
     return new Highcharts.chart("container_crude_marine", {
@@ -75,14 +61,36 @@ export const coletteMarine = () => {
   };
 
   const mainMarine = () => {
-    var seriesData = createMarineSeries(marineData, units, marineColors);
-    var marineChart = createMarineChart(seriesData, units);
+    let series = new Series({
+      data: marineData,
+      xCol: "Date",
+      yCols: ["Mb/d"],
+      colors: marineColors,
+    });
+    var marineChart = createMarineChart(series.hcSeries, units);
     var selectUnitsMarine = document.getElementById("select_units_marine");
 
     selectUnitsMarine.addEventListener("change", (selectUnitsMarine) => {
       units.unitsCurrent = selectUnitsMarine.target.value;
+      if (units.unitsCurrent !== units.unitsBase) {
+        series.update({
+          data: marineData,
+          transform: {
+            conv: [units.conversion, units.type],
+            decimals: 1,
+          },
+        });
+      } else {
+        series.update({
+          data: marineData,
+          transform: {
+            conv: undefined,
+            decimals: undefined,
+          },
+        });
+      }
       marineChart.update({
-        series: createMarineSeries(marineData, units, marineColors),
+        series: series.hcSeries,
         yAxis: {
           title: { text: units.unitsCurrent },
         },
