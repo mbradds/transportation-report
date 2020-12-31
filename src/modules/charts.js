@@ -239,6 +239,7 @@ const createInstructionChart = () => {
     chart: {
       borderWidth: 1,
       zoomType: "x",
+      animation: false,
     },
     title: {
       text: "",
@@ -267,6 +268,7 @@ const createInstructionChart = () => {
     plotOptions: {
       series: {
         pointStart: 2013,
+        animation: false,
       },
     },
     annotations: [

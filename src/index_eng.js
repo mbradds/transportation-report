@@ -27,8 +27,8 @@ import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
 import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
 import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
 
-var t0Transportation = performance.now();
 async function loadAllCharts() {
+  console.time(`chart loading`);
   let arrayOfCharts = [
     instructionsChart(),
     kevinCrudeProduction(),
@@ -57,10 +57,8 @@ async function loadAllCharts() {
     jenniferRatingsCross(),
     jenniferRatingsMulti(),
   ];
-  Promise.all(arrayOfCharts);
+  Promise.all(arrayOfCharts).then((value) => {
+    console.timeEnd(`chart loading`);
+  });
 }
 loadAllCharts();
-var t1Transportation = performance.now();
-console.log(
-  "Chart Rendering: " + (t1Transportation - t0Transportation) + " milliseconds."
-);
