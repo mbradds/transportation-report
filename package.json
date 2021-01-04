@@ -22,17 +22,15 @@
   "homepage": "https://github.com/mbradds/transportation-report#readme",
   "dependencies": {
     "all": "0.0.0",
-    "highseries": "^1.0.2",
+    "highseries": "^1.0.3",
     "mapshaper": "^0.5.26"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.12.1",
     "babel-loader": "^8.1.0",
-    "compression-webpack-plugin": "^6.1.0",
     "copy-webpack-plugin": "^6.3.0",
     "core-js": "^3.7.0",
-    "json-minimizer-webpack-plugin": "^2.0.0",
     "webpack": "^5.4.0",
     "webpack-bundle-analyzer": "^4.1.0",
     "webpack-cli": "^3.3.12",

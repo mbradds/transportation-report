@@ -6,7 +6,7 @@ import {
   tooltipSymbol,
   dateFormat,
 } from "../../modules/util.js";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 import { errorChart } from "../../modules/charts.js";
 import gasPriceData from "./gas_prices.json";
 

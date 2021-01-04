@@ -1,7 +1,7 @@
 import { cerPalette } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import abandonData from "./Modified.json";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 
 
 

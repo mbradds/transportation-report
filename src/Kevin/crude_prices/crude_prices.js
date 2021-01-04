@@ -1,7 +1,7 @@
 import { cerPalette } from "../../modules/util.js";
 import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudePriceData from "./oil_prices.json";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 
 const createChart = () => {
   const crudePriceColors = {

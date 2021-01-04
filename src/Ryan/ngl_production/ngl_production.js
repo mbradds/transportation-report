@@ -1,7 +1,7 @@
 import { cerPalette, conversions, tooltipPoint } from "../../modules/util.js";
 import { productionChart, errorChart } from "../../modules/charts.js";
 import nglProdData from "./figures.json";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 
 const createChart = () => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");

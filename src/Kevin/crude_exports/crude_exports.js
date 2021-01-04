@@ -7,7 +7,7 @@ import {
 } from "../../modules/util.js";
 import { errorChart, createPaddMap } from "../../modules/charts.js";
 import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 
 const createChart = () => {
   const crudeExportColors = {
@@ -50,6 +50,8 @@ const createChart = () => {
       },
 
       yAxis: {
+        startOnTick: false,
+        endOnTick: false,
         title: { text: units.unitsCurrent },
         stackLabels: {
           enabled: true,

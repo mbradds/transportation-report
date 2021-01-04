@@ -7,7 +7,7 @@ import {
 import { errorChart } from "../../modules/charts.js";
 import mnpData from "./st_stephen.json";
 import offshoreData from "./ns_offshore.json";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 
 const createChart = () => {
   const mnpColors = {

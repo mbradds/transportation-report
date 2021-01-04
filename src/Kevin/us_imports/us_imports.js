@@ -7,7 +7,7 @@ import {
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import crudeImportsData from "./UScrudeoilimports.json";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 
 const createChart = () => {
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");

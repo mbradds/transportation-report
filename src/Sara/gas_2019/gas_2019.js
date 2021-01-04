@@ -9,7 +9,7 @@ import {
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import gas2019Data from "./gas_2019.json";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 
 const createChart = () => {
   const gas2019Colors = {

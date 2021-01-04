@@ -6,7 +6,7 @@ import {
 } from "../../modules/util.js";
 import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudeTakeawayData from "./figures.json";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 
 export const createChart = () => {
   const crudeTakeawayColors = {

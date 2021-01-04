@@ -1,7 +1,7 @@
 import { cerPalette, conversions, tooltipPoint } from "../../modules/util.js";
 import { productionChart, errorChart } from "../../modules/charts.js";
 import gasProdData from "./Natural_Gas_Production.json";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 
 const createChart = () => {
   const gasProdColors = {

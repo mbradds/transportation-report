@@ -1,5 +1,5 @@
 import { cerPalette, creditsClick, tooltipPoint } from "../../modules/util.js";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 import { errorChart } from "../../modules/charts.js";
 import finResData from "./fin_resource_totals.json";
 import finClassData from "./fin_resource_class.json";

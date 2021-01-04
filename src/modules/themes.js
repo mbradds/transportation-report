@@ -7,6 +7,11 @@ export const generalTheme = () => {
     },
 
     plotOptions: {
+      series: {
+        animation: {
+          duration: 700,
+        },
+      },
       column: {
         stacking: "normal",
       },

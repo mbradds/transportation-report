@@ -2,7 +2,7 @@ import { cerPalette, getUnique } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import creditData from "./CreditTables.json";
 import scaleData from "./Scale.json";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 
 const createChart = () => {
   var ratingAgencies = ["S&P", "Moody's", "DBRS"];

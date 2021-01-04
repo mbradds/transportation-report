@@ -6,7 +6,7 @@ import {
 } from "../../modules/util.js";
 import { productionChart, errorChart } from "../../modules/charts.js";
 import crudeProdData from "./Crude_Oil_Production.json";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 
 const createChart = () => {
   const crudeProdColors = {

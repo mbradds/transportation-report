@@ -1,6 +1,6 @@
 import { cerPalette, conversions, tooltipPoint } from "../../modules/util.js";
 import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 import gasData from "./gas_traffic.json";
 
 const createChart = () => {

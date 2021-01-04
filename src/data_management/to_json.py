@@ -633,7 +633,7 @@ def ngl_exports(name="natural-gas-liquids-exports-monthly.csv"):
     for delete in ['Value (CN$)','Value (US$)', 'Price (CN cents/L)', 'Price (US cents/gallon)','Year','Volume (m3)','Month']:
         del df[delete]
     df['Origin'] = df['Origin'].replace({'Total':'Canada','Qu�bec':'Quebec'})
-    df = df[~df['Origin'].isin(['Yukon'])]
+    df = df[~df['Origin'].isin(['Yukon','Nova Scotia','Newfoundland and Labrador'])]
     df = df.rename(columns={'Destination / PADD':'Destination'})
     df['Days in Month'] = [monthrange(x.year,x.month)[-1] for x in df['Period']]
     df['Volume (Mb/d)'] = [(x/days)/1000 for x,days in zip(df['Volume (bbl)'],df['Days in Month'])]
@@ -647,9 +647,9 @@ def ngl_exports(name="natural-gas-liquids-exports-monthly.csv"):
     df_destination = df.groupby(by=['Period','Product','Destination']).sum().reset_index()
     
     df_origin = pd.pivot_table(df_origin,
-                               values='Volume (Mb/d)',
-                               index=['Period','Product','Origin'],
-                               columns='Mode of Transportation').reset_index()
+                                values='Volume (Mb/d)',
+                                index=['Period','Product','Origin'],
+                                columns='Mode of Transportation').reset_index()
     df_destination = pd.pivot_table(df_destination,
                                 values='Volume (Mb/d)',
                                 index=['Period','Product'],
@@ -681,7 +681,7 @@ if __name__ == '__main__':
     #sara
     #df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
     #df = readCersei('gas_2019_avg.sql','gas_2019.json')
-    dfmnp,dfoffshore = st_stephen()
+    #dfmnp,dfoffshore = st_stephen()
     
     #rebecca
     #df = readCersei('platts_gas.sql','gas_prices.json')
@@ -694,7 +694,8 @@ if __name__ == '__main__':
     #settleJson = negotiated_settlements()
     
     #ryan
-    #df_origin,df_destination = ngl_exports()
+    df_origin,df_destination = ngl_exports()
+    print(set(df_origin['Origin']))
     #df = readExcel('figures.xlsx',sheet='ngl production')
     
     #jennifer

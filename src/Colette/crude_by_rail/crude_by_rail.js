@@ -1,6 +1,6 @@
 import { cerPalette, creditsClick } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 import railData from "./crude_by_rail_wcs.json";
 
 const createChart = () => {

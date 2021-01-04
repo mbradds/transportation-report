@@ -5,7 +5,7 @@ import {
   tooltipPoint,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 import marineData from "./marine_exports.json";
 
 const createChart = () => {

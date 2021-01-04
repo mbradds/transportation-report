@@ -7,7 +7,7 @@ import {
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import gasTradeData from "./natural-gas-exports-and-imports-annual.json";
-import Series from "../../../../highseries/dist/index.js";
+import Series from "highseries";
 
 const createChart = () => {
   const gasTrafficColors = {
