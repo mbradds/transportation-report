@@ -640,11 +640,16 @@ def ngl_exports(name="natural-gas-liquids-exports-monthly.csv"):
     df['Volume (Mb/d)'] = df['Volume (Mb/d)'].round(2) 
     del df['Days in Month']
     del df['Volume (bbl)']
+    df_destination = df.copy()
     for remove_total in ['Destination','Mode of Transportation']:
         df = df[df[remove_total]!='Total']
     
     df_origin = df.groupby(by=['Period','Product','Origin','Mode of Transportation']).sum().reset_index()
-    df_destination = df.groupby(by=['Period','Product','Destination']).sum().reset_index()
+    
+    df_destination = df_destination[df_destination['Mode of Transportation']=="Total"]
+    df_destination = df_destination[df_destination['Destination']!="Total"]
+    df_destination = df_destination[df_destination['Origin']=="Canada"]
+    df_destination = df_destination.groupby(by=['Period','Product','Destination']).sum().reset_index()
     
     df_origin = pd.pivot_table(df_origin,
                                 values='Volume (Mb/d)',
@@ -695,7 +700,6 @@ if __name__ == '__main__':
     
     #ryan
     df_origin,df_destination = ngl_exports()
-    print(set(df_origin['Origin']))
     #df = readExcel('figures.xlsx',sheet='ngl production')
     
     #jennifer
