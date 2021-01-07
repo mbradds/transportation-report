@@ -26,6 +26,15 @@ import { jenniferAbandonment } from "./Jennifer/abandonment_funding/abandonment"
 import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
 import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
 import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
+import ieWarn from "ie-gang";
+let warningParams = {
+  message:
+    "We noticed you are using Internet Explorer. Please consider using a different browser for a better experience on this page.",
+  type: "alert",
+  title: "Old Browser Warning",
+  applyIE: false,
+};
+ieWarn(warningParams);
 
 async function loadAllCharts() {
   console.time(`chart loading`);

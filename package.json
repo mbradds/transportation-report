@@ -23,6 +23,7 @@
   "dependencies": {
     "all": "0.0.0",
     "highseries": "^1.0.3",
+    "ie-gang": "^1.0.3",
     "mapshaper": "^0.5.26"
   },
   "devDependencies": {
