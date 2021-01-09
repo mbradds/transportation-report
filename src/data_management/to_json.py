@@ -661,6 +661,15 @@ def ngl_exports(name="natural-gas-liquids-exports-monthly.csv"):
                                 columns='Destination').reset_index()    
     
     df_origin = df_origin.sort_values(by=['Period','Product','Origin'])
+    df_origin['Product'] = df_origin['Product'].replace({'Propane':'p','Butane':'b'})
+    df_origin['Origin'] = df_origin['Origin'].replace({'Quebec':'qc',
+                                                        'New Brunswick':'nb', 
+                                                        'Saskatchewan':'sk',
+                                                        'Ontario':'on', 
+                                                        'Canada':'ca',
+                                                        'Alberta':'ab',
+                                                        'Manitoba':'mb', 
+                                                        'British Columbia':'bc'}) 
     df_destination = df_destination.sort_values(by=['Period','Product'])
     write_path_origin = os.path.join(os.getcwd(),'../Ryan/ngl_exports/','origin.json')
     write_path_destination = os.path.join(os.getcwd(),'../Ryan/ngl_exports/','destination.json')

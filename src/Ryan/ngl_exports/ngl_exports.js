@@ -11,11 +11,24 @@ import nglData from "./origin.json";
 const createChart = () => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
   const nglFilters = {
-    Product: "Propane",
-    Origin: "Canada",
+    Product: "p",
+    Origin: "ca",
   };
   const setTitle = (figure_title, filters) => {
-    figure_title.innerText = `Figure 16 a: ${filters.Origin} ${filters.Product} Exports`;
+    let fullProducts = { p: "Propane", b: "Butane" };
+    let fullOrigin = {
+      qc: "Quebec",
+      nb: "New Brunswick",
+      sk: "Saskatchewan",
+      on: "Ontario",
+      ca: "Canada",
+      ab: "Alberta",
+      mb: "Manitoba",
+      bc: "British Columbia",
+    };
+    figure_title.innerText = `Figure 16 a: ${fullOrigin[filters.Origin]} ${
+      fullProducts[filters.Product]
+    } Exports`;
   };
   const nglColors = {
     Pipeline: cerPalette["Sun"],
