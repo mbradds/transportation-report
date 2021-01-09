@@ -1,5 +1,6 @@
 import { cerPalette } from "../modules/util.js";
 import { errorChart } from "../modules/charts.js";
+//oil pipelines
 import aurora from "./prototype_output/oil/AuroraPipeline.json";
 import enbridgeNW from "./prototype_output/oil/NormanWellsPipeline.json";
 import enbridgeML from "./prototype_output/oil/EnbridgeCanadianMainline.json";
@@ -11,7 +12,7 @@ import teml from "./prototype_output/oil/WestspurPipeline.json";
 import tm from "./prototype_output/oil/TransMountainPipeline.json";
 import tn from "./prototype_output/oil/Trans-NorthernPipeline.json";
 import keystone from "./prototype_output/oil/KeystonePipeline.json";
-
+//gas pipelines
 import alliance from "./prototype_output/gas/AlliancePipeline.json";
 import foothills from "./prototype_output/gas/FoothillsSystem.json";
 import mnp from "./prototype_output/gas/MNPPipeline.json";
@@ -153,16 +154,14 @@ const createMaps = () => {
   };
 
   const mapTooltip = (e) => {
-    var hasProperties = false;
+    let hasProperties = false;
     if (e.point.properties.hasOwnProperty("Key Point")) {
-      var hasProperties = true;
+      hasProperties = true;
     }
     if (hasProperties) {
-      var toolText = `<b> ${e.point.properties.Company} - ${e.point.properties["Corporate Entity"]}<b><br>`;
-      return toolText;
+      return `<b> ${e.point.properties.Company} - ${e.point.properties["Corporate Entity"]}<b><br>`;
     } else {
-      var toolText = `<b> ${e.point.properties["Pipeline_S"]} <b><br>`;
-      return toolText;
+      return `<b> ${e.point.properties["Pipeline_S"]} <b><br>`;
     }
   };
 
@@ -195,20 +194,19 @@ const createMaps = () => {
       }
     });
 
-    var hasProperties = false;
+    let hasProperties = false;
     if (e.properties.hasOwnProperty("Key Point")) {
-      var hasProperties = true;
+      hasProperties = true;
     }
 
     if (hasProperties) {
       var toolText = `<span style="color:${e.color};font-size:14px;font-weight:bold">${properties["Corporate Entity"]}</span><br>`;
-      toolText += `<i>System Information</i>`;
-      toolText += `<table><tr><td><li> Estimated Length: &nbsp</td><td style="padding:0"><b>Coming soon!</b></li></td></tr>`;
-      toolText += `<tr><td><li> Direction of Flow: &nbsp</td><td style="padding:0"><b>${properties["Direction of Flow"]}</b></li></td></tr>`;
+      toolText += `<table> <caption><i>System Information:</i></caption>`;
+      toolText += `<table><tr><td><li> Direction of Flow: &nbsp</td><td style="padding:0"><b>${properties["Direction of Flow"]}</b></li></td></tr>`;
       toolText += `<tr><td><li> Products: &nbsp</td><td style="padding:0"><b>${properties.product}</b></li></td></tr>`;
       toolText += `<tr><td><li>Pipeline Trade Type: &nbsp</td><td style="padding:0"><b>${properties.tradeType}</b></li></td></tr>`;
-      toolText += `</table><br>`;
-      toolText += `<i>System Info at ${properties["Key Point"]} Key Point<i>`;
+      toolText += `</table>`;
+      toolText += `<table><caption><i>System Info at ${properties["Key Point"]} Key Point:<i></caption>`;
       toolText += `<table><tr><td><li>${properties.Year} Average Throughput: &nbsp</td><td style="padding:0"><b>${properties.throughput} ${units}</b></li></td></tr>`;
       toolText += `<tr><td><li>${properties.Year} Average Capacity: &nbsp</td><td style="padding:0"><b>${properties.availableCapacity} ${units}</b></li></td></tr>`;
       toolText += `<tr><td><li>${
@@ -256,8 +254,8 @@ const createMaps = () => {
               })
               .attr({
                 zIndex: 8,
-                padding: 3,
-                r: 3,
+                padding: 0,
+                r: 0,
                 fill: "white",
               })
               .add(chart.rGroup);
