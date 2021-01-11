@@ -18,8 +18,6 @@ const createChart = () => {
     ["Station 2"]: cerPalette["Ocean"],
   };
 
-  var gasPriceFilters = { Units: "Price ($CN/GIG)", unitsCurrent: "$CN/GIG" };
-
   const createGasPriceMap = () => {
     return Highcharts.mapChart("container_gas_map", {
       chart: {
@@ -167,7 +165,7 @@ const createChart = () => {
 
       yAxis: {
         endOnTick: false,
-        title: { text: "Prices (Normalized)" },
+        title: { text: "Monthly Spot Prices" },
         labels: {
           enabled: false,
         },
@@ -184,7 +182,7 @@ const createChart = () => {
       colors: gasPriceColors,
     });
     var gasMap = createGasPriceMap();
-    var chartGasPrice = createGasPriceChart(series.hcSeries, gasPriceFilters);
+    var chartGasPrice = createGasPriceChart(series.hcSeries);
   } catch (err) {
     console.log(err);
     errorChart("container_gas_map");

@@ -3,17 +3,7 @@ import { errorChart } from "../../modules/charts.js";
 import settleJson from "./settleJson.json";
 
 const createChart = () => {
-  const currentDate = () => {
-    var today = new Date();
-    today.setUTCHours(0);
-    today.setUTCMinutes(0);
-    today.setUTCSeconds(0);
-    today.setUTCMilliseconds(0);
-    return today.getTime();
-  };
-
   const oneDay = 86400000;
-  const today = currentDate();
 
   const legendNames = {
     company: {
@@ -197,17 +187,16 @@ const createChart = () => {
     return [commoditySeries, minDate, maxDate];
   };
 
-  const inServiceLegend = (chartData, legendItem) => {
-    let legendText = "";
-    for (var i = 0; i < chartData.length; i++) {
-      if (chartData[i].color == dateColors[legendItem]) {
-        legendText = `<span style="font-weight:bold; color: ${dateColors[legendItem]}">&#9679 ${legendItem} date &nbsp &nbsp</span>`;
-        break;
-      }
+  const settleTitle = (div) => {
+    let titleText = `<span style="font-weight:bold; color: ${legendColors["Active settlement(s)"]}">&#9679 Active settlement(s) &nbsp &nbsp</span>`;
+    titleText += `<span style="font-weight:bold; color: ${dateColors["Pipeline in-service"]}">&#9679 Pipeline in-service date &nbsp &nbsp</span>`;
+    if (div == "container_settlements_gas") {
+      titleText += `<span style="font-weight:bold; color: ${dateColors["Pipeline enters CER/NEB Jurisdiction"]}">&#9679 Pipeline enters CER/NEB Jurisdiction &nbsp &nbsp</span>`;
     }
-    return legendText;
+    return titleText;
   };
 
+  var clickedCompanies = new Set();
   const createSettlements = (seriesData, minDate, maxDate, div) => {
     return new Highcharts.ganttChart(div, {
       chart: {
@@ -219,6 +208,11 @@ const createChart = () => {
             creditsClick(this, "https://www.cer-rec.gc.ca/en/index.html");
           },
         },
+      },
+      title: {
+        useHTML: true,
+        style: { fontSize: "16px" },
+        text: settleTitle(div),
       },
       credits: {
         text: "Source: CER",
@@ -247,18 +241,7 @@ const createChart = () => {
         squareSymbol: false,
         useHTML: true,
         labelFormatter: function () {
-          var legendText = "";
-          for (const legendName in legendColors) {
-            legendText += `<span style="font-weight:bold; color: ${legendColors[legendName]}">&#9679 ${legendName} &nbsp &nbsp</span>`;
-          }
-          legendText += `<br>`;
-          const chartData = this.data;
-          legendText += inServiceLegend(chartData, "Pipeline in-service");
-          legendText += inServiceLegend(
-            chartData,
-            "Pipeline enters CER/NEB Jurisdiction"
-          );
-          return legendText;
+          return "";
         },
       },
       xAxis: [
@@ -285,6 +268,39 @@ const createChart = () => {
         labels: {
           formatter: function () {
             return this.value;
+          },
+          events: {
+            click: function () {
+              if (clickedCompanies.has(this.value)) {
+                clickedCompanies.delete(this.value);
+              } else {
+                clickedCompanies.add(this.value);
+              }
+              let subColors = new Set();
+              var legendText2 = "";
+              if (clickedCompanies.size > 0) {
+                this.axis.series[0].points.map((settlement) => {
+                  if (clickedCompanies.has(settlement.parent)) {
+                    subColors.add(settlement.color);
+                  }
+                });
+                for (var [lName, lColor] of Object.entries(legendColors)) {
+                  if (subColors.has(lColor)) {
+                    legendText2 += `<span style="font-weight:bold; color: ${lColor}">&#9679 ${lName} &nbsp &nbsp</span>`;
+                  }
+                }
+              }
+              this.chart.update(
+                {
+                  legend: {
+                    labelFormatter: function () {
+                      return legendText2;
+                    },
+                  },
+                },
+                false
+              );
+            },
           },
         },
       },
