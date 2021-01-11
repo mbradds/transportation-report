@@ -120,16 +120,12 @@ const createChart = () => {
       yOptions.yFormat = "{value}%";
       yOptions.yLabel = "%";
       yOptions.tooltip = "%";
-      yOptions.yCall = function () {
-        return this.value + "%";
-      };
+      yOptions.transform = false;
     } else {
       yOptions.yFormat = "{value:,.0f}";
       yOptions.yLabel = "C$ (Millions)";
       yOptions.tooltip = "C$";
-      yOptions.yCall = function () {
-        return this.value / 1000000;
-      };
+      yOptions.transform = [1000000, "/"];
     }
     yOptions.yMin = function () {
       if (filters.Type == "Deemed Equity Ratio") {
@@ -185,7 +181,12 @@ const createChart = () => {
       tooltip: {
         shared: true,
         formatter: function () {
-          return tooltipSorted(this.points, this.x, yOptions.yLabel);
+          return tooltipSorted(
+            this.points,
+            this.x,
+            yOptions.yLabel,
+            yOptions.transform
+          );
         },
       },
 
@@ -197,7 +198,13 @@ const createChart = () => {
           text: yOptions.yLabel,
         },
         labels: {
-          formatter: yOptions.yCall,
+          formatter: function () {
+            if (yOptions.transform) {
+              return this.value / yOptions.transform[0];
+            } else {
+              return this.value + yOptions.yLabel;
+            }
+          },
         },
       },
 

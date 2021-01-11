@@ -328,6 +328,7 @@ def readExcel(name, sheet='pq', sql=False):
                                                'Total CER Regulated Pipelines': 'All CER Regulated Pipeline Companies',
                                                'Total Group 2 Pipelines': 'Group 2 Pipeline Companies'})
         df = df.sort_values(by=['ACE'], ascending=False)
+        df = df[df['Company'] != 'Westcoast G & P']
         write_path = os.path.join(os.getcwd(), '../Jennifer/abandonment_funding/', sheet+'.json')
         if sql:
             conn, engine = cer_connection()
@@ -397,6 +398,8 @@ def readExcelPipeline(name, sheet='Data', sql=False):
                                              'Emera Brunswick Pipeline': 'Brunswick Pipeline',
                                              'Enbridge Norman Wells Pipeline': 'Norman Wells Pipeline'})
 
+    # remove TQM from ROE based on Daren's comment
+    df = df.drop(df[(df['Pipeline'] == 'TQM Pipeline') & (df['Type'] == 'Actual Return on Equity')].index)
     df = normalize_numeric(df, ['Value'], 0)
     df['Year'] = pd.to_numeric(df['Year'])
     df = df[df['Year'] >= 2015]
@@ -759,7 +762,7 @@ def ngl_exports(name="natural-gas-liquids-exports-monthly.csv"):
 if __name__ == '__main__':
     print('Starting to json process...')
     # kevin
-    df = readExcel('Crude_Oil_Production.xlsx', sheet='Crude Oil Production')
+    # df = readExcel('Crude_Oil_Production.xlsx', sheet='Crude Oil Production')
     # df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
     # df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
     # df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
@@ -781,7 +784,7 @@ if __name__ == '__main__':
     # df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
 
     # cassandra
-    # df = readExcelPipeline('PipelineProfileTables.xlsx',sheet='Data',sql=True)
+    df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
     # df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     # settleJson = negotiated_settlements()
 
@@ -795,7 +798,7 @@ if __name__ == '__main__':
     # df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     # df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
     # df,scale = creditRatings()
-    # df = readExcel("abandonment funding data.xlsx","Modified",sql=False)
+    # df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
 
     # other
     # df = writeExcelCredit(name='CreditTables.xlsx',sql=True)

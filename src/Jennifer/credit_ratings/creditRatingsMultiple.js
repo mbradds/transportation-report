@@ -128,7 +128,8 @@ const createChart = () => {
           to: 17,
           zIndex: 2,
           label: {
-            text: "Non-Investment Grade Level",
+            text:
+              "Non-Investment Grade Level. Ratings touching the top blue border are investment grade.",
             align: "center",
           },
         },
@@ -184,8 +185,10 @@ const createChart = () => {
     const getChartSeriesName = (chart) => {
       var [companyNames, agencyNames] = [[], []];
       chart.series.map((series) => {
-        companyNames.push(series.name.split(" - ")[0]);
-        agencyNames.push(series.name.split(" - ").slice(-1)[0]);
+        if (series.name.includes("-")) {
+          companyNames.push(series.name.split(" - ")[0]);
+          agencyNames.push(series.name.split(" - ").slice(-1)[0]);
+        }
       });
       return [
         Array.from(new Set(companyNames)),
@@ -236,6 +239,7 @@ const createChart = () => {
       legendCompany.innerHTML = legendHTML;
       legendSymbol.innerHTML = symbolHTML;
     };
+
     var pipeLegend = document.getElementById("container_pipeline_legend");
     var symbolLegend = document.getElementById("container_symbol_legend");
     var creditChart = createCreditChart(seriesSubset, scaleData, minY, maxY);
