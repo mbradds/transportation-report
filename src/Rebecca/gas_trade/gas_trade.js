@@ -43,9 +43,11 @@ const createChart = () => {
           load: function () {
             const usedRegions = [];
             this.series.forEach(function (s) {
-              s.data.forEach(function (row) {
-                usedRegions.push(row["hc-key"]);
-              });
+              if (s.type !== "vector") {
+                s.data.forEach(function (row) {
+                  usedRegions.push(row["hc-key"]);
+                });
+              }
             });
             const otherData = [];
             this.series[0].mapData.forEach(function (state) {
@@ -56,9 +58,12 @@ const createChart = () => {
             this.addSeries({
               name: "Other",
               data: otherData,
+              borderWidth: 1,
+              zIndex: 0,
+              borderColor: gasTrafficColors["Other"],
               color: gasTrafficColors["Other"],
               allowPointSelect: false,
-              enableMouseTracking: false,
+              //enableMouseTracking: false,
             });
           },
         },
@@ -74,13 +79,29 @@ const createChart = () => {
 
       tooltip: {
         formatter: function () {
-          return this.series.name;
+          if (this.series.name == "Other") {
+            return "Natural Gas flows to non border states by pipeline from one or more grouped border regions";
+          } else {
+            return this.series.name;
+          }
         },
       },
 
       plotOptions: {
         map: {
           allAreas: false,
+          // events: {
+          //   click: function () {
+          //     console.log(this);
+          //   },
+          // },
+        },
+        vector: {
+          allowPointSelect: false,
+          enableMouseTracking: false,
+          color: Highcharts.getOptions().colors[1],
+          zIndex: 2,
+          rotationOrigin: "start",
         },
         series: {
           states: {
@@ -112,7 +133,7 @@ const createChart = () => {
             ["us-wa", 1],
             ["us-id", 1],
           ],
-
+          zIndex: 3,
           color: gasTrafficColors["U.S. West"],
         },
         {
@@ -123,6 +144,7 @@ const createChart = () => {
             ["us-mn", 1],
             ["us-mi", 1],
           ],
+          zIndex: 3,
           color: gasTrafficColors["U.S. Midwest"],
         },
         {
@@ -133,7 +155,50 @@ const createChart = () => {
             ["us-nh", 1],
             ["us-me", 1],
           ],
+          zIndex: 3,
           color: gasTrafficColors["U.S. East"],
+        },
+        //"U.S. West Direction"
+        {
+          type: "vector",
+          vectorLength: 60,
+          lineWidth: 10,
+          data: [
+            {
+              x: 630,
+              y: -8900,
+              length: 10,
+              direction: 15,
+            },
+          ],
+        },
+        //"U.S. Midwest Direction"
+        {
+          type: "vector",
+          vectorLength: 100,
+          lineWidth: 10,
+          data: [
+            {
+              x: 3000,
+              y: -8900,
+              length: 10,
+              direction: -50,
+            },
+          ],
+        },
+        //"U.S. East Direction"
+        {
+          type: "vector",
+          vectorLength: 50,
+          lineWidth: 10,
+          data: [
+            {
+              x: 8500,
+              y: -8000,
+              length: 10,
+              direction: 15,
+            },
+          ],
         },
       ],
     });
@@ -222,6 +287,7 @@ const createChart = () => {
       chartGasTraffic = createGasTrafficChart(series.hcSeries, gasTradeUnits);
     });
   } catch (err) {
+    console.log(err);
     errorChart("container_gas_trade");
     errorChart("container_gas_trade_map");
   }
