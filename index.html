@@ -23,1074 +23,1166 @@
     <div class="col-md-12">
       <div id="ie-warning"></div>
     </div>
+    <div class="mrgn-tp-lg"></div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12">
+        <div class="col-md-12 tab-container-tr">
+          <button onclick="topFunction()" id="btn-to-top" title="Go to top">
+            Return to top
+          </button>
+          <div class="col-md-12 tab-tr">
+            <button
+              class="tablinks"
+              id="defaultOpen"
+              onclick="clickHandle(event, 'introduction-tab')"
+            >
+              <div class="nav-button-text">Introduction</div>
+            </button>
+            <button class="tablinks" onclick="clickHandle(event, 'Oil')">
+              <div class="nav-button-text">
+                Crude Oil Pipeline Transportation System
+              </div>
+            </button>
+            <button class="tablinks" onclick="clickHandle(event, 'Gas')">
+              <div class="nav-button-text">
+                Natural Gas Pipeline Transportation System
+              </div>
+            </button>
+            <button class="tablinks" onclick="clickHandle(event, 'Ngl')">
+              <div class="nav-button-text">NGL's</div>
+            </button>
+            <button
+              class="tablinks"
+              onclick="clickHandle(event, 'Cer-regulation')"
+            >
+              <div class="nav-button-text">
+                CER's Economic Regulation of Pipelines
+              </div>
+            </button>
+            <button
+              class="tablinks"
+              onclick="clickHandle(event, 'Fin-integrity')"
+            >
+              <div class="nav-button-text">
+                Financial Integrity of Oil and Gas Pipeline Companies
+              </div>
+            </button>
+            <button class="tablinks" onclick="clickHandle(event, 'Appendices')">
+              <div class="nav-button-text">Appendices</div>
+            </button>
+            <button class="tablinks" onclick="clickHandle(event, 'About')">
+              <div class="nav-button-text">About the CER</div>
+            </button>
+          </div>
 
-    <div class="tab-container-tr">
-      <button onclick="topFunction()" id="btn-to-top" title="Go to top">
-        Return to top
-      </button>
-      <div class="tab-tr">
-        <button
-          class="tablinks"
-          id="defaultOpen"
-          onclick="clickHandle(event, 'introduction-tab')"
-        >
-          Introduction
-        </button>
-        <button class="tablinks" onclick="clickHandle(event, 'Oil')">
-          Crude Oil Pipeline Transportation System
-        </button>
-        <button class="tablinks" onclick="clickHandle(event, 'Gas')">
-          Natural Gas Pipeline Transportation System
-        </button>
-        <button class="tablinks" onclick="clickHandle(event, 'Ngl')">
-          NGL's
-        </button>
-        <button class="tablinks" onclick="clickHandle(event, 'Cer-regulation')">
-          CER's Economic Regulation of Pipelines
-        </button>
-        <button class="tablinks" onclick="clickHandle(event, 'Fin-integrity')">
-          Financial Integrity of Oil and Gas Pipeline Companies
-        </button>
-        <button class="tablinks" onclick="clickHandle(event, 'Appendices')">
-          Appendices
-        </button>
-        <button class="tablinks" onclick="clickHandle(event, 'About')">
-          About the CER
-        </button>
-      </div>
+          <div id="introduction-tab" class="tabcontent-tr">
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <section class="panel panel-info">
+                    <header class="panel-heading">
+                      <h5 class="panel-title">Navigating the charts</h5>
+                    </header>
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <p>
+                            This report features interactive charts and maps.
+                            Here are some tips and an example to get familiar
+                            with the interactivity:
+                          </p>
+                          <ul>
+                            <li>
+                              <b>Filtering/selecting Data:</b> Some charts allow
+                              for adding & removing data by clicking on the
+                              legend item. Some charts also have dropdown
+                              filters above the chart.
+                            </li>
+                            <div class="mrgn-tp-md"></div>
+                            <li>
+                              <b>Zooming:</b> Some charts allow for zooming in
+                              on dates. Click on the chart area and drag to the
+                              left or right to select a custom date range.
+                            </li>
+                            <div class="mrgn-tp-md"></div>
+                            <li>
+                              <b>Maps:</b> Use the mouse to hover over top of a
+                              map element to view additional info and
+                              interactivity.
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-md-6">
+                          <div id="hc-instructions"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <div id="introduction-tab" class="tabcontent-tr">
-        <h3>Introduction Section</h3>
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
+          <div id="Oil" class="tabcontent-tr">
+            <!-- crude oil pipeline map -->
+            <div class="container chart-map">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">Crude Oil Pipeline Map</div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-map" id="container_map_oil"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- crude production graph (figure 1) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="crude_prod_title" class="figure_title"></div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="cerlabel">Select region:</div>
+                  <select class="form-control" id="select_region_crude_prod">
+                    <option value="Canada">Canada</option>
+                    <option value="British Columbia">British Columbia</option>
+                    <option value="Alberta">Alberta</option>
+                    <option value="Saskatchewan">Saskatchewan</option>
+                    <option value="Manitoba">Manitoba</option>
+                    <option value="Ontario">Ontario</option>
+                    <option value="Northwest Territories">
+                      Northwest Territories
+                    </option>
+                    <option value="Nova Scotia">Nova Scotia</option>
+                    <option value="Newfoundland and Labrador">
+                      Newfoundland and Labrador
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_crude_prod">
+                    <option value="MMb/d">MMb/d</option>
+                    <option value="Thousand m3/d">Thousand m3/d</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_crude_production"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- crude exports graph (figure 2) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">Figure 2: Crude Oil Exports</div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_crude_exports">
+                    <option value="MMb/d">MMb/d</option>
+                    <option value="Thousand m3/d">Thousand m3/d</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="my-container-border">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="hc-large" id="container_crude_exports"></div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="hc-large" id="container_padd_map"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- crude imports graph (figure 3) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 3: Canada's Share of U.S. Crude Oil Imports
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_crude_imports">
+                    <option value="MMb/d">MMb/d</option>
+                    <option value="Thousand m3/d">Thousand m3/d</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_crude_imports"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- crude price graph (figure 4) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">Figure 4: Crude Oil Prices</div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_crude_prices"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- crude export by mode (figure 5) -->
+            <div class="container chart-small">
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="crude_mode_title" class="figure_title"></div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select year:</div>
+                  <div
+                    class="btn-group btn-group-justified"
+                    id="crude-exp-mode"
+                  >
+                    <div class="btn-group btn-crude-mode">
+                      <button
+                        type="button"
+                        class="btn btn-default active"
+                        value="2019"
+                      >
+                        2019
+                      </button>
+                    </div>
+                    <div class="btn-group btn-crude-mode">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        value="2018"
+                      >
+                        2018
+                      </button>
+                    </div>
+                    <div class="btn-group btn-crude-mode">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        value="2017"
+                      >
+                        2017
+                      </button>
+                    </div>
+                    <div class="btn-group btn-crude-mode">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        value="2016"
+                      >
+                        2016
+                      </button>
+                    </div>
+                    <div class="btn-group btn-crude-mode">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        value="2015"
+                      >
+                        2015
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-small" id="container_crude_mode"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- crude by rail (figure 6) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 6: Crude by Rail Exports
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_rail">
+                    <option value="Mb/d">Mb/d</option>
+                    <option value="m3/d">m3/d</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_crude_by_rail"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- marine exports (figure 7) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 7: Marine Crude Oil Exports
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_marine">
+                    <option value="Mb/d">Mb/d</option>
+                    <option value="m3/d">m3/d</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_crude_marine"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- crude takeaway vs supply available for export (figure 8) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 8: Export capacity and total crude oil supply
+                    available from the WCSB
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_crude_takeaway">
+                    <option value="MMb/d">MMb/d</option>
+                    <option value="Thousand m3/d">Thousand m3/d</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_crude_takeaway"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="Gas" class="tabcontent-tr">
+            <!-- natural gas pipeline map -->
+            <div class="container chart-map">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">Natural Gas Pipeline Map</div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-map" id="container_map_gas"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- natural gas production (figure 9) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 9: Total Western Canada Sedimentary Basin Production
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_gas_prod">
+                    <option value="Bcf/d">Bcf/d</option>
+                    <option value="Million m3/d">Million m3/d</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_gas_production"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- natural gas trade graph (figure 10) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="gas_trade_title" class="figure_title"></div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_gas_trade">
+                    <option value="Bcf/d">Bcf/d</option>
+                    <option value="Million m3/d">Million m3/d</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <div class="cerlabel">Select trade type:</div>
+                  <select class="form-control" id="select_gas_trade_type">
+                    <option value="Exports">Exports</option>
+                    <option value="Imports">Imports</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="my-container-border">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="hc-large" id="container_gas_trade"></div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="hc-large" id="container_gas_trade_map"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- natural gas prices (figure 11) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 11: Natural Gas Prices at Key North American Hubs
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="my-container-border">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="hc-large" id="container_gas_prices"></div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="hc-large" id="container_gas_map"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ex-WCSB natural gas traffic (figure 12) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 12: Ex-WCSB Pipeline Throughput & Capacity
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_gas_traffic">
+                    <option value="Bcf/d">Bcf/d</option>
+                    <option value="Million m3/d">Million m3/d</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_gas_traffic"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- natural gas offshore production & St. Stephen imports (figure 13) -->
+            <div class="container chart-insert">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 13: Natural Gas Offshore Production & Exports/Imports
+                    at St. Stephen
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_gas_insert">
+                    <option value="Bcf/d">Bcf/d</option>
+                    <option value="Million m3/d">Million m3/d</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="my-container-border">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="hc-insert" id="container_mnp"></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="hc-insert" id="container_offshore"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2019 Natural Gas Traffic at key points (figure 14) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="gas_points_title" class="figure_title"></div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_gas_2019">
+                    <option value="Bcf/d">Bcf/d</option>
+                    <option value="Million m3/d">Million m3/d</option>
+                  </select>
+                </div>
+                <div class="col-md-9">
+                  <div class="cerlabel">Select year:</div>
+                  <div
+                    class="btn-group btn-group-justified"
+                    id="gas-points-years"
+                  >
+                    <div class="btn-group btn-gas-points">
+                      <button
+                        type="button"
+                        class="btn btn-default active"
+                        value="2019"
+                      >
+                        2019
+                      </button>
+                    </div>
+                    <div class="btn-group btn-gas-points">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        value="2018"
+                      >
+                        2018
+                      </button>
+                    </div>
+                    <div class="btn-group btn-gas-points">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        value="2017"
+                      >
+                        2017
+                      </button>
+                    </div>
+                    <div class="btn-group btn-gas-points">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        value="2016"
+                      >
+                        2016
+                      </button>
+                    </div>
+                    <div class="btn-group btn-gas-points">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        value="2015"
+                      >
+                        2015
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="my-container-border">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="hc-large" id="container_gas_2019"></div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="hc-large" id="container_gas_2019_map"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="Ngl" class="tabcontent-tr">
+            <!-- ngl production (figure 15) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 15: Canada NGL Production
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_ngl_prod">
+                    <option value="Mb/d">Mb/d</option>
+                    <option value="m3/d">m3/d</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_ngl_production"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ngl exports (figure 16a) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="ngl_title" class="figure_title"></div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="cerlabel">Select product:</div>
+                  <select class="form-control" id="select_product_ngl">
+                    <option value="p">Propane</option>
+                    <option value="b">Butane</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <div class="cerlabel">Select region:</div>
+                  <select class="form-control" id="select_region_ngl">
+                    <option value="ca">Canada</option>
+                    <option value="bc">British Columbia</option>
+                    <option value="ab">Alberta</option>
+                    <option value="sk">Saskatchewan</option>
+                    <option value="mb">Manitoba</option>
+                    <option value="on">Ontario</option>
+                    <option value="nb">New Brunswick</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <div class="cerlabel">Select units:</div>
+                  <select class="form-control" id="select_units_ngl">
+                    <option value="Mb/d">Mb/d</option>
+                    <option value="m3/d">m3/d</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_ngl"></div>
+                </div>
+              </div>
+            </div>
+            <!-- ngl export destination (figure 16b) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="ngl_destination_title" class="figure_title"></div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="cerlabel">Select product:</div>
+                  <select
+                    class="form-control"
+                    id="select_product_ngl_destination"
+                  >
+                    <option value="Propane">Propane</option>
+                    <option value="Butane">Butane</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <div class="cerlabel">Select units:</div>
+                  <select
+                    class="form-control"
+                    id="select_units_ngl_destination"
+                  >
+                    <option value="Mb/d">Mb/d</option>
+                    <option value="m3/d">m3/d</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <div class="cerlabel">Select chart type:</div>
+                  <select class="form-control" id="select_ngl_chart_type">
+                    <option value="area">Area</option>
+                    <option value="line">Line</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="my-container-border">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="hc-large" id="container_ngl_destination"></div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="hc-large" id="container_padd_map_ngl"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="Cer-regulation" class="tabcontent-tr">
+            <!-- negotiated oil settlements (figure 17) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 17 a: Negotiated Settlements - Oil
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div
+                    class="hc-settlements"
+                    id="container_settlements_oil"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 17 b: Negotiated Settlements - Gas
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div
+                    class="hc-settlements"
+                    id="container_settlements_gas"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- oil tolls (figure 18) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 18 a: Crude Oil Pipeline Tolls
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_tolls_oil"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- gas tolls (figure 18) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 18 b: Natural Gas Pipeline Tolls
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_tolls_gas"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- financial resources (figure 19) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 19: Pipeline Financial Resource Requirements
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select commodity:</div>
+                  <select class="form-control" id="select_units_fin_resource">
+                    <option value="All">All</option>
+                    <option value="Oil">Oil</option>
+                    <option value="Gas">Gas</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="my-container-border">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div id="hc-fin-totals"></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="hc-insert" id="container_fin_resources"></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div
+                      class="hc-insert"
+                      id="container_fin_resources_class"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- abandonment funding (figure 20) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">Figure 20: Abandonment Funding</div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select pipeline company category:</div>
+                  <select class="form-control" id="select_commodity_abandon">
+                    <option value="All">All</option>
+                    <option value="Oil">Oil</option>
+                    <option value="Gas">Gas</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="my-container-border">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div id="hc-abanbdon-totals"></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="hc-insert" id="container_abandonment"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="Fin-integrity" class="tabcontent-tr">
+            <!-- financial metrics (figure 21) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="figure_title">
+                    Figure 21: Pipeline Financial Metrics
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="cerlabel">Select pipelines:</div>
+                  <select class="form-control" id="select_pipelines_financial">
+                    <option value="All">All</option>
+                    <option value="Oil">Oil</option>
+                    <option value="Gas">Gas</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <div class="cerlabel">Select Financial Metric:</div>
+                  <select class="form-control" id="select_metric_financial">
+                    <option value="Deemed Equity Ratio">
+                      Deemed Equity Ratio
+                    </option>
+                    <option value="Actual Return on Equity">
+                      Actual Return on Equity
+                    </option>
+                    <option value="Rate Base">Rate Base</option>
+                    <option value="Revenue">Revenue</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-large" id="container_financial_metrics"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- credit ratings cross section (figure 22) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="ratings_year_title" class="figure_title"></div>
+                </div>
+              </div>
+              <div class="mrgn-tp-sm"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="cerlabel">Select year:</div>
+                  <div class="btn-group btn-group-justified" id="credit_years">
+                    <div class="btn-group btn-credit">
+                      <button
+                        type="button"
+                        class="btn btn-default active"
+                        value="2019"
+                      >
+                        2019
+                      </button>
+                    </div>
+                    <div class="btn-group btn-credit">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        value="2018"
+                      >
+                        2018
+                      </button>
+                    </div>
+                    <div class="btn-group btn-credit">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        value="2017"
+                      >
+                        2017
+                      </button>
+                    </div>
+                    <div class="btn-group btn-credit">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        value="2016"
+                      >
+                        2016
+                      </button>
+                    </div>
+                    <div class="btn-group btn-credit">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        value="2015"
+                      >
+                        2015
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mrgn-tp-md"></div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="hc-ratings" id="container_ratings_cross"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- credit ratings multi-select (figure 23) -->
+            <div class="container chart-large">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="figure_title">
+                    Figure 23: Company Credit Ratings (with multi-select)
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="mrgn-tp-sm"></div> -->
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="cerlabel">Select company:</div>
+                  <select
+                    multiple="multiple"
+                    class="form-control"
+                    id="select_company_credit_multi"
+                  >
+                    <option value="Alliance Pipeline Limited Partnership">
+                      Alliance Pipeline Limited Partnership
+                    </option>
+                    <option value="Emera Inc.">Emera Inc.</option>
+                    <option value="Enbridge Inc.">Enbridge Inc.</option>
+                    <option value="Enbridge Pipelines Inc.">
+                      Enbridge Pipelines Inc.
+                    </option>
+                    <option value="Kinder Morgan Canada Limited">
+                      Kinder Morgan Canada Limited
+                    </option>
+                    <option
+                      value="Maritimes &amp; Northeast Pipeline Limited Partnership"
+                    >
+                      Maritimes &amp; Northeast Pipeline Limited Partnership
+                    </option>
+                    <option value="NOVA Chemicals Corp.">
+                      NOVA Chemicals Corp.
+                    </option>
+                    <option value="NOVA Gas Transmission Ltd.">
+                      NOVA Gas Transmission Ltd.
+                    </option>
+                    <option value="TC Energy Corporation">
+                      TC Energy Corporation
+                    </option>
+                    <option value="Trans Quebec &amp; Maritimes Pipeline Inc.">
+                      Trans Quebec &amp; Maritimes Pipeline Inc.
+                    </option>
+                    <option value="TransCanada PipeLines Limited">
+                      TransCanada PipeLines Limited
+                    </option>
+                    <option value="Westcoast Energy Inc.">
+                      Westcoast Energy Inc.
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <div class="cerlabel">Select rating agency:</div>
+                  <select
+                    multiple="multiple"
+                    id="select_rating_agency"
+                    class="form-control"
+                  >
+                    <option value="S&amp;P">S&amp;P</option>
+                    <option value="Moody's">Moody's</option>
+                    <option value="DBRS">DBRS</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <section class="panel panel-info" style="height: 110px">
+                    <header class="panel-heading">
+                      <h5 class="panel-title">Chart Instructions</h5>
+                    </header>
+                    <div class="panel-body">
+                      <p>
+                        Use CTRL+click to select multiple companies & rating
+                        agencies.
+                      </p>
+                    </div>
+                  </section>
+                </div>
+              </div>
+              <div class="my-container-border">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="hc-ratings" id="container_ratings_multi"></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="legend_title">
+                      Legend: Currently Selected Pipelines (color)
+                    </div>
+                    <div
+                      class="ratings-legend"
+                      id="container_pipeline_legend"
+                    ></div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="legend_title">
+                      Legend: Credit Rating Agencies (symbol)
+                    </div>
+                    <div
+                      class="ratings-legend"
+                      id="container_symbol_legend"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="Appendices" class="tabcontent-tr">
+            <div class="container source-code">
               <section class="panel panel-info">
                 <header class="panel-heading">
-                  <h5 class="panel-title">Navigating the charts</h5>
+                  <h5 class="panel-title">Source Code</h5>
                 </header>
                 <div class="panel-body">
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                       <p>
-                        This report features interactive charts and maps. Here
-                        are some tips and an example to get familiar with the
-                        interactivity:
+                        This report features interactive charts and maps. The
+                        source code for these charts and maps is available on
+                        <a
+                          href="https://github.com/mbradds/transportation-report"
+                          target="_blank"
+                          >GitHub.</a
+                        >
                       </p>
-                      <ul>
-                        <li>
-                          <b>Filtering/selecting Data:</b> Some charts allow for
-                          adding & removing data by clicking on the legend item.
-                          Some charts also have dropdown filters above the
-                          chart.
-                        </li>
-                        <div class="mrgn-tp-md"></div>
-                        <li>
-                          <b>Zooming:</b> Some charts allow for zooming in on
-                          dates. Click on the chart area and drag to the left or
-                          right to select a custom date range.
-                        </li>
-                        <div class="mrgn-tp-md"></div>
-                        <li>
-                          <b>Maps:</b> Use the mouse to hover over top of a map
-                          element to view additional info and interactivity.
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col-md-6">
-                      <div id="hc-instructions"></div>
                     </div>
                   </div>
                 </div>
               </section>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div id="Oil" class="tabcontent-tr">
-        <h3>Crude Oil Section</h3>
-        <!-- crude oil pipeline map -->
-        <div class="container chart-map">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">Crude Oil Pipeline Map</div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-map" id="container_map_oil"></div>
-            </div>
+          <div id="About" class="tabcontent-tr">
+            <div class="mrgn-tp-sm"></div>
           </div>
         </div>
-
-        <!-- crude production graph (figure 1) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div id="crude_prod_title" class="figure_title"></div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-3">
-              <div class="cerlabel">Select region:</div>
-              <select class="form-control" id="select_region_crude_prod">
-                <option value="Canada">Canada</option>
-                <option value="British Columbia">British Columbia</option>
-                <option value="Alberta">Alberta</option>
-                <option value="Saskatchewan">Saskatchewan</option>
-                <option value="Manitoba">Manitoba</option>
-                <option value="Ontario">Ontario</option>
-                <option value="Northwest Territories">
-                  Northwest Territories
-                </option>
-                <option value="Nova Scotia">Nova Scotia</option>
-                <option value="Newfoundland and Labrador">
-                  Newfoundland and Labrador
-                </option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_crude_prod">
-                <option value="MMb/d">MMb/d</option>
-                <option value="Thousand m3/d">Thousand m3/d</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_crude_production"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- crude exports graph (figure 2) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">Figure 2: Crude Oil Exports</div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_crude_exports">
-                <option value="MMb/d">MMb/d</option>
-                <option value="Thousand m3/d">Thousand m3/d</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="my-container-border">
-            <div class="row">
-              <div class="col-md-8">
-                <div class="hc-large" id="container_crude_exports"></div>
-              </div>
-              <div class="col-md-4">
-                <div class="hc-large" id="container_padd_map"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- crude imports graph (figure 3) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">
-                Figure 3: Canada's Share of U.S. Crude Oil Imports
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_crude_imports">
-                <option value="MMb/d">MMb/d</option>
-                <option value="Thousand m3/d">Thousand m3/d</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_crude_imports"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- crude price graph (figure 4) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">Figure 4: Crude Oil Prices</div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_crude_prices"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- crude export by mode (figure 5) -->
-        <div class="container chart-small">
-          <div class="row">
-            <div class="col-md-12">
-              <div id="crude_mode_title" class="figure_title"></div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select year:</div>
-              <div class="btn-group btn-group-justified" id="crude-exp-mode">
-                <div class="btn-group btn-crude-mode">
-                  <button
-                    type="button"
-                    class="btn btn-default active"
-                    value="2019"
-                  >
-                    2019
-                  </button>
-                </div>
-                <div class="btn-group btn-crude-mode">
-                  <button type="button" class="btn btn-default" value="2018">
-                    2018
-                  </button>
-                </div>
-                <div class="btn-group btn-crude-mode">
-                  <button type="button" class="btn btn-default" value="2017">
-                    2017
-                  </button>
-                </div>
-                <div class="btn-group btn-crude-mode">
-                  <button type="button" class="btn btn-default" value="2016">
-                    2016
-                  </button>
-                </div>
-                <div class="btn-group btn-crude-mode">
-                  <button type="button" class="btn btn-default" value="2015">
-                    2015
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-small" id="container_crude_mode"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- crude by rail (figure 6) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">Figure 6: Crude by Rail Exports</div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_rail">
-                <option value="Mb/d">Mb/d</option>
-                <option value="m3/d">m3/d</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_crude_by_rail"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- marine exports (figure 7) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">Figure 7: Marine Crude Oil Exports</div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_marine">
-                <option value="Mb/d">Mb/d</option>
-                <option value="m3/d">m3/d</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_crude_marine"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- crude takeaway vs supply available for export (figure 8) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">
-                Figure 8: Export capacity and total crude oil supply available
-                from the WCSB
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_crude_takeaway">
-                <option value="MMb/d">MMb/d</option>
-                <option value="Thousand m3/d">Thousand m3/d</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_crude_takeaway"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="Gas" class="tabcontent-tr">
-        <h3>Natural Gas Section</h3>
-        <!-- natural gas pipeline map -->
-        <div class="container chart-map">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">Natural Gas Pipeline Map</div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-map" id="container_map_gas"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- natural gas production (figure 9) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">
-                Figure 9: Total Western Canada Sedimentary Basin Production
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_gas_prod">
-                <option value="Bcf/d">Bcf/d</option>
-                <option value="Million m3/d">Million m3/d</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_gas_production"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- natural gas trade graph (figure 10) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div id="gas_trade_title" class="figure_title"></div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-3">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_gas_trade">
-                <option value="Bcf/d">Bcf/d</option>
-                <option value="Million m3/d">Million m3/d</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <div class="cerlabel">Select trade type:</div>
-              <select class="form-control" id="select_gas_trade_type">
-                <option value="Exports">Exports</option>
-                <option value="Imports">Imports</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="my-container-border">
-            <div class="row">
-              <div class="col-md-8">
-                <div class="hc-large" id="container_gas_trade"></div>
-              </div>
-              <div class="col-md-4">
-                <div class="hc-large" id="container_gas_trade_map"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- natural gas prices (figure 11) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">
-                Figure 11: Natural Gas Prices at Key North American Hubs
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="my-container-border">
-            <div class="row">
-              <div class="col-md-8">
-                <div class="hc-large" id="container_gas_prices"></div>
-              </div>
-              <div class="col-md-4">
-                <div class="hc-large" id="container_gas_map"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ex-WCSB natural gas traffic (figure 12) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">
-                Figure 12: Ex-WCSB Pipeline Throughput & Capacity
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_gas_traffic">
-                <option value="Bcf/d">Bcf/d</option>
-                <option value="Million m3/d">Million m3/d</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_gas_traffic"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- natural gas offshore production & St. Stephen imports (figure 13) -->
-        <div class="container chart-insert">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">
-                Figure 13: Natural Gas Offshore Production & Exports/Imports at
-                St. Stephen
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_gas_insert">
-                <option value="Bcf/d">Bcf/d</option>
-                <option value="Million m3/d">Million m3/d</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="my-container-border">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="hc-insert" id="container_mnp"></div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="hc-insert" id="container_offshore"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2019 Natural Gas Traffic at key points (figure 14) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div id="gas_points_title" class="figure_title"></div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-3">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_gas_2019">
-                <option value="Bcf/d">Bcf/d</option>
-                <option value="Million m3/d">Million m3/d</option>
-              </select>
-            </div>
-            <div class="col-md-9">
-              <div class="cerlabel">Select year:</div>
-              <div class="btn-group btn-group-justified" id="gas-points-years">
-                <div class="btn-group btn-gas-points">
-                  <button
-                    type="button"
-                    class="btn btn-default active"
-                    value="2019"
-                  >
-                    2019
-                  </button>
-                </div>
-                <div class="btn-group btn-gas-points">
-                  <button type="button" class="btn btn-default" value="2018">
-                    2018
-                  </button>
-                </div>
-                <div class="btn-group btn-gas-points">
-                  <button type="button" class="btn btn-default" value="2017">
-                    2017
-                  </button>
-                </div>
-                <div class="btn-group btn-gas-points">
-                  <button type="button" class="btn btn-default" value="2016">
-                    2016
-                  </button>
-                </div>
-                <div class="btn-group btn-gas-points">
-                  <button type="button" class="btn btn-default" value="2015">
-                    2015
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="my-container-border">
-            <div class="row">
-              <div class="col-md-8">
-                <div class="hc-large" id="container_gas_2019"></div>
-              </div>
-              <div class="col-md-4">
-                <div class="hc-large" id="container_gas_2019_map"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="Ngl" class="tabcontent-tr">
-        <h3>NGL's Section</h3>
-        <!-- ngl production (figure 15) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">Figure 15: Canada NGL Production</div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_ngl_prod">
-                <option value="Mb/d">Mb/d</option>
-                <option value="m3/d">m3/d</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_ngl_production"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ngl exports (figure 16a) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div id="ngl_title" class="figure_title"></div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-3">
-              <div class="cerlabel">Select product:</div>
-              <select class="form-control" id="select_product_ngl">
-                <option value="p">Propane</option>
-                <option value="b">Butane</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <div class="cerlabel">Select region:</div>
-              <select class="form-control" id="select_region_ngl">
-                <option value="ca">Canada</option>
-                <option value="bc">British Columbia</option>
-                <option value="ab">Alberta</option>
-                <option value="sk">Saskatchewan</option>
-                <option value="mb">Manitoba</option>
-                <option value="on">Ontario</option>
-                <option value="nb">New Brunswick</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_ngl">
-                <option value="Mb/d">Mb/d</option>
-                <option value="m3/d">m3/d</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_ngl"></div>
-            </div>
-          </div>
-        </div>
-        <!-- ngl export destination (figure 16b) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div id="ngl_destination_title" class="figure_title"></div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-3">
-              <div class="cerlabel">Select product:</div>
-              <select class="form-control" id="select_product_ngl_destination">
-                <option value="Propane">Propane</option>
-                <option value="Butane">Butane</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <div class="cerlabel">Select units:</div>
-              <select class="form-control" id="select_units_ngl_destination">
-                <option value="Mb/d">Mb/d</option>
-                <option value="m3/d">m3/d</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <div class="cerlabel">Select chart type:</div>
-              <select class="form-control" id="select_ngl_chart_type">
-                <option value="area">Area</option>
-                <option value="line">Line</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="my-container-border">
-            <div class="row">
-              <div class="col-md-8">
-                <div class="hc-large" id="container_ngl_destination"></div>
-              </div>
-              <div class="col-md-4">
-                <div class="hc-large" id="container_padd_map_ngl"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="Cer-regulation" class="tabcontent-tr">
-        <h3>CER Regulation Section</h3>
-        <!-- negotiated oil settlements (figure 17) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">
-                Figure 17 a: Negotiated Settlements - Oil
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-settlements" id="container_settlements_oil"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">
-                Figure 17 b: Negotiated Settlements - Gas
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-settlements" id="container_settlements_gas"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- oil tolls (figure 18) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">
-                Figure 18 a: Crude Oil Pipeline Tolls
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_tolls_oil"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- gas tolls (figure 18) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">
-                Figure 18 b: Natural Gas Pipeline Tolls
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_tolls_gas"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- financial resources (figure 19) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">
-                Figure 19: Pipeline Financial Resource Requirements
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select commodity:</div>
-              <select class="form-control" id="select_units_fin_resource">
-                <option value="All">All</option>
-                <option value="Oil">Oil</option>
-                <option value="Gas">Gas</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="my-container-border">
-            <div class="row">
-              <div class="col-md-12">
-                <div id="hc-fin-totals"></div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="hc-insert" id="container_fin_resources"></div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="hc-insert" id="container_fin_resources_class"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- abandonment funding (figure 20) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">Figure 20: Abandonment Funding</div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select pipeline company category:</div>
-              <select class="form-control" id="select_commodity_abandon">
-                <option value="All">All</option>
-                <option value="Oil">Oil</option>
-                <option value="Gas">Gas</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="my-container-border">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div id="hc-abanbdon-totals"></div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="hc-insert" id="container_abandonment"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="Fin-integrity" class="tabcontent-tr">
-        <h3>Financial Integrity Section</h3>
-        <!-- financial metrics (figure 21) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="figure_title">
-                Figure 21: Pipeline Financial Metrics
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-3">
-              <div class="cerlabel">Select pipelines:</div>
-              <select class="form-control" id="select_pipelines_financial">
-                <option value="All">All</option>
-                <option value="Oil">Oil</option>
-                <option value="Gas">Gas</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <div class="cerlabel">Select Financial Metric:</div>
-              <select class="form-control" id="select_metric_financial">
-                <option value="Deemed Equity Ratio">Deemed Equity Ratio</option>
-                <option value="Actual Return on Equity">
-                  Actual Return on Equity
-                </option>
-                <option value="Rate Base">Rate Base</option>
-                <option value="Revenue">Revenue</option>
-              </select>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-large" id="container_financial_metrics"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- credit ratings cross section (figure 22) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-12">
-              <div id="ratings_year_title" class="figure_title"></div>
-            </div>
-          </div>
-          <div class="mrgn-tp-sm"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="cerlabel">Select year:</div>
-              <div class="btn-group btn-group-justified" id="credit_years">
-                <div class="btn-group btn-credit">
-                  <button
-                    type="button"
-                    class="btn btn-default active"
-                    value="2019"
-                  >
-                    2019
-                  </button>
-                </div>
-                <div class="btn-group btn-credit">
-                  <button type="button" class="btn btn-default" value="2018">
-                    2018
-                  </button>
-                </div>
-                <div class="btn-group btn-credit">
-                  <button type="button" class="btn btn-default" value="2017">
-                    2017
-                  </button>
-                </div>
-                <div class="btn-group btn-credit">
-                  <button type="button" class="btn btn-default" value="2016">
-                    2016
-                  </button>
-                </div>
-                <div class="btn-group btn-credit">
-                  <button type="button" class="btn btn-default" value="2015">
-                    2015
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mrgn-tp-md"></div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="hc-ratings" id="container_ratings_cross"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- credit ratings multi-select (figure 23) -->
-        <div class="container chart-large">
-          <div class="row">
-            <div class="col-md-8">
-              <div class="figure_title">
-                Figure 23: Company Credit Ratings (with multi-select)
-              </div>
-            </div>
-          </div>
-          <!-- <div class="mrgn-tp-sm"></div> -->
-          <div class="row">
-            <div class="col-md-5">
-              <div class="cerlabel">Select company:</div>
-              <select
-                multiple="multiple"
-                class="form-control"
-                id="select_company_credit_multi"
-              >
-                <option value="Alliance Pipeline Limited Partnership">
-                  Alliance Pipeline Limited Partnership
-                </option>
-                <option value="Emera Inc.">Emera Inc.</option>
-                <option value="Enbridge Inc.">Enbridge Inc.</option>
-                <option value="Enbridge Pipelines Inc.">
-                  Enbridge Pipelines Inc.
-                </option>
-                <option value="Kinder Morgan Canada Limited">
-                  Kinder Morgan Canada Limited
-                </option>
-                <option
-                  value="Maritimes &amp; Northeast Pipeline Limited Partnership"
-                >
-                  Maritimes &amp; Northeast Pipeline Limited Partnership
-                </option>
-                <option value="NOVA Chemicals Corp.">
-                  NOVA Chemicals Corp.
-                </option>
-                <option value="NOVA Gas Transmission Ltd.">
-                  NOVA Gas Transmission Ltd.
-                </option>
-                <option value="TC Energy Corporation">
-                  TC Energy Corporation
-                </option>
-                <option value="Trans Quebec &amp; Maritimes Pipeline Inc.">
-                  Trans Quebec &amp; Maritimes Pipeline Inc.
-                </option>
-                <option value="TransCanada PipeLines Limited">
-                  TransCanada PipeLines Limited
-                </option>
-                <option value="Westcoast Energy Inc.">
-                  Westcoast Energy Inc.
-                </option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <div class="cerlabel">Select rating agency:</div>
-              <select
-                multiple="multiple"
-                id="select_rating_agency"
-                class="form-control"
-              >
-                <option value="S&amp;P">S&amp;P</option>
-                <option value="Moody's">Moody's</option>
-                <option value="DBRS">DBRS</option>
-              </select>
-            </div>
-            <div class="col-md-4">
-              <section class="panel panel-info" style="height: 110px">
-                <header class="panel-heading">
-                  <h5 class="panel-title">Chart Instructions</h5>
-                </header>
-                <div class="panel-body">
-                  <p>
-                    Use CTRL+click to select multiple companies & rating
-                    agencies.
-                  </p>
-                </div>
-              </section>
-            </div>
-          </div>
-          <div class="my-container-border">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="hc-ratings" id="container_ratings_multi"></div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="legend_title">
-                  Legend: Currently Selected Pipelines (color)
-                </div>
-                <div
-                  class="ratings-legend"
-                  id="container_pipeline_legend"
-                ></div>
-              </div>
-              <div class="col-md-6">
-                <div class="legend_title">
-                  Legend: Credit Rating Agencies (symbol)
-                </div>
-                <div class="ratings-legend" id="container_symbol_legend"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="Appendices" class="tabcontent-tr">
-        <h3>Appendices Section</h3>
-        <div class="container source-code">
-          <section class="panel panel-info">
-            <header class="panel-heading">
-              <h5 class="panel-title">Source Code</h5>
-            </header>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <p>
-                    This report features interactive charts and maps. The source
-                    code for these charts and maps is available on
-                    <a
-                      href="https://github.com/mbradds/transportation-report"
-                      target="_blank"
-                      >GitHub.</a
-                    >
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-      </div>
-      <div id="About" class="tabcontent-tr">
-        <h3>About the CER Section</h3>
       </div>
     </div>
 

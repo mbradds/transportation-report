@@ -98,22 +98,23 @@
 .source-code {
   max-width: 600px;
 }
-/* styling for custom tabs */
-.tab-container-tr {
-  padding-left: 100px;
-  padding-right: 100px;
-  padding-top: 50px;
-}
 /* Style the tab */
 .tab-tr {
   display: flex;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
+  border: 1px solid #e3f2fd;
+  font-family: Arial, Helvetica, sans-serif;
+  /* font-weight: bold; */
+  background-color: #e3f2fd;
   position: sticky;
   top: 0;
   z-index: 50;
-  list-style: none;
 }
+@media all and (max-width: 850px) {
+  .tab-tr {
+    flex-wrap: wrap;
+  }
+}
+
 /* Style the buttons inside the tab */
 .tab-tr button {
   flex: 1 100%;
@@ -134,8 +135,7 @@
 }
 /* Style the tab content */
 .tabcontent-tr {
-  display: none;
-  padding: 6px 12px;
+  padding-top: 120px;
   border: 1px solid #ccc;
   border-top: none;
 }
@@ -146,8 +146,8 @@
   right: 110px;
   z-index: 99;
   outline: none;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
+  border: 1px solid #e3f2fd;
+  background-color: #e3f2fd;
   cursor: pointer;
   padding: 6px;
   border-radius: 4px;
@@ -156,4 +156,8 @@
 }
 #btn-to-top:hover {
   background-color: #ccc;
+}
+.nav-button-text {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: large;
 }
