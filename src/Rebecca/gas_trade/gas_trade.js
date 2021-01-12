@@ -90,11 +90,6 @@ const createChart = () => {
       plotOptions: {
         map: {
           allAreas: false,
-          // events: {
-          //   click: function () {
-          //     console.log(this);
-          //   },
-          // },
         },
         vector: {
           allowPointSelect: false,
@@ -158,50 +153,124 @@ const createChart = () => {
           zIndex: 3,
           color: gasTrafficColors["U.S. East"],
         },
-        //"U.S. West Direction"
-        {
-          type: "vector",
-          vectorLength: 60,
-          lineWidth: 10,
-          data: [
-            {
-              x: 630,
-              y: -8900,
-              length: 10,
-              direction: 15,
-            },
-          ],
-        },
-        //"U.S. Midwest Direction"
-        {
-          type: "vector",
-          vectorLength: 100,
-          lineWidth: 10,
-          data: [
-            {
-              x: 3000,
-              y: -8900,
-              length: 10,
-              direction: -50,
-            },
-          ],
-        },
-        //"U.S. East Direction"
-        {
-          type: "vector",
-          vectorLength: 50,
-          lineWidth: 10,
-          data: [
-            {
-              x: 8500,
-              y: -8000,
-              length: 10,
-              direction: 15,
-            },
-          ],
-        },
       ],
     });
+  };
+
+  const exportVectors = [
+    //"U.S. West Direction"
+    {
+      type: "vector",
+      id: "exportVector1",
+      vectorLength: 60,
+      lineWidth: 9,
+      data: [
+        {
+          x: 630,
+          y: -8900,
+          length: 10,
+          direction: 15,
+        },
+      ],
+    },
+    //"U.S. Midwest Direction"
+    {
+      type: "vector",
+      id: "exportVector2",
+      vectorLength: 100,
+      lineWidth: 11,
+      data: [
+        {
+          x: 3000,
+          y: -8900,
+          length: 10,
+          direction: -50,
+        },
+      ],
+    },
+    //"U.S. East Direction"
+    {
+      type: "vector",
+      id: "exportVector3",
+      vectorLength: 50,
+      lineWidth: 6,
+      data: [
+        {
+          x: 8500,
+          y: -8000,
+          length: 10,
+          direction: 15,
+        },
+      ],
+    },
+  ];
+
+  const importVectors = [
+    //"U.S. West Direction"
+    {
+      type: "vector",
+      id: "exportVector1",
+      vectorLength: 40,
+      lineWidth: 4,
+      data: [
+        {
+          x: 630,
+          y: -8900,
+          length: 10,
+          direction: 190,
+        },
+      ],
+    },
+    //"U.S. Midwest Direction"
+    {
+      type: "vector",
+      id: "exportVector2",
+      vectorLength: 40,
+      lineWidth: 4,
+      data: [
+        {
+          x: 4000,
+          y: -8500,
+          length: 10,
+          direction: 185,
+        },
+      ],
+    },
+    //"U.S. East Direction"
+    {
+      type: "vector",
+      id: "exportVector3",
+      vectorLength: 40,
+      lineWidth: 11,
+      data: [
+        {
+          x: 8500,
+          y: -8000,
+          length: 10,
+          direction: 150,
+        },
+      ],
+    },
+  ];
+
+  const addVectors = (map, filters) => {
+    const vectorIds = ["exportVector1", "exportVector2", "exportVector3"];
+    vectorIds.map((id) => {
+      try {
+        map.get(id).remove();
+      } catch (err) {
+        null;
+      }
+    });
+    if (filters.Activity == "Exports") {
+      var vectors = exportVectors;
+    } else {
+      var vectors = importVectors;
+    }
+    vectors.map((line) => {
+      map.addSeries(line);
+    });
+    return map;
   };
 
   const createGasTrafficChart = (seriesData, units) => {
@@ -256,6 +325,8 @@ const createChart = () => {
     var chartGasTraffic = createGasTrafficChart(series.hcSeries, gasTradeUnits);
     var figure_title = document.getElementById("gas_trade_title");
     setTitle(figure_title, gasTradeFilters);
+    addVectors(mapGasTraffic, gasTradeFilters);
+
     var selectUnitsGasTrade = document.getElementById("select_units_gas_trade");
     selectUnitsGasTrade.addEventListener("change", (selectUnitsGasTrade) => {
       var units = selectUnitsGasTrade.target.value;
@@ -285,6 +356,7 @@ const createChart = () => {
       setTitle(figure_title, gasTradeFilters);
       series.update({ data: gasTradeData, filters: gasTradeFilters });
       chartGasTraffic = createGasTrafficChart(series.hcSeries, gasTradeUnits);
+      addVectors(mapGasTraffic, gasTradeFilters);
     });
   } catch (err) {
     console.log(err);
