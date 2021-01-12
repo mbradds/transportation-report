@@ -3,8 +3,6 @@ import { errorChart } from "../../modules/charts.js";
 import abandonData from "./Modified.json";
 import Series from "highseries";
 
-
-
 const createChart = () => {
   const colors = {
     "Amounts Set Aside": cerPalette["Sun"],
@@ -204,8 +202,6 @@ const createChart = () => {
       title: {
         text: "Group 1 Abandonment Breakdown",
         margin: 0,
-        floating: true,
-        y: 25,
       },
 
       plotOptions: {
