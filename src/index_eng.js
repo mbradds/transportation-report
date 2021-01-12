@@ -1,5 +1,4 @@
 import { generalTheme } from "./modules/themes";
-generalTheme();
 import { instructionsChart } from "./modules/charts";
 import { systemMaps } from "./SystemMaps/maps";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
@@ -34,11 +33,12 @@ let warningParams = {
   title: "Old Browser Warning",
   applyIE: false,
 };
-ieWarn(warningParams);
 
 async function loadAllCharts() {
   console.time(`chart loading`);
   let arrayOfCharts = [
+    ieWarn(warningParams),
+    generalTheme(),
     instructionsChart(),
     kevinCrudeProduction(),
     kevinCrudeExports(),
