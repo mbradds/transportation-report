@@ -81,8 +81,8 @@ def saveJson(df, write_path, precision=2):
 
 
 def readCersei(query, name=None):
+    precision = 2 
     df = execute_sql(query)
-
     if name == 'oil_prices.json':
         df = normalize_dates(df, ['Date'])
         df['Differential'] = (df['WTI'] - df['WCS'])*-1
@@ -98,6 +98,7 @@ def readCersei(query, name=None):
     if name == 'gas_traffic.json':
         df = normalize_dates(df, ['Date'])
         write_path = os.path.join(os.getcwd(), '../Sara/gas_traffic/', name)
+        precision = 4
     if name == 'fin_resource_totals.json':
         write_path = os.path.join(os.getcwd(), 'Jennifer/financial_instruments/', name)
         for text_col in ['Financial Instrument', 'Commodity']:
@@ -155,7 +156,7 @@ def readCersei(query, name=None):
         write_path = os.path.join(os.getcwd(), '../Rebecca/gas_prices/', name)
 
     if (name is not None and name not in ['fin_resource_class_names.json', 'st_stephen.json', 'ns_offshore.json']):
-        saveJson(df, write_path)
+        saveJson(df, write_path, precision)
     return df
 
 
@@ -768,7 +769,7 @@ if __name__ == '__main__':
     # df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
 
     # colette
-    # df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
+    df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
     # df = readExcel('figures.xlsx',sheet='Available for Export')
     # df = readCersei('crude_mode.sql','crude_mode.json')
     # df = readExcel('marine_exports.xlsx','marine exports')
@@ -784,7 +785,7 @@ if __name__ == '__main__':
     # df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
 
     # cassandra
-    df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
+    # df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
     # df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     # settleJson = negotiated_settlements()
 

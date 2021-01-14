@@ -13,7 +13,7 @@ const createChart = () => {
   const crudeModeColors = {
     Pipeline: cerPalette["Night Sky"],
     Marine: cerPalette["Ocean"],
-    Railroad: cerPalette["Sun"],
+    Rail: cerPalette["Sun"],
   };
 
   const createCrudeModeChart = (seriesData, filters) => {

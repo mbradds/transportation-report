@@ -3,12 +3,18 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import Series from "highseries";
 import gasData from "./gas_traffic.json";
 
+console.log(gasData)
+
 const createChart = () => {
   const gasColors = {
     "Alliance Pipeline - Border": cerPalette["Night Sky"],
     "Foothills System - Kingsgate": cerPalette["Sun"],
     "Foothills System - Monchy": cerPalette["Flame"],
     "TC Canadian Mainline - Prairies (Empress)": cerPalette["Forest"],
+    "TC Canadian Mainline - Emerson I": cerPalette["Ocean"],
+    "TC Canadian Mainline - Emerson II": cerPalette["hcLightBlue"],
+    "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland":
+      cerPalette["hcRed"],
     Capacity: cerPalette["Cool Grey"],
   };
 
@@ -17,18 +23,15 @@ const createChart = () => {
     "Foothills System - Kingsgate": "area",
     "Foothills System - Monchy": "area",
     "TC Canadian Mainline - Prairies (Empress)": "area",
+    "TC Canadian Mainline - Emerson I": "area",
+    "TC Canadian Mainline - Emerson II": "area",
+    "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland": "area",
     Capacity: "line",
   };
 
-  var units = conversions("Million m3/d to Bcf/d", "Bcf/d", "Million m3/d");
+  var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
 
-  const columns = [
-    "Alliance Pipeline - Border",
-    "Foothills System - Kingsgate",
-    "Foothills System - Monchy",
-    "TC Canadian Mainline - Prairies (Empress)",
-    "Capacity",
-  ];
+  const columns = Object.keys(gasChartTypes)
 
   const mainGasTraffic = () => {
     let series = new Series({
