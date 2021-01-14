@@ -37,7 +37,7 @@ const createChart = () => {
 
   const offshoreColors = {
     "Deep Panuke": cerPalette["Ocean"],
-    "Sable Island": cerPalette["Night Sky"],
+    "Sable Island": cerPalette["Flame"],
   };
 
   const createChartMnp = (seriesData, div, units, yMax) => {
@@ -174,14 +174,14 @@ const createChart = () => {
       xAxis: {
         plotLines: [
           lines(
-            cerPalette["Ocean"],
+            offshoreColors["Deep Panuke"],
             null,
             Date.UTC(2018, 5, 7),
             "Production ceases",
             90
           ),
           lines(
-            cerPalette["Night Sky"],
+            offshoreColors["Sable Island"],
             null,
             Date.UTC(2018, 12, 1),
             "Production ceases",

@@ -3,8 +3,6 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import Series from "highseries";
 import gasData from "./gas_traffic.json";
 
-console.log(gasData)
-
 const createChart = () => {
   const gasColors = {
     "Alliance Pipeline - Border": cerPalette["Night Sky"],
@@ -31,7 +29,7 @@ const createChart = () => {
 
   var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
 
-  const columns = Object.keys(gasChartTypes)
+  const columns = Object.keys(gasChartTypes);
 
   const mainGasTraffic = () => {
     let series = new Series({

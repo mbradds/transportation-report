@@ -14,7 +14,6 @@ const createChart = () => {
     ["U.S. West"]: cerPalette["Forest"],
     ["U.S. Midwest"]: cerPalette["Ocean"],
     ["U.S. East"]: cerPalette["Night Sky"],
-    Other: cerPalette["Dim Grey"],
   };
   var gasTradeFilters = { Activity: "Exports" };
   var gasTradeUnits = { unitsCol: "Volume (Bcf/d)", unitsCurrent: "Bcf/d" };
@@ -60,10 +59,10 @@ const createChart = () => {
               data: otherData,
               borderWidth: 1,
               zIndex: 0,
-              borderColor: gasTrafficColors["Other"],
-              color: gasTrafficColors["Other"],
+              borderColor: cerPalette["Dim Grey"],
+              color: cerPalette["Dim Grey"],
               allowPointSelect: false,
-              //enableMouseTracking: false,
+              showInLegend: false,
             });
           },
         },
