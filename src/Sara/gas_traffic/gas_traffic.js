@@ -50,6 +50,7 @@ const createChart = () => {
       crosshair: true,
     };
     var chartGasTraffic = lineAndStackedArea(params);
+
     var selectUnitsGasTraffic = document.getElementById(
       "select_units_gas_traffic"
     );
