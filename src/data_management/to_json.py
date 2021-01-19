@@ -775,7 +775,7 @@ if __name__ == '__main__':
     # df = readExcel('marine_exports.xlsx','marine exports')
 
     # sara
-    # df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
+    df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
     # df = readCersei('gas_2019_avg.sql','gas_2019.json')
     # dfmnp,dfoffshore = st_stephen()
 

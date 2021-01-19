@@ -17,7 +17,7 @@ const createChart = () => {
     Capacity: cerPalette["Night Sky"],
   };
 
-  var units = conversions("Million m3/d to Bcf/d", "Bcf/d", "Million m3/d");
+  var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
   var pointsFilters = { Year: "2019" };
 
   const columnPlacement = (series) => {

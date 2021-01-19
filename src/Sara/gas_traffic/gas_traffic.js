@@ -9,10 +9,8 @@ const createChart = () => {
     "Foothills System - Kingsgate": cerPalette["Sun"],
     "Foothills System - Monchy": cerPalette["Flame"],
     "TC Canadian Mainline - Prairies (Empress)": cerPalette["Forest"],
-    "TC Canadian Mainline - Emerson I": cerPalette["Ocean"],
-    "TC Canadian Mainline - Emerson II": cerPalette["hcLightBlue"],
     "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland":
-      cerPalette["hcRed"],
+      cerPalette["Ocean"],
     Capacity: cerPalette["Cool Grey"],
   };
 
@@ -21,8 +19,6 @@ const createChart = () => {
     "Foothills System - Kingsgate": "area",
     "Foothills System - Monchy": "area",
     "TC Canadian Mainline - Prairies (Empress)": "area",
-    "TC Canadian Mainline - Emerson I": "area",
-    "TC Canadian Mainline - Emerson II": "area",
     "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland": "area",
     Capacity: "line",
   };
