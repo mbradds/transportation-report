@@ -11,7 +11,7 @@ const createChart = () => {
     "TC Canadian Mainline - Prairies (Empress)": cerPalette["Forest"],
     "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland":
       cerPalette["Ocean"],
-    Capacity: cerPalette["Cool Grey"],
+    "Combined Pipeline Capacity": cerPalette["Cool Grey"],
   };
 
   const gasChartTypes = {
@@ -20,11 +20,10 @@ const createChart = () => {
     "Foothills System - Monchy": "area",
     "TC Canadian Mainline - Prairies (Empress)": "area",
     "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland": "area",
-    Capacity: "line",
+    "Combined Pipeline Capacity": "line",
   };
 
   var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
-
   const columns = Object.keys(gasChartTypes);
 
   const mainGasTraffic = () => {

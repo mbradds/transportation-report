@@ -96,6 +96,7 @@ def readCersei(query, name=None):
         df = normalize_numeric(df, ['Crude by Rail'], 1)
         write_path = os.path.join(os.getcwd(), '../Colette/crude_by_rail/', name)
     if name == 'gas_traffic.json':
+        df = df.rename(columns={'Capacity': 'Combined Pipeline Capacity'})
         df = normalize_dates(df, ['Date'])
         write_path = os.path.join(os.getcwd(), '../Sara/gas_traffic/', name)
         precision = 4
