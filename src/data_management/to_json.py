@@ -615,6 +615,7 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
              'End Date (specified, or effective)',
              'Toll Design, Revenue Requirment, or Both',
              'Notes']]
+
     df = df[~df['Start Date'].isnull()]
     for delete in ['Original Settlement Approval', 'Toll Design, Revenue Requirment, or Both', 'Notes']:
         del df[delete]
@@ -776,7 +777,7 @@ if __name__ == '__main__':
     # df = readExcel('marine_exports.xlsx','marine exports')
 
     # sara
-    df = readCersei('gas_ex_wcsb_traffic.sql','gas_traffic.json')
+    # df = readCersei('gas_ex_wcsb_traffic.sql', 'gas_traffic.json')
     # df = readCersei('gas_2019_avg.sql','gas_2019.json')
     # dfmnp,dfoffshore = st_stephen()
 
@@ -788,7 +789,7 @@ if __name__ == '__main__':
     # cassandra
     # df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
     # df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    # settleJson = negotiated_settlements()
+    settleJson = negotiated_settlements()
 
     # ryan
     # df_origin, df_destination = ngl_exports()
