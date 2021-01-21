@@ -1,6 +1,5 @@
 import { generalTheme } from "./modules/themes";
 import { instructionsChart } from "./modules/charts";
-import { systemMaps } from "./SystemMaps/maps";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
 import { kevinUsImports } from "./Kevin/us_imports/us_imports";
@@ -33,12 +32,12 @@ let warningParams = {
   title: "Old Browser Warning",
   applyIE: false,
 };
+ieWarn(warningParams);
+generalTheme();
 
 async function loadAllCharts() {
   console.time(`chart loading`);
   let arrayOfCharts = [
-    ieWarn(warningParams),
-    generalTheme(),
     instructionsChart(),
     kevinCrudeProduction(),
     kevinCrudeExports(),
@@ -48,7 +47,6 @@ async function loadAllCharts() {
     coletteCrudeByRail(),
     coletteMarine(),
     coletteCrudeTakeaway(),
-    systemMaps(),
     rebeccaGasProd(),
     rebeccaGasTrade(),
     rebeccaGasPrices(),
