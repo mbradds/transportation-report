@@ -175,7 +175,7 @@ const createChart = () => {
       maxY
     );
     var figure_title = document.getElementById("ratings_year_title");
-    setTitle(figure_title, "22", ratingsFilter.Year, "Company Credit Ratings");
+    setTitle(figure_title, "30", ratingsFilter.Year, "Company Credit Ratings");
 
     $("#credit_years button").on("click", function () {
       $(".btn-credit > .btn").removeClass("active");
@@ -187,7 +187,7 @@ const createChart = () => {
       ratingsFilter.Year = btnText;
       setTitle(
         figure_title,
-        "22",
+        "30",
         ratingsFilter.Year,
         "Company Credit Ratings"
       );

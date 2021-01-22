@@ -26,7 +26,7 @@ const createChart = () => {
       mb: "Manitoba",
       bc: "British Columbia",
     };
-    figure_title.innerText = `Figure 16 a: ${fullOrigin[filters.Origin]} ${
+    figure_title.innerText = `Figure 22: ${fullOrigin[filters.Origin]} ${
       fullProducts[filters.Product]
     } Exports`;
   };

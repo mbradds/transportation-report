@@ -70,7 +70,7 @@ const createChart = () => {
     var figure_title = document.getElementById("crude_prod_title");
     setTitle(
       figure_title,
-      "1",
+      "5",
       crudeProdFilters.Region,
       "Crude Oil Production"
     );
@@ -103,7 +103,7 @@ const createChart = () => {
         crudeProdFilters.Region = selectRegionCrudeProd.target.value;
         setTitle(
           figure_title,
-          "1",
+          "5",
           crudeProdFilters.Region,
           "Crude Oil Production"
         );

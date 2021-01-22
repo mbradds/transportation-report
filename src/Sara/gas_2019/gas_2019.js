@@ -385,7 +385,7 @@ const createChart = () => {
     var figure_title = document.getElementById("gas_points_title");
     setTitle(
       figure_title,
-      "14",
+      "20",
       pointsFilters.Year,
       "Pipeline Throughput & Capacity at Key Points"
     );
@@ -429,7 +429,7 @@ const createChart = () => {
       pointsFilters.Year = btnText;
       setTitle(
         figure_title,
-        "14",
+        "20",
         pointsFilters.Year,
         "Pipeline Throughput & Capacity at Key Points"
       );

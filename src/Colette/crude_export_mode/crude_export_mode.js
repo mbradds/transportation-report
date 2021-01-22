@@ -73,7 +73,7 @@ const createChart = () => {
     var figure_title = document.getElementById("crude_mode_title");
     setTitle(
       figure_title,
-      "5",
+      "9",
       crudeModeFilters.Year,
       "Crude Oil Exports by Mode"
     );
@@ -99,7 +99,7 @@ const createChart = () => {
       crudeModeFilters.Year = btnText;
       setTitle(
         figure_title,
-        "5",
+        "9",
         crudeModeFilters.Year,
         "Crude Oil Exports by Mode"
       );

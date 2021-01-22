@@ -11,7 +11,7 @@ const createChart = () => {
   };
 
   const setTitle = (figure_title, filters) => {
-    figure_title.innerText = `Figure 16 b: ${filters.Product} Export Destination`;
+    figure_title.innerText = `Figure 23: ${filters.Product} Export Destination`;
   };
 
   const nglDestinationColors = {

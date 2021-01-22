@@ -64,7 +64,7 @@ async function loadAllCharts() {
     jenniferRatingsCross(),
     jenniferRatingsMulti(),
   ];
-  Promise.all(arrayOfCharts).then((value) => {
+  Promise.allSettled(arrayOfCharts).then((value) => {
     console.timeEnd(`chart loading`);
   });
 }
