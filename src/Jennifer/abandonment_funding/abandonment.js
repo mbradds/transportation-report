@@ -296,6 +296,6 @@ const createChart = () => {
 
 export function jenniferAbandonment() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }

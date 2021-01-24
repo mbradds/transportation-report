@@ -163,6 +163,6 @@ const createChart = () => {
 
 export function ryanNglExports() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }

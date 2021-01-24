@@ -269,6 +269,6 @@ const createChart = () => {
 
 export function cassandraAllPipes() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }

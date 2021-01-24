@@ -205,6 +205,6 @@ const createChart = () => {
 
 export function jenniferRatingsCross() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }

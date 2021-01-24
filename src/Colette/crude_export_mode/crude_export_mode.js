@@ -121,6 +121,6 @@ const createChart = () => {
 
 export function coletteCrudeMode() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }

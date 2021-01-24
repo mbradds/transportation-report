@@ -147,6 +147,6 @@ const createChart = () => {
 
 export function ryanNglDestination() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }

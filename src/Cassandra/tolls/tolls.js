@@ -133,6 +133,6 @@ const createChart = () => {
 
 export function cassandraTolls() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }

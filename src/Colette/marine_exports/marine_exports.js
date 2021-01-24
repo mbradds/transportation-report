@@ -110,6 +110,6 @@ const createChart = () => {
 
 export function coletteMarine() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }

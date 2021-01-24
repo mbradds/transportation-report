@@ -192,6 +192,6 @@ const createChart = () => {
 
 export function rebeccaGasPrices() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }

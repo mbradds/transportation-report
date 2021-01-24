@@ -330,6 +330,6 @@ const createChart = () => {
 
 export function jenniferFinResources() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }

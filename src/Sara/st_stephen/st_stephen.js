@@ -201,6 +201,6 @@ const createChart = () => {
 
 export function saraMnp() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }

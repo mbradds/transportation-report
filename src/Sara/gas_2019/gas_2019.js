@@ -447,6 +447,6 @@ const createChart = () => {
 
 export function sara2019() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }

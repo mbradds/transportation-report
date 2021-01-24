@@ -41,6 +41,6 @@ const createChart = () => {
 
 export function kevinCrudePrices() {
   return new Promise((resolve) => {
-    resolve(createChart());
+    setTimeout(() => resolve(createChart()), 0);
   });
 }
