@@ -424,6 +424,6 @@ const createChart = () => {
 
 export function cassandraSettlements() {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
+    resolve(createChart());
   });
 }

@@ -291,6 +291,6 @@ const createChart = () => {
 
 export function jenniferRatingsMulti() {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
+    resolve(createChart());
   });
 }

@@ -142,6 +142,6 @@ const createChart = () => {
 
 export function kevinUsImports() {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
+    resolve(createChart());
   });
 }

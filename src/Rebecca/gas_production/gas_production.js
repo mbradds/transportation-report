@@ -72,6 +72,6 @@ const createChart = () => {
 
 export function rebeccaGasProd() {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
+    resolve(createChart());
   });
 }

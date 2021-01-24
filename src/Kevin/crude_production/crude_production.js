@@ -178,6 +178,6 @@ const createChart = () => {
 
 export function kevinCrudeProduction() {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
+    resolve(createChart());
   });
 }

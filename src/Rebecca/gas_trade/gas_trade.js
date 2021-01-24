@@ -366,6 +366,6 @@ const createChart = () => {
 
 export function rebeccaGasTrade() {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
+    resolve(createChart());
   });
 }

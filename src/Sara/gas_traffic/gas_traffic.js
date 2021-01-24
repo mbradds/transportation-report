@@ -91,6 +91,6 @@ const createChart = () => {
 
 export function saraGasTraffic() {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
+    resolve(createChart());
   });
 }

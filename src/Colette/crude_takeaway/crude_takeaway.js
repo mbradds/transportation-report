@@ -121,6 +121,6 @@ export const createChart = () => {
 
 export function coletteCrudeTakeaway() {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
+    resolve(createChart());
   });
 }
