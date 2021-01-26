@@ -112,17 +112,17 @@ def readCersei(query, name=None):
     if name == 'fin_resource_class_names.json':
         write_path = os.path.join(os.getcwd(), '../Jennifer/financial_instruments/', name)
         df = normalize_text(df, ['ALL Class', 'Company'])
-        df['Company'] = df['Company'].replace(pipeline_names())
-        df['Company'] = df['Company'].replace({'Alliance Pipeline Limited Partnership': 'Alliance Pipeline',
-                                               'Maritimes & Northeast Pipeline Management Limited': 'M&NP Pipeline',
-                                               'Ovintiv Canada ULC (used to be Encana)': 'Ovintiv Canada ULC',
-                                               'Trans Quebec Maritimes Pipeline Inc.': 'TQM Pipeline',
-                                               'Westcoast Energy Inc.': 'Enbridge BC Pipeline',
-                                               'Express Pipeline Ltd., as a General Partner of Express Pipeline Limited Partnership': 'Express Pipeline',
-                                               'Enbridge Bakken Pipeline Company Inc., on behalf of Enrbidge Bakken Pipeline Limited Partnership': 'Enbridge Bakken System',
-                                               'Enbridge Southern Lights GP Inc. on behalf of enbridge Southern Lights LP': 'Southern Lights Pipeline',
-                                               'Kingston Midstream Westpur Limited (formerly TEML Westspur Pipelines Limited)': 'Westspur Pipeline',
-                                               'Trans Northern Pipelines Inc.': 'Trans-Northern Pipeline'})
+        # df['Company'] = df['Company'].replace(pipeline_names())
+        # df['Company'] = df['Company'].replace({'Alliance Pipeline Limited Partnership': 'Alliance Pipeline',
+        #                                        'Maritimes & Northeast Pipeline Management Limited': 'M&NP Pipeline',
+        #                                        'Ovintiv Canada ULC (used to be Encana)': 'Ovintiv Canada ULC',
+        #                                        'Trans Quebec Maritimes Pipeline Inc.': 'TQM Pipeline',
+        #                                        'Westcoast Energy Inc.': 'Enbridge BC Pipeline',
+        #                                        'Express Pipeline Ltd., as a General Partner of Express Pipeline Limited Partnership': 'Express Pipeline',
+        #                                        'Enbridge Bakken Pipeline Company Inc., on behalf of Enrbidge Bakken Pipeline Limited Partnership': 'Enbridge Bakken System',
+        #                                        'Enbridge Southern Lights GP Inc. on behalf of enbridge Southern Lights LP': 'Southern Lights Pipeline',
+        #                                        'Kingston Midstream Westpur Limited (formerly TEML Westspur Pipelines Limited)': 'Westspur Pipeline',
+        #                                        'Trans Northern Pipelines Inc.': 'Trans-Northern Pipeline'})
         classes = list(set(df['ALL Class']))
         names = {}
         for group in classes:
@@ -405,6 +405,7 @@ def readExcelPipeline(name, sheet='Data', sql=False):
     # fix the Enbridge problem based on Jen's comment
     df['Pipeline'] = df['Pipeline'].replace({'Enbridge Canadian Mainline':
                                              'Enbridge Pipelines Inc.'})
+    df = df.drop(df[(df['Pipeline'] == 'Enbridge Pipelines Inc.') & (df['Type'] == 'Revenue')].index)
     base = 1000000
     enb = [{'Pipeline': 'Enbridge Canadian Mainline',
             'Category': 'Oil',
@@ -491,7 +492,7 @@ def financialResources(name='NEB_DM_PROD - 1267261 - Financial Resource Types - 
     df = df[(df['value'] != 'nan') & (df['value'] != '?')]
     # df['value'] = [x.split('$') for x in df['value']]
     df['value'] = [process_vals(x) for x in df['value']]
-    notes, values, units = [], [], []
+    notes, values = [], []
     for vList in df['value']:
         if vList[0] != '':
             notes.append(vList[0])
