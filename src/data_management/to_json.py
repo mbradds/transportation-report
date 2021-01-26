@@ -402,6 +402,30 @@ def readExcelPipeline(name, sheet='Data', sql=False):
 
     # remove TQM from ROE based on Daren's comment
     df = df.drop(df[(df['Pipeline'] == 'TQM Pipeline') & (df['Type'] == 'Actual Return on Equity')].index)
+    # fix the Enbridge problem based on Jen's comment
+    df['Pipeline'] = df['Pipeline'].replace({'Enbridge Canadian Mainline':
+                                             'Enbridge Pipelines Inc.'})
+    base = 1000000
+    enb = [{'Pipeline': 'Enbridge Canadian Mainline',
+            'Category': 'Oil',
+            'Type': 'Revenue',
+            'Year': 2017,
+            'Unit': '$',
+            'Value': 2805*base},
+           {'Pipeline': 'Enbridge Canadian Mainline',
+            'Category': 'Oil',
+            'Type': 'Revenue',
+            'Year': 2018,
+            'Unit': '$',
+            'Value': 1692*base},
+           {'Pipeline': 'Enbridge Canadian Mainline',
+            'Category': 'Oil',
+            'Type': 'Revenue',
+            'Year': 2019,
+            'Unit': '$',
+            'Value': 3423*base}]
+    for row in enb:
+        df = df.append(row, ignore_index=True)
     df = normalize_numeric(df, ['Value'], 0)
     df['Year'] = pd.to_numeric(df['Year'])
     df = df[df['Year'] >= 2015]
@@ -787,9 +811,9 @@ if __name__ == '__main__':
     # df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
 
     # cassandra
-    # df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
+    df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
     # df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    settleJson = negotiated_settlements()
+    # settleJson = negotiated_settlements()
 
     # ryan
     # df_origin, df_destination = ngl_exports()
