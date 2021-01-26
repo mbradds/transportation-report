@@ -145,7 +145,6 @@ const createChart = () => {
 
       title: {
         text: `Financial Instruments Utilized in Financial Resource Plan: ${resFilters.Commodity} Pipelines`,
-        margin: 0,
       },
 
       xAxis: {
@@ -226,6 +225,7 @@ const createChart = () => {
 
       title: {
         text: `Absolute Liability Limits by Class: ${resFilters.Commodity} Pipelines`,
+        margin: 0,
       },
 
       xAxis: {

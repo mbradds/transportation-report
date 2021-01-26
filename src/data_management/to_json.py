@@ -112,17 +112,6 @@ def readCersei(query, name=None):
     if name == 'fin_resource_class_names.json':
         write_path = os.path.join(os.getcwd(), '../Jennifer/financial_instruments/', name)
         df = normalize_text(df, ['ALL Class', 'Company'])
-        # df['Company'] = df['Company'].replace(pipeline_names())
-        # df['Company'] = df['Company'].replace({'Alliance Pipeline Limited Partnership': 'Alliance Pipeline',
-        #                                        'Maritimes & Northeast Pipeline Management Limited': 'M&NP Pipeline',
-        #                                        'Ovintiv Canada ULC (used to be Encana)': 'Ovintiv Canada ULC',
-        #                                        'Trans Quebec Maritimes Pipeline Inc.': 'TQM Pipeline',
-        #                                        'Westcoast Energy Inc.': 'Enbridge BC Pipeline',
-        #                                        'Express Pipeline Ltd., as a General Partner of Express Pipeline Limited Partnership': 'Express Pipeline',
-        #                                        'Enbridge Bakken Pipeline Company Inc., on behalf of Enrbidge Bakken Pipeline Limited Partnership': 'Enbridge Bakken System',
-        #                                        'Enbridge Southern Lights GP Inc. on behalf of enbridge Southern Lights LP': 'Southern Lights Pipeline',
-        #                                        'Kingston Midstream Westpur Limited (formerly TEML Westspur Pipelines Limited)': 'Westspur Pipeline',
-        #                                        'Trans Northern Pipelines Inc.': 'Trans-Northern Pipeline'})
         classes = list(set(df['ALL Class']))
         names = {}
         for group in classes:
@@ -319,16 +308,14 @@ def readExcel(name, sheet='pq', sql=False):
         df['Remaining Estimate'] = df['ACE'] - df['Amounts Set Aside']
         df['Company'] = df['Company'].replace(pipeline_names())
         df = normalize_text(df, ['Company'])
-        df['Company'] = df['Company'].replace({'TransCanada Pipelines Limited': 'TC Canadian Mainline',
-                                               'Nova Gas Transmission Ltd.': 'NGTL System',
-                                               'Trans Mountain Pipeline Inc.': 'Trans Mountain Pipeline',
-                                               'Westcoast Transmission': 'Enbridge BC Pipeline',
-                                               'Foothills Pipelines Ltd.': 'Foothills System',
-                                               'Maritimes & Northeast Pipeline Management Limited': 'M&NP Pipeline',
-                                               'Trans Quebec & Maritimes Pipeline (TQM) Inc.': 'TQM Pipeline',
-                                               'PKM Cochin ULC': 'Cochin Pipeline',
-                                               'Total CER Regulated Pipelines': 'All CER Regulated Pipeline Companies',
-                                               'Total Group 2 Pipelines': 'Group 2 Pipeline Companies'})
+        df['Company'] = df['Company'].replace({'Total CER Regulated Pipelines': 'All CER Regulated Pipeline Companies',
+                                               'Total Group 2 Pipelines': 'Group 2 Pipeline Companies',
+                                               'Alliance Pipeline': 'Alliance Pipeline Ltd.',
+                                               'Keystone Pipeline': 'TransCanada Keystone Pipeline GP Ltd.',
+                                               'Enbridge Canadian Mainline': 'Enbridge Pipelines Inc.',
+                                               'Norman Wells Pipeline': 'Enbridge Pipelines (NW) Inc.',
+                                               'Trans-Northern Pipeline': 'Trans-Northern Pipelines Inc.',
+                                               'Westcoast Transmission': 'Westcoast Energy Inc.'})
         df = df.sort_values(by=['ACE'], ascending=False)
         df = df[df['Company'] != 'Westcoast G & P']
         write_path = os.path.join(os.getcwd(), '../Jennifer/abandonment_funding/', sheet+'.json')
@@ -812,7 +799,7 @@ if __name__ == '__main__':
     # df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
 
     # cassandra
-    df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
+    # df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
     # df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     # settleJson = negotiated_settlements()
 
@@ -826,7 +813,7 @@ if __name__ == '__main__':
     # df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     # df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
     # df,scale = creditRatings()
-    # df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
+    df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
 
     # other
     # df = writeExcelCredit(name='CreditTables.xlsx',sql=True)
