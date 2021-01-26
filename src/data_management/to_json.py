@@ -262,7 +262,7 @@ def readExcel(name, sheet='pq', sql=False):
 
             df['Corporate Entity'] = df['Corporate Entity'].replace({'Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC': 'Kinder Morgan Canada Limited',
                                                                      'Trans Quebec & Maritimes Pipeline Inc.': 'TQM Pipeline Inc.',
-                                                                     'Alliance Pipeline Limited Partnership': 'Alliance Pipeline L.P.'})
+                                                                     'Alliance Pipeline Limited Partnership': 'Alliance Pipeline Ltd.'})
 
             df['series'] = df['Corporate Entity']+' - '+df['Type']
             for delete in ['Credit Quality', 'Corporate Entity', 'Type']:
@@ -812,8 +812,8 @@ if __name__ == '__main__':
     # df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     # df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     # df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    # df,scale = creditRatings()
-    df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
+    df, scale = creditRatings()
+    # df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
 
     # other
     # df = writeExcelCredit(name='CreditTables.xlsx',sql=True)

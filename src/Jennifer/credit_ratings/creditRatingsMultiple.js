@@ -37,7 +37,7 @@ const createChart = () => {
     "TransCanada PipeLines Limited": cerPalette["Sun"],
     "NOVA Gas Transmission Ltd.": cerPalette["Flame"],
     "Trans Quebec & Maritimes Pipeline Inc.": cerPalette["Ocean"],
-    "Alliance Pipeline Limited Partnership": cerPalette["Forest"],
+    "Alliance Pipeline Ltd.": cerPalette["Forest"],
     "Enbridge Inc.": cerPalette["Night Sky"],
     "Emera Inc.": cerPalette["hcRed"],
     "Enbridge Pipelines Inc.": cerPalette["Dim Grey"],
@@ -125,11 +125,10 @@ const createChart = () => {
           borderColor: cerPalette["Ocean"],
           borderWidth: 2,
           from: 1,
-          to: 17,
+          to: 16,
           zIndex: 2,
           label: {
-            text:
-              "Non-Investment Grade Level. Ratings touching the top blue border are investment grade.",
+            text: "Non-Investment Grade",
             align: "center",
           },
         },

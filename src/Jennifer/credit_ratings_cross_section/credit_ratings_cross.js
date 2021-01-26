@@ -55,7 +55,7 @@ const createChart = () => {
       "Emera Inc.",
       "Maritimes & Northeast Pipeline Limited Partnership",
       "Kinder Morgan Canada Limited",
-      "Alliance Pipeline L.P.",
+      "Alliance Pipeline Ltd.",
       "NOVA Chemicals Corp.",
     ];
     const agencies = ["S&P", "Moody's", "DBRS"];
@@ -132,7 +132,7 @@ const createChart = () => {
         plotLines: [
           {
             color: cerPalette["Ocean"],
-            value: 17,
+            value: 16,
             width: 2,
             zIndex: 7,
             label: {
