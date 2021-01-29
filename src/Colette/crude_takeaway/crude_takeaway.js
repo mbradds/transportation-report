@@ -8,7 +8,7 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudeTakeawayData from "./figures.json";
 import Series from "highseries";
 
-export const createChart = () => {
+export async function coletteCrudeTakeaway(lang) {
   const crudeTakeawayColors = {
     "Total Supply Available for Export": cerPalette["Cool Grey"],
     "Express Pipeline": cerPalette["Aubergine"],
@@ -62,7 +62,7 @@ export const createChart = () => {
       div: "container_crude_takeaway",
       sourceLink:
         "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
-      sourceText: "Source: Energy Futures",
+      sourceText: lang.source,
       units: units,
       series: series.hcSeries,
       xAxisType: "linear",
@@ -76,9 +76,7 @@ export const createChart = () => {
         },
       },
       xAxis: {
-        plotLines: [
-          lines("black", "longDash", 2019, "Estimated <br> values start", 0),
-        ],
+        plotLines: [lines("black", "longDash", 2019, lang.plotLines, 0)],
       },
     });
     var selectUnitsTake = document.getElementById(
@@ -113,14 +111,8 @@ export const createChart = () => {
   };
 
   try {
-    mainCrudeTakeaway();
+    return mainCrudeTakeaway();
   } catch (err) {
-    errorChart("container_crude_takeaway");
+    return errorChart("container_crude_takeaway");
   }
-};
-
-export function coletteCrudeTakeaway() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

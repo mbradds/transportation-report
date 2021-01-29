@@ -3,7 +3,7 @@ import { errorChart } from "../../modules/charts.js";
 import Series from "highseries";
 import railData from "./crude_by_rail_wcs.json";
 
-const createChart = () => {
+export async function coletteCrudeByRail(lang) {
   const railFilters = { Units: "Mb/d" };
   const railColors = {
     "Crude by Rail": cerPalette["Night Sky"],
@@ -47,7 +47,7 @@ const createChart = () => {
       },
 
       credits: {
-        text: "Source: CER Crude by Rail Exports & ne2 Group",
+        text: lang.source,
       },
 
       tooltip: {
@@ -80,12 +80,12 @@ const createChart = () => {
       yAxis: [
         {
           title: {
-            text: `Rail Exports - ${railFilters.Units}`,
+            text: `${lang.yAxis} - ${railFilters.Units}`,
           },
         },
         {
           title: {
-            text: "Differential - USD/bbl",
+            text: `${lang.differential} - USD/bbl`,
           },
           labels: {
             formatter: function () {
@@ -107,20 +107,14 @@ const createChart = () => {
       chartRail.update({
         series: series.hcSeries,
         yAxis: {
-          title: { text: `Rail Exports - ${railFilters.Units}` },
+          title: { text: `${lang.yAxis} - ${railFilters.Units}` },
         },
       });
     });
   };
   try {
-    mainChartRail();
+    return mainChartRail();
   } catch (err) {
-    errorChart("container_crude_by_rail");
+    return errorChart("container_crude_by_rail");
   }
-};
-
-export function coletteCrudeByRail() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

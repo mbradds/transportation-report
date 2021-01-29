@@ -24,6 +24,7 @@ import { jenniferAbandonment } from "./Jennifer/abandonment_funding/abandonment"
 import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
 import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
 import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
+import eng from "./modules/eng.json";
 import ieWarn from "ie-gang";
 let warningParams = {
   message:
@@ -35,18 +36,18 @@ let warningParams = {
 ieWarn(warningParams);
 generalTheme();
 
-async function loadAllCharts() {
+async function loadAllCharts(eng) {
   console.time(`chart loading`);
   let arrayOfCharts = [
-    instructionsChart(),
-    kevinCrudeProduction(),
-    kevinCrudeExports(),
-    kevinCrudePrices(),
-    kevinUsImports(),
-    coletteCrudeMode(),
-    coletteCrudeByRail(),
-    coletteMarine(),
-    coletteCrudeTakeaway(),
+    instructionsChart(eng.instructionsChart),
+    kevinCrudeProduction(eng.crudeProduction),
+    kevinCrudeExports(eng.crudeExports),
+    kevinCrudePrices(eng.crudePrices),
+    kevinUsImports(eng.crudeImports),
+    coletteCrudeMode(eng.crudeMode),
+    coletteCrudeByRail(eng.crudeByRail),
+    coletteMarine(eng.marineCrudeExports),
+    coletteCrudeTakeaway(eng.crudeTakeaway),
     rebeccaGasProd(),
     rebeccaGasTrade(),
     rebeccaGasPrices(),
@@ -66,6 +67,16 @@ async function loadAllCharts() {
   ];
   Promise.allSettled(arrayOfCharts).then((value) => {
     console.timeEnd(`chart loading`);
+    // This should be made into a function and only called in the french series
+    // Highcharts.charts.map((chart) => {
+    //   if (chart.renderTo.id == "container_crude_production") {
+    //     chart.series.map((s, i) => {
+    //       s.name = `New Name! ${i}`;
+    //     });
+    //     chart.isDirtyLegend = true;
+    //     chart.redraw();
+    //   }
+    // });
   });
 }
-loadAllCharts();
+loadAllCharts(eng);

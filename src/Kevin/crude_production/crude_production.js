@@ -8,14 +8,14 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import crudeProdData from "./Crude_Oil_Production.json";
 import Series from "highseries";
 
-const createChart = () => {
+export async function kevinCrudeProduction(lang) {
   const crudeProdColors = {
-    "Conventional Light": cerPalette["Sun"],
-    "Conventional Heavy": cerPalette["Night Sky"],
-    "C5+": cerPalette["Ocean"],
-    "Field Condensate": cerPalette["Forest"],
-    "Mined Bitumen": cerPalette["Cool Grey"],
-    "In Situ Bitumen": cerPalette["Dim Grey"],
+    ["Conventional Light"]: cerPalette["Sun"],
+    ["Conventional Heavy"]: cerPalette["Night Sky"],
+    ["C5+"]: cerPalette["Ocean"],
+    ["Field Condensate"]: cerPalette["Forest"],
+    ["Mined Bitumen"]: cerPalette["Cool Grey"],
+    ["In Situ Bitumen"]: cerPalette["Dim Grey"],
   };
 
   var crudeProdFilters = { Region: "Canada" };
@@ -68,12 +68,7 @@ const createChart = () => {
     };
 
     var figure_title = document.getElementById("crude_prod_title");
-    setTitle(
-      figure_title,
-      "5",
-      crudeProdFilters.Region,
-      "Crude Oil Production"
-    );
+    setTitle(figure_title, "5", crudeProdFilters.Region, lang.title);
 
     let series = new Series({
       data: crudeProdData,
@@ -88,7 +83,7 @@ const createChart = () => {
       div: "container_crude_production",
       sourceLink:
         "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
-      sourceText: "Source: Energy Futures",
+      sourceText: lang.source,
       units: units,
       series: series.hcSeries,
     };
@@ -101,12 +96,7 @@ const createChart = () => {
       "change",
       (selectRegionCrudeProd) => {
         crudeProdFilters.Region = selectRegionCrudeProd.target.value;
-        setTitle(
-          figure_title,
-          "5",
-          crudeProdFilters.Region,
-          "Crude Oil Production"
-        );
+        setTitle(figure_title, "5", crudeProdFilters.Region, lang.title);
         series.update({
           data: crudeProdData,
           filters: crudeProdFilters,
@@ -170,14 +160,9 @@ const createChart = () => {
   };
 
   try {
-    const chart = mainCrudeProduction();
+    return mainCrudeProduction();
   } catch (err) {
     errorChart("container_crude_production");
+    return;
   }
-};
-
-export function kevinCrudeProduction() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

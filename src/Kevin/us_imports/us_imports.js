@@ -9,7 +9,7 @@ import { errorChart } from "../../modules/charts.js";
 import crudeImportsData from "./UScrudeoilimports.json";
 import Series from "highseries";
 
-const createChart = () => {
+export async function kevinUsImports(lang) {
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
   const crudeImportColors = {
@@ -59,14 +59,7 @@ const createChart = () => {
         categories: true,
       },
 
-      annotations: [
-        annotation(
-          840,
-          30,
-          cerPalette["Sun"],
-          "% - Canada's share of U.S. crude oil imports"
-        ),
-      ],
+      annotations: [annotation(840, 30, cerPalette["Sun"], lang.annotation)],
 
       yAxis: {
         title: { text: params.units.unitsCurrent },
@@ -90,7 +83,7 @@ const createChart = () => {
       div: "container_crude_imports",
       sourceLink:
         "https://apps.cer-rec.gc.ca/CommodityStatistics/Statistics.aspx?language=english",
-      sourceText: "Source: CER Commodity Tracking System & EIA",
+      sourceText: lang.source,
       units: units,
       series: series.hcSeries,
       xAxisType: "linear",
@@ -134,14 +127,9 @@ const createChart = () => {
     );
   };
   try {
-    mainUsImports();
+    return mainUsImports();
   } catch (err) {
     errorChart("container_crude_imports");
+    return;
   }
-};
-
-export function kevinUsImports() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

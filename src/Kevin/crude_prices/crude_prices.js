@@ -3,7 +3,7 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudePriceData from "./oil_prices.json";
 import Series from "highseries";
 
-const createChart = () => {
+export async function kevinCrudePrices(lang) {
   const crudePriceColors = {
     WCS: cerPalette["Night Sky"],
     WTI: cerPalette["Sun"],
@@ -27,20 +27,15 @@ const createChart = () => {
     var params = {
       div: "container_crude_prices",
       sourceLink: "https://www.ne2group.com/",
-      sourceText: "Source: ne2 Group",
+      sourceText: lang.source,
       units: { unitsCurrent: "USD/bbl" },
       series: series.hcSeries,
       xAxisType: "datetime",
       crosshair: true,
     };
-    const chartCrudePrice = lineAndStackedArea(params);
+    return lineAndStackedArea(params);
   } catch (err) {
     errorChart("container_crude_prices");
+    return;
   }
-};
-
-export function kevinCrudePrices() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

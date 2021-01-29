@@ -8,7 +8,7 @@ import {
 import { errorChart } from "../../modules/charts.js";
 import crudeModeData from "./crude_mode.json";
 
-const createChart = () => {
+export async function coletteCrudeMode(lang) {
   const crudeModeFilters = { Year: 2019 };
   const crudeModeColors = {
     Pipeline: cerPalette["Night Sky"],
@@ -31,16 +31,20 @@ const createChart = () => {
         },
       },
       credits: {
-        text: "Source: CER Commodity Tracking System",
+        text: lang.source,
       },
       tooltip: {
         useHTML: true,
         formatter: function () {
           var toolText = `<table><b>${this.key} - ${filters.Year}</b>`;
-          toolText += `<tr><td> Percent of total: </td><td style="padding:0"><b>${this.point.percentage.toFixed(
+          toolText += `<tr><td>${
+            lang.pctOfTotal
+          }</td><td style="padding:0"><b>${this.point.percentage.toFixed(
             0
           )} %</b></td></tr>`;
-          toolText += `<tr><td> Export volume: </td><td style="padding:0"><b>${numberFormat(
+          toolText += `<tr><td>${
+            lang.exportVolume
+          }</td><td style="padding:0"><b>${numberFormat(
             this.y.toFixed(1)
           )} bbl/day</b></td></tr>`;
           toolText += `<tr><td></td><td style="padding:0"><b><i>${numberFormat(
@@ -71,12 +75,7 @@ const createChart = () => {
   };
   try {
     var figure_title = document.getElementById("crude_mode_title");
-    setTitle(
-      figure_title,
-      "9",
-      crudeModeFilters.Year,
-      "Crude Oil Exports by Mode"
-    );
+    setTitle(figure_title, "9", crudeModeFilters.Year, lang.title);
 
     const seriesData = prepareSeriesPie(
       crudeModeData,
@@ -97,12 +96,7 @@ const createChart = () => {
       var btnValue = thisBtn.val();
       $("#selectedVal").text(btnValue);
       crudeModeFilters.Year = btnText;
-      setTitle(
-        figure_title,
-        "9",
-        crudeModeFilters.Year,
-        "Crude Oil Exports by Mode"
-      );
+      setTitle(figure_title, "9", crudeModeFilters.Year, lang.title);
       crudeModePie.update({
         series: prepareSeriesPie(
           crudeModeData,
@@ -114,13 +108,9 @@ const createChart = () => {
         ),
       });
     });
+    return crudeModePie;
   } catch (err) {
     errorChart("container_crude_mode");
+    return;
   }
-};
-
-export function coletteCrudeMode() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

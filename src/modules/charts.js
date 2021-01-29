@@ -234,7 +234,7 @@ export const createPaddMap = (div, actionChart, paddColors) => {
   });
 };
 
-const createInstructionChart = () => {
+export async function instructionsChart(lang) {
   return new Highcharts.chart("hc-instructions", {
     chart: {
       borderWidth: 1,
@@ -271,31 +271,24 @@ const createInstructionChart = () => {
         animation: false,
       },
     },
-    annotations: [
-      annotation(
-        290,
-        16,
-        cerPalette["Dim Grey"],
-        "Click on this icon to download chart images/data:"
-      ),
-    ],
+    annotations: [annotation(290, 16, cerPalette["Dim Grey"], lang.annotation)],
     series: [
       {
-        name: "Data 1 (click to filter)",
+        name: lang.series1,
         color: cerPalette["Night Sky"],
         data: [7, 8, 5, 6, 4, 4, 5, 4],
       },
       {
-        name: "Data 2 (click to filter)",
+        name: lang.series2,
         color: cerPalette["Sun"],
         data: [1, 2, 4, 3, 3, 5, 6, 5],
       },
     ],
   });
-};
-
-export function instructionsChart() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createInstructionChart()), 0);
-  });
 }
+
+// export function instructionsChart() {
+//   return new Promise((resolve) => {
+//     setTimeout(() => resolve(createInstructionChart()), 0);
+//   });
+// }

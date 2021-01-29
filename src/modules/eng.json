@@ -1,0 +1,41 @@
+{
+  "ieWarnMessage": "We noticed you are using Internet Explorer. Please consider using a different browser for a better experience on this page.",
+  "ieWarnTitle": "Old Browser Warning",
+  "instructionsChart": {
+    "annotation": "Click on this icon to download chart images/data:",
+    "series1": "Data 1 (click to filter)",
+    "series2": "Data 2 (click to filter)"
+  },
+  "crudeProduction": {
+    "title": "Crude Oil Production",
+    "source": "Source: Energy Futures"
+  },
+  "crudeExports": {
+    "padds": { "other": "Other" }
+  },
+  "crudePrices": {
+    "source": "Source: ne2 Group"
+  },
+  "crudeImports": {
+    "annotation": "% - Canada's share of U.S. crude oil imports",
+    "source": "Source: CER Commodity Tracking System & EIA"
+  },
+  "crudeMode": {
+    "source": "Source: CER Commodity Tracking System",
+    "pctOfTotal": "Percent of total:",
+    "exportVolume": "Export volume:",
+    "title": "Crude Oil Exports by Mode"
+  },
+  "crudeByRail": {
+    "source": "Source: CER Crude by Rail Exports & ne2 Group",
+    "yAxis": "Rail Exports",
+    "differential": "Differential"
+  },
+  "marineCrudeExports": {
+    "credits": "Source: CER Commodity Tracking System"
+  },
+  "crudeTakeaway": {
+    "source": "Source: Energy Futures",
+    "plotLines": "Estimated <br> values start"
+  }
+}
