@@ -4,7 +4,7 @@ import creditData from "./CreditTables.json";
 import scaleData from "./Scale.json";
 import Series from "highseries";
 
-const createChart = () => {
+export async function jenniferRatingsMulti(lang) {
   var ratingAgencies = ["S&P", "Moody's", "DBRS"];
 
   const selectDefaultMultiple = (select_name, optionsToSelect) => {
@@ -96,17 +96,12 @@ const createChart = () => {
         },
       },
 
-      credits: {
-        text: "Source: S&P, DBRS, Moody's",
-        enabled: false,
-      },
-
       legend: {
         enabled: false,
       },
 
       yAxis: {
-        title: { text: "Standardized Credit Rating" },
+        title: { text: lang.yAxis },
         gridLineWidth: 3,
         gridZIndex: 1,
         categories: true,
@@ -150,7 +145,7 @@ const createChart = () => {
             });
           });
           var toolText = `<b>${selectedYear}</b><table>`;
-          toolText += `<tr><td> Credit Quality: </td><td style="padding:0"><b> ${selectedScale} </b></td></tr>`;
+          toolText += `<tr><td>${lang.tooltip}</td><td style="padding:0"><b> ${selectedScale} </b></td></tr>`;
           for (var agency in overlaps) {
             var agencyName = agency.split(" - ").slice(-1)[0];
             toolText += `<tr><td> <span style="color: ${
@@ -165,7 +160,7 @@ const createChart = () => {
         },
       },
       lang: {
-        noData: "Select a pipeline to view credit ratings",
+        noData: lang.noData,
       },
       series: series,
     });
@@ -282,14 +277,8 @@ const createChart = () => {
     });
   };
   try {
-    mainRatingsMultiple();
+    return mainRatingsMultiple();
   } catch (err) {
-    errorChart("container_ratings_multi");
+    return errorChart("container_ratings_multi");
   }
-};
-
-export function jenniferRatingsMulti() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

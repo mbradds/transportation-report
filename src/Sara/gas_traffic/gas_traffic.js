@@ -3,7 +3,7 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import Series from "highseries";
 import gasData from "./gas_traffic.json";
 
-const createChart = () => {
+export async function saraGasTraffic(lang) {
   const gasColors = {
     "Alliance Pipeline - Border": cerPalette["Night Sky"],
     "Foothills System - Kingsgate": cerPalette["Sun"],
@@ -38,7 +38,7 @@ const createChart = () => {
       div: "container_gas_traffic",
       sourceLink:
         "https://open.canada.ca/data/en/dataset/dc343c43-a592-4a27-8ee7-c77df56afb34",
-      sourceText: "Source: Open Government Throughput and Capacity Data",
+      sourceText: lang.source,
       units: units,
       series: series.hcSeries,
       xAxisType: "datetime",
@@ -83,14 +83,8 @@ const createChart = () => {
     );
   };
   try {
-    mainGasTraffic();
+    return mainGasTraffic();
   } catch (err) {
-    errorChart("container_gas_traffic");
+    return errorChart("container_gas_traffic");
   }
-};
-
-export function saraGasTraffic() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

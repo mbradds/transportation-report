@@ -3,7 +3,7 @@ import Series from "highseries";
 import { errorChart, createPaddMap } from "../../modules/charts.js";
 import nglData from "./destination.json";
 
-const createChart = () => {
+export async function ryanNglDestination(lang) {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
 
   const nglFilters = {
@@ -11,7 +11,7 @@ const createChart = () => {
   };
 
   const setTitle = (figure_title, filters) => {
-    figure_title.innerText = `Figure 23: ${filters.Product} Export Destination`;
+    figure_title.innerText = `${lang.figureNum} ${filters.Product} ${lang.exports}`;
   };
 
   const nglDestinationColors = {
@@ -59,7 +59,7 @@ const createChart = () => {
       },
 
       lang: {
-        noData: "No Exports",
+        noData: lang.noData,
       },
 
       series: seriesData,
@@ -143,10 +143,5 @@ const createChart = () => {
       },
     });
   });
-};
-
-export function ryanNglDestination() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
+  return 1;
 }

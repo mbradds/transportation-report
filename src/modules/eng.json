@@ -37,5 +37,111 @@
   "crudeTakeaway": {
     "source": "Source: Energy Futures",
     "plotLines": "Estimated <br> values start"
+  },
+  "gasProduction": {
+    "source": "Source: Energy Futures"
+  },
+  "gasTrade": {
+    "titleExports": "Figure 16: Natural Gas Exports from Canada to U.S. Region",
+    "titleImports": "Figure 16: Natural Gas Imports from U.S. Region to Canada",
+    "source": "Source: CER Commodity Tracking System, Map:",
+    "tooltip": "Natural Gas flows to non border states by pipeline from one or more grouped border regions"
+  },
+  "gasPrices": {
+    "source": "Source: Platts",
+    "yAxis": "Monthly Spot Prices"
+  },
+  "gasTraffic": {
+    "source": "Source: Open Government Throughput and Capacity Data"
+  },
+  "gasMnp": {
+    "titleMnp": "M&NP Pipeline Throughput & Capacity",
+    "titleOffshore": "N.S. Offshore Natural Gas Production",
+    "source": "Source: CER, CNSOPB",
+    "prodEnd": "Production ceases"
+  },
+  "gas2019": {
+    "source": "Source: Open Government Throughput and Capacity Data",
+    "tooltipUtilization": "Capacity Utilization",
+    "imports": "Imports",
+    "xAxis": "Key Point (West to East)",
+    "title": "Pipeline Throughput & Capacity at Key Points"
+  },
+  "nglProduction": {
+    "source": "Source: Energy Futures"
+  },
+  "nglExports": {
+    "figureNum": "Figure 22:",
+    "exports": "Exports",
+    "source": "Source: CER Commodity Tracking System",
+    "noData": "No Exports"
+  },
+  "nglDestination": {
+    "figureNum": "Figure 23:",
+    "exports": "Export Destination",
+    "noData": "No Exports"
+  },
+  "settlements": {
+    "active": "Active settlement(s)",
+    "inService": "Pipeline in-service date",
+    "cer": "Pipeline enters CER/NEB Jurisdiction",
+    "source": "Source: CER",
+    "today": "(today, UTC)",
+    "annotation": "Click on a pipeline name<br>to view individual settlements",
+    "tooltipEnd": "No set end date <i>(Chart end date/duration is projected into the future, <br> and does not necessarily terminate at the date indicated.)</i>",
+    "tooltipActiveStart": "Active settlement(s) start:",
+    "tooltipActiveEnd": "Active settlement(s) end:",
+    "tooltipActiveDuration": "Active settlement(s) duration:",
+    "tooltipActiveYears": "years",
+    "tooltipInService": "in-service date",
+    "tooltipEnter": "enter CER/NEB Jurisdiction date",
+    "start": "Start:",
+    "end": "End:",
+    "duration": "Duration:"
+  },
+  "tolls": {
+    "source": "Source: CER",
+    "xAxis": "Toll start date",
+    "yAxis": "Benchmark Toll (2015 = 1)"
+  },
+  "finResource": {
+    "dataLabel": "total financial resources:",
+    "billy": "billion $CAD",
+    "titleResource": "Financial Instruments Utilized in Financial Resource Plan:",
+    "pipe": "Pipelines",
+    "yAxisResource1": "Number of companies using financial resource",
+    "yAxisResource2": "Financial resources (Billion $CAD)",
+    "source": "Source: CER",
+    "tooltipClass": "Companies in",
+    "titleClass": "Absolute Liability Limits by Class:",
+    "yAxisClass": "Financial resource requirement (Billion $CAD)"
+  },
+  "abandon": {
+    "pctAside": "% set-aside:",
+    "titleTotal": "Costs to Abandon CER-Regulated Pipelines",
+    "billy": "billion",
+    "title": "Group 1 Abandonment Breakdown",
+    "source": "Source: CER",
+    "yAxis": "Abandonment Costs (Billions)"
+  },
+  "finance": {
+    "milly": "C$ (Millions)",
+    "source": "Source: CER REGDOCS",
+    "pipe": "pipelines",
+    "legend": "Larger symbol size used to show overlapping data. Click on legend items to view less data.",
+    "noData": "No Financial Data"
+  },
+  "ratingsCross": {
+    "enbridge": "Enbridge & Subsidiaries",
+    "tc": "TC Energy & Subsidiaries",
+    "other": "Other Entities",
+    "yAxis": "Standardized Credit Rating",
+    "level": "Non-Investment Grade Level"
+  },
+  "ratingsMultiple": {
+    "yAxis": "Standardized Credit Rating",
+    "level": "Non-Investment Grade",
+    "tooltip": "Credit Quality:",
+    "noData": "Select a pipeline to view credit ratings"
   }
 }

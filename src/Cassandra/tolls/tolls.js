@@ -3,7 +3,7 @@ import Series from "highseries";
 import { errorChart } from "../../modules/charts.js";
 import tollsData from "./tolls.json";
 
-const createChart = () => {
+export async function cassandraTolls(lang) {
   const tollChartTypes = (series) => {
     series.map((data) => {
       if (data.name == "GDP Deflator") {
@@ -16,8 +16,6 @@ const createChart = () => {
 
     return series;
   };
-
-  var tollDate = { Date: "Start" };
 
   const splitCommodity = (data) => {
     const [oil, gas] = [[], []];
@@ -45,7 +43,7 @@ const createChart = () => {
     "Enbridge Canadian Mainline": cerPalette["Flame"],
   };
 
-  const createTollsChart = (seriesData, tollDate, div) => {
+  const createTollsChart = (seriesData, div) => {
     return new Highcharts.chart(div, {
       chart: {
         zoomType: "x",
@@ -58,7 +56,7 @@ const createChart = () => {
       },
 
       credits: {
-        text: "Source: CER",
+        text: lang.source,
       },
 
       tooltip: {
@@ -67,11 +65,11 @@ const createChart = () => {
 
       xAxis: {
         type: "datetime",
-        title: { text: `Toll ${tollDate.Date} date` },
+        title: { text: lang.xAxis },
       },
 
       yAxis: {
-        title: { text: "Benchmark Toll (2015 = 1)" },
+        title: { text: lang.yAxis },
         labels: {
           formatter: function () {
             return this.value;
@@ -103,7 +101,6 @@ const createChart = () => {
       });
       var chartTollsOil = createTollsChart(
         tollChartTypes(oilseries.hcSeries),
-        tollDate,
         "container_tolls_oil"
       );
     } catch (err) {
@@ -120,7 +117,6 @@ const createChart = () => {
       });
       var chartTollsGas = createTollsChart(
         tollChartTypes(gasseries.hcSeries),
-        tollDate,
         "container_tolls_gas"
       );
     } catch (err) {
@@ -128,11 +124,5 @@ const createChart = () => {
     }
   };
 
-  mainTolls();
-};
-
-export function cassandraTolls() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
+  return mainTolls();
 }

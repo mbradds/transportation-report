@@ -5,7 +5,7 @@ import finResData from "./fin_resource_totals.json";
 import finClassData from "./fin_resource_class.json";
 import finResNames from "./fin_resource_class_names.json";
 
-const createChart = () => {
+export async function jenniferFinResources(lang) {
   var resFilters = { Commodity: "All" };
 
   const resChartTypes = {
@@ -74,11 +74,9 @@ const createChart = () => {
           dataLabels: {
             enabled: true,
             formatter: function () {
-              return `${
-                this.point.series.name
-              } total financial resources: <br> ${(this.y / 1000000000).toFixed(
-                2
-              )} billion $CAD`;
+              return `${this.point.series.name} ${lang.dataLabel} <br> ${(
+                this.y / 1000000000
+              ).toFixed(2)} ${lang.billy}`;
             },
           },
         },
@@ -144,7 +142,7 @@ const createChart = () => {
       },
 
       title: {
-        text: `Financial Instruments Utilized in Financial Resource Plan: ${resFilters.Commodity} Pipelines`,
+        text: `${lang.titleResource} ${resFilters.Commodity} ${lang.pipe}`,
       },
 
       xAxis: {
@@ -153,7 +151,7 @@ const createChart = () => {
       yAxis: [
         {
           title: {
-            text: "Number of companies using financial resource",
+            text: `${lang.yAxisResource1}`,
           },
           stackLabels: {
             enabled: true,
@@ -161,7 +159,7 @@ const createChart = () => {
         },
         {
           title: {
-            text: "Financial resources (Billion $CAD)",
+            text: `${lang.yAxisResource2}`,
           },
           labels: {
             formatter: function () {
@@ -188,7 +186,7 @@ const createChart = () => {
       },
 
       credits: {
-        text: "Source: CER",
+        text: lang.source,
       },
 
       plotOptions: {
@@ -211,20 +209,14 @@ const createChart = () => {
 
       tooltip: {
         formatter: function () {
-          return (
-            "<b>" +
-            this.key +
-            "</b><br>" +
-            "<i>Companies in " +
-            this.key +
-            ": </i><br>" +
-            finResNames[this.key].join(", ")
-          );
+          return `<b>${this.key}</b><br>
+            <i>${lang.tooltipClass} ${this.key}:</i><br>
+            ${finResNames[this.key].join(", ")}`;
         },
       },
 
       title: {
-        text: `Absolute Liability Limits by Class: ${resFilters.Commodity} Pipelines`,
+        text: `${lang.titleClass} ${resFilters.Commodity} ${lang.pipe}`,
         margin: 0,
       },
 
@@ -234,7 +226,7 @@ const createChart = () => {
       yAxis: {
         endOnTick: false,
         title: {
-          text: "Financial resource requirement (Billion $CAD)",
+          text: `${lang.yAxisClass}`,
         },
         labels: {
           formatter: function () {
@@ -320,16 +312,11 @@ const createChart = () => {
   };
 
   try {
-    loadInitialCharts();
+    return loadInitialCharts();
   } catch (err) {
     errorChart("container_fin_totals");
     errorChart("container_fin_resources");
     errorChart("container_fin_resources_class");
+    return;
   }
-};
-
-export function jenniferFinResources() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

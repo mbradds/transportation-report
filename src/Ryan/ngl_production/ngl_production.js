@@ -3,7 +3,7 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import nglProdData from "./figures.json";
 import Series from "highseries";
 
-const createChart = () => {
+export async function ryanNglProduction(lang) {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
   var nglProdColors = {
     Ethane: cerPalette["Ocean"],
@@ -59,14 +59,8 @@ const createChart = () => {
     });
   };
   try {
-    mainNglProd();
+    return mainNglProd();
   } catch (err) {
-    errorChart("container_ngl_production");
+    return errorChart("container_ngl_production");
   }
-};
-
-export function ryanNglProduction() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

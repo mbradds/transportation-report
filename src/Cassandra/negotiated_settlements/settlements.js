@@ -2,7 +2,7 @@ import { cerPalette, creditsClick, dateFormat } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import settleJson from "./settleJson.json";
 
-const createChart = () => {
+export async function cassandraSettlements(lang) {
   const oneDay = 86400000;
 
   const legendNames = {
@@ -188,10 +188,10 @@ const createChart = () => {
   };
 
   const settleTitle = (div) => {
-    let titleText = `<span style="font-weight:bold; color: ${legendColors["Active settlement(s)"]}">&#9679 Active settlement(s) &nbsp &nbsp</span>`;
-    titleText += `<span style="font-weight:bold; color: ${dateColors["Pipeline in-service"]}">&#9679 Pipeline in-service date &nbsp &nbsp</span>`;
+    let titleText = `<span style="font-weight:bold; color: ${legendColors["Active settlement(s)"]}">&#9679${lang.active}&nbsp &nbsp</span>`;
+    titleText += `<span style="font-weight:bold; color: ${dateColors["Pipeline in-service"]}">&#9679${lang.inService}&nbsp &nbsp</span>`;
     if (div == "container_settlements_gas") {
-      titleText += `<span style="font-weight:bold; color: ${dateColors["Pipeline enters CER/NEB Jurisdiction"]}">&#9679 Pipeline enters CER/NEB Jurisdiction &nbsp &nbsp</span>`;
+      titleText += `<span style="font-weight:bold; color: ${dateColors["Pipeline enters CER/NEB Jurisdiction"]}">&#9679${lang.cer}&nbsp &nbsp</span>`;
     }
     return titleText;
   };
@@ -215,7 +215,7 @@ const createChart = () => {
         text: settleTitle(div),
       },
       credits: {
-        text: "Source: CER",
+        text: lang.source,
       },
       plotOptions: {
         series: {
@@ -256,7 +256,7 @@ const createChart = () => {
               align: "right",
               x: -5,
               formatter: function () {
-                return dateFormat(this.options.value) + " (today, UTC)";
+                return `${dateFormat(this.options.value)} ${lang.today}`;
               },
             },
           },
@@ -340,29 +340,30 @@ const createChart = () => {
           if (
             this.color == legendColors["Settlements without fixed end date"]
           ) {
-            var endText = `No set end date <i>(Chart end date/duration is projected into the future, <br> 
-                and does not necessarily terminate at the date indicated.)</i>`;
+            var endText = lang.tooltipEnd;
           } else {
             var endText = dateFormat(point.end);
           }
           if (point.parent == null && point.dateType == null) {
             return (
-              `<b>${
-                this.key
-              }</b><table><tr><td>Active settlement(s) start:</td><td style="padding:0"><b>${dateFormat(
+              `<b>${this.key}</b><table><tr><td>${
+                lang.tooltipActiveStart
+              }</td><td style="padding:0"><b>${dateFormat(
                 point.start
               )}</b></td></tr>` +
-              `<tr><td>Active settlement(s) end:</td><td style="padding:0"><b>${dateFormat(
+              `<tr><td>${
+                lang.tooltipActiveEnd
+              }</td><td style="padding:0"><b>${dateFormat(
                 point.end
               )}</b></td></tr>` +
-              `<tr><td> Active settlement(s) duration:</td><td style="padding:0"><b>${years} years</b></table>`
+              `<tr><td>${lang.tooltipActiveDuration}</td><td style="padding:0"><b>${years} ${lang.tooltipActiveYears}</b></table>`
             );
           } else if (point.parent == null && point.dateType != null) {
             let dateTypeText = "";
             if (point.dateType == "Not in Service") {
-              dateTypeText = "in-service date";
+              dateTypeText = lang.tooltipInService;
             } else {
-              dateTypeText = "enter CER/NEB Jurisdiction date";
+              dateTypeText = lang.tooltipEnter;
             }
             return `<b> ${point.name} - ${dateTypeText} </b><br> ${dateFormat(
               point.start
@@ -370,11 +371,11 @@ const createChart = () => {
           } else {
             return (
               `<b>${point.parent} - ${this.key} </b><table>` +
-              `<tr><td>Start:</td><td style="padding:0"><b> ${dateFormat(
+              `<tr><td>${lang.start}</td><td style="padding:0"><b> ${dateFormat(
                 point.start
               )}</b>` +
-              `<tr><td>End:</td><td style="padding:0"><b> ${endText}</b>` +
-              `<tr><td>Duration:</td><td style="padding:0"><b> ${years} years</b>`
+              `<tr><td>${lang.end}</td><td style="padding:0"><b> ${endText}</b>` +
+              `<tr><td>${lang.duration}</td><td style="padding:0"><b> ${years} ${lang.tooltipActiveYears}</b>`
             );
           }
         },
@@ -419,11 +420,5 @@ const createChart = () => {
       errorChart("container_settlements_gas");
     }
   };
-  mainSettlements();
-};
-
-export function cassandraSettlements() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
+  return mainSettlements();
 }

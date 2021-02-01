@@ -11,7 +11,7 @@ import { errorChart } from "../../modules/charts.js";
 import gas2019Data from "./gas_2019.json";
 import Series from "highseries";
 
-const createChart = () => {
+export async function sara2019(lang) {
   const gas2019Colors = {
     Throughput: cerPalette["Sun"],
     Capacity: cerPalette["Night Sky"],
@@ -282,7 +282,7 @@ const createChart = () => {
       },
 
       credits: {
-        text: "Source: Open Government Throughput and Capacity Data",
+        text: lang.source,
       },
 
       yAxis: {
@@ -313,7 +313,7 @@ const createChart = () => {
           var cap = this.points[0].y;
           var through = this.points.slice(-1)[0].y;
           var utilization = ((through / cap) * 100).toFixed(0);
-          toolText += `<tr><td>Capacity Utilization</td><td style="padding:0">:<b> ${utilization} %</b></td></tr>`;
+          toolText += `<tr><td>${lang.tooltipUtilization}</td><td style="padding:0">:<b> ${utilization} %</b></td></tr>`;
           this.points.map((p) => {
             toolText += `<tr><td><span style="color: ${
               p.series.color
@@ -341,15 +341,15 @@ const createChart = () => {
             },
           },
           plotBands: [
-            bands(6.5, 7.5, "Imports", 15),
-            bands(8.5, 9.5, "Imports", 15),
+            bands(6.5, 7.5, lang.imports, 15),
+            bands(8.5, 9.5, lang.imports, 15),
           ],
         },
         {
           type: "category",
           linkedTo: 0,
           opposite: true,
-          title: { text: "Key Point (West to East)" },
+          title: { text: lang.xAxis },
           labels: {
             autoRotation: 0,
             formatter: function () {
@@ -383,12 +383,7 @@ const createChart = () => {
     });
     let seriesData = columnPlacement(series.hcSeries);
     var figure_title = document.getElementById("gas_points_title");
-    setTitle(
-      figure_title,
-      "20",
-      pointsFilters.Year,
-      "Pipeline Throughput & Capacity at Key Points"
-    );
+    setTitle(figure_title, "20", pointsFilters.Year, lang.title);
     var gasPointsMap = createGas2019Map();
     var chartGas2019 = createGas2019Chart(seriesData, units);
     var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
@@ -427,26 +422,16 @@ const createChart = () => {
       var btnValue = thisBtn.val();
       $("#selectedVal").text(btnValue);
       pointsFilters.Year = btnText;
-      setTitle(
-        figure_title,
-        "20",
-        pointsFilters.Year,
-        "Pipeline Throughput & Capacity at Key Points"
-      );
+      setTitle(figure_title, "20", pointsFilters.Year, lang.title);
       series.update({ data: gas2019Data, filters: pointsFilters });
       chartGas2019.update({
         series: columnPlacement(series.hcSeries),
       });
     });
+    return chartGas2019;
   } catch (err) {
-    console.log(err);
     errorChart("container_gas_2019_map");
     errorChart("container_gas_2019");
+    return;
   }
-};
-
-export function sara2019() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

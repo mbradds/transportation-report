@@ -3,7 +3,7 @@ import { errorChart } from "../../modules/charts.js";
 import abandonData from "./Modified.json";
 import Series from "highseries";
 
-const createChart = () => {
+export async function jenniferAbandonment(lang) {
   const colors = {
     "Amounts Set Aside": cerPalette["Sun"],
     "Remaining Estimate": cerPalette["Night Sky"],
@@ -106,7 +106,7 @@ const createChart = () => {
     ).toFixed(1);
     return (
       toolText +
-      `<tr><td> % set-aside: </td><td style="padding:0"> <b>${calc["pctRecovered"]}% </b></td></tr>`
+      `<tr><td> ${lang.pctAside} </td><td style="padding:0"> <b>${calc["pctRecovered"]}% </b></td></tr>`
     );
   };
 
@@ -117,7 +117,7 @@ const createChart = () => {
         gridLineWidth: 0,
       },
 
-      title: { text: "Costs to Abandon CER-Regulated Pipelines", margin: 0 },
+      title: { text: `${lang.titleTotal}`, margin: 0 },
 
       credits: {
         enabled: false,
@@ -132,7 +132,9 @@ const createChart = () => {
             enabled: true,
             formatter: function () {
               if (this.key !== "Group 2 Pipeline Companies") {
-                return `$${(this.point.y / 1000000000).toFixed(1)} Billion`;
+                return `$${(this.point.y / 1000000000).toFixed(1)} ${
+                  lang.billy
+                }`;
               } else {
                 return null;
               }
@@ -167,7 +169,7 @@ const createChart = () => {
           formatter: function () {
             var [remaining, total] = this.points[0];
             var recovered = total - remaining;
-            return (recovered / total).toFixed(2) * 100 + "% set-aside";
+            return (recovered / total).toFixed(2) * 100 + lang.pctAside;
           },
         },
       },
@@ -200,7 +202,7 @@ const createChart = () => {
       },
 
       title: {
-        text: "Group 1 Abandonment Breakdown",
+        text: lang.title,
         margin: 0,
       },
 
@@ -215,7 +217,7 @@ const createChart = () => {
       },
 
       credits: {
-        text: "Source: CER",
+        text: lang.source,
       },
       xAxis: {
         categories: true,
@@ -240,7 +242,7 @@ const createChart = () => {
         startOnTick: false,
         endOnTick: false,
         title: {
-          text: "Abandonment Costs (Billions)",
+          text: lang.yAxis,
         },
         labels: {
           formatter: function () {
@@ -276,9 +278,9 @@ const createChart = () => {
         createAbandonmentTotals(seriesTotals);
         var abandonChart = createAbandonmentChart(seriesData);
         if (filters.commodity == "All") {
-          var titleText = "Group 1 Abandonment Breakdown";
+          var titleText = lang.title;
         } else {
-          var titleText = `Group 1 Abandonment Breakdown - ${filters.commodity}`;
+          var titleText = `${lang.title} - ${filters.commodity}`;
         }
         abandonChart.update({
           title: { text: titleText },
@@ -287,15 +289,10 @@ const createChart = () => {
     );
   };
   try {
-    mainAbandon();
+    return mainAbandon();
   } catch (err) {
     errorChart("hc-abanbdon-totals");
     errorChart("container_abandonment");
+    return;
   }
-};
-
-export function jenniferAbandonment() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

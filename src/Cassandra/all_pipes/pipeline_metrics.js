@@ -9,7 +9,7 @@ import {
 import { errorChart } from "../../modules/charts.js";
 import financialData from "./PipelineProfileTables.json";
 
-const createChart = () => {
+export async function cassandraAllPipes(lang) {
   const sortLegend = (series) => {
     const toSort = sortJson(
       series.map((row) => {
@@ -123,7 +123,7 @@ const createChart = () => {
       yOptions.transform = false;
     } else {
       yOptions.yFormat = "{value:,.0f}";
-      yOptions.yLabel = "C$ (Millions)";
+      yOptions.yLabel = lang.milly;
       yOptions.tooltip = "C$";
       yOptions.transform = [1000000, "/"];
     }
@@ -150,7 +150,7 @@ const createChart = () => {
       },
 
       credits: {
-        text: "Source: CER REGDOCS",
+        text: lang.source,
       },
 
       plotOptions: {
@@ -168,13 +168,12 @@ const createChart = () => {
       },
 
       title: {
-        text: filters.Type + ": " + filters.Category + " pipelines",
+        text: filters.Type + ": " + filters.Category + lang.pipelines,
       },
 
       legend: {
         title: {
-          text:
-            "Larger symbol size used to show overlapping data. Click on legend items to view less data.",
+          text: lang.legend,
         },
       },
 
@@ -216,7 +215,7 @@ const createChart = () => {
       },
 
       lang: {
-        noData: "No Financial Data",
+        noData: lang.noData,
       },
       series: newData,
     });
@@ -261,14 +260,8 @@ const createChart = () => {
     };
   };
   try {
-    mainPipeline();
+    return mainPipeline();
   } catch (err) {
-    errorChart("container_financial_metrics");
+    return errorChart("container_financial_metrics");
   }
-};
-
-export function cassandraAllPipes() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

@@ -8,7 +8,7 @@ import Series from "highseries";
 import { errorChart } from "../../modules/charts.js";
 import nglData from "./origin.json";
 
-const createChart = () => {
+export async function ryanNglExports(lang) {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
   const nglFilters = {
     Product: "p",
@@ -26,9 +26,9 @@ const createChart = () => {
       mb: "Manitoba",
       bc: "British Columbia",
     };
-    figure_title.innerText = `Figure 22: ${fullOrigin[filters.Origin]} ${
+    figure_title.innerText = `${lang.figureNum} ${fullOrigin[filters.Origin]} ${
       fullProducts[filters.Product]
-    } Exports`;
+    } ${lang.exports}`;
   };
   const nglColors = {
     Pipeline: cerPalette["Sun"],
@@ -54,7 +54,7 @@ const createChart = () => {
       },
 
       credits: {
-        text: "Source: CER Commodity Tracking System",
+        text: lang.source,
       },
 
       plotOptions: {
@@ -87,7 +87,7 @@ const createChart = () => {
       },
 
       lang: {
-        noData: "No Exports",
+        noData: lang.noData,
       },
 
       series: seriesData,
@@ -155,14 +155,8 @@ const createChart = () => {
     });
   };
   try {
-    mainNglExports();
+    return mainNglExports();
   } catch (err) {
-    errorChart("container_ngl");
+    return errorChart("container_ngl");
   }
-};
-
-export function ryanNglExports() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

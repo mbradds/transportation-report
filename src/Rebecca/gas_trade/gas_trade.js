@@ -9,7 +9,7 @@ import { errorChart } from "../../modules/charts.js";
 import gasTradeData from "./natural-gas-exports-and-imports-annual.json";
 import Series from "highseries";
 
-const createChart = () => {
+export async function rebeccaGasTrade(lang) {
   const gasTrafficColors = {
     ["U.S. West"]: cerPalette["Forest"],
     ["U.S. Midwest"]: cerPalette["Ocean"],
@@ -20,11 +20,9 @@ const createChart = () => {
 
   const setTitle = (figure_title, filters) => {
     if (filters.Activity == "Exports") {
-      figure_title.innerText =
-        "Figure 16: Natural Gas Exports from Canada to U.S. Region";
+      figure_title.innerText = lang.titleExports;
     } else {
-      figure_title.innerText =
-        "Figure 16: Natural Gas Imports from U.S. Region to Canada";
+      figure_title.innerText = lang.titleImports;
     }
   };
   const createGasRegionMap = () => {
@@ -69,7 +67,7 @@ const createChart = () => {
       },
 
       credits: {
-        text: "Source: CER Commodity Tracking System, Map:",
+        text: lang.source,
       },
 
       legend: {
@@ -79,7 +77,7 @@ const createChart = () => {
       tooltip: {
         formatter: function () {
           if (this.series.name == "Other") {
-            return "Natural Gas flows to non border states by pipeline from one or more grouped border regions";
+            return lang.tooltip;
           } else {
             return this.series.name;
           }
@@ -357,15 +355,10 @@ const createChart = () => {
       chartGasTraffic = createGasTrafficChart(series.hcSeries, gasTradeUnits);
       addVectors(mapGasTraffic, gasTradeFilters);
     });
+    return;
   } catch (err) {
-    console.log(err);
     errorChart("container_gas_trade");
     errorChart("container_gas_trade_map");
+    return;
   }
-};
-
-export function rebeccaGasTrade() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

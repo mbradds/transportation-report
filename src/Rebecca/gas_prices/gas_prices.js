@@ -10,7 +10,7 @@ import Series from "highseries";
 import { errorChart } from "../../modules/charts.js";
 import gasPriceData from "./gas_prices.json";
 
-const createChart = () => {
+export async function rebeccaGasPrices(lang) {
   const gasPriceColors = {
     ["Dawn"]: cerPalette["Sun"],
     ["Alberta NIT"]: cerPalette["Forest"],
@@ -30,7 +30,7 @@ const createChart = () => {
         },
       },
       credits: {
-        text: "Source: Platts",
+        text: lang.source,
       },
 
       legend: {
@@ -165,7 +165,7 @@ const createChart = () => {
 
       yAxis: {
         endOnTick: false,
-        title: { text: "Monthly Spot Prices" },
+        title: { text: lang.yAxis },
         labels: {
           enabled: false,
         },
@@ -183,15 +183,10 @@ const createChart = () => {
     });
     var gasMap = createGasPriceMap();
     var chartGasPrice = createGasPriceChart(series.hcSeries);
+    return gasMap;
   } catch (err) {
-    console.log(err);
     errorChart("container_gas_map");
     errorChart("container_gas_prices");
+    return;
   }
-};
-
-export function rebeccaGasPrices() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

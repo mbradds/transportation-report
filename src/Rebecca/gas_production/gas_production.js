@@ -3,7 +3,7 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import gasProdData from "./Natural_Gas_Production.json";
 import Series from "highseries";
 
-const createChart = () => {
+export async function rebeccaGasProd(lang) {
   const gasProdColors = {
     Solution: cerPalette["Aubergine"],
     "Conventional Non-tight": cerPalette["Forest"],
@@ -26,7 +26,7 @@ const createChart = () => {
       div: "container_gas_production",
       sourceLink:
         "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
-      sourceText: "Source: Energy Futures",
+      sourceText: lang.source,
       units: units,
       series: series.hcSeries,
     };
@@ -64,14 +64,8 @@ const createChart = () => {
   };
 
   try {
-    mainGasProducton();
+    return mainGasProducton();
   } catch (err) {
-    errorChart("container_gas_production");
+    return errorChart("container_gas_production");
   }
-};
-
-export function rebeccaGasProd() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

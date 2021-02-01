@@ -9,7 +9,7 @@ import mnpData from "./st_stephen.json";
 import offshoreData from "./ns_offshore.json";
 import Series from "highseries";
 
-const createChart = () => {
+export async function saraMnp(lang) {
   const mnpColors = {
     Exports: cerPalette["Night Sky"],
     Imports: cerPalette["Sun"],
@@ -42,11 +42,11 @@ const createChart = () => {
 
   const createChartMnp = (seriesData, div, units, yMax) => {
     if (div == "container_mnp") {
-      var titleText = "M&NP Pipeline Throughput & Capacity";
+      var titleText = lang.titleMnp;
       var sourceText = "";
     } else {
-      var titleText = "N.S. Offshore Natural Gas Production";
-      var sourceText = "Source: CER, CNSOPB";
+      var titleText = lang.titleOffshore;
+      var sourceText = lang.source;
     }
     return new Highcharts.chart(div, {
       chart: {
@@ -177,14 +177,14 @@ const createChart = () => {
             offshoreColors["Deep Panuke"],
             null,
             Date.UTC(2018, 5, 7),
-            "Production ceases",
+            lang.prodEnd,
             90
           ),
           lines(
             offshoreColors["Sable Island"],
             null,
             Date.UTC(2018, 12, 1),
-            "Production ceases",
+            lang.prodEnd,
             90
           ),
         ],
@@ -192,15 +192,10 @@ const createChart = () => {
     });
   };
   try {
-    mainMnp();
+    return mainMnp();
   } catch (err) {
     errorChart("container_mnp");
     errorChart("container_offshore");
+    return;
   }
-};
-
-export function saraMnp() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }

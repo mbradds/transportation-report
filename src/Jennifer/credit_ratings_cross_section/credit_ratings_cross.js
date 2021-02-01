@@ -3,7 +3,7 @@ import { errorChart } from "../../modules/charts.js";
 import creditData from "../credit_ratings/CreditTables.json";
 import scaleData from "../credit_ratings/Scale.json";
 
-const createChart = () => {
+export async function jenniferRatingsCross(lang) {
   const ratingsColors = {
     DBRS: cerPalette["Sun"],
     "S&P": cerPalette["Night Sky"],
@@ -75,11 +75,6 @@ const createChart = () => {
         type: "column",
       },
 
-      credits: {
-        text: "Source: S&P, DBRS, Moody's",
-        enabled: false,
-      },
-
       plotOptions: {
         series: {
           states: {
@@ -107,14 +102,14 @@ const createChart = () => {
         categories: true,
         crosshair: true,
         plotBands: [
-          bands(-0.5, 2.5, "Enbridge & Subsidiaries", 15, 0),
-          bands(2.5, 7.5, "TC Energy & Subsidiaries", 15, 0, "#bde0ff"),
-          bands(7.5, 11.5, "Other Entities", 15, 0),
+          bands(-0.5, 2.5, lang.enbridge, 15, 0),
+          bands(2.5, 7.5, lang.tc, 15, 0, "#bde0ff"),
+          bands(7.5, 11.5, lang.tc, 15, 0),
         ],
       },
 
       yAxis: {
-        title: { text: "Standardized Credit Rating" },
+        title: { text: lang.yAxis },
         gridLineWidth: 3,
         gridZIndex: 1,
         categories: true,
@@ -136,7 +131,7 @@ const createChart = () => {
             width: 2,
             zIndex: 7,
             label: {
-              text: "Non-Investment Grade Level",
+              text: lang.level,
               align: "right",
               x: -10,
               rotation: 90,
@@ -197,14 +192,8 @@ const createChart = () => {
     });
   };
   try {
-    mainCreditYear();
+    return mainCreditYear();
   } catch (err) {
-    errorChart("container_ratings_cross");
+    return errorChart("container_ratings_cross");
   }
-};
-
-export function jenniferRatingsCross() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart()), 0);
-  });
 }
