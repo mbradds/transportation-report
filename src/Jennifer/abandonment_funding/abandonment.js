@@ -3,7 +3,7 @@ import { errorChart } from "../../modules/charts.js";
 import abandonData from "./Modified.json";
 import Series from "highseries";
 
-export async function jenniferAbandonment(lang) {
+const createChart = (lang) => {
   const colors = {
     "Amounts Set Aside": cerPalette["Sun"],
     "Remaining Estimate": cerPalette["Night Sky"],
@@ -295,4 +295,10 @@ export async function jenniferAbandonment(lang) {
     errorChart("container_abandonment");
     return;
   }
+};
+
+export function jenniferAbandonment(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

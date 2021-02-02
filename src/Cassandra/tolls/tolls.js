@@ -3,7 +3,7 @@ import Series from "highseries";
 import { errorChart } from "../../modules/charts.js";
 import tollsData from "./tolls.json";
 
-export async function cassandraTolls(lang) {
+const createChart = (lang) => {
   const tollChartTypes = (series) => {
     series.map((data) => {
       if (data.name == "GDP Deflator") {
@@ -125,4 +125,10 @@ export async function cassandraTolls(lang) {
   };
 
   return mainTolls();
+};
+
+export function cassandraTolls(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

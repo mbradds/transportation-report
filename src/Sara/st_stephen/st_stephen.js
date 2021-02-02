@@ -9,7 +9,7 @@ import mnpData from "./st_stephen.json";
 import offshoreData from "./ns_offshore.json";
 import Series from "highseries";
 
-export async function saraMnp(lang) {
+const createChart = (lang) => {
   const mnpColors = {
     Exports: cerPalette["Night Sky"],
     Imports: cerPalette["Sun"],
@@ -198,4 +198,10 @@ export async function saraMnp(lang) {
     errorChart("container_offshore");
     return;
   }
+};
+
+export function saraMnp(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

@@ -10,7 +10,7 @@ import Series from "highseries";
 import { errorChart } from "../../modules/charts.js";
 import gasPriceData from "./gas_prices.json";
 
-export async function rebeccaGasPrices(lang) {
+const createChart = (lang) => {
   const gasPriceColors = {
     ["Dawn"]: cerPalette["Sun"],
     ["Alberta NIT"]: cerPalette["Forest"],
@@ -189,4 +189,10 @@ export async function rebeccaGasPrices(lang) {
     errorChart("container_gas_prices");
     return;
   }
+};
+
+export function rebeccaGasPrices(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

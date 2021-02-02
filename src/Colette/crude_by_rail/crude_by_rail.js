@@ -3,7 +3,7 @@ import { errorChart } from "../../modules/charts.js";
 import Series from "highseries";
 import railData from "./crude_by_rail_wcs.json";
 
-export async function coletteCrudeByRail(lang) {
+const createChart = (lang) => {
   const railFilters = { Units: "Mb/d" };
   const railColors = {
     "Crude by Rail": cerPalette["Night Sky"],
@@ -117,4 +117,10 @@ export async function coletteCrudeByRail(lang) {
   } catch (err) {
     return errorChart("container_crude_by_rail");
   }
+};
+
+export function coletteCrudeByRail(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

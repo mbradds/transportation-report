@@ -3,7 +3,7 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudePriceData from "./oil_prices.json";
 import Series from "highseries";
 
-export async function kevinCrudePrices(lang) {
+const createChart = (lang) => {
   const crudePriceColors = {
     WCS: cerPalette["Night Sky"],
     WTI: cerPalette["Sun"],
@@ -38,4 +38,10 @@ export async function kevinCrudePrices(lang) {
     errorChart("container_crude_prices");
     return;
   }
+};
+
+export function kevinCrudePrices(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

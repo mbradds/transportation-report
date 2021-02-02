@@ -3,7 +3,7 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import gasProdData from "./Natural_Gas_Production.json";
 import Series from "highseries";
 
-export async function rebeccaGasProd(lang) {
+const createChart = (lang) => {
   const gasProdColors = {
     Solution: cerPalette["Aubergine"],
     "Conventional Non-tight": cerPalette["Forest"],
@@ -68,4 +68,10 @@ export async function rebeccaGasProd(lang) {
   } catch (err) {
     return errorChart("container_gas_production");
   }
+};
+
+export function rebeccaGasProd(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

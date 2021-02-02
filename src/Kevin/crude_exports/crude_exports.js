@@ -9,7 +9,7 @@ import { errorChart, createPaddMap } from "../../modules/charts.js";
 import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
 import Series from "highseries";
 
-export async function kevinCrudeExports(lang) {
+const createChart = (lang) => {
   const crudeExportColors = {
     "PADD I": cerPalette["Sun"],
     "PADD II": cerPalette["Night Sky"],
@@ -120,4 +120,10 @@ export async function kevinCrudeExports(lang) {
   });
 
   return chartCrudeExports;
+};
+
+export function kevinCrudeExports(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

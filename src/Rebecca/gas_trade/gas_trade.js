@@ -9,7 +9,7 @@ import { errorChart } from "../../modules/charts.js";
 import gasTradeData from "./natural-gas-exports-and-imports-annual.json";
 import Series from "highseries";
 
-export async function rebeccaGasTrade(lang) {
+const createChart = (lang) => {
   const gasTrafficColors = {
     ["U.S. West"]: cerPalette["Forest"],
     ["U.S. Midwest"]: cerPalette["Ocean"],
@@ -361,4 +361,10 @@ export async function rebeccaGasTrade(lang) {
     errorChart("container_gas_trade_map");
     return;
   }
+};
+
+export function rebeccaGasTrade(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

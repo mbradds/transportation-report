@@ -2,7 +2,7 @@ import { cerPalette, creditsClick, dateFormat } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import settleJson from "./settleJson.json";
 
-export async function cassandraSettlements(lang) {
+const createChart = (lang) => {
   const oneDay = 86400000;
 
   const legendNames = {
@@ -421,4 +421,10 @@ export async function cassandraSettlements(lang) {
     }
   };
   return mainSettlements();
+};
+
+export function cassandraSettlements(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

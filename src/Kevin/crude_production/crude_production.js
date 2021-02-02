@@ -8,7 +8,7 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import crudeProdData from "./Crude_Oil_Production.json";
 import Series from "highseries";
 
-export async function kevinCrudeProduction(lang) {
+const createChart = (lang) => {
   const crudeProdColors = {
     ["Conventional Light"]: cerPalette["Sun"],
     ["Conventional Heavy"]: cerPalette["Night Sky"],
@@ -165,4 +165,10 @@ export async function kevinCrudeProduction(lang) {
     errorChart("container_crude_production");
     return;
   }
+};
+
+export function kevinCrudeProduction(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

@@ -3,7 +3,7 @@ import Series from "highseries";
 import { errorChart, createPaddMap } from "../../modules/charts.js";
 import nglData from "./destination.json";
 
-export async function ryanNglDestination(lang) {
+const createChart = (lang) => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
 
   const nglFilters = {
@@ -144,4 +144,10 @@ export async function ryanNglDestination(lang) {
     });
   });
   return 1;
+};
+
+export function ryanNglDestination(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

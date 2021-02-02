@@ -3,7 +3,7 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import Series from "highseries";
 import gasData from "./gas_traffic.json";
 
-export async function saraGasTraffic(lang) {
+const createChart = (lang) => {
   const gasColors = {
     "Alliance Pipeline - Border": cerPalette["Night Sky"],
     "Foothills System - Kingsgate": cerPalette["Sun"],
@@ -18,9 +18,6 @@ export async function saraGasTraffic(lang) {
     "Alliance Pipeline - Border": "area",
     "Foothills System - Kingsgate": "area",
     "Foothills System - Monchy": "area",
-    "TC Canadian Mainline - Prairies (Empress)": "area",
-    "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland": "area",
-    "Combined Pipeline Capacity": "line",
   };
 
   var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
@@ -87,4 +84,10 @@ export async function saraGasTraffic(lang) {
   } catch (err) {
     return errorChart("container_gas_traffic");
   }
+};
+
+export function saraGasTraffic(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }

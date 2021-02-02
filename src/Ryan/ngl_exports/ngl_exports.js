@@ -8,7 +8,7 @@ import Series from "highseries";
 import { errorChart } from "../../modules/charts.js";
 import nglData from "./origin.json";
 
-export async function ryanNglExports(lang) {
+const createChart = (lang) => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
   const nglFilters = {
     Product: "p",
@@ -159,4 +159,10 @@ export async function ryanNglExports(lang) {
   } catch (err) {
     return errorChart("container_ngl");
   }
+};
+
+export function ryanNglExports(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createChart(lang)), 0);
+  });
 }
