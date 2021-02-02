@@ -18,6 +18,9 @@ const createChart = (lang) => {
     "Alliance Pipeline - Border": "area",
     "Foothills System - Kingsgate": "area",
     "Foothills System - Monchy": "area",
+    "TC Canadian Mainline - Prairies (Empress)": "area",
+    "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland": "area",
+    "Combined Pipeline Capacity": "line",
   };
 
   var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
