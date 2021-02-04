@@ -6,9 +6,8 @@ import gasData from "./gas_traffic.json";
 const createChart = (lang) => {
   const gasColors = {
     "Alliance Pipeline - Border": cerPalette["Night Sky"],
-    "Foothills System - Kingsgate": cerPalette["Sun"],
-    "Foothills System - Monchy": cerPalette["Flame"],
-    "TC Canadian Mainline - Prairies (Empress)": cerPalette["Forest"],
+    "NGTL System - East Gate": cerPalette["Sun"],
+    "NGTL System - West Gate": cerPalette["Flame"],
     "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland":
       cerPalette["Ocean"],
     "Combined Pipeline Capacity": cerPalette["Cool Grey"],
@@ -16,9 +15,8 @@ const createChart = (lang) => {
 
   const gasChartTypes = {
     "Alliance Pipeline - Border": "area",
-    "Foothills System - Kingsgate": "area",
-    "Foothills System - Monchy": "area",
-    "TC Canadian Mainline - Prairies (Empress)": "area",
+    "NGTL System - East Gate": "area",
+    "NGTL System - West Gate": "area",
     "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland": "area",
     "Combined Pipeline Capacity": "line",
   };

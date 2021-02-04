@@ -789,7 +789,7 @@ if __name__ == '__main__':
     # df = readExcel('marine_exports.xlsx','marine exports')
 
     # sara
-    # df = readCersei('gas_ex_wcsb_traffic.sql', 'gas_traffic.json')
+    df = readCersei('gas_ex_wcsb_traffic.sql', 'gas_traffic.json')
     # df = readCersei('gas_2019_avg.sql','gas_2019.json')
     # dfmnp,dfoffshore = st_stephen()
 
@@ -812,7 +812,7 @@ if __name__ == '__main__':
     # df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     # df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     # df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    df, scale = creditRatings()
+    # df, scale = creditRatings()
     # df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
 
     # other
