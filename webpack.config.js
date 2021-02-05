@@ -13,6 +13,12 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle_[name].js",
   },
+  devServer: {
+    compress: true,
+    historyApiFallback: {
+      index: "index.html",
+    },
+  },
   // plugins: [new BundleAnalyzerPlugin()],
   module: {
     rules: [

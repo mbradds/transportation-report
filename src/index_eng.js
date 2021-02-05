@@ -27,10 +27,9 @@ import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMul
 import eng from "./modules/eng.json";
 import ieWarn from "ie-gang";
 let warningParams = {
-  message:
-    "We noticed you are using Internet Explorer. Please consider using a different browser for a better experience on this page.",
+  message: eng.ieWarnMessage,
   type: "alert",
-  title: "Old Browser Warning",
+  title: eng.ieWarnTitle,
   applyIE: false,
 };
 ieWarn(warningParams);
