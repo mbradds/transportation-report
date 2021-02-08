@@ -1,0 +1,147 @@
+{
+  "ieWarnMessage": "French warning placeholder",
+  "ieWarnTitle": "French warning title",
+  "instructionsChart": {
+    "annotation": "Fra: Click on this icon to download chart images/data:",
+    "series1": "Fra: Data 1 (click to filter)",
+    "series2": "Fra: Data 2 (click to filter)"
+  },
+  "crudeProduction": {
+    "title": "Production de pétrole brut",
+    "source": "Source : Avenir énergétique"
+  },
+  "crudeExports": {
+    "padds": { "other": "Autre" }
+  },
+  "crudePrices": {
+    "source": "Source : NE2 Group"
+  },
+  "crudeImports": {
+    "annotation": "% – Part du Canada dans les importations américaines de pétrole brut",
+    "source": "Source : Système de suivi des produits de la Régie et EIA"
+  },
+  "crudeMode": {
+    "source": "Source : Système de suivi des produits de la Régie",
+    "pctOfTotal": "Pourcentage du total :",
+    "exportVolume": "Volume d’exportations:",
+    "title": "Exportations de brut selon le mode"
+  },
+  "crudeByRail": {
+    "source": "Source : Exportations de brut par chemin de fer de la Régie et NE2 Group",
+    "yAxis": "Exportations par chemin de fer",
+    "differential": "Écart"
+  },
+  "marineCrudeExports": {
+    "credits": "Source : Système de suivi des produits de la Régie"
+  },
+  "crudeTakeaway": {
+    "source": "Source : Avenir énergétique",
+    "plotLines": "Début des<br>valeurs estimatives"
+  },
+  "gasProduction": {
+    "source": "Source : Avenir énergétique"
+  },
+  "gasTrade": {
+    "titleExports": "Figure 16 – Exportations de gaz naturel du Canada vers les États-Unis",
+    "titleImports": "Figure 16 – Importations de gaz naturel des États-Unis vers le Canada",
+    "source": "Source : Système de suivi des produits de la Régie",
+    "tooltip": "Le gaz naturel est acheminé aux États non frontaliers par pipeline à partir d’une ou de plusieurs régions frontalières regroupées"
+  },
+  "gasPrices": {
+    "source": "Source: Platts",
+    "yAxis": "Prix mensuels du disponible"
+  },
+  "gasTraffic": {
+    "source": "Source : Données sur le débit et la capacité du gouvernement ouvert"
+  },
+  "gasMnp": {
+    "titleMnp": "Débit et capacité du pipeline de M&NP",
+    "titleOffshore": "Production gazière extracôtière de la N.-É.",
+    "source": "Source : Régie, OCNEHE",
+    "prodEnd": "Arrêt de la production"
+  },
+  "gas2019": {
+    "source": "Source : Données sur le débit et la capacité du gouvernement ouvert",
+    "tooltipUtilization": "Utilisation de la capacité",
+    "imports": "Importations",
+    "xAxis": "Point principal (d’ouest en est)",
+    "title": "Débit et capacité des pipelines aux points principaux"
+  },
+  "nglProduction": {
+    "source": "Source : Avenir énergétique"
+  },
+  "nglExports": {
+    "figureNum": "Figure 22:",
+    "exports": "Exportations",
+    "source": "Source : Système de suivi des produits de la Régie",
+    "noData": "Aucune exportation"
+  },
+  "nglDestination": {
+    "figureNum": "Figure 23:",
+    "exports": "Destination d’exportation",
+    "noData": "Aucune exportation"
+  },
+  "settlements": {
+    "active": "Règlement(s) actif(s)",
+    "inService": "Pipeline en service",
+    "cer": "Pipeline du ressort de la Régie/l’Office",
+    "source": "Source : Régie",
+    "today": "(today, UTC)",
+    "annotation": "Cliquer sur le nom d’un pipeline <br> pour consulter les chaque règlement",
+    "tooltipEnd": "Aucune date de fin déterminée (la date de fin/durée du graphique est prévue dans l’avenir et ne correspond pas nécessairement à la date indiquée).",
+    "tooltipActiveStart": "Fra: Active settlement(s) start:",
+    "tooltipActiveEnd": "Fra: Active settlement(s) end:",
+    "tooltipActiveDuration": "Fra: Active settlement(s) duration:",
+    "tooltipActiveYears": "years",
+    "tooltipInService": "in-service date",
+    "tooltipEnter": "enter CER/NEB Jurisdiction date",
+    "start": "Fra: Start:",
+    "end": "Fra: End:",
+    "duration": "Fra: Duration:"
+  },
+  "tolls": {
+    "source": "Source : Régie",
+    "xAxis": "Toll start date",
+    "yAxis": "Benchmark Toll (2015 = 1)"
+  },
+  "finResource": {
+    "dataLabel": "Total des ressources financières:",
+    "billy": "en milliards de dollars CA",
+    "titleResource": "Instruments financiers utilisés dans le plan relatif aux ressources financières:",
+    "pipe": "Fra: Pipelines",
+    "yAxisResource1": "Nombre de sociétés utilisant des ressources financières",
+    "yAxisResource2": "Ressources financières (en milliards de dollars CA)",
+    "source": "Source : Régie",
+    "tooltipClass": "Fra: Companies in",
+    "titleClass": "Limites de responsabilité absolue par catégorie:",
+    "yAxisClass": "Exigences relatives aux ressources financières (en milliards de dollars CA)"
+  },
+  "abandon": {
+    "pctAside": "Fra: % set-aside:",
+    "titleTotal": "Coûts de la cessation d’exploitation des pipelines réglementés par la Régie",
+    "billy": "Fra: billion",
+    "title": "Ventilation des coûts de la cessation d’exploitation des sociétés du groupe 1",
+    "source": "Source : Régie",
+    "yAxis": "Coûts de la cessation d’exploitation (en milliards de dollars)"
+  },
+  "finance": {
+    "milly": "Fra: C$ (Millions)",
+    "source": "Source : REGDOCS de la Régie",
+    "pipe": "Fra: pipelines",
+    "legend": "Des symboles plus gros indiquent les données qui se chevauchent. Cliquer sur les légendes pour afficher moins de données.",
+    "noData": "Aucune donnée financière"
+  },
+  "ratingsCross": {
+    "enbridge": "Enbridge et filiales",
+    "tc": "TC Énergie et filiales",
+    "other": "Autres entités",
+    "yAxis": "Cote de solvabilité normalisée",
+    "level": "De qualité inférieure"
+  },
+  "ratingsMultiple": {
+    "yAxis": "Cote de solvabilité normalisée",
+    "level": "De qualité inférieure",
+    "tooltip": "Qualité du crédit :",
+    "noData": "Sélectionner un pipeline pour voir les cotes de solvabilité"
+  }
+}

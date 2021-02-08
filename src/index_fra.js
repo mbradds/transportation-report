@@ -24,49 +24,59 @@ import { jenniferAbandonment } from "./Jennifer/abandonment_funding/abandonment"
 import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
 import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
 import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
+import fra from "./modules/fra.json";
 import ieWarn from "ie-gang";
 let warningParams = {
-  message:
-    "We noticed you are using Internet Explorer. Please consider using a different browser for a better experience on this page.",
+  message: fra.ieWarnMessage,
   type: "alert",
-  title: "Old Browser Warning",
+  title: fra.ieWarnTitle,
   applyIE: false,
 };
 ieWarn(warningParams);
 generalTheme();
 frenchTheme();
 
-async function loadAllCharts() {
+async function loadAllCharts(fra) {
   console.time(`chart loading`);
   let arrayOfCharts = [
-    instructionsChart(),
-    kevinCrudeProduction(),
-    kevinCrudeExports(),
-    kevinCrudePrices(),
-    kevinUsImports(),
-    coletteCrudeMode(),
-    coletteCrudeByRail(),
-    coletteMarine(),
-    coletteCrudeTakeaway(),
-    rebeccaGasProd(),
-    rebeccaGasTrade(),
-    rebeccaGasPrices(),
-    saraGasTraffic(),
-    saraMnp(),
-    sara2019(),
-    ryanNglProduction(),
-    ryanNglExports(),
-    ryanNglDestination(),
-    cassandraSettlements(),
-    cassandraTolls(),
-    jenniferFinResources(),
-    jenniferAbandonment(),
-    cassandraAllPipes(),
-    jenniferRatingsCross(),
-    jenniferRatingsMulti(),
+    instructionsChart(fra.instructionsChart),
+    kevinCrudeProduction(fra.crudeProduction),
+    kevinCrudeExports(fra.crudeExports),
+    kevinCrudePrices(fra.crudePrices),
+    kevinUsImports(fra.crudeImports),
+    coletteCrudeMode(fra.crudeMode),
+    coletteCrudeByRail(fra.crudeByRail),
+    coletteMarine(fra.marineCrudeExports),
+    coletteCrudeTakeaway(fra.crudeTakeaway),
+    rebeccaGasProd(fra.gasProduction),
+    rebeccaGasTrade(fra.gasTrade),
+    rebeccaGasPrices(fra.gasPrices),
+    saraGasTraffic(fra.gasTraffic),
+    saraMnp(fra.gasMnp),
+    sara2019(fra.gas2019),
+    ryanNglProduction(fra.nglProduction),
+    ryanNglExports(fra.nglExports),
+    ryanNglDestination(fra.nglDestination),
+    cassandraSettlements(fra.settlements),
+    cassandraTolls(fra.tolls),
+    jenniferFinResources(fra.finResource),
+    jenniferAbandonment(fra.abandon),
+    cassandraAllPipes(fra.finance),
+    jenniferRatingsCross(fra.ratingsCross),
+    jenniferRatingsMulti(fra.ratingsMultiple),
   ];
-  Promise.all(arrayOfCharts).then((value) => {
+  Promise.allSettled(arrayOfCharts).then((value) => {
     console.timeEnd(`chart loading`);
+    // This should be made into a function and only called in the french series
+    Highcharts.charts.map((chart) => {
+      // if (chart.renderTo.id == "container_crude_production") {
+      chart.series.map((s, i) => {
+        s.name = `Fra: ${i}`;
+      });
+      chart.isDirtyLegend = true;
+      chart.redraw();
+      // }
+    });
   });
 }
-loadAllCharts();
+loadAllCharts(fra);
