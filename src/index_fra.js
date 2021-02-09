@@ -1,4 +1,5 @@
 import { generalTheme, frenchTheme } from "./modules/themes";
+import { translate } from "./modules/translateSeries.js";
 import { instructionsChart } from "./modules/charts";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
@@ -66,17 +67,8 @@ async function loadAllCharts(fra) {
     jenniferRatingsMulti(fra.ratingsMultiple),
   ];
   Promise.allSettled(arrayOfCharts).then((value) => {
+    translate();
     console.timeEnd(`chart loading`);
-    // This should be made into a function and only called in the french series
-    Highcharts.charts.map((chart) => {
-      // if (chart.renderTo.id == "container_crude_production") {
-      chart.series.map((s, i) => {
-        s.name = `Fra: ${i}`;
-      });
-      chart.isDirtyLegend = true;
-      chart.redraw();
-      // }
-    });
   });
 }
 loadAllCharts(fra);
