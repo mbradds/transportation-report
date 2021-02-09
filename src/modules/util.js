@@ -277,3 +277,15 @@ export const annotation = (x, y, bdColor, text) => {
     draggable: "",
   };
 };
+
+export const frenchAxis = (ax, names) => {
+  if (names) {
+    if (names.hasOwnProperty(ax.value)) {
+      return names[ax.value];
+    } else {
+      return ax.value;
+    }
+  } else {
+    return ax.value;
+  }
+};

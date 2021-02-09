@@ -3,15 +3,16 @@
   "ieWarnTitle": "French warning title",
   "instructionsChart": {
     "annotation": "Fra: Click on this icon to download chart images/data:",
-    "series1": "Fra: Data 1 (click to filter)",
-    "series2": "Fra: Data 2 (click to filter)"
+    "series1": "Données 1 (cliquez pour filtrer)",
+    "series2": "Données 2 (cliquez pour filtrer)"
   },
   "crudeProduction": {
     "title": "Production de pétrole brut",
     "source": "Source : Avenir énergétique"
   },
   "crudeExports": {
-    "padds": { "other": "Autre" }
+    "padds": { "other": "Autre" },
+    "credits": "Source : Système de suivi des produits de la Régie"
   },
   "crudePrices": {
     "source": "Source : NE2 Group"
@@ -79,7 +80,8 @@
   "nglDestination": {
     "figureNum": "Figure 23:",
     "exports": "Destination d’exportation",
-    "noData": "Aucune exportation"
+    "noData": "Aucune exportation",
+    "credits": "Source : Système de suivi des produits de la Régie"
   },
   "settlements": {
     "active": "Règlement(s) actif(s)",
@@ -95,9 +97,13 @@
     "tooltipActiveYears": "years",
     "tooltipInService": "in-service date",
     "tooltipEnter": "enter CER/NEB Jurisdiction date",
-    "start": "Fra: Start:",
-    "end": "Fra: End:",
-    "duration": "Fra: Duration:"
+    "start": "début:",
+    "end": "fin:",
+    "duration": "durée:",
+    "legend": {
+      "Settlements with fixed end date": "Règlements assortis d’une date de fin déterminée",
+      "Settlements without fixed end date": "Règlements non assortis d’une date de fin déterminée"
+    }
   },
   "tolls": {
     "source": "Source : Régie",
@@ -108,26 +114,31 @@
     "dataLabel": "Total des ressources financières:",
     "billy": "en milliards de dollars CA",
     "titleResource": "Instruments financiers utilisés dans le plan relatif aux ressources financières:",
-    "pipe": "Fra: Pipelines",
+    "pipe": "pipelines",
     "yAxisResource1": "Nombre de sociétés utilisant des ressources financières",
     "yAxisResource2": "Ressources financières (en milliards de dollars CA)",
     "source": "Source : Régie",
-    "tooltipClass": "Fra: Companies in",
+    "tooltipClass": "entreprises en",
     "titleClass": "Limites de responsabilité absolue par catégorie:",
     "yAxisClass": "Exigences relatives aux ressources financières (en milliards de dollars CA)"
   },
   "abandon": {
     "pctAside": "Fra: % set-aside:",
     "titleTotal": "Coûts de la cessation d’exploitation des pipelines réglementés par la Régie",
-    "billy": "Fra: billion",
+    "billy": "milliard",
     "title": "Ventilation des coûts de la cessation d’exploitation des sociétés du groupe 1",
     "source": "Source : Régie",
-    "yAxis": "Coûts de la cessation d’exploitation (en milliards de dollars)"
+    "yAxis": "Coûts de la cessation d’exploitation (en milliards de dollars)",
+    "totalAxis": {
+      "All CER Regulated Pipeline Companies": "Toutes les sociétés pipelinières réglementées par la Régie",
+      "Group 1 Pipeline Companies": "Sociétés pipelinières du groupe 1",
+      "Group 2 Pipeline Companies": "Sociétés pipelinières du groupe 2"
+    }
   },
   "finance": {
     "milly": "Fra: C$ (Millions)",
     "source": "Source : REGDOCS de la Régie",
-    "pipe": "Fra: pipelines",
+    "pipe": "pipelines",
     "legend": "Des symboles plus gros indiquent les données qui se chevauchent. Cliquer sur les légendes pour afficher moins de données.",
     "noData": "Aucune donnée financière"
   },
@@ -143,5 +154,34 @@
     "level": "De qualité inférieure",
     "tooltip": "Qualité du crédit :",
     "noData": "Sélectionner un pipeline pour voir les cotes de solvabilité"
+  },
+  "pipeline_name": {
+    "Alliance Pipeline": "Alliance Pipeline Ltd.",
+    "Aurora Pipeline": "Aurora Pipeline",
+    "Brunswick Pipeline": "Gazoduc Brunswick d’Emera",
+    "Cochin Pipeline": "Cochin de Kinder Morgan",
+    "Enbridge Bakken System": "Enbridge Bakken System",
+    "Enbridge BC Pipeline": "Enbridge BC Pipeline",
+    "Enbridge Canadian Mainline": "Réseau principal d’Enbridge",
+    "Express Pipeline": "Express Pipeline",
+    "Foothills System": "Foothills System",
+    "Genesis Pipeline": "Genesis Pipeline",
+    "Keystone Pipeline": "Keystone Pipeline",
+    "M&NP Pipeline": "M&NP Pipeline",
+    "Milk River Pipeline": "Milk River Pipeline",
+    "Montreal Pipeline": "Montréal",
+    "NGTL System": "NGTL System",
+    "Norman Wells Pipeline": "Norman Wells d’Enbridge",
+    "Southern Lights Pipeline": "Southern Lights Pipeline",
+    "TC Canadian Mainline": "Réseau principal de TransCanada",
+    "TQM Pipeline": "Gazoduc Trans Québec & Maritimes",
+    "Trans Mountain Pipeline": "Trans Mountain Pipeline",
+    "Trans-Northern Pipeline": "Trans-Nord",
+    "Vector Pipeline": "Vector Pipeline",
+    "GDP Deflator": "Indice implicite du PIB"
+  },
+  "company_name": {
+    "Trans Quebec and Maritimes Pipeline Inc.": "Gazoduc Trans Quebec & Maritimes Inc.",
+    "Trans-Northern Pipelines Inc.": "Pipelines Trans-Nord Inc."
   }
 }

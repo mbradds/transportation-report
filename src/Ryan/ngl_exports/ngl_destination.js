@@ -83,7 +83,8 @@ const createChart = (lang) => {
     var paddMap = createPaddMap(
       "container_padd_map_ngl",
       nglDestChart,
-      nglDestinationColors
+      nglDestinationColors,
+      lang
     );
   } catch (err) {
     errorChart("container_padd_map_ngl");

@@ -75,6 +75,10 @@ const createChart = (lang) => {
         type: "column",
       },
 
+      credits: {
+        text: "",
+      },
+
       plotOptions: {
         series: {
           states: {

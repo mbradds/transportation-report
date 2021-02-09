@@ -1,9 +1,9 @@
-import { cerPalette } from "../../modules/util.js";
+import { cerPalette, frenchAxis } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import abandonData from "./Modified.json";
 import Series from "highseries";
 
-const createChart = (lang) => {
+const createChart = (lang, names) => {
   const colors = {
     "Amounts Set Aside": cerPalette["Sun"],
     "Remaining Estimate": cerPalette["Night Sky"],
@@ -182,6 +182,11 @@ const createChart = (lang) => {
         stackLabels: {
           enabled: true,
         },
+        labels: {
+          formatter: function () {
+            return lang.totalAxis[this.value];
+          },
+        },
       },
 
       tooltip: {
@@ -221,6 +226,11 @@ const createChart = (lang) => {
       },
       xAxis: {
         categories: true,
+        labels: {
+          formatter: function () {
+            return frenchAxis(this, names);
+          },
+        },
       },
 
       legend: {
@@ -297,8 +307,8 @@ const createChart = (lang) => {
   }
 };
 
-export function jenniferAbandonment(lang) {
+export function jenniferAbandonment(lang, names = false) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, names)), 0);
   });
 }

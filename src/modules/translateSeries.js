@@ -1,3 +1,5 @@
+import fra from "./fra.json";
+
 const frenchSeries = {
   container_crude_production: {
     "Conventional Light": "Léger classique",
@@ -109,6 +111,25 @@ const frenchSeries = {
   container_ngl_destination: {
     Other: "Autre",
   },
+  container_settlements_oil: {
+    "Settlements with fixed end date":
+      "Règlements assortis d’une date de fin déterminée",
+  },
+  container_fin_resources_class: {
+    Oil: "pétrole",
+    Gas: "gaz",
+  },
+  container_fin_resources: {
+    "Companies using Financial Instrument":
+      "Sociétés ayant recours à un instrument financier",
+    "Financial Instrument Total": "Total des instruments financiers",
+  },
+  container_abandonment: {
+    "Amounts Set Aside": "Sommes mises de côté",
+    "Remaining Estimate": "Estimation restante",
+  },
+  container_tolls_oil: fra.pipeline_name,
+  container_tolls_gas: fra.pipeline_name,
 };
 
 export function translate() {

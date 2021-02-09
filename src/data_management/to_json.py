@@ -315,7 +315,8 @@ def readExcel(name, sheet='pq', sql=False):
                                                'Enbridge Canadian Mainline': 'Enbridge Pipelines Inc.',
                                                'Norman Wells Pipeline': 'Enbridge Pipelines (NW) Inc.',
                                                'Trans-Northern Pipeline': 'Trans-Northern Pipelines Inc.',
-                                               'Westcoast Transmission': 'Westcoast Energy Inc.'})
+                                               'Westcoast Transmission': 'Westcoast Energy Inc.',
+                                               'Trans Quebec & Maritimes Pipeline (TQM) Inc.': 'Trans Quebec and Maritimes Pipeline Inc.'})
         df = df.sort_values(by=['ACE'], ascending=False)
         df = df[df['Company'] != 'Westcoast G & P']
         write_path = os.path.join(os.getcwd(), '../Jennifer/abandonment_funding/', sheet+'.json')
@@ -604,6 +605,8 @@ def tolls(name):
     df = df.sort_values(by=['Commodity', 'Pipeline', 'Start', 'End'])
     df = normalize_dates(df, ['Start', 'End'])
     del df['End']
+    df['Commodity'] = df['Commodity'].replace({'Crude Oil Breakdown': 'oil',
+                                               'Natural Gas Breakdown': 'gas'})
     write_path = os.path.join(os.getcwd(), '../Cassandra/tolls/', 'tolls.json')
     saveJson(df, write_path)
     return df
@@ -789,7 +792,7 @@ if __name__ == '__main__':
     # df = readExcel('marine_exports.xlsx','marine exports')
 
     # sara
-    df = readCersei('gas_ex_wcsb_traffic.sql', 'gas_traffic.json')
+    # df = readCersei('gas_ex_wcsb_traffic.sql', 'gas_traffic.json')
     # df = readCersei('gas_2019_avg.sql','gas_2019.json')
     # dfmnp,dfoffshore = st_stephen()
 
@@ -813,7 +816,7 @@ if __name__ == '__main__':
     # df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     # df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
     # df, scale = creditRatings()
-    # df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
+    df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
 
     # other
     # df = writeExcelCredit(name='CreditTables.xlsx',sql=True)

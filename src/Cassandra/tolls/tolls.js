@@ -20,7 +20,7 @@ const createChart = (lang) => {
   const splitCommodity = (data) => {
     const [oil, gas] = [[], []];
     data.map((row) => {
-      if (row.Commodity == "Crude Oil Breakdown") {
+      if (row.Commodity == "oil") {
         oil.push(row);
       } else {
         gas.push(row);
@@ -29,7 +29,16 @@ const createChart = (lang) => {
     return [oil, gas];
   };
 
-  const tollColors = {
+  const oilColors = {
+    "GDP Deflator": cerPalette["Cool Grey"],
+    "Trans-Northern Pipeline": cerPalette["Aubergine"],
+    "Keystone Pipeline": cerPalette["Forest"],
+    "Express Pipeline": cerPalette["Cool Grey"],
+    "Enbridge Canadian Mainline": cerPalette["Flame"],
+    "Trans Mountian Pipeline": cerPalette["Night Sky"],
+  };
+
+  const gasColors = {
     "GDP Deflator": cerPalette["Cool Grey"],
     "TC Canadian Mainline": cerPalette["Forest"],
     "Enbridge BC Pipeline": cerPalette["Aubergine"],
@@ -37,10 +46,6 @@ const createChart = (lang) => {
     "Alliance Pipeline": cerPalette["Ocean"],
     "M&NP Pipeline": cerPalette["Sun"],
     "NGTL System": cerPalette["Flame"],
-    "Trans-Northern Pipeline": cerPalette["Aubergine"],
-    "Keystone Pipeline": cerPalette["Forest"],
-    "Express Pipeline": cerPalette["Cool Grey"],
-    "Enbridge Canadian Mainline": cerPalette["Flame"],
   };
 
   const createTollsChart = (seriesData, div) => {
@@ -97,7 +102,7 @@ const createChart = (lang) => {
         xCol: "Start",
         yCols: "Pipeline",
         valuesCol: "Rate Normalized",
-        colors: tollColors,
+        colors: oilColors,
       });
       var chartTollsOil = createTollsChart(
         tollChartTypes(oilseries.hcSeries),
@@ -113,7 +118,7 @@ const createChart = (lang) => {
         xCol: "Start",
         yCols: "Pipeline",
         valuesCol: "Rate Normalized",
-        colors: tollColors,
+        colors: gasColors,
       });
       var chartTollsGas = createTollsChart(
         tollChartTypes(gasseries.hcSeries),

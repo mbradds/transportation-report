@@ -11,7 +11,8 @@
     "source": "Source: Energy Futures"
   },
   "crudeExports": {
-    "padds": { "other": "Other" }
+    "padds": { "other": "Other" },
+    "credits": "Source: CER Commodity Tracking System"
   },
   "crudePrices": {
     "source": "Source: ne2 Group"
@@ -79,7 +80,8 @@
   "nglDestination": {
     "figureNum": "Figure 23:",
     "exports": "Export Destination",
-    "noData": "No Exports"
+    "noData": "No Exports",
+    "credits": "Source: CER Commodity Tracking System"
   },
   "settlements": {
     "active": "Active settlement(s)",
@@ -97,7 +99,11 @@
     "tooltipEnter": "enter CER/NEB Jurisdiction date",
     "start": "Start:",
     "end": "End:",
-    "duration": "Duration:"
+    "duration": "Duration:",
+    "legend": {
+      "Settlements with fixed end date": "Settlements with fixed end date",
+      "Settlements without fixed end date": "Settlements without fixed end date"
+    }
   },
   "tolls": {
     "source": "Source: CER",
@@ -122,7 +128,12 @@
     "billy": "billion",
     "title": "Group 1 Abandonment Breakdown",
     "source": "Source: CER",
-    "yAxis": "Abandonment Costs (Billions)"
+    "yAxis": "Abandonment Costs (Billions)",
+    "totalAxis": {
+      "All CER Regulated Pipeline Companies": "All CER Regulated Pipeline Companies",
+      "Group 1 Pipeline Companies": "Group 1 Pipeline Companies",
+      "Group 2 Pipeline Companies": "Group 2 Pipeline Companies"
+    }
   },
   "finance": {
     "milly": "C$ (Millions)",

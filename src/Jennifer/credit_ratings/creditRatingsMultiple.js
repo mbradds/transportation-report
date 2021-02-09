@@ -88,6 +88,10 @@ const createChart = (lang) => {
         type: "line",
       },
 
+      credits: {
+        text: "",
+      },
+
       plotOptions: {
         line: {
           marker: {
@@ -123,7 +127,7 @@ const createChart = (lang) => {
           to: 16,
           zIndex: 2,
           label: {
-            text: "Non-Investment Grade",
+            text: lang.level,
             align: "center",
           },
         },

@@ -91,7 +91,7 @@ export const errorChart = (div) => {
   });
 };
 
-export const createPaddMap = (div, actionChart, paddColors) => {
+export const createPaddMap = (div, actionChart, paddColors, lang) => {
   return new Highcharts.mapChart(div, {
     chart: {
       type: "map",
@@ -107,7 +107,7 @@ export const createPaddMap = (div, actionChart, paddColors) => {
     },
 
     credits: {
-      text: "Source: CER Commodity Tracking System",
+      text: lang.credits,
     },
 
     legend: {

@@ -1,8 +1,13 @@
-import { cerPalette, creditsClick, dateFormat } from "../../modules/util.js";
+import {
+  cerPalette,
+  creditsClick,
+  dateFormat,
+  frenchAxis,
+} from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import settleJson from "./settleJson.json";
 
-const createChart = (lang) => {
+const createChart = (lang, names) => {
   const oneDay = 86400000;
 
   const legendNames = {
@@ -267,7 +272,7 @@ const createChart = (lang) => {
         uniqueNames: true,
         labels: {
           formatter: function () {
-            return this.value;
+            return frenchAxis(this, names);
           },
           events: {
             click: function () {
@@ -286,7 +291,7 @@ const createChart = (lang) => {
                 });
                 for (var [lName, lColor] of Object.entries(legendColors)) {
                   if (subColors.has(lColor)) {
-                    legendText2 += `<span style="font-weight:bold; color: ${lColor}">&#9679 ${lName} &nbsp &nbsp</span>`;
+                    legendText2 += `<span style="font-weight:bold; color: ${lColor}">&#9679 ${lang.legend[lName]} &nbsp &nbsp</span>`;
                   }
                 }
               }
@@ -322,8 +327,7 @@ const createChart = (lang) => {
               },
               backgroundColor: "white",
               borderColor: "white",
-              text:
-                "Click on a pipeline name<br>to view individual settlements",
+              text: lang.annotation,
             },
           ],
           draggable: "",
@@ -401,6 +405,7 @@ const createChart = (lang) => {
         maxDate,
         "container_settlements_oil"
       );
+      // console.log(settlementChartOil);
       settlementChartOil.redraw();
     } catch (err) {
       errorChart("container_settlements_oil");
@@ -423,8 +428,8 @@ const createChart = (lang) => {
   return mainSettlements();
 };
 
-export function cassandraSettlements(lang) {
+export function cassandraSettlements(lang, names = false) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, names)), 0);
   });
 }

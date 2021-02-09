@@ -168,7 +168,7 @@ const createChart = (lang) => {
       },
 
       title: {
-        text: filters.Type + ": " + filters.Category + lang.pipelines,
+        text: filters.Type + ": " + filters.Category + " " + lang.pipe,
       },
 
       legend: {

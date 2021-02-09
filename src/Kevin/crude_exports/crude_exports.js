@@ -79,7 +79,8 @@ const createChart = (lang) => {
     var paddMap = createPaddMap(
       "container_padd_map",
       chartCrudeExports,
-      crudeExportColors
+      crudeExportColors,
+      lang
     );
   } catch (err) {
     errorChart("container_padd_map");
