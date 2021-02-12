@@ -230,7 +230,7 @@ export const createPaddMap = (div, actionChart, paddColors, lang) => {
   });
 };
 
-export async function instructionsChart(lang) {
+function createInstructionChart(lang) {
   return new Highcharts.chart("hc-instructions", {
     chart: {
       borderWidth: 1,
@@ -283,8 +283,8 @@ export async function instructionsChart(lang) {
   });
 }
 
-// export function instructionsChart() {
-//   return new Promise((resolve) => {
-//     setTimeout(() => resolve(createInstructionChart()), 0);
-//   });
-// }
+export function instructionsChart(lang) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(createInstructionChart(lang)), 0);
+  });
+}

@@ -8,6 +8,9 @@ const frenchSeries = {
     "Mined Bitumen": "Bitume extrait",
     "In Situ Bitumen": "Bitume in situ",
   },
+  container_crude_exports: {
+    Other: "Autre",
+  },
   container_crude_imports: {
     "U.S. crude oil imports from ROW":
       "Importations américaines de pétrole brut du reste du monde",

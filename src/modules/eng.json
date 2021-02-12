@@ -11,7 +11,6 @@
     "source": "Source: Energy Futures"
   },
   "crudeExports": {
-    "padds": { "other": "Other" },
     "credits": "Source: CER Commodity Tracking System"
   },
   "crudePrices": {

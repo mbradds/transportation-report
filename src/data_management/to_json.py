@@ -202,6 +202,7 @@ def readExcel(name, sheet='pq', sql=False):
                                                    'U.S crude oil exports': 'U.S. crude oil exports'})
 
         df['Value'] = df['Value'].round(2)
+        del df['Units']
         write_path = os.path.join(os.getcwd(), '../Kevin/us_imports/', name.split('.')[0]+'.json')
 
     if name == 'crude-oil-exports-by-destination-annual.xlsx':
@@ -769,11 +770,15 @@ def ngl_exports(name="natural-gas-liquids-exports-monthly.csv"):
                                                        'Alberta': 'ab',
                                                        'Manitoba': 'mb',
                                                        'British Columbia': 'bc'})
+    for num in ['Marine', 'Pipeline', 'Railway', 'Truck']:
+        df_origin[num] = df_origin[num].round(1)
+    for num in ['Other', 'PADD I', 'PADD II', 'PADD III', 'PADD IV', 'PADD V']:
+        df_destination[num] = df_destination[num].round(1)
     df_destination = df_destination.sort_values(by=['Period', 'Product'])
     write_path_origin = os.path.join(os.getcwd(), '../Ryan/ngl_exports/', 'origin.json')
     write_path_destination = os.path.join(os.getcwd(), '../Ryan/ngl_exports/', 'destination.json')
     saveJson(df_origin, write_path_origin)
-    saveJson(df_destination, write_path_destination)
+    saveJson(df_destination, write_path_destination, 1)
     return df_origin, df_destination
 
 
@@ -782,12 +787,12 @@ if __name__ == '__main__':
     # kevin
     # df = readExcel('Crude_Oil_Production.xlsx', sheet='Crude Oil Production')
     # df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
-    # df = readExcel('UScrudeoilimports.xlsx',sheet='pq')
+    # df = readExcel('UScrudeoilimports.xlsx', sheet='pq')
     # df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
 
     # colette
     # df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
-    # df = readExcel('figures.xlsx',sheet='Available for Export')
+    # df = readExcel('figures.xlsx', sheet='Available for Export')
     # df = readCersei('crude_mode.sql','crude_mode.json')
     # df = readExcel('marine_exports.xlsx','marine exports')
 
@@ -799,12 +804,12 @@ if __name__ == '__main__':
     # rebecca
     # df = readCersei('platts_gas.sql','gas_prices.json')
     # df = readExcel('Natural_Gas_Production.xlsx')
-    # df = readExcel('natural-gas-exports-and-imports-annual.xlsx','Gas Trade CER')
+    # df = readExcel('natural-gas-exports-and-imports-annual.xlsx', 'Gas Trade CER')
 
     # cassandra
     # df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
     # df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
-    # settleJson = negotiated_settlements()
+    settleJson = negotiated_settlements()
 
     # ryan
     # df_origin, df_destination = ngl_exports()
@@ -816,8 +821,10 @@ if __name__ == '__main__':
     # df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     # df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
     # df, scale = creditRatings()
-    df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
+    # df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
 
     # other
     # df = writeExcelCredit(name='CreditTables.xlsx',sql=True)
     print('Finished saving json data')
+
+#%%
