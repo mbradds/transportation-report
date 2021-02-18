@@ -121,9 +121,12 @@ const createChart = (lang, fraLevel) => {
         min: minY - 1,
         labels: {
           formatter: function () {
-            return `${scaleData[this.value].creditQuality}<b> - ${
-              scaleData[this.value]["S&P"]
-            },
+            if (fraLevel) {
+              var langLevel = fraLevel[scaleData[this.value].creditQuality];
+            } else {
+              var langLevel = scaleData[this.value].creditQuality;
+            }
+            return `${langLevel}<b> - ${scaleData[this.value]["S&P"]},
               ${scaleData[this.value]["Moody's"]},
               ${scaleData[this.value]["DBRS"]}</b>`;
           },

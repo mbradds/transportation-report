@@ -79,10 +79,29 @@ const createChart = (lang, names) => {
     });
   };
 
+  const langSettlements = (lang) => {
+    if (lang.names) {
+      return function (engName, fraNames) {
+        if (fraNames.hasOwnProperty(engName)) {
+          return fraNames[engName];
+        } else {
+          return engName;
+        }
+      };
+    } else {
+      return function (engName, fraNames) {
+        return engName;
+      };
+    }
+  };
+  langSettlements(lang);
+
   const settlementSeries = (dataJson) => {
+    const applySubNames = langSettlements(lang);
     const addRow = (row) => {
       return {
-        name: row["Settlement Name"],
+        name: applySubNames(row["Settlement Name"], lang.names),
+        //name: row["Settlement Name"],
         id: row["Settlement Name"],
         parent: row.Company,
         color: row.color,
@@ -272,7 +291,7 @@ const createChart = (lang, names) => {
         uniqueNames: true,
         labels: {
           formatter: function () {
-            return frenchAxis(this, names);
+            return frenchAxis(this, names, lang.names);
           },
           events: {
             click: function () {
@@ -405,7 +424,6 @@ const createChart = (lang, names) => {
         maxDate,
         "container_settlements_oil"
       );
-      // console.log(settlementChartOil);
       settlementChartOil.redraw();
     } catch (err) {
       errorChart("container_settlements_oil");

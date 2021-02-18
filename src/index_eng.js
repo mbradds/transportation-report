@@ -66,16 +66,6 @@ async function loadAllCharts(eng) {
   ];
   Promise.allSettled(arrayOfCharts).then((value) => {
     console.timeEnd(`chart loading`);
-    // This should be made into a function and only called in the french series
-    // Highcharts.charts.map((chart) => {
-    //   if (chart.renderTo.id == "container_crude_production") {
-    //     chart.series.map((s, i) => {
-    //       s.name = `New Name! ${i}`;
-    //     });
-    //     chart.isDirtyLegend = true;
-    //     chart.redraw();
-    //   }
-    // });
   });
 }
 loadAllCharts(eng);

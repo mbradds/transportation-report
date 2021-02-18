@@ -4,7 +4,7 @@ import creditData from "./CreditTables.json";
 import scaleData from "./Scale.json";
 import Series from "highseries";
 
-const createChart = (lang) => {
+const createChart = (lang, fraLevel) => {
   var ratingAgencies = ["S&P", "Moody's", "DBRS"];
 
   const selectDefaultMultiple = (select_name, optionsToSelect) => {
@@ -113,9 +113,12 @@ const createChart = (lang) => {
         min: minY - 1,
         labels: {
           formatter: function () {
-            return `${scaleData[this.value].creditQuality}<b> - ${
-              scaleData[this.value]["S&P"]
-            },
+            if (fraLevel) {
+              var langLevel = fraLevel[scaleData[this.value].creditQuality];
+            } else {
+              var langLevel = scaleData[this.value].creditQuality;
+            }
+            return `${langLevel}<b> - ${scaleData[this.value]["S&P"]},
               ${scaleData[this.value]["Moody's"]},
               ${scaleData[this.value]["DBRS"]}</b>`;
           },
@@ -287,8 +290,8 @@ const createChart = (lang) => {
   }
 };
 
-export function jenniferRatingsMulti(lang) {
+export function jenniferRatingsMulti(lang, fraLevel) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, fraLevel)), 0);
   });
 }
