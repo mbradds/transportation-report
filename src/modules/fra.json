@@ -2,7 +2,7 @@
   "ieWarnMessage": "French warning placeholder",
   "ieWarnTitle": "French warning title",
   "instructionsChart": {
-    "annotation": "Fra: Click on this icon to download chart images/data:",
+    "annotation": "Cliquez sur cette icône pour télécharger les images/données de graphiques:",
     "series1": "Données 1 (cliquez pour filtrer)",
     "series2": "Données 2 (cliquez pour filtrer)"
   },
@@ -87,7 +87,7 @@
     "inService": "Pipeline en service",
     "cer": "Pipeline du ressort de la Régie/l’Office",
     "source": "Source : Régie",
-    "today": "(today, UTC)",
+    "today": "(Aujourd’hui, UTC)",
     "annotation": "Cliquer sur le nom d’un pipeline <br> pour consulter les chaque règlement",
     "tooltipEnd": "Aucune date de fin déterminée (la date de fin/durée du graphique est prévue dans l’avenir et ne correspond pas nécessairement à la date indiquée).",
     "tooltipActiveStart": "Fra: Active settlement(s) start:",
@@ -106,8 +106,8 @@
   },
   "tolls": {
     "source": "Source : Régie",
-    "xAxis": "Toll start date",
-    "yAxis": "Benchmark Toll (2015 = 1)"
+    "xAxis": "Entrée en vigueur des droits :",
+    "yAxis": "Droit repère (2015 = 1)"
   },
   "finResource": {
     "dataLabel": "Total des ressources financières:",
@@ -119,10 +119,30 @@
     "source": "Source : Régie",
     "tooltipClass": "entreprises en",
     "titleClass": "Limites de responsabilité absolue par catégorie:",
-    "yAxisClass": "Exigences relatives aux ressources financières (en milliards de dollars CA)"
+    "yAxisClass": "Exigences relatives aux ressources financières (en milliards de dollars CA)",
+    "instruments": {
+      "Insurance": "Assurance",
+      "Lines of Credit": "Marge de crédit",
+      "Cash": "Encaisse",
+      "Commercial Paper": "Papier commercial",
+      "Credit Facility": "Facilité de crédit",
+      "Parental Guarantee": "Lettre de garantie de la société mère",
+      "Other financial resources:": "Autres ressources financières",
+      "Surety Bond / Indemnity etc.": "Cautionnement / indemnité, etc.",
+      "Letter of Credit": "Lettre de crédit"
+    },
+    "classes": {
+      "Oil Class 1": "Pétrole – Catégorie 1",
+      "Oil Class 2": "Pétrole – Catégorie 2",
+      "Oil Class 3": "Pétrole – Catégorie 3",
+      "Gas Class 1": "Gaz – Catégorie 1",
+      "Gas Class 2": "Gaz – Catégorie 2",
+      "Gas Class 3": "Gaz – Catégorie 3",
+      "Gas Class 4": "Gaz – Catégorie 4"
+    }
   },
   "abandon": {
-    "pctAside": "Fra: % set-aside:",
+    "pctAside": "% mis de côté",
     "titleTotal": "Coûts de la cessation d’exploitation des pipelines réglementés par la Régie",
     "billy": "milliard",
     "title": "Ventilation des coûts de la cessation d’exploitation des sociétés du groupe 1",
@@ -154,6 +174,34 @@
     "tooltip": "Qualité du crédit :",
     "noData": "Sélectionner un pipeline pour voir les cotes de solvabilité"
   },
+  "ratingsLevel": {
+    "Highest credit quality": "Qualité de crédit la plus élevée",
+    "Superior/High Quality #1": "Supérieure/qualité élevée 1",
+    "Superior/High Quality #2": "Supérieure/qualité élevée 2",
+    "Superior/High Quality #3": "Supérieure/qualité élevée 3",
+    "Good/Upper-Medium #1": "Bonne/Supérieure-moyenne 1",
+    "Good/Upper-Medium #2": "Bonne/Supérieure-moyenne 2",
+    "Good/Upper-Medium #3": "Bonne/Supérieure-moyenne 3",
+    "Adequate/Medium #1": "Acceptable/Moyenne 1",
+    "Adequate/Medium #2": "Acceptable/Moyenne 2",
+    "Adequate/Medium #3": "Acceptable/Moyenne 3",
+    "Speculative #1": "Spéculative 1",
+    "Speculative #2": "Spéculative 2",
+    "Speculative #3": "Spéculative 3",
+    "Highly speculative #1": "Fortement spéculative 1",
+    "Highly speculative #2": "Fortement spéculative 2",
+    "Highly speculative #3": "Fortement spéculative 3",
+    "Very highly speculative #1": "Très fortement spéculative 1",
+    "Very highly speculative #2": "Très fortement spéculative 2",
+    "Very highly speculative #3": "Très fortement spéculative 3",
+    "Very highly speculative #4": "Très fortement spéculative 4",
+    "Very highly speculative #5": "Très fortement spéculative 5",
+    "Very highly speculative #6": "Très fortement spéculative 6",
+    "Very highly speculative #7": "Très fortement spéculative 7",
+    "Very highly speculative #8": "Très fortement spéculative 8",
+    "Very highly speculative #9": "Très fortement spéculative 9",
+    "Default": "Inexécution"
+  },
   "pipeline_name": {
     "Alliance Pipeline": "Alliance Pipeline Ltd.",
     "Aurora Pipeline": "Aurora Pipeline",
@@ -182,5 +230,8 @@
   "company_name": {
     "Trans Quebec and Maritimes Pipeline Inc.": "Gazoduc Trans Quebec & Maritimes Inc.",
     "Trans-Northern Pipelines Inc.": "Pipelines Trans-Nord Inc."
+  },
+  "shared": {
+    "estimate": "Valeur estimative"
   }
 }

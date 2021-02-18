@@ -41,7 +41,7 @@ async function loadAllCharts(fra) {
   console.time(`chart loading`);
   let arrayOfCharts = [
     instructionsChart(fra.instructionsChart),
-    kevinCrudeProduction(fra.crudeProduction),
+    kevinCrudeProduction(fra.crudeProduction, fra.shared),
     kevinCrudeExports(fra.crudeExports),
     kevinCrudePrices(fra.crudePrices),
     kevinUsImports(fra.crudeImports),
@@ -49,13 +49,13 @@ async function loadAllCharts(fra) {
     coletteCrudeByRail(fra.crudeByRail),
     coletteMarine(fra.marineCrudeExports),
     coletteCrudeTakeaway(fra.crudeTakeaway),
-    rebeccaGasProd(fra.gasProduction),
+    rebeccaGasProd(fra.gasProduction, fra.shared),
     rebeccaGasTrade(fra.gasTrade),
     rebeccaGasPrices(fra.gasPrices),
     saraGasTraffic(fra.gasTraffic),
     saraMnp(fra.gasMnp),
     sara2019(fra.gas2019),
-    ryanNglProduction(fra.nglProduction),
+    ryanNglProduction(fra.nglProduction, fra.shared),
     ryanNglExports(fra.nglExports),
     ryanNglDestination(fra.nglDestination),
     cassandraSettlements(fra.settlements, fra.pipeline_name),
@@ -63,8 +63,8 @@ async function loadAllCharts(fra) {
     jenniferFinResources(fra.finResource),
     jenniferAbandonment(fra.abandon, fra.company_name),
     cassandraAllPipes(fra.finance),
-    jenniferRatingsCross(fra.ratingsCross),
-    jenniferRatingsMulti(fra.ratingsMultiple),
+    jenniferRatingsCross(fra.ratingsCross, fra.ratingsLevel),
+    jenniferRatingsMulti(fra.ratingsMultiple, fra.ratingsLevel),
   ];
   Promise.allSettled(arrayOfCharts).then((value) => {
     translate();

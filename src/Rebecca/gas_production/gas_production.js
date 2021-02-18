@@ -3,7 +3,7 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import gasProdData from "./Natural_Gas_Production.json";
 import Series from "highseries";
 
-const createChart = (lang) => {
+const createChart = (lang, langShared) => {
   const gasProdColors = {
     Solution: cerPalette["Aubergine"],
     "Conventional Non-tight": cerPalette["Forest"],
@@ -29,6 +29,7 @@ const createChart = (lang) => {
       sourceText: lang.source,
       units: units,
       series: series.hcSeries,
+      lang: langShared,
     };
     var gasProdChart = productionChart(params);
     var selectUnitsGasProd = document.getElementById("select_units_gas_prod");
@@ -70,8 +71,8 @@ const createChart = (lang) => {
   }
 };
 
-export function rebeccaGasProd(lang) {
+export function rebeccaGasProd(lang, langShared) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langShared)), 0);
   });
 }

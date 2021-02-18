@@ -3,7 +3,7 @@ import { errorChart } from "../../modules/charts.js";
 import creditData from "../credit_ratings/CreditTables.json";
 import scaleData from "../credit_ratings/Scale.json";
 
-const createChart = (lang) => {
+const createChart = (lang, fraLevel) => {
   const ratingsColors = {
     DBRS: cerPalette["Sun"],
     "S&P": cerPalette["Night Sky"],
@@ -202,8 +202,8 @@ const createChart = (lang) => {
   }
 };
 
-export function jenniferRatingsCross(lang) {
+export function jenniferRatingsCross(lang, fraLevel) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, fraLevel)), 0);
   });
 }

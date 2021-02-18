@@ -8,7 +8,7 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import crudeProdData from "./Crude_Oil_Production.json";
 import Series from "highseries";
 
-const createChart = (lang) => {
+const createChart = (lang, langShared) => {
   const crudeProdColors = {
     ["Conventional Light"]: cerPalette["Sun"],
     ["Conventional Heavy"]: cerPalette["Night Sky"],
@@ -86,6 +86,7 @@ const createChart = (lang) => {
       sourceText: lang.source,
       units: units,
       series: series.hcSeries,
+      lang: langShared,
     };
 
     var chartCrude = productionChart(params);
@@ -167,8 +168,8 @@ const createChart = (lang) => {
   }
 };
 
-export function kevinCrudeProduction(lang) {
+export function kevinCrudeProduction(lang, langShared) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langShared)), 0);
   });
 }

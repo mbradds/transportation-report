@@ -3,7 +3,7 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import nglProdData from "./figures.json";
 import Series from "highseries";
 
-const createChart = (lang) => {
+const createChart = (lang, langShared) => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
   var nglProdColors = {
     Ethane: cerPalette["Ocean"],
@@ -22,9 +22,10 @@ const createChart = (lang) => {
       div: "container_ngl_production",
       sourceLink:
         "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/index.html",
-      sourceText: "Source: Energy Futures",
+      sourceText: lang.source,
       units: units,
       series: series.hcSeries,
+      lang: langShared,
     };
     var chartNgl = productionChart(params);
     var selectUnitsNglProd = document.getElementById("select_units_ngl_prod");
@@ -65,8 +66,8 @@ const createChart = (lang) => {
   }
 };
 
-export function ryanNglProduction(lang) {
+export function ryanNglProduction(lang, langShared) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langShared)), 0);
   });
 }

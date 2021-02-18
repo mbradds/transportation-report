@@ -147,6 +147,15 @@ export async function jenniferFinResources(lang) {
 
       xAxis: {
         type: "category",
+        labels: {
+          formatter: function () {
+            if (lang.instruments) {
+              return lang.instruments[this.value];
+            } else {
+              return this.value;
+            }
+          },
+        },
       },
       yAxis: [
         {
@@ -222,6 +231,15 @@ export async function jenniferFinResources(lang) {
 
       xAxis: {
         type: "category",
+        labels: {
+          formatter: function () {
+            if (lang.classes) {
+              return lang.classes[this.value];
+            } else {
+              return this.value;
+            }
+          },
+        },
       },
       yAxis: {
         endOnTick: false,

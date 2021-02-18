@@ -25,7 +25,7 @@ export const productionChart = (params) => {
 
     xAxis: {
       categories: true,
-      plotBands: bands(2019.5, 2020.5, "Estimated Value", 10),
+      plotBands: bands(2019.5, 2020.5, params.lang.estimate, 10),
     },
 
     tooltip: {

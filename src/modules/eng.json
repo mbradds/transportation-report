@@ -153,5 +153,8 @@
     "level": "Non-Investment Grade",
     "tooltip": "Credit Quality:",
     "noData": "Select a pipeline to view credit ratings"
+  },
+  "shared": {
+    "estimate": "Estimated Value"
   }
 }

@@ -39,7 +39,7 @@ async function loadAllCharts(eng) {
   console.time(`chart loading`);
   let arrayOfCharts = [
     instructionsChart(eng.instructionsChart),
-    kevinCrudeProduction(eng.crudeProduction),
+    kevinCrudeProduction(eng.crudeProduction, eng.shared),
     kevinCrudeExports(eng.crudeExports),
     kevinCrudePrices(eng.crudePrices),
     kevinUsImports(eng.crudeImports),
@@ -47,13 +47,13 @@ async function loadAllCharts(eng) {
     coletteCrudeByRail(eng.crudeByRail),
     coletteMarine(eng.marineCrudeExports),
     coletteCrudeTakeaway(eng.crudeTakeaway),
-    rebeccaGasProd(eng.gasProduction),
+    rebeccaGasProd(eng.gasProduction, eng.shared),
     rebeccaGasTrade(eng.gasTrade),
     rebeccaGasPrices(eng.gasPrices),
     saraGasTraffic(eng.gasTraffic),
     saraMnp(eng.gasMnp),
     sara2019(eng.gas2019),
-    ryanNglProduction(eng.nglProduction),
+    ryanNglProduction(eng.nglProduction, eng.shared),
     ryanNglExports(eng.nglExports),
     ryanNglDestination(eng.nglDestination),
     cassandraSettlements(eng.settlements),
@@ -61,8 +61,8 @@ async function loadAllCharts(eng) {
     jenniferFinResources(eng.finResource),
     jenniferAbandonment(eng.abandon),
     cassandraAllPipes(eng.finance),
-    jenniferRatingsCross(eng.ratingsCross),
-    jenniferRatingsMulti(eng.ratingsMultiple),
+    jenniferRatingsCross(eng.ratingsCross, false),
+    jenniferRatingsMulti(eng.ratingsMultiple, false),
   ];
   Promise.allSettled(arrayOfCharts).then((value) => {
     console.timeEnd(`chart loading`);
