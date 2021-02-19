@@ -9,7 +9,7 @@ import { errorChart } from "../../modules/charts.js";
 import crudeModeData from "./crude_mode.json";
 
 const createChart = (lang) => {
-  const crudeModeFilters = { Year: 2019 };
+  const crudeModeFilters = { Year: 2020 };
   const crudeModeColors = {
     Pipeline: cerPalette["Night Sky"],
     Marine: cerPalette["Ocean"],

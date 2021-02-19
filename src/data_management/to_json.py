@@ -66,7 +66,12 @@ def execute_sql(query_name):
     except:
         query = no_encoding_open(query_path)
 
-    if query_name in ['crude_mode.sql', 'CTS_OpenGov_Gas-report.sql']:
+    if query_name in ['crude_mode.sql',
+                      'CTS_OpenGov_Gas-report.sql',
+                      'CTS_OpenGov_CrudeByDestination_Annual-report.sql',
+                      'CTS_OpenGov_NGL-report.sql',
+                      'marine_exports.sql']:
+
         conn, engine = cer_connection(db='ndb-b1')
     else:
         conn, engine = cer_connection()
@@ -132,7 +137,7 @@ def readCersei(query, name=None):
         for d in delete:
             del df[d]
     if query == 'CTS_OpenGov_Gas-report.sql':
-        write_path = os.path.join(os.getcwd(), '../Rebecca/gas_trade/', name.split('.')[0]+'.json')
+        write_path = os.path.join(os.getcwd(), '../Rebecca/gas_trade/', name)
         df['Days in Year'] = [daysInYear(x) for x in df['Year']]
         df['Volume (Bcf/d)'] = (df['Volume (MCF)']/1000000)/df['Days in Year']
         df['Volume (Million m3/d)'] = (df['Volume (Thousand m3)']/1000)/df['Days in Year']
@@ -142,7 +147,15 @@ def readCersei(query, name=None):
         df['Region'] = df['Region'].replace({'U.S. MidWest': 'U.S. Midwest'})
         df = df.sort_values(by=['Year', 'Activity', 'Region'])
         df = normalize_numeric(df, ['Volume (Bcf/d)', 'Volume (Million m3/d)'], 2)
+    
+    if query == 'CTS_OpenGov_CrudeByDestination_Annual-report.sql':
+        df['Value'] = pd.to_numeric(df['Value'])
+        df['Value'] = (df['Value']/1000000).round(2)
+        write_path = os.path.join(os.getcwd(), '../Kevin/crude_exports/', name)
         
+    if query == 'marine_exports.sql':
+        df['Mb/d'] = pd.to_numeric(df['Mb/d'])
+        write_path = os.path.join(os.getcwd(), '../Colette/marine_exports/', name)
         
     if name == 'gas_prices.json':
         max_price, min_price = max(df['Price ($CN/GIG)']), min(df['Price ($CN/GIG)'])
@@ -218,14 +231,6 @@ def readExcel(name, sheet='pq', sql=False):
         del df['Units']
         write_path = os.path.join(os.getcwd(), '../Kevin/us_imports/', name.split('.')[0]+'.json')
 
-    if name == 'crude-oil-exports-by-destination-annual.xlsx':
-        df = df[df['PADD'] != 'Total']
-        df = df[df['Unit'] != 'm3/d']
-        df['Value'] = (df['Value']/1000000).round(2)
-        df['Unit'] = df['Unit'].replace({'bbl/d': 'MMb/d'})
-        del df['Unit']
-        write_path = os.path.join(os.getcwd(), '../Kevin/crude_exports/', name.split('.')[0]+'.json')
-
     if name == 'UScrudeoilimports.xlsx':
         df['Value'] = [round(x, 2) for x in df['Value']]
         write_path = os.path.join(os.getcwd(), '../Kevin/us_imports/', name.split('.')[0]+'.json')
@@ -241,13 +246,6 @@ def readExcel(name, sheet='pq', sql=False):
         df = df[df['Year'] >= 2015]
         write_path = os.path.join(os.getcwd(), '../Colette/crude_takeaway/', name.split('.')[0]+'.json')
 
-    if name == 'marine_exports.xlsx':
-        write_path = os.path.join(os.getcwd(), '../Colette/marine_exports/', name.split('.')[0]+'.json')
-        del df['b/d']
-        df['Thousand m3/d'] = df['Mb/d']
-        df = normalize_numeric(df, ['Mb/d'], 1)
-        df = normalize_dates(df, ['Date'])
-        del df['Thousand m3/d']
     if name == 'figures.xlsx' and sheet == 'ngl production':
         products = ['Ethane', 'Propane', 'Butanes']
         df = normalize_numeric(df, products, 1)
@@ -256,15 +254,7 @@ def readExcel(name, sheet='pq', sql=False):
     if name == 'Natural_Gas_Production.xlsx':
         df['Production Type'] = df['Production Type'].replace({'Non Associated': 'Conventional Non-tight'})
         write_path = os.path.join(os.getcwd(), '../Rebecca/gas_production/', name.split('.')[0]+'.json')
-    # if name == 'natural-gas-exports-and-imports-annual.xlsx':
-    #     # cal = calendar.Calendar()
-    #     df['Days in Year'] = [daysInYear(x) for x in df['Year']]
-    #     df['Volume (Bcf/d)'] = (df['Volume (MCF)']/1000000)/df['Days in Year']
-    #     df['Volume (Million m3/d)'] = (df['Volume (Thousand m3)']/1000)/df['Days in Year']
-    #     for delete in ['Volume (MCF)', 'Days in Year', 'Volume (Thousand m3)']:
-    #         del df[delete]
-    #     df = normalize_numeric(df, ['Volume (Bcf/d)', 'Volume (Million m3/d)'], 2)
-    #     write_path = os.path.join(os.getcwd(), '../Rebecca/gas_trade/', name.split('.')[0]+'.json')
+
     if name == 'CreditTables.xlsx':
         if sheet == 'ratings categories':
             df = normalize_text(df, ['Corporate Entity', 'Type', 'Credit Quality'])
@@ -731,13 +721,14 @@ def st_stephen():
 
 
 def ngl_exports(name="natural-gas-liquids-exports-monthly.csv"):
-    read_path = os.path.join(os.getcwd(), 'Data/', name)
-    df = pd.read_csv(read_path, engine='python')
+    # read_path = os.path.join(os.getcwd(), 'Data/', name)
+    # df = pd.read_csv(read_path, engine='python')
+    df = readCersei('CTS_OpenGov_NGL-report.sql', None)
     df['Period'] = pd.to_datetime(df['Period'])
     df = df[df['Period'].dt.year >= 2015]
     for delete in ['Value (CN$)',
                    'Value (US$)',
-                   'Price (CN cents/L)',
+                   'Price (CN cents/litre)',
                    'Price (US cents/gallon)',
                    'Year',
                    'Volume (m3)',
@@ -798,8 +789,8 @@ def ngl_exports(name="natural-gas-liquids-exports-monthly.csv"):
 if __name__ == '__main__':
     print('Starting to json process...')
     # kevin
-    # df = readExcel('Crude_Oil_Production.xlsx', sheet='Crude Oil Production')
-    # df = readExcel('crude-oil-exports-by-destination-annual.xlsx',sheet='pq')
+    # df = readExcel('Crude_Oil_Production.xlsx', sheet='Crude Oil Production')    
+    # df = readCersei('CTS_OpenGov_CrudeByDestination_Annual-report.sql', 'crude-oil-exports-by-destination-annual.json')
     # df = readExcel('UScrudeoilimports.xlsx', sheet='pq')
     # df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
 
@@ -807,7 +798,7 @@ if __name__ == '__main__':
     # df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
     # df = readExcel('figures.xlsx', sheet='Available for Export')
     # df = readCersei('crude_mode.sql','crude_mode.json')
-    # df = readExcel('marine_exports.xlsx','marine exports')
+    # df = readCersei('marine_exports.sql','marine_exports.json')
 
     # sara
     # df = readCersei('gas_ex_wcsb_traffic.sql', 'gas_traffic.json')
@@ -817,8 +808,7 @@ if __name__ == '__main__':
     # rebecca
     # df = readCersei('platts_gas.sql','gas_prices.json')
     # df = readExcel('Natural_Gas_Production.xlsx')
-    df = readCersei('CTS_OpenGov_Gas-report.sql', 'natural-gas-exports-and-imports-annual.json')
-    # df = readExcel('natural-gas-exports-and-imports-annual.xlsx', 'Gas Trade CER')
+    # df = readCersei('CTS_OpenGov_Gas-report.sql', 'natural-gas-exports-and-imports-annual.json')
 
     # cassandra
     # df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
@@ -826,7 +816,7 @@ if __name__ == '__main__':
     # settleJson = negotiated_settlements()
 
     # ryan
-    # df_origin, df_destination = ngl_exports()
+    df_origin, df_destination = ngl_exports()
     # df = readExcel('figures.xlsx',sheet='ngl production')
 
     # jennifer

@@ -20,7 +20,7 @@ SUM(VCALID.ImperialVolume) / DATEPART(dy, DATEFROMPARTS(YEAR(VCALID.ReportingPer
 FROM vwCrudeActivityLineItemDetail AS VCALID 
 LEFT OUTER JOIN Location AS L ON L.LocationId = VCALID.DestinationLocationId
 WHERE VCALID.[Status] = 'SUB' AND VCALID.[IsPublished] = 1 AND (VCALID.DestinationCountryId IS NOT NULL OR L.PADDId IS NOT NULL) AND Year(VCALID.ReportingPeriod) >= 2015
-AND Year(VCALID.ReportingPeriod) <= 2019
+--AND Year(VCALID.ReportingPeriod) <= 2019
 GROUP BY VCALID.OilStreamRouteName, YEAR(VCALID.ReportingPeriod)
 ) T
 where [Mode Simple] <> 'Truck'
