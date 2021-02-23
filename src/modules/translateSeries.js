@@ -147,7 +147,7 @@ export function translate() {
       chart.isDirtyLegend = true;
       chart.redraw();
     } catch (err) {
-      console.log("didnt tanslate: ", chart.renderTo.id);
+      undefined;
     }
   });
 }

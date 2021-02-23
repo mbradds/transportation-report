@@ -26,14 +26,14 @@ import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
 import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
 import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
 import fra from "./modules/fra.json";
-import ieWarn from "ie-gang";
+import justWhy from "ie-gang";
 let warningParams = {
   message: fra.ieWarnMessage,
   type: "alert",
   title: fra.ieWarnTitle,
   applyIE: false,
 };
-ieWarn(warningParams);
+justWhy.ieWarn(warningParams);
 generalTheme();
 frenchTheme();
 
