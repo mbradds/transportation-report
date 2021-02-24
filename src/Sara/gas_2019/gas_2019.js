@@ -307,6 +307,9 @@ const createChart = (lang) => {
 
       tooltip: {
         shared: true,
+        backgroundColor: "white",
+        useHTML: true,
+        style: { opacity: 1 },
         formatter: function () {
           var pipelineName = this.points[0].key;
           var toolText = `<b> ${pipelineName} (${pointsFilters.Year.trim()}) </b><table>`;

@@ -253,6 +253,9 @@ export async function jenniferFinResources(lang) {
         },
         stackLabels: {
           enabled: true,
+          formatter: function () {
+            return `${this.total / 1000000000} billion`;
+          },
         },
       },
 

@@ -153,6 +153,8 @@ const createChart = (lang, fraLevel) => {
       },
       tooltip: {
         shared: true,
+        backgroundColor: "white",
+        useHTML: true,
         formatter: function () {
           var toolText = `<b> ${this.points[0].key} </b><table>`;
           this.points.map((p) => {

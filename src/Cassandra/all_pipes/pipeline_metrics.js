@@ -179,6 +179,7 @@ const createChart = (lang) => {
 
       tooltip: {
         shared: true,
+        backgroundColor: "white",
         formatter: function () {
           return tooltipSorted(
             this.points,

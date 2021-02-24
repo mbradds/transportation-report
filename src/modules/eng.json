@@ -1,10 +1,10 @@
 {
-  "ieWarnMessage": "We noticed you are using Internet Explorer. Please consider using a different browser for a better experience on this page.",
+  "ieWarnMessage": "We noticed you are using Internet Explorer. Some of the functionality of this report isnt available when using internet explorer.",
   "ieWarnTitle": "Old Browser Warning",
   "instructionsChart": {
     "annotation": "Click on this icon to download chart images/data:",
-    "series1": "Data 1 (click to filter)",
-    "series2": "Data 2 (click to filter)"
+    "series1": "Data 1 (click to remove)",
+    "series2": "Data 2 (click to remove)"
   },
   "crudeProduction": {
     "title": "Crude Oil Production",
@@ -139,7 +139,7 @@
     "milly": "C$ (Millions)",
     "source": "Source: CER REGDOCS",
     "pipe": "pipelines",
-    "legend": "Larger symbol size used to show overlapping data. Click on legend items to view less data.",
+    "legend": "Larger symbol size used to show overlapping data. Click on a legend item to remove from chart.",
     "noData": "No Financial Data"
   },
   "ratingsCross": {
