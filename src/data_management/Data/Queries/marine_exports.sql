@@ -12,11 +12,10 @@ cast(str(month(VCALID.ReportingPeriod))+'-'+'1'+'-'+str(year(VCALID.ReportingPer
 sum(VCALID.ImperialVolume) as [ImperialVolume]
 FROM vwCrudeActivityLineItemDetail AS VCALID 
 LEFT OUTER JOIN Location AS L ON L.LocationId = VCALID.DestinationLocationId
-WHERE VCALID.[Status] = 'SUB' AND 
-VCALID.[IsPublished] = 1 AND (VCALID.DestinationCountryId IS NOT NULL OR L.PADDId IS NOT NULL) 
+WHERE VCALID.[Status] = 'SUB' AND VCALID.[IsPublished] = 1 AND 
+(VCALID.DestinationCountryId IS NOT NULL OR L.PADDId IS NOT NULL) 
 AND Year(VCALID.ReportingPeriod) >= 2015 and
 VCALID.OilStreamRouteName in ('Marine','Transmountain/Marine','Interprovincial/Marine','Railroad/Marine')
 group by year(VCALID.ReportingPeriod), month(VCALID.ReportingPeriod)
---order by cast(str(month(VCALID.ReportingPeriod))+'-'+'1'+'-'+str(year(VCALID.ReportingPeriod)) as date)
 ) as marine
 order by marine.Date

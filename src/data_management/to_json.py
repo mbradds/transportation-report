@@ -721,8 +721,6 @@ def st_stephen():
 
 
 def ngl_exports(name="natural-gas-liquids-exports-monthly.csv"):
-    # read_path = os.path.join(os.getcwd(), 'Data/', name)
-    # df = pd.read_csv(read_path, engine='python')
     df = readCersei('CTS_OpenGov_NGL-report.sql', None)
     df['Period'] = pd.to_datetime(df['Period'])
     df = df[df['Period'].dt.year >= 2015]
@@ -790,25 +788,25 @@ if __name__ == '__main__':
     print('Starting to json process...')
     # kevin
     # df = readExcel('Crude_Oil_Production.xlsx', sheet='Crude Oil Production')    
-    # df = readCersei('CTS_OpenGov_CrudeByDestination_Annual-report.sql', 'crude-oil-exports-by-destination-annual.json')
+    df = readCersei('CTS_OpenGov_CrudeByDestination_Annual-report.sql', 'crude-oil-exports-by-destination-annual.json')
     # df = readExcel('UScrudeoilimports.xlsx', sheet='pq')
-    # df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
+    df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
 
     # colette
-    # df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
+    df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
     # df = readExcel('figures.xlsx', sheet='Available for Export')
-    # df = readCersei('crude_mode.sql','crude_mode.json')
-    # df = readCersei('marine_exports.sql','marine_exports.json')
+    df = readCersei('crude_mode.sql','crude_mode.json')
+    df = readCersei('marine_exports.sql','marine_exports.json')
 
     # sara
-    # df = readCersei('gas_ex_wcsb_traffic.sql', 'gas_traffic.json')
-    # df = readCersei('gas_2019_avg.sql','gas_2019.json')
+    df = readCersei('gas_ex_wcsb_traffic.sql', 'gas_traffic.json')
+    df = readCersei('gas_2019_avg.sql','gas_2019.json')
     # dfmnp,dfoffshore = st_stephen()
 
     # rebecca
-    # df = readCersei('platts_gas.sql','gas_prices.json')
+    df = readCersei('platts_gas.sql','gas_prices.json')
     # df = readExcel('Natural_Gas_Production.xlsx')
-    # df = readCersei('CTS_OpenGov_Gas-report.sql', 'natural-gas-exports-and-imports-annual.json')
+    df = readCersei('CTS_OpenGov_Gas-report.sql', 'natural-gas-exports-and-imports-annual.json')
 
     # cassandra
     # df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
