@@ -18,7 +18,7 @@ const createChart = (lang) => {
   };
 
   var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
-  var pointsFilters = { Year: "2019" };
+  var pointsFilters = { Year: "2020" };
 
   const columnPlacement = (series) => {
     return series.map((s) => {
