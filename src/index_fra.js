@@ -27,13 +27,17 @@ import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/cr
 import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
 import fra from "./modules/fra.json";
 import justWhy from "ie-gang";
-let warningParams = {
-  message: fra.ieWarnMessage,
-  type: "alert",
-  title: fra.ieWarnTitle,
-  applyIE: false,
-};
-justWhy.ieWarn(warningParams);
+try {
+  let warningParams = {
+    message: eng.ieWarnMessage,
+    type: "alert",
+    title: eng.ieWarnTitle,
+    applyIE: false,
+  };
+  justWhy.ieWarn(warningParams);
+} catch (err) {
+  console.log("ieWarn error");
+}
 generalTheme();
 frenchTheme();
 
