@@ -35,7 +35,7 @@ const createChart = (lang) => {
     "Keystone Pipeline": cerPalette["Forest"],
     "Express Pipeline": cerPalette["Cool Grey"],
     "Enbridge Canadian Mainline": cerPalette["Flame"],
-    "Trans Mountian Pipeline": cerPalette["Night Sky"],
+    "Trans Mountain Pipeline": cerPalette["Night Sky"],
   };
 
   const gasColors = {
