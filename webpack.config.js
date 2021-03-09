@@ -3,6 +3,7 @@ const path = require("path");
 //   .BundleAnalyzerPlugin;
 
 module.exports = {
+  // mode: "development",
   mode: "production",
   target: "es5",
   entry: {
