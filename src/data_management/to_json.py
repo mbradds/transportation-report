@@ -20,7 +20,7 @@ def normalize_dates(df, date_list):
 
 def normalize_text(df, text_list):
     for text_col in text_list:
-        df[text_col] = [x.strip() for x in df[text_col]]
+        df[text_col] = [str(x).strip() for x in df[text_col]]
     return df
 
 
@@ -338,6 +338,10 @@ def readExcel(name, sheet='pq', sql=False):
 def readExcelPipeline(name, sheet='Data', sql=False):
     read_path = os.path.join(os.getcwd(), 'Data/', name)
     df = pd.read_excel(read_path, sheet_name=sheet)
+    for col in df:
+        if "Unnamed" in col:
+            del df[col]
+
     text = ['Table', 'Owner', 'Pipeline', 'Category', 'Type', 'Unit']
     for t in text:
         df[t] = [x.strip() for x in df[t]]
@@ -433,6 +437,58 @@ def readExcelPipeline(name, sheet='Data', sql=False):
         conn.close()
     return df
 
+
+def qsrToCersei(tosql=False, fromsql=True):
+    name = 'PipelineProfileTables.xlsx'
+    if not fromsql:
+        df = pd.read_excel(r'F:\bucom\Pipeline Profiles\Financial Metrics - 2021\Financial Metrics for Pipeline Infromation.xlsx', sheet_name="Sheet1")
+        for col in df:
+            if "Unnamed" in col:
+                del df[col]
+        
+        df = normalize_text(df, ['Pipeline',
+                                 'Category',
+                                 'Type',
+                                 'Zone',
+                                 'Year',
+                                 'Unit',
+                                 'RegDocs Folder Link',
+                                 'RegDoc Download Link',
+                                 'Page Number',
+                                 'Notes',
+                                 'Updated by',
+                                 'Delete'])
+        
+        df['Value'] = pd.to_numeric(df['Value'])
+        if tosql:
+            conn, engine = cer_connection()
+            df.to_sql('Financial_Metrics_QSR', con=conn, index=False, if_exists='replace')
+            conn.close()
+    else:
+        print('reading qsr from cersei...')
+        conn, engine = cer_connection()
+        df = pd.read_sql_query('select Pipeline,Category,Type,Year,Unit,Value from Financial_Metrics_QSR', con=conn)
+        df = df[df['Type'].isin(['Deemed Equity Ratio', 'Actual Return on Equity', 'Revenue', 'Rate Base'])]
+        df = df[~df['Pipeline'].isin(['Westspur Pipeline',
+                                      'Vector Pipeline',
+                                      'Many Islands Pipeline System',
+                                      'Aurora Pipeline',
+                                      'Express Pipeline',
+                                      'Southern Lights Pipeline',
+                                      'Milk River Pipeline',
+                                      'Foothills System by Zone',
+                                      'Montreal Pipeline',
+                                      'Genesis Pipeline'])]
+        
+        df = df[df['Value'].notnull()]
+        df = df.reset_index(drop=True)
+        df['Year'] = [int(x) for x in df['Year']]
+        df = df[df['Year'] >= 2015]
+        df = df.sort_values(by=['Type', 'Pipeline','Category', 'Year', 'Value'])
+        df = df.reset_index(drop=True)
+        write_path = os.path.join(os.getcwd(), '../Cassandra/all_pipes/', name.split('.')[0]+'.json')
+        saveJson(df, write_path)
+    return df
 
 def writeExcelCredit(name, sheet='Credit Ratings', sql=False):
     read_path = os.path.join(os.getcwd(), 'Data/', name)
@@ -787,7 +843,7 @@ def ngl_exports(name="natural-gas-liquids-exports-monthly.csv"):
 if __name__ == '__main__':
     print('Starting to json process...')
     # kevin
-    # df = readExcel('Crude_Oil_Production.xlsx', sheet='Crude Oil Production')    
+    # df = readExcel('Crude_Oil_Production.xlsx', sheet='Crude Oil Production')
     # df = readCersei('CTS_OpenGov_CrudeByDestination_Annual-report.sql', 'crude-oil-exports-by-destination-annual.json')
     # df = readExcel('UScrudeoilimports.xlsx', sheet='pq')
     # df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
@@ -809,7 +865,8 @@ if __name__ == '__main__':
     # df = readCersei('CTS_OpenGov_Gas-report.sql', 'natural-gas-exports-and-imports-annual.json')
 
     # cassandra
-    df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=True)
+    # df = qsrToCersei(tosql=False, fromsql=True)
+    # df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
     # df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     # settleJson = negotiated_settlements()
 
@@ -822,7 +879,7 @@ if __name__ == '__main__':
     # df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     # df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     # df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    # df, scale = creditRatings()
+    df, scale = creditRatings()
     # df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
 
     # other

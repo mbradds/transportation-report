@@ -210,7 +210,7 @@ const createChart = (lang) => {
 
       xAxis: {
         min: 2015.5,
-        max: 2018.5,
+        max: 2019.5,
         crosshair: true,
         categories: true,
       },

@@ -8,6 +8,26 @@ SELECT
 [Units]
 FROM [EnergyData].[dbo].[NEB_RailExports_Oil] 
 where Units in ('bbl per day','m3 per day')
+union all
+select 
+cast('2020-11-01' as date) as [Date],
+27507 as [Volume],
+'m3 per day' as [Units]
+union all
+select
+cast('2020-11-01' as date) as [Date],
+173095 as [Volume],
+'bbl per day' as [Units]
+union all
+select 
+cast('2020-12-01' as date) as [Date],
+30265 as [Volume],
+'m3 per day' as [Units]
+union all
+select
+cast('2020-12-01' as date) as [Date],
+190454 as [Volume],
+'bbl per day' as [Units]
 ) as rail left join (
 SELECT 
 year([SettlementDate]) as [Year],

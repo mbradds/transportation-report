@@ -10,7 +10,7 @@ const createChart = (lang, fraLevel) => {
     "Moody's": cerPalette["Forest"],
   };
 
-  var ratingsFilter = { Year: 2019 };
+  var ratingsFilter = { Year: 2020 };
 
   const addColumns = (data, entities, agencies) => {
     const series = {};
