@@ -489,6 +489,7 @@ def qsrToCersei(tosql=False, fromsql=True):
         del df['Zone']
         df = df.reset_index(drop=True)
         df['Year'] = [int(x) for x in df['Year']]
+        df['Category'] = [cat if com != 'Enbridge Bakken System' else 'Oil' for cat, com in zip(df['Category'], df['Pipeline'])]
         df = df[df['Year'] >= 2015]
         df = df.sort_values(by=['Type', 'Pipeline','Category', 'Year', 'Value'])
         df = df.reset_index(drop=True)
