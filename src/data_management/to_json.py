@@ -461,6 +461,7 @@ def qsrToCersei(tosql=False, fromsql=True):
                                  'Delete'])
         
         df['Value'] = pd.to_numeric(df['Value'])
+        df['Type'] = df['Type'].replace({'Revenues': 'Revenue'})
         del df['Delete']
         if tosql:
             conn, engine = cer_connection()
@@ -481,11 +482,16 @@ def qsrToCersei(tosql=False, fromsql=True):
                                       'Foothills System by Zone',
                                       'Montreal Pipeline',
                                       'Genesis Pipeline'])]
-        
+
         df = df[df['Value'].notnull()]
         df = df.drop(df[(df['Pipeline'] == 'Foothills System') & (~df['Zone'].isin(['0']))].index)
-        # df = df[df['Pipeline'] == 'Foothills System']
-        df = df[df['Zone'].isin(['0', 'nan'])]
+
+        df = df.drop(df[(df['Pipeline'] == 'Enbridge BC Pipeline') &
+                        (df['Type'] == 'Actual Return on Equity') &
+                        (~df['Zone'].isin(['Excluding CWIP and Deferrals']))
+                        ].index)
+
+        df = df[df['Zone'].isin(['0', 'nan', 'Excluding CWIP and Deferrals'])]
         del df['Zone']
         df = df.reset_index(drop=True)
         df['Year'] = [int(x) for x in df['Year']]
