@@ -29,9 +29,9 @@ import fra from "./modules/fra.json";
 import justWhy from "ie-gang";
 try {
   let warningParams = {
-    message: eng.ieWarnMessage,
+    message: fra.ieWarnMessage,
     type: "alert",
-    title: eng.ieWarnTitle,
+    title: fra.ieWarnTitle,
     applyIE: false,
   };
   justWhy.ieWarn(warningParams);

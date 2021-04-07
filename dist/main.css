@@ -1,3 +1,13 @@
+/* 
+notes: 
+All styles that with .chart can be used to control the size of the "dashboard" (chart+filters+title). Wrap the entire html for a chart
+in something like .chart-small to make a small chart with text beside it, or use different sized columns
+
+All styles that start with .hc- are used to contol the size of the highcharts immediate parent div, and nothing else (titles, filters, etc)
+These are used to shrink the height of the charts for smaller screen sizes
+
+*/
+
 /* general styles for titles, filter titles, and other chart elements */
 .cerlabel {
   position: center;
@@ -44,6 +54,9 @@
 .ratings-legend {
   text-align: center;
 }
+#ratings-instructions {
+  height: 110px;
+}
 .source-code {
   max-width: 600px;
 }
@@ -60,9 +73,6 @@
   }
   .hc-large {
     height: 300px;
-  }
-  .hc-map {
-    height: 450px;
   }
   .hc-insert {
     height: 225px;
@@ -87,9 +97,6 @@
   .hc-large {
     height: 380px;
   }
-  .hc-map {
-    height: 600px;
-  }
   .hc-insert {
     height: 275px;
   }
@@ -106,10 +113,9 @@
     height: 75px;
   }
 }
-
 /* wet4 buttons */
 .tablinks {
-  height: 130px !important;
+  height: 140px !important;
 }
 .profile-hide {
   display: none;

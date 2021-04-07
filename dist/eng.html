@@ -162,6 +162,7 @@
         </div>
       </div>
 
+      <!-- start crude oil pipeline transportation section -->
       <div id="Oil" class="profile-section tabcontent">
         <!-- crude production graph (hc figure 1) -->
         <div class="row">
@@ -195,9 +196,7 @@
               <option value="Thousand m3/d">Thousand m3/d</option>
             </select>
           </div>
-        </div>
-        <div class="row mrgn-tp-md">
-          <div class="col-md-12">
+          <div class="col-md-12 mrgn-tp-md">
             <div class="hc-large" id="container_crude_production"></div>
           </div>
         </div>
@@ -208,8 +207,8 @@
             <div class="figure_title">Figure 6: Crude Oil Exports</div>
           </div>
         </div>
-        <div class="row mrgn-tp-sm">
-          <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12 mrgn-tp-sm">
             <div class="cerlabel">Select units:</div>
             <select class="form-control" id="select_units_crude_exports">
               <option value="MMb/d">MMb/d</option>
@@ -383,9 +382,10 @@
             <div class="hc-large" id="container_crude_takeaway"></div>
           </div>
         </div>
-        <!-- end crude oil pipeline transportation section -->
       </div>
+      <!-- end crude oil pipeline transportation section -->
 
+      <!-- start natural gas pipeline transportation section -->
       <div id="Gas" class="profile-section tabcontent">
         <!-- natural gas production (hc figure 9) -->
         <div class="row">
@@ -587,7 +587,9 @@
           </div>
         </div>
       </div>
+      <!-- end natural gas pipeline transportation section -->
 
+      <!-- start natural gas liquids section -->
       <div id="Ngl" class="profile-section tabcontent">
         <!-- ngl production (hc figure 15) -->
         <div class="row">
@@ -690,7 +692,9 @@
           </div>
         </div>
       </div>
+      <!-- end natural gas liquids section -->
 
+      <!-- start cer economic regulation of pipelines section -->
       <div id="Cer-regulation" class="profile-section tabcontent">
         <!-- negotiated oil settlements (hc figure 17) -->
         <div class="row">
@@ -816,7 +820,9 @@
           </div>
         </div>
       </div>
+      <!-- end cer economic regulation of pipelines section -->
 
+      <!-- start financial integrity of pipeline companies section -->
       <div id="Fin-integrity" class="profile-section tabcontent">
         <!-- financial metrics (hc figure 21) -->
         <div class="row">
@@ -969,7 +975,7 @@
             </select>
           </div>
           <div class="col-md-4">
-            <section class="panel panel-info" style="height: 110px">
+            <section class="panel panel-info" id="ratings-instructions">
               <header class="panel-heading">
                 <h5 class="panel-title">Chart Instructions</h5>
               </header>
@@ -1003,8 +1009,17 @@
           </div>
         </div>
       </div>
+      <!-- end financial integrity of pipeline companies section -->
+
+      <!-- start appendecies section -->
       <div id="Appendices" class="profile-section tabcontent">Coming Soon!</div>
+      <!-- end appendecies section -->
+
+      <!-- start about the cer section -->
       <div id="About" class="profile-section tabcontent">Coming Soon!</div>
+      <!-- end about the cer section -->
+
+      <!-- start source code section -->
       <div id="github-link" class="profile-section tabcontent">
         <div class="source-code mrgn-tp-sm">
           <section class="panel panel-info">
@@ -1029,6 +1044,7 @@
           </section>
         </div>
       </div>
+      <!-- end source code section -->
     </div>
 
     <script>
