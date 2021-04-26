@@ -224,15 +224,11 @@ def readExcel(name, sheet='pq', sql=False):
     if name == 'UScrudeoilimports.xlsx':
         df['Attribute'] = [x.strip() for x in df['Attribute']]
         df['Attribute'] = df['Attribute'].replace({'Canadian imports': 'U.S. crude oil imports from Canada',
-                                                   'ROW imports': 'U.S. crude oil imports from ROW',
+                                                   'ROW imports': 'U.S. crude oil imports from rest of world',
                                                    'U.S crude oil exports': 'U.S. crude oil exports'})
 
         df['Value'] = df['Value'].round(2)
         del df['Units']
-        write_path = os.path.join(os.getcwd(), '../Kevin/us_imports/', name.split('.')[0]+'.json')
-
-    if name == 'UScrudeoilimports.xlsx':
-        df['Value'] = [round(x, 2) for x in df['Value']]
         write_path = os.path.join(os.getcwd(), '../Kevin/us_imports/', name.split('.')[0]+'.json')
 
     if name == 'figures.xlsx' and sheet == 'Available for Export':
@@ -862,7 +858,7 @@ if __name__ == '__main__':
     # df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
 
     # colette
-    # df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
+    df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
     # df = readExcel('figures.xlsx', sheet='Available for Export')
     # df = readCersei('crude_mode.sql','crude_mode.json')
     # df = readCersei('marine_exports.sql','marine_exports.json')
@@ -873,7 +869,7 @@ if __name__ == '__main__':
     # dfmnp,dfoffshore = st_stephen()
 
     # rebecca
-    df = readCersei('platts_gas.sql','gas_prices.json')
+    # df = readCersei('platts_gas.sql','gas_prices.json')
     # df = readExcel('Natural_Gas_Production.xlsx')
     # df = readCersei('CTS_OpenGov_Gas-report.sql', 'natural-gas-exports-and-imports-annual.json')
 

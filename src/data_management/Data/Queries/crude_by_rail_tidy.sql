@@ -28,6 +28,28 @@ select
 cast('2020-12-01' as date) as [Date],
 190454 as [Volume],
 'bbl per day' as [Units]
+union all
+-- April 2020 update
+select
+cast('2021-01-01' as date) as [Date],
+195531 as [Volume],
+'bbl per day' as [Units]
+union all
+select
+cast('2021-02-01' as date) as [Date],
+111871 as [Volume],
+'bbl per day' as [Units]
+union all
+select
+cast('2021-01-01' as date) as [Date],
+31072 as [Volume],
+'m3 per day' as [Units]
+union all
+select
+cast('2021-02-01' as date) as [Date],
+17777 as [Volume],
+'m3 per day' as [Units]
+
 ) as rail left join (
 SELECT 
 year([SettlementDate]) as [Year],

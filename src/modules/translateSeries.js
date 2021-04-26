@@ -12,7 +12,7 @@ const frenchSeries = {
     Other: "Autre",
   },
   container_crude_imports: {
-    "U.S. crude oil imports from ROW":
+    "U.S. crude oil imports from rest of world":
       "Importations américaines de pétrole brut du reste du monde",
     "U.S. crude oil exports": "Exportations américaines de pétrole brut",
     "U.S. crude oil imports from Canada":

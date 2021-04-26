@@ -13,12 +13,12 @@ const createChart = (lang) => {
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
 
   const crudeImportColors = {
-    "U.S. crude oil imports from ROW": cerPalette["Night Sky"],
+    "U.S. crude oil imports from rest of world": cerPalette["Night Sky"],
     "U.S. crude oil exports": cerPalette["Ocean"],
     "U.S. crude oil imports from Canada": cerPalette["Sun"],
   };
   const seriesTypes = {
-    "U.S. crude oil imports from ROW": "column",
+    "U.S. crude oil imports from rest of world": "column",
     "U.S. crude oil exports": "line",
     "U.S. crude oil imports from Canada": "column",
   };
