@@ -873,12 +873,12 @@ if __name__ == '__main__':
     # dfmnp,dfoffshore = st_stephen()
 
     # rebecca
-    # df = readCersei('platts_gas.sql','gas_prices.json')
+    df = readCersei('platts_gas.sql','gas_prices.json')
     # df = readExcel('Natural_Gas_Production.xlsx')
     # df = readCersei('CTS_OpenGov_Gas-report.sql', 'natural-gas-exports-and-imports-annual.json')
 
     # cassandra
-    df = qsrToCersei(tosql=False, fromsql=True)
+    # df = qsrToCersei(tosql=False, fromsql=True)
     # df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
     # df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     # settleJson = negotiated_settlements()
