@@ -5,7 +5,6 @@ const path = require("path");
 module.exports = {
   // mode: "development",
   mode: "production",
-  target: "es5",
   entry: {
     eng: "./src/index_eng.js",
     fra: "./src/index_fra.js",
@@ -14,7 +13,13 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle_[name].js",
   },
-  // plugins: [new BundleAnalyzerPlugin()],
+  // plugins: [
+  //   new BundleAnalyzerPlugin({
+  //     analyzerMode: "server",
+  //     openAnalyzer: true,
+  //     analyzerPort: 8888,
+  //   }),
+  // ],
   module: {
     rules: [
       {
@@ -28,6 +33,9 @@ module.exports = {
   },
   optimization: {
     minimize: true,
+  },
+  devServer: {
+    compress: true,
   },
   resolve: {
     extensions: ["*", ".js"],

@@ -163,7 +163,7 @@
       </div>
 
       <!-- start crude oil pipeline transportation section -->
-      <div id="Oil" class="profile-section tabcontent">
+      <div id="Oil" class="profile-section tabcontent" style="display: none">
         <!-- crude production graph (hc figure 1) -->
         <div class="row">
           <div class="col-md-12">
@@ -386,7 +386,7 @@
       <!-- end crude oil pipeline transportation section -->
 
       <!-- start natural gas pipeline transportation section -->
-      <div id="Gas" class="profile-section tabcontent">
+      <div id="Gas" class="profile-section tabcontent" style="display: none">
         <!-- natural gas production (hc figure 9) -->
         <div class="row">
           <div class="col-md-12">
@@ -590,7 +590,7 @@
       <!-- end natural gas pipeline transportation section -->
 
       <!-- start natural gas liquids section -->
-      <div id="Ngl" class="profile-section tabcontent">
+      <div id="Ngl" class="profile-section tabcontent" style="display: none">
         <!-- ngl production (hc figure 15) -->
         <div class="row">
           <div class="col-md-12">
@@ -695,7 +695,11 @@
       <!-- end natural gas liquids section -->
 
       <!-- start cer economic regulation of pipelines section -->
-      <div id="Cer-regulation" class="profile-section tabcontent">
+      <div
+        id="Cer-regulation"
+        class="profile-section tabcontent"
+        style="display: none"
+      >
         <!-- negotiated oil settlements (hc figure 17) -->
         <div class="row">
           <div class="col-md-12">
@@ -823,7 +827,11 @@
       <!-- end cer economic regulation of pipelines section -->
 
       <!-- start financial integrity of pipeline companies section -->
-      <div id="Fin-integrity" class="profile-section tabcontent">
+      <div
+        id="Fin-integrity"
+        class="profile-section tabcontent"
+        style="display: none"
+      >
         <!-- financial metrics (hc figure 21) -->
         <div class="row">
           <div class="col-md-12">
@@ -1012,15 +1020,27 @@
       <!-- end financial integrity of pipeline companies section -->
 
       <!-- start appendecies section -->
-      <div id="Appendices" class="profile-section tabcontent">Coming Soon!</div>
+      <div
+        id="Appendices"
+        class="profile-section tabcontent"
+        style="display: none"
+      >
+        Coming Soon!
+      </div>
       <!-- end appendecies section -->
 
       <!-- start about the cer section -->
-      <div id="About" class="profile-section tabcontent">Coming Soon!</div>
+      <div id="About" class="profile-section tabcontent" style="display: none">
+        Coming Soon!
+      </div>
       <!-- end about the cer section -->
 
       <!-- start source code section -->
-      <div id="github-link" class="profile-section tabcontent">
+      <div
+        id="github-link"
+        class="profile-section tabcontent"
+        style="display: none"
+      >
         <div class="source-code mrgn-tp-sm">
           <section class="panel panel-info">
             <header class="panel-heading">
@@ -1058,9 +1078,6 @@
         document.getElementById(sectionName).style.display = "block";
         evt.currentTarget.className += " active";
       }
-      document.addEventListener("DOMContentLoaded", function (event) {
-        document.getElementById("defaultClick").click();
-      });
     </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
