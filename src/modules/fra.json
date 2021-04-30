@@ -49,7 +49,7 @@
   },
   "gasPrices": {
     "source": "Source: Platts",
-    "yAxis": "Prix mensuels du disponible"
+    "yAxis": "Prix mensuels du disponible (CAD/GJ)"
   },
   "gasTraffic": {
     "source": "Source : Données sur le débit et la capacité du gouvernement ouvert"

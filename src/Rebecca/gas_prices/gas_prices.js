@@ -29,6 +29,10 @@ const createChart = (lang) => {
           },
         },
       },
+
+      exporting: {
+        enabled: false,
+      },
       credits: {
         text: lang.source,
       },
@@ -143,6 +147,10 @@ const createChart = (lang) => {
         zoomType: "x",
       },
 
+      exporting: {
+        enabled: false,
+      },
+
       credits: {
         text: "",
       },
@@ -167,7 +175,9 @@ const createChart = (lang) => {
         endOnTick: false,
         title: { text: lang.yAxis },
         labels: {
-          enabled: false,
+          formatter: function () {
+            return this.value;
+          },
         },
       },
       series: seriesData,

@@ -49,7 +49,7 @@
   },
   "gasPrices": {
     "source": "Source: Platts",
-    "yAxis": "Monthly Spot Prices"
+    "yAxis": "Monthly Spot Prices (CAD/GJ)"
   },
   "gasTraffic": {
     "source": "Source: Open Government Throughput and Capacity Data"
