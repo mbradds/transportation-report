@@ -178,7 +178,7 @@ def readCersei(query, name=None):
 
 def readExcel(name, sheet='pq', sql=False):
     read_path = os.path.join(os.getcwd(), 'Data/', name)
-    df = pd.read_excel(read_path, sheet_name=sheet)
+    df = pd.read_excel(read_path, sheet_name=sheet, engine='openpyxl')
     if name == 'Crude_Oil_Production.xlsx':
         df = df.dropna(axis=0, subset=[df.columns[0]])
         df = df.rename(columns={df.columns[0]: 'Product'})
@@ -258,10 +258,11 @@ def readExcel(name, sheet='pq', sql=False):
             df = df[~df['Corporate Entity'].isin(['MPLL shareholders - Royal Dutch Shell Plc',
                                                   'MPLL shareholders - Suncor Energy Inc.',
                                                   'Plains All American Pipeline',
+                                                  'NOVA Chemicals Corp.',
+                                                  'Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC',
                                                   'MPLL shareholders - Imperial Oil Limited'])]
 
-            df['Corporate Entity'] = df['Corporate Entity'].replace({'Kinder Morgan Canada Limited and Kinder Morgan Cochin ULC': 'Kinder Morgan Canada Limited',
-                                                                     'Trans Quebec & Maritimes Pipeline Inc.': 'TQM Pipeline Inc.',
+            df['Corporate Entity'] = df['Corporate Entity'].replace({'Trans Quebec & Maritimes Pipeline Inc.': 'TQM Pipeline Inc.',
                                                                      'Alliance Pipeline Limited Partnership': 'Alliance Pipeline Ltd.'})
 
             df['series'] = df['Corporate Entity']+' - '+df['Type']
@@ -858,7 +859,7 @@ if __name__ == '__main__':
     # df = readCersei('ne2_WCS_eia_WTI.sql','oil_prices.json')
 
     # colette
-    df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
+    # df = readCersei('crude_by_rail_tidy.sql','crude_by_rail_wcs.json')
     # df = readExcel('figures.xlsx', sheet='Available for Export')
     # df = readCersei('crude_mode.sql','crude_mode.json')
     # df = readCersei('marine_exports.sql','marine_exports.json')
@@ -888,7 +889,7 @@ if __name__ == '__main__':
     # df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     # df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     # df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    # df, scale = creditRatings()
+    df, scale = creditRatings()
     # df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
 
     # other

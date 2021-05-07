@@ -54,9 +54,7 @@ const createChart = (lang, fraLevel) => {
       "TQM Pipeline Inc.",
       "Emera Inc.",
       "Maritimes & Northeast Pipeline Limited Partnership",
-      "Kinder Morgan Canada Limited",
       "Alliance Pipeline Ltd.",
-      "NOVA Chemicals Corp.",
     ];
     const agencies = ["S&P", "Moody's", "DBRS"];
     creditEntity = addColumns(creditEntity, entities, agencies);
@@ -107,8 +105,8 @@ const createChart = (lang, fraLevel) => {
         crosshair: true,
         plotBands: [
           bands(-0.5, 2.5, lang.enbridge, 15, 0),
-          bands(2.5, 7.5, lang.tc, 15, 0, "#bde0ff"),
-          bands(7.5, 11.5, lang.tc, 15, 0),
+          bands(2.5, 6.5, lang.tc, 15, 0, "#bde0ff"),
+          bands(6.5, 11.5, lang.other, 15, 0),
         ],
       },
 
