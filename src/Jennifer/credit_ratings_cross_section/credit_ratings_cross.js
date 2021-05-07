@@ -105,8 +105,8 @@ const createChart = (lang, fraLevel) => {
         crosshair: true,
         plotBands: [
           bands(-0.5, 2.5, lang.enbridge, 15, 0),
-          bands(2.5, 6.5, lang.tc, 15, 0, "#bde0ff"),
-          bands(6.5, 11.5, lang.other, 15, 0),
+          bands(2.5, 5.5, lang.tc, 15, 0, "#bde0ff"),
+          bands(5.5, 11.5, lang.other, 15, 0),
         ],
       },
 
