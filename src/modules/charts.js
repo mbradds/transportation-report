@@ -267,7 +267,7 @@ function createInstructionChart(lang) {
         animation: false,
       },
     },
-    annotations: [annotation(290, 16, cerPalette["Dim Grey"], lang.annotation)],
+    annotations: [annotation(320, 16, cerPalette["Dim Grey"], lang.annotation)],
     series: [
       {
         name: lang.series1,

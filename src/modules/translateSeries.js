@@ -81,27 +81,31 @@ const frenchSeries = {
   container_offshore: {
     "Sable Island": "Île de Sable",
   },
+  // container_gas_2019: {
+  //   "NGTL System - Upstream of James River - intracanada":
+  //     "Réseau de NGTL – En amont de la rivière James – Intra-Canada",
+  //   "TC Canadian Mainline - Prairies - intracanada":
+  //     "Réseau principal de TC au Canada – Prairies – Intra-Canada",
+  //   "Foothills System - Kingsgate - export":
+  //     "Réseau Foothills – Kingsgate – Exportation",
+  //   "NGTL System - West Gate - intracanada":
+  //     "Réseau de NGTL – Entrée ouest – Intra-Canada",
+  //   "Foothills System - Monchy - export":
+  //     "Réseau Foothills – Monchy – Exportation",
+  //   "Enbridge BC Pipeline - Huntingdon Export - export":
+  //     "	Gazoduc BC d’Enbridge – Point d’exportation de Huntingdon – Exportation",
+  //   "Alliance Pipeline - Border - export":
+  //     "Pipeline Alliance – Frontière – Exportation",
+  //   "TC Canadian Mainline - Iroquois - export":
+  //     "	Réseau principal de TC au Canada – Iroquois – Exportation",
+  //   "M&NP Pipeline - St. Stephen - import":
+  //     "Pipeline de M&NP – St. Stephen – Importation",
+  //   "TC Canadian Mainline - Niagara - import":
+  //     "Réseau principal de TC au Canada – Niagara – Importation",
+  // },
   container_gas_2019: {
-    "NGTL System - Upstream of James River - intracanada":
-      "Réseau de NGTL – En amont de la rivière James – Intra-Canada",
-    "TC Canadian Mainline - Prairies - intracanada":
-      "Réseau principal de TC au Canada – Prairies – Intra-Canada",
-    "Foothills System - Kingsgate - export":
-      "Réseau Foothills – Kingsgate – Exportation",
-    "NGTL System - West Gate - intracanada":
-      "Réseau de NGTL – Entrée ouest – Intra-Canada",
-    "Foothills System - Monchy - export":
-      "Réseau Foothills – Monchy – Exportation",
-    "Enbridge BC Pipeline - Huntingdon Export - export":
-      "	Gazoduc BC d’Enbridge – Point d’exportation de Huntingdon – Exportation",
-    "Alliance Pipeline - Border - export":
-      "Pipeline Alliance – Frontière – Exportation",
-    "TC Canadian Mainline - Iroquois - export":
-      "	Réseau principal de TC au Canada – Iroquois – Exportation",
-    "M&NP Pipeline - St. Stephen - import":
-      "Pipeline de M&NP – St. Stephen – Importation",
-    "TC Canadian Mainline - Niagara - import":
-      "Réseau principal de TC au Canada – Niagara – Importation",
+    Capacity: "capacité",
+    Throughput: "débit",
   },
   container_ngl_production: {
     Ethane: "Éthane",
