@@ -1,5 +1,5 @@
 {
-  "name": "highchartsmarkets",
+  "name": "transportation-report",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -22,7 +22,6 @@
   "homepage": "https://github.com/mbradds/transportation-report#readme",
   "dependencies": {
     "@babel/runtime": "^7.12.13",
-    "all": "0.0.0",
     "highseries": "^1.0.3",
     "ie-gang": "^1.0.4",
     "mapshaper": "^0.5.26"
@@ -32,7 +31,8 @@
     "@babel/plugin-transform-runtime": "^7.12.15",
     "@babel/preset-env": "^7.12.1",
     "babel-loader": "^8.1.0",
-    "copy-webpack-plugin": "^6.3.0",
+    "clean-webpack-plugin": "*",
+    "copy-webpack-plugin": "^6.4.1",
     "core-js": "^3.7.0",
     "webpack": "^5.4.0",
     "webpack-bundle-analyzer": "^4.1.0",
