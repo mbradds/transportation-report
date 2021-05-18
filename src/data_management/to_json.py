@@ -251,7 +251,7 @@ def readExcel(name, sheet='pq', sql=False):
         df['Production Type'] = df['Production Type'].replace({'Non Associated': 'Conventional Non-tight'})
         write_path = os.path.join(os.getcwd(), '../Rebecca/gas_production/', name.split('.')[0]+'.json')
 
-    if name == 'CreditTables.xlsx':
+    if name == 'CreditTables.xlsx' or name == "May 13 - Credit Ratings FINAL.xlsx":
         if sheet == 'ratings categories':
             df = normalize_text(df, ['Corporate Entity', 'Type', 'Credit Quality'])
             # allow for multiselect on company
@@ -270,6 +270,7 @@ def readExcel(name, sheet='pq', sql=False):
                 del df[delete]
 
             df = df[df['Year'] >= 2015]
+            df = df.sort_values(by=['Year', 'series'])
             write_path = os.path.join(os.getcwd(), '../Jennifer/credit_ratings/', name.split('.')[0]+'.json')
         if sheet == 'Scale':
             write_path = os.path.join(os.getcwd(), '../Jennifer/credit_ratings/', sheet+'.json')
@@ -749,7 +750,7 @@ def negotiated_settlements(name='2020_Pipeline_System_Report_-_Negotiated_Settle
 
 
 def creditRatings():
-    df = readExcel('CreditTables.xlsx', sheet='ratings categories')
+    df = readExcel('May 13 - Credit Ratings FINAL.xlsx', sheet='ratings categories')
     scale = readExcel('CreditTables.xlsx', sheet='Scale')
     return df, scale
 
@@ -865,9 +866,9 @@ if __name__ == '__main__':
     # df = readCersei('marine_exports.sql','marine_exports.json')
 
     # sara
-    # df = readCersei('gas_ex_wcsb_traffic.sql', 'gas_traffic.json')
+    df = readCersei('gas_ex_wcsb_traffic.sql', 'gas_traffic.json')
     # df = readCersei('gas_2019_avg.sql','gas_2019.json')
-    # dfmnp,dfoffshore = st_stephen()
+    dfmnp,dfoffshore = st_stephen()
 
     # rebecca
     # df = readCersei('platts_gas.sql','gas_prices.json')
@@ -889,7 +890,7 @@ if __name__ == '__main__':
     # df_fin = readCersei('fin_resource_totals.sql','fin_resource_totals.json')
     # df_fin_class = readCersei('fin_resources_class.sql','fin_resource_class.json')
     # df_fin_class_names = readCersei('fin_resource_class_names.sql','fin_resource_class_names.json')
-    df, scale = creditRatings()
+    # df, scale = creditRatings()
     # df = readExcel("abandonment funding data.xlsx", "Modified", sql=False)
 
     # other

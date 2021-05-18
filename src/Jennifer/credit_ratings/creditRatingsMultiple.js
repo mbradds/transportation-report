@@ -1,6 +1,6 @@
 import { cerPalette, getUnique } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-import creditData from "./CreditTables.json";
+import creditData from "./May 13 - Credit Ratings FINAL.json";
 import scaleData from "./Scale.json";
 import Series from "highseries";
 

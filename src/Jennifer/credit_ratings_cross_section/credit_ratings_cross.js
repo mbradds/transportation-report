@@ -1,6 +1,6 @@
 import { cerPalette, getUnique, setTitle, bands } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
-import creditData from "../credit_ratings/CreditTables.json";
+import creditData from "../credit_ratings/May 13 - Credit Ratings FINAL.json";
 import scaleData from "../credit_ratings/Scale.json";
 
 const createChart = (lang, fraLevel) => {
