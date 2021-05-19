@@ -440,7 +440,7 @@ def qsrToCersei(tosql=False, fromsql=True):
     name = 'PipelineProfileTables.xlsx'
     if not fromsql:
         print('reading qsr from f-drive...')
-        df = pd.read_excel(r'F:\bucom\Pipeline Profiles\Financial Metrics - 2021\Financial Metrics for Pipeline Infromation.xlsx', sheet_name="Sheet1")
+        df = pd.read_excel(r'F:\bucom\Pipeline Profiles\Financial Metrics - 2021\Financial Metrics for Pipeline Infromation.xlsx', sheet_name="Data")
         for col in df:
             if "Unnamed" in col:
                 del df[col]
@@ -450,9 +450,9 @@ def qsrToCersei(tosql=False, fromsql=True):
                                  'Type',
                                  'Zone',
                                  'Year',
-                                 'Unit',
+                                 'Units',
                                  'RegDocs Folder Link',
-                                 'RegDoc Download Link',
+                                 'RegDocs Download Link',
                                  'Page Number',
                                  'Notes',
                                  'Updated by',
@@ -468,7 +468,7 @@ def qsrToCersei(tosql=False, fromsql=True):
     else:
         print('reading qsr from cersei...')
         conn, engine = cer_connection()
-        df = pd.read_sql_query('select Pipeline,Category,Zone,Type,Year,Unit,Value from Financial_Metrics_QSR', con=conn)
+        df = pd.read_sql_query('select Pipeline,Category,Zone,Type,Year,Units as Unit,Value from Financial_Metrics_QSR', con=conn)
         df = df[df['Type'].isin(['Deemed Equity Ratio', 'Actual Return on Equity', 'Revenue', 'Rate Base'])]
         df = df[~df['Pipeline'].isin(['Westspur Pipeline',
                                       'Vector Pipeline',
@@ -866,9 +866,9 @@ if __name__ == '__main__':
     # df = readCersei('marine_exports.sql','marine_exports.json')
 
     # sara
-    df = readCersei('gas_ex_wcsb_traffic.sql', 'gas_traffic.json')
+    # df = readCersei('gas_ex_wcsb_traffic.sql', 'gas_traffic.json')
     # df = readCersei('gas_2019_avg.sql','gas_2019.json')
-    dfmnp,dfoffshore = st_stephen()
+    # dfmnp, dfoffshore = st_stephen()
 
     # rebecca
     # df = readCersei('platts_gas.sql','gas_prices.json')
@@ -876,7 +876,7 @@ if __name__ == '__main__':
     # df = readCersei('CTS_OpenGov_Gas-report.sql', 'natural-gas-exports-and-imports-annual.json')
 
     # cassandra
-    # df = qsrToCersei(tosql=False, fromsql=True)
+    df = qsrToCersei(tosql=False, fromsql=True)
     # df = readExcelPipeline('PipelineProfileTables.xlsx', sheet='Data', sql=False)
     # df = tolls('2020_Pipeline_System_Report_-_Negotiated_Settlements_and_Toll_Indicies.XLSX')
     # settleJson = negotiated_settlements()
