@@ -7,7 +7,7 @@ import {
   mouseOverFunction,
   mouseOutFunction,
 } from "./util.js";
-export const productionChart = (params) => {
+export const productionChart = (params, estimate = true) => {
   return new Highcharts.chart(params.div, {
     chart: {
       type: "column",
@@ -25,7 +25,9 @@ export const productionChart = (params) => {
 
     xAxis: {
       categories: true,
-      plotBands: bands(2019.5, 2020.5, params.lang.estimate, 10),
+      plotBands: estimate
+        ? bands(2019.5, 2020.5, params.lang.estimate, 10)
+        : undefined,
     },
 
     tooltip: {

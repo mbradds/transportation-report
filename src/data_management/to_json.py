@@ -469,6 +469,8 @@ def qsrToCersei(tosql=False, fromsql=True):
         print('reading qsr from cersei...')
         conn, engine = cer_connection()
         df = pd.read_sql_query('select Pipeline,Category,Zone,Type,Year,Units as Unit,Value from Financial_Metrics_QSR', con=conn)
+        df['Type'] = df['Type'].replace({"Total Average Rate Base": "Rate Base",
+                                         "Rate of Return on Common Equity": "Actual Return on Equity"})
         df = df[df['Type'].isin(['Deemed Equity Ratio', 'Actual Return on Equity', 'Revenue', 'Rate Base'])]
         df = df[~df['Pipeline'].isin(['Westspur Pipeline',
                                       'Vector Pipeline',
@@ -495,6 +497,13 @@ def qsrToCersei(tosql=False, fromsql=True):
         df['Year'] = [int(x) for x in df['Year']]
         df['Category'] = [cat if com != 'Enbridge Bakken System' else 'Oil' for cat, com in zip(df['Category'], df['Pipeline'])]
         df = df[df['Year'] >= 2015]
+        df_enb = pd.DataFrame.from_dict({'Pipeline': ['Enbridge Canadian Mainline' for x in range(6)],
+                                         'Category': ['Oil' for x in range(6)],
+                                         'Type': ['Rate Base' for x in range(6)],
+                                         'Year': [2015+x for x in range(6)],
+                                         'Unit': ['$' for x in range(6)],
+                                         'Value': [8785000000, 8824000000, 8952000000, 8857000000, 13608000000, 13314000000]})
+        df = pd.concat([df, df_enb], ignore_index=True)
         df = df.sort_values(by=['Type', 'Pipeline','Category', 'Year', 'Value'])
         df = df.reset_index(drop=True)
         write_path = os.path.join(os.getcwd(), '../Cassandra/all_pipes/', name.split('.')[0]+'.json')

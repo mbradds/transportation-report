@@ -31,7 +31,7 @@ const createChart = (lang, langShared) => {
       series: series.hcSeries,
       lang: langShared,
     };
-    var gasProdChart = productionChart(params);
+    var gasProdChart = productionChart(params, false);
     var selectUnitsGasProd = document.getElementById("select_units_gas_prod");
     selectUnitsGasProd.addEventListener("change", (selectUnitsGasProd) => {
       units.unitsCurrent = selectUnitsGasProd.target.value;
