@@ -68,7 +68,7 @@ const createChart = (lang, langShared) => {
     };
 
     var figure_title = document.getElementById("crude_prod_title");
-    setTitle(figure_title, "5", crudeProdFilters.Region, lang.title);
+    setTitle(figure_title, "6", crudeProdFilters.Region, lang.title);
 
     let series = new Series({
       data: crudeProdData,
@@ -97,7 +97,7 @@ const createChart = (lang, langShared) => {
       "change",
       (selectRegionCrudeProd) => {
         crudeProdFilters.Region = selectRegionCrudeProd.target.value;
-        setTitle(figure_title, "5", crudeProdFilters.Region, lang.title);
+        setTitle(figure_title, "6", crudeProdFilters.Region, lang.title);
         series.update({
           data: crudeProdData,
           filters: crudeProdFilters,

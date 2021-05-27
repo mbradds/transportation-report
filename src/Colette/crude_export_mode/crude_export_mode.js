@@ -75,7 +75,7 @@ const createChart = (lang) => {
   };
   try {
     var figure_title = document.getElementById("crude_mode_title");
-    setTitle(figure_title, "9", crudeModeFilters.Year, lang.title);
+    setTitle(figure_title, "10", crudeModeFilters.Year, lang.title);
 
     const seriesData = prepareSeriesPie(
       crudeModeData,
@@ -96,7 +96,7 @@ const createChart = (lang) => {
       var btnValue = thisBtn.val();
       $("#selectedVal").text(btnValue);
       crudeModeFilters.Year = btnText;
-      setTitle(figure_title, "9", crudeModeFilters.Year, lang.title);
+      setTitle(figure_title, "10", crudeModeFilters.Year, lang.title);
       crudeModePie.update({
         series: prepareSeriesPie(
           crudeModeData,

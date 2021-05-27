@@ -386,7 +386,7 @@ const createChart = (lang) => {
     });
     let seriesData = columnPlacement(series.hcSeries);
     var figure_title = document.getElementById("gas_points_title");
-    setTitle(figure_title, "20", pointsFilters.Year, lang.title);
+    setTitle(figure_title, "21", pointsFilters.Year, lang.title);
     var gasPointsMap = createGas2019Map();
     var chartGas2019 = createGas2019Chart(seriesData, units);
     var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
@@ -425,7 +425,7 @@ const createChart = (lang) => {
       var btnValue = thisBtn.val();
       $("#selectedVal").text(btnValue);
       pointsFilters.Year = btnText;
-      setTitle(figure_title, "20", pointsFilters.Year, lang.title);
+      setTitle(figure_title, "21", pointsFilters.Year, lang.title);
       series.update({ data: gas2019Data, filters: pointsFilters });
       chartGas2019.update({
         series: columnPlacement(series.hcSeries),
