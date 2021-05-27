@@ -7,7 +7,7 @@
     "series2": "Data 2 (click to remove)"
   },
   "crudeProduction": {
-    "title": "Crude Oil Production",
+    "title": "Crude Oil Production by Type",
     "source": "Source: Energy Futures"
   },
   "crudeExports": {
@@ -24,7 +24,7 @@
     "source": "Source: CER Commodity Tracking System",
     "pctOfTotal": "Percent of total:",
     "exportVolume": "Export volume:",
-    "title": "Crude Oil Exports by Mode"
+    "title": "Crude Oil Exports by Mode of Transportation"
   },
   "crudeByRail": {
     "source": "Source: CER Crude by Rail Exports & ne2 Group",
@@ -42,8 +42,8 @@
     "source": "Source: Energy Futures"
   },
   "gasTrade": {
-    "titleExports": "Figure 16: Natural Gas Exports from Canada to U.S. Region",
-    "titleImports": "Figure 16: Natural Gas Imports from U.S. Region to Canada",
+    "titleExports": "Figure 17. Natural Gas Exports from Canada to U.S. Region",
+    "titleImports": "Figure 17. Natural Gas Imports from U.S. Region to Canada",
     "source": "Source: CER Commodity Tracking System, Map:",
     "tooltip": "Natural Gas flows to non border states by pipeline from one or more grouped border regions"
   },
@@ -65,20 +65,20 @@
     "tooltipUtilization": "Capacity Utilization",
     "imports": "Imports",
     "xAxis": "Key Point (West to East)",
-    "title": "Pipeline Throughput & Capacity at Key Points"
+    "title": "Average Throughput and Capacity at Key Pipeline Points"
   },
   "nglProduction": {
     "source": "Source: Energy Futures"
   },
   "nglExports": {
-    "figureNum": "Figure 22:",
-    "exports": "Exports",
+    "figureNum": "Figure 23.",
+    "exports": "and Butane Exports by Transportation Mode",
     "source": "Source: CER Commodity Tracking System",
     "noData": "No Exports"
   },
   "nglDestination": {
-    "figureNum": "Figure 23:",
-    "exports": "Export Destination",
+    "figureNum": "Figure 24.",
+    "exports": "and Butane Exports by Destination",
     "noData": "No Exports",
     "credits": "Source: CER Commodity Tracking System"
   },

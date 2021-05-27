@@ -177,7 +177,7 @@ const createChart = (lang, fraLevel) => {
       maxY
     );
     var figure_title = document.getElementById("ratings_year_title");
-    setTitle(figure_title, "30", ratingsFilter.Year, "Company Credit Ratings");
+    setTitle(figure_title, "31", ratingsFilter.Year, "Annual Comparison of Credit Ratings for Major Pipeline Companies");
 
     $("#credit_years button").on("click", function () {
       $(".btn-credit > .btn").removeClass("active");
@@ -189,7 +189,7 @@ const createChart = (lang, fraLevel) => {
       ratingsFilter.Year = btnText;
       setTitle(
         figure_title,
-        "30",
+        "31",
         ratingsFilter.Year,
         "Company Credit Ratings"
       );
