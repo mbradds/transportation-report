@@ -135,12 +135,13 @@ const frenchSeries = {
     "Amounts Set Aside": "Sommes mises de côté",
     "Remaining Estimate": "Estimation restante",
   },
+  container_financial_metrics: fra.pipeline_name,
   container_tolls_oil: fra.pipeline_name,
   container_tolls_gas: fra.pipeline_name,
 };
 
-export function translate() {
-  Highcharts.charts.map((chart) => {
+export function translateFra(selectChart = undefined) {
+  const translateOne = (chart) => {
     try {
       let fra = frenchSeries[chart.renderTo.id];
       chart.series.map((s, i) => {
@@ -153,5 +154,17 @@ export function translate() {
     } catch (err) {
       undefined;
     }
-  });
+  };
+
+  if (selectChart) {
+    translateOne(selectChart);
+  } else {
+    Highcharts.charts.map((chart) => {
+      translateOne(chart);
+    });
+  }
+}
+
+export function translateEng() {
+  return undefined;
 }

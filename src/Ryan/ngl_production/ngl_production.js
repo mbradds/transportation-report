@@ -3,8 +3,9 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import nglProdData from "./figures.json";
 import Series from "highseries";
 
-const createChart = (lang, langShared) => {
+const createChart = (lang, langShared, langUnits, translate) => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
+  units.display = langUnits[units.unitsCurrent];
   var nglProdColors = {
     Ethane: cerPalette["Ocean"],
     Propane: cerPalette["Forest"],
@@ -31,6 +32,7 @@ const createChart = (lang, langShared) => {
     var selectUnitsNglProd = document.getElementById("select_units_ngl_prod");
     selectUnitsNglProd.addEventListener("change", (selectUnitsNglProd) => {
       units.unitsCurrent = selectUnitsNglProd.target.value;
+      units.display = langUnits[units.unitsCurrent];
       if (units.unitsCurrent !== units.unitsBase) {
         series.update({
           data: nglProdData,
@@ -51,12 +53,13 @@ const createChart = (lang, langShared) => {
       chartNgl.update({
         series: series.hcSeries,
         yAxis: {
-          title: { text: units.unitsCurrent },
+          title: { text: units.display },
         },
         tooltip: {
-          pointFormat: tooltipPoint(units.unitsCurrent),
+          pointFormat: tooltipPoint(units.display),
         },
       });
+      translate(chartNgl);
     });
   };
   try {
@@ -66,8 +69,11 @@ const createChart = (lang, langShared) => {
   }
 };
 
-export function ryanNglProduction(lang, langShared) {
+export function ryanNglProduction(lang, langShared, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, langShared)), 0);
+    setTimeout(
+      () => resolve(createChart(lang, langShared, langUnits, translate)),
+      0
+    );
   });
 }

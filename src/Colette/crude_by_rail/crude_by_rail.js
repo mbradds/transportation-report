@@ -3,7 +3,7 @@ import { errorChart } from "../../modules/charts.js";
 import Series from "highseries";
 import railData from "./crude_by_rail_wcs.json";
 
-const createChart = (lang) => {
+const createChart = (lang, langUnits, translate) => {
   const railFilters = { Units: "Mb/d" };
   const railColors = {
     "Crude by Rail": cerPalette["Night Sky"],
@@ -58,8 +58,11 @@ const createChart = (lang) => {
             this.x
           )} </b><table>`;
           this.points.map((p) => {
-            if (p.series.name == "Crude by Rail") {
-              var unitsTooltip = railFilters.Units;
+            if (
+              p.series.name == "Crude by Rail" ||
+              p.series.name == "Transport de brut par chemin de fer"
+            ) {
+              var unitsTooltip = langUnits[railFilters.Units];
               var yValue = p.y;
             } else {
               var unitsTooltip = "USD/bbl";
@@ -80,7 +83,7 @@ const createChart = (lang) => {
       yAxis: [
         {
           title: {
-            text: `${lang.yAxis} - ${railFilters.Units}`,
+            text: `${lang.yAxis} - ${langUnits[railFilters.Units]}`,
           },
         },
         {
@@ -107,9 +110,10 @@ const createChart = (lang) => {
       chartRail.update({
         series: series.hcSeries,
         yAxis: {
-          title: { text: `${lang.yAxis} - ${railFilters.Units}` },
+          title: { text: `${lang.yAxis} - ${langUnits[railFilters.Units]}` },
         },
       });
+      translate(chartRail);
     });
   };
   try {
@@ -119,8 +123,8 @@ const createChart = (lang) => {
   }
 };
 
-export function coletteCrudeByRail(lang) {
+export function coletteCrudeByRail(lang, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
   });
 }

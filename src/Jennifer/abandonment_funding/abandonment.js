@@ -3,7 +3,7 @@ import { errorChart } from "../../modules/charts.js";
 import abandonData from "./Modified.json";
 import Series from "highseries";
 
-const createChart = (lang, names) => {
+const createChart = (lang, names, translate) => {
   const colors = {
     "Amounts Set Aside": cerPalette["Sun"],
     "Remaining Estimate": cerPalette["Night Sky"],
@@ -295,6 +295,7 @@ const createChart = (lang, names) => {
         abandonChart.update({
           title: { text: titleText },
         });
+        translate(abandonChart);
       }
     );
   };
@@ -307,8 +308,8 @@ const createChart = (lang, names) => {
   }
 };
 
-export function jenniferAbandonment(lang, names = false) {
+export function jenniferAbandonment(lang, names, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, names)), 0);
+    setTimeout(() => resolve(createChart(lang, names, translate)), 0);
   });
 }

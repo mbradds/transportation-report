@@ -8,7 +8,7 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudeTakeawayData from "./figures.json";
 import Series from "highseries";
 
-const createChart = (lang) => {
+const createChart = (lang, langUnits, translate) => {
   const crudeTakeawayColors = {
     "Total Supply Available for Export": cerPalette["Cool Grey"],
     "Express Pipeline": cerPalette["Aubergine"],
@@ -36,6 +36,7 @@ const createChart = (lang) => {
   };
 
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
+  units.display = langUnits[units.unitsCurrent];
 
   const columns = [
     "Total Supply Available for Export",
@@ -72,7 +73,7 @@ const createChart = (lang) => {
     crudeTakeawayChart.update({
       tooltip: {
         formatter: function () {
-          return tooltipSorted(this.points, this.x, units.unitsCurrent);
+          return tooltipSorted(this.points, this.x, units.display);
         },
       },
       xAxis: {
@@ -84,6 +85,7 @@ const createChart = (lang) => {
     );
     selectUnitsTake.addEventListener("change", (selectUnitsTake) => {
       units.unitsCurrent = selectUnitsTake.target.value;
+      units.display = langUnits[units.unitsCurrent];
       if (units.unitsCurrent !== units.unitsBase) {
         series.update({
           data: crudeTakeawayData,
@@ -104,9 +106,10 @@ const createChart = (lang) => {
       crudeTakeawayChart.update({
         series: series.hcSeries,
         yAxis: {
-          title: { text: units.unitsCurrent },
+          title: { text: units.display },
         },
       });
+      translate(crudeTakeawayChart);
     });
   };
 
@@ -117,8 +120,8 @@ const createChart = (lang) => {
   }
 };
 
-export function coletteCrudeTakeaway(lang) {
+export function coletteCrudeTakeaway(lang, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
   });
 }

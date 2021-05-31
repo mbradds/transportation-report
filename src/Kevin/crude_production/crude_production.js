@@ -8,7 +8,7 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import crudeProdData from "./Crude_Oil_Production.json";
 import Series from "highseries";
 
-const createChart = (lang, langShared) => {
+const createChart = (lang, langShared, langUnits, translate) => {
   const crudeProdColors = {
     ["Conventional Light"]: cerPalette["Sun"],
     ["Conventional Heavy"]: cerPalette["Night Sky"],
@@ -21,6 +21,7 @@ const createChart = (lang, langShared) => {
   var crudeProdFilters = { Region: "Canada" };
 
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
+  units.display = langUnits[units.unitsCurrent];
 
   const crudeProdColumns = [
     "Conventional Light",
@@ -115,6 +116,7 @@ const createChart = (lang, langShared) => {
             },
           },
         });
+        translate(chartCrude);
       }
     );
 
@@ -124,6 +126,7 @@ const createChart = (lang, langShared) => {
     );
     selectUnitsCrudeProd.addEventListener("change", (selectUnitsCrudeProd) => {
       units.unitsCurrent = selectUnitsCrudeProd.target.value;
+      units.display = langUnits[units.unitsCurrent];
       if (units.unitsCurrent !== units.unitsBase) {
         series.update({
           data: crudeProdData,
@@ -144,7 +147,7 @@ const createChart = (lang, langShared) => {
       chartCrude.update({
         series: series.hcSeries,
         yAxis: {
-          title: { text: units.unitsCurrent },
+          title: { text: units.display },
           tickInterval: ticks(crudeProdFilters, units),
           labels: {
             formatter: function () {
@@ -153,9 +156,10 @@ const createChart = (lang, langShared) => {
           },
         },
         tooltip: {
-          pointFormat: tooltipPoint(units.unitsCurrent),
+          pointFormat: tooltipPoint(units.display),
         },
       });
+      translate(chartCrude);
     });
     return chartCrude;
   };
@@ -168,8 +172,11 @@ const createChart = (lang, langShared) => {
   }
 };
 
-export function kevinCrudeProduction(lang, langShared) {
+export function kevinCrudeProduction(lang, langShared, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, langShared)), 0);
+    setTimeout(
+      () => resolve(createChart(lang, langShared, langUnits, translate)),
+      0
+    );
   });
 }

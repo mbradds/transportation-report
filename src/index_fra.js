@@ -1,5 +1,5 @@
 import { generalTheme, frenchTheme } from "./modules/themes";
-import { translate } from "./modules/translateSeries.js";
+import { translateFra } from "./modules/translateSeries.js";
 import { instructionsChart } from "./modules/charts";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
@@ -45,33 +45,38 @@ async function loadAllCharts(fra) {
   console.time(`chart loading`);
   let arrayOfCharts = [
     instructionsChart(fra.instructionsChart),
-    kevinCrudeProduction(fra.crudeProduction, fra.shared),
-    kevinCrudeExports(fra.crudeExports),
-    kevinCrudePrices(fra.crudePrices),
-    kevinUsImports(fra.crudeImports),
-    coletteCrudeMode(fra.crudeMode),
-    coletteCrudeByRail(fra.crudeByRail),
-    coletteMarine(fra.marineCrudeExports),
-    coletteCrudeTakeaway(fra.crudeTakeaway),
-    rebeccaGasProd(fra.gasProduction, fra.shared),
-    rebeccaGasTrade(fra.gasTrade),
+    kevinCrudeProduction(
+      fra.crudeProduction,
+      fra.shared,
+      fra.units,
+      translateFra
+    ),
+    kevinCrudeExports(fra.crudeExports, fra.units, translateFra),
+    kevinCrudePrices(fra.crudePrices, fra.units),
+    kevinUsImports(fra.crudeImports, fra.units, translateFra),
+    coletteCrudeMode(fra.crudeMode, fra.units),
+    coletteCrudeByRail(fra.crudeByRail, fra.units, translateFra),
+    coletteMarine(fra.marineCrudeExports, fra.units),
+    coletteCrudeTakeaway(fra.crudeTakeaway, fra.units, translateFra),
+    rebeccaGasProd(fra.gasProduction, fra.shared, fra.units, translateFra),
+    rebeccaGasTrade(fra.gasTrade, fra.units, translateFra),
     rebeccaGasPrices(fra.gasPrices),
-    saraGasTraffic(fra.gasTraffic),
-    saraMnp(fra.gasMnp),
-    sara2019(fra.gas2019),
-    ryanNglProduction(fra.nglProduction, fra.shared),
-    ryanNglExports(fra.nglExports),
-    ryanNglDestination(fra.nglDestination),
+    saraGasTraffic(fra.gasTraffic, fra.units, translateFra),
+    saraMnp(fra.gasMnp, fra.units, translateFra),
+    sara2019(fra.gas2019, fra.units, translateFra),
+    ryanNglProduction(fra.nglProduction, fra.shared, fra.units, translateFra),
+    ryanNglExports(fra.nglExports, fra.units, translateFra),
+    ryanNglDestination(fra.nglDestination, fra.units, translateFra),
     cassandraSettlements(fra.settlements, fra.pipeline_name),
     cassandraTolls(fra.tolls),
-    jenniferFinResources(fra.finResource),
-    jenniferAbandonment(fra.abandon, fra.company_name),
-    cassandraAllPipes(fra.finance),
+    jenniferFinResources(fra.finResource, translateFra),
+    jenniferAbandonment(fra.abandon, fra.company_name, translateFra),
+    cassandraAllPipes(fra.finance, translateFra),
     jenniferRatingsCross(fra.ratingsCross, fra.ratingsLevel),
     jenniferRatingsMulti(fra.ratingsMultiple, fra.ratingsLevel),
   ];
   Promise.allSettled(arrayOfCharts).then((value) => {
-    translate();
+    translateFra();
     console.timeEnd(`chart loading`);
   });
 }

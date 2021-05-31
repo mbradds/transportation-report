@@ -35,7 +35,7 @@ export const productionChart = (params, estimate = true) => {
     },
 
     yAxis: {
-      title: { text: params.units.unitsCurrent },
+      title: { text: params.units.display },
       stackLabels: {
         enabled: true,
       },
@@ -63,7 +63,7 @@ export const lineAndStackedArea = (params) => {
 
     tooltip: {
       shared: true,
-      pointFormat: tooltipPoint(params.units.unitsCurrent),
+      pointFormat: tooltipPoint(params.units.display),
     },
 
     xAxis: {
@@ -72,7 +72,7 @@ export const lineAndStackedArea = (params) => {
     },
 
     yAxis: {
-      title: { text: params.units.unitsCurrent },
+      title: { text: params.units.display },
       endOnTick: false,
     },
 

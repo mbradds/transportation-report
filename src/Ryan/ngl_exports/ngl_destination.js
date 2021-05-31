@@ -3,8 +3,9 @@ import Series from "highseries";
 import { errorChart, createPaddMap } from "../../modules/charts.js";
 import nglData from "./destination.json";
 
-const createChart = (lang) => {
+const createChart = (lang, langUnits, translate) => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
+  units.display = langUnits[units.unitsCurrent];
 
   const nglFilters = {
     Product: "Propane",
@@ -45,7 +46,7 @@ const createChart = (lang) => {
 
       tooltip: {
         shared: true,
-        pointFormat: tooltipPoint(units.unitsCurrent),
+        pointFormat: tooltipPoint(units.display),
       },
 
       xAxis: {
@@ -54,7 +55,7 @@ const createChart = (lang) => {
       },
 
       yAxis: {
-        title: { text: units.unitsCurrent },
+        title: { text: units.display },
         endOnTick: false,
       },
 
@@ -103,6 +104,7 @@ const createChart = (lang) => {
     nglDestChart.update({
       series: series.hcSeries,
     });
+    translate(nglDestChart);
   });
 
   var selectNglChart = document.getElementById("select_ngl_chart_type");
@@ -113,10 +115,12 @@ const createChart = (lang) => {
         type: newChartType,
       },
     });
+    translate(nglDestChart);
   });
   var selectUnitsNgl = document.getElementById("select_units_ngl_destination");
   selectUnitsNgl.addEventListener("change", (selectUnitsNgl) => {
     units.unitsCurrent = selectUnitsNgl.target.value;
+    units.display = langUnits[units.unitsCurrent];
     if (units.unitsCurrent !== units.unitsBase) {
       series.update({
         data: nglData,
@@ -137,18 +141,19 @@ const createChart = (lang) => {
     nglDestChart.update({
       series: series.hcSeries,
       yAxis: {
-        title: { text: units.unitsCurrent },
+        title: { text: units.display },
       },
       tooltip: {
-        pointFormat: tooltipPoint(units.unitsCurrent),
+        pointFormat: tooltipPoint(units.display),
       },
     });
+    translate(nglDestChart);
   });
   return 1;
 };
 
-export function ryanNglDestination(lang) {
+export function ryanNglDestination(lang, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
   });
 }

@@ -8,7 +8,7 @@ import {
 import { errorChart } from "../../modules/charts.js";
 import crudeModeData from "./crude_mode.json";
 
-const createChart = (lang) => {
+const createChart = (lang, langUnits) => {
   const crudeModeFilters = { Year: 2020 };
   const crudeModeColors = {
     Pipeline: cerPalette["Night Sky"],
@@ -44,12 +44,12 @@ const createChart = (lang) => {
           )} %</b></td></tr>`;
           toolText += `<tr><td>${
             lang.exportVolume
-          }</td><td style="padding:0"><b>${numberFormat(
-            this.y.toFixed(1)
-          )} bbl/day</b></td></tr>`;
+          }</td><td style="padding:0"><b>${numberFormat(this.y.toFixed(1))} ${
+            langUnits["b/d"]
+          }</b></td></tr>`;
           toolText += `<tr><td></td><td style="padding:0"><b><i>${numberFormat(
             (this.y / 6.2898).toFixed(1)
-          )} m3/day</b></i></td></tr>`;
+          )} ${langUnits["m3/d"]}</b></i></td></tr>`;
           toolText += `</table>`;
           return toolText;
         },
@@ -115,8 +115,8 @@ const createChart = (lang) => {
   }
 };
 
-export function coletteCrudeMode(lang) {
+export function coletteCrudeMode(lang, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits)), 0);
   });
 }

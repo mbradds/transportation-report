@@ -1,4 +1,5 @@
 import { generalTheme } from "./modules/themes";
+import { translateEng } from "./modules/translateSeries.js";
 import { instructionsChart } from "./modules/charts";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
@@ -44,28 +45,33 @@ async function loadAllCharts(eng) {
   console.time(`chart loading`);
   let arrayOfCharts = [
     instructionsChart(eng.instructionsChart),
-    kevinCrudeProduction(eng.crudeProduction, eng.shared),
-    kevinCrudeExports(eng.crudeExports),
-    kevinCrudePrices(eng.crudePrices),
-    kevinUsImports(eng.crudeImports),
-    coletteCrudeMode(eng.crudeMode),
-    coletteCrudeByRail(eng.crudeByRail),
-    coletteMarine(eng.marineCrudeExports),
-    coletteCrudeTakeaway(eng.crudeTakeaway),
-    rebeccaGasProd(eng.gasProduction, eng.shared),
-    rebeccaGasTrade(eng.gasTrade),
+    kevinCrudeProduction(
+      eng.crudeProduction,
+      eng.shared,
+      eng.units,
+      translateEng
+    ),
+    kevinCrudeExports(eng.crudeExports, eng.units, translateEng),
+    kevinCrudePrices(eng.crudePrices, eng.units),
+    kevinUsImports(eng.crudeImports, eng.units, translateEng),
+    coletteCrudeMode(eng.crudeMode, eng.units),
+    coletteCrudeByRail(eng.crudeByRail, eng.units, translateEng),
+    coletteMarine(eng.marineCrudeExports, eng.units),
+    coletteCrudeTakeaway(eng.crudeTakeaway, eng.units, translateEng),
+    rebeccaGasProd(eng.gasProduction, eng.shared, eng.units, translateEng),
+    rebeccaGasTrade(eng.gasTrade, eng.units, translateEng),
     rebeccaGasPrices(eng.gasPrices),
-    saraGasTraffic(eng.gasTraffic),
-    saraMnp(eng.gasMnp),
-    sara2019(eng.gas2019),
-    ryanNglProduction(eng.nglProduction, eng.shared),
-    ryanNglExports(eng.nglExports),
-    ryanNglDestination(eng.nglDestination),
+    saraGasTraffic(eng.gasTraffic, eng.units, translateEng),
+    saraMnp(eng.gasMnp, eng.units, translateEng),
+    sara2019(eng.gas2019, eng.units, translateEng),
+    ryanNglProduction(eng.nglProduction, eng.shared, eng.units, translateEng),
+    ryanNglExports(eng.nglExports, eng.units, translateEng),
+    ryanNglDestination(eng.nglDestination, eng.units, translateEng),
     cassandraSettlements(eng.settlements),
     cassandraTolls(eng.tolls),
-    jenniferFinResources(eng.finResource),
-    jenniferAbandonment(eng.abandon),
-    cassandraAllPipes(eng.finance),
+    jenniferFinResources(eng.finResource, translateEng),
+    jenniferAbandonment(eng.abandon, undefined, translateEng),
+    cassandraAllPipes(eng.finance, translateEng),
     jenniferRatingsCross(eng.ratingsCross, false),
     jenniferRatingsMulti(eng.ratingsMultiple, false),
   ];

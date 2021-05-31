@@ -233,7 +233,8 @@
     "source": "Source : REGDOCS de la Régie",
     "pipe": "pipelines",
     "legend": "Des symboles plus gros indiquent les données qui se chevauchent. Cliquer sur les légendes pour afficher moins de données.",
-    "noData": "Aucune donnée financière"
+    "noData": "Aucune donnée financière",
+    "sorted": "valeurs triées du plus grand au plus petit"
   },
   "ratingsCross": {
     "enbridge": "Enbridge et filiales",
@@ -307,5 +308,14 @@
   },
   "shared": {
     "estimate": "Valeur estimative"
+  },
+  "units": {
+    "MMb/d": "MMb/d FR",
+    "Thousand m3/d": "Thousand m3/d FR",
+    "Mb/d": "Mb/d FR",
+    "m3/d": "m3/d FR",
+    "Bcf/d": "Bcf/d FR",
+    "Million m3/d": "Million m3/d FR",
+    "b/d": "b/d FR"
   }
 }

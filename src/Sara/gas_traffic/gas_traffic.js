@@ -3,7 +3,7 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import Series from "highseries";
 import gasData from "./gas_traffic.json";
 
-const createChart = (lang) => {
+const createChart = (lang, langUnits, translate) => {
   const gasColors = {
     "Alliance Pipeline - Border": cerPalette["Night Sky"],
     "NGTL System - East Gate": cerPalette["Sun"],
@@ -22,6 +22,7 @@ const createChart = (lang) => {
   };
 
   var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
+  units.display = langUnits[units.unitsCurrent];
   const columns = Object.keys(gasChartTypes);
 
   const mainGasTraffic = () => {
@@ -51,6 +52,7 @@ const createChart = (lang) => {
       "change",
       (selectUnitsGasTraffic) => {
         units.unitsCurrent = selectUnitsGasTraffic.target.value;
+        units.display = langUnits[units.unitsCurrent];
         if (units.unitsCurrent !== units.unitsBase) {
           series.update({
             data: gasData,
@@ -71,12 +73,13 @@ const createChart = (lang) => {
         chartGasTraffic.update({
           series: series.hcSeries,
           yAxis: {
-            title: { text: units.unitsCurrent },
+            title: { text: units.display },
           },
           tooltip: {
-            pointFormat: tooltipPoint(units.unitsCurrent),
+            pointFormat: tooltipPoint(units.display),
           },
         });
+        translate(chartGasTraffic);
       }
     );
   };
@@ -87,8 +90,8 @@ const createChart = (lang) => {
   }
 };
 
-export function saraGasTraffic(lang) {
+export function saraGasTraffic(lang, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
   });
 }

@@ -3,7 +3,7 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import gasProdData from "./Natural_Gas_Production.json";
 import Series from "highseries";
 
-const createChart = (lang, langShared) => {
+const createChart = (lang, langShared, langUnits, translate) => {
   const gasProdColors = {
     Solution: cerPalette["Aubergine"],
     "Conventional Non-tight": cerPalette["Forest"],
@@ -13,6 +13,7 @@ const createChart = (lang, langShared) => {
   };
 
   var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
+  units.display = langUnits[units.unitsCurrent];
 
   const mainGasProducton = () => {
     let series = new Series({
@@ -35,6 +36,7 @@ const createChart = (lang, langShared) => {
     var selectUnitsGasProd = document.getElementById("select_units_gas_prod");
     selectUnitsGasProd.addEventListener("change", (selectUnitsGasProd) => {
       units.unitsCurrent = selectUnitsGasProd.target.value;
+      units.display = langUnits[units.unitsCurrent];
       if (units.unitsCurrent !== units.unitsBase) {
         series.update({
           data: gasProdData,
@@ -55,12 +57,13 @@ const createChart = (lang, langShared) => {
       gasProdChart.update({
         series: series.hcSeries,
         yAxis: {
-          title: { text: units.unitsCurrent },
+          title: { text: units.display },
         },
         tooltip: {
-          pointFormat: tooltipPoint(units.unitsCurrent),
+          pointFormat: tooltipPoint(units.display),
         },
       });
+      translate(gasProdChart);
     });
   };
 
@@ -71,8 +74,11 @@ const createChart = (lang, langShared) => {
   }
 };
 
-export function rebeccaGasProd(lang, langShared) {
+export function rebeccaGasProd(lang, langShared, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, langShared)), 0);
+    setTimeout(
+      () => resolve(createChart(lang, langShared, langUnits, translate)),
+      0
+    );
   });
 }

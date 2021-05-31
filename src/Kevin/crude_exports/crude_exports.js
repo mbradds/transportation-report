@@ -9,7 +9,7 @@ import { errorChart, createPaddMap } from "../../modules/charts.js";
 import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
 import Series from "highseries";
 
-const createChart = (lang) => {
+const createChart = (lang, langUnits, translate) => {
   const crudeExportColors = {
     "PADD I": cerPalette["Sun"],
     "PADD II": cerPalette["Night Sky"],
@@ -20,6 +20,7 @@ const createChart = (lang) => {
   };
 
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
+  units.display = langUnits[units.unitsCurrent];
 
   const createCrudeExportsChart = (seriesData, units) => {
     return new Highcharts.chart("container_crude_exports", {
@@ -46,13 +47,13 @@ const createChart = (lang) => {
       },
 
       tooltip: {
-        pointFormat: tooltipPoint(units.unitsCurrent),
+        pointFormat: tooltipPoint(units.display),
       },
 
       yAxis: {
         startOnTick: false,
         endOnTick: false,
-        title: { text: units.unitsCurrent },
+        title: { text: units.display },
         stackLabels: {
           enabled: true,
         },
@@ -91,6 +92,7 @@ const createChart = (lang) => {
   );
   selectCrudeExports.addEventListener("change", (selectCrudeExports) => {
     units.unitsCurrent = selectCrudeExports.target.value;
+    units.display = langUnits[units.unitsCurrent];
     if (units.unitsCurrent !== units.unitsBase) {
       series.update({
         data: crudeExportsData,
@@ -112,19 +114,20 @@ const createChart = (lang) => {
     chartCrudeExports.update({
       series: series.hcSeries,
       yAxis: {
-        title: { text: units.unitsCurrent },
+        title: { text: units.display },
       },
       tooltip: {
-        pointFormat: tooltipPoint(units.unitsCurrent),
+        pointFormat: tooltipPoint(units.display),
       },
     });
+    translate(chartCrudeExports);
   });
 
   return chartCrudeExports;
 };
 
-export function kevinCrudeExports(lang) {
+export function kevinCrudeExports(lang, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
   });
 }

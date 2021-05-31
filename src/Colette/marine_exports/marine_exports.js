@@ -8,9 +8,10 @@ import { errorChart } from "../../modules/charts.js";
 import Series from "highseries";
 import marineData from "./marine_exports.json";
 
-const createChart = (lang) => {
+const createChart = (lang, langUnits) => {
   const marineColors = { "Mb/d": cerPalette["Ocean"] };
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
+  units.display = langUnits[units.unitsCurrent];
 
   const createMarineChart = (seriesData, units) => {
     return new Highcharts.chart("container_crude_marine", {
@@ -44,7 +45,11 @@ const createChart = (lang) => {
 
       tooltip: {
         shared: true,
-        pointFormat: tooltipPoint(units.unitsCurrent),
+        pointFormat: tooltipPoint(units.display),
+      },
+
+      legend: {
+        enabled: false,
       },
 
       xAxis: {
@@ -53,7 +58,7 @@ const createChart = (lang) => {
       },
 
       yAxis: {
-        title: { text: units.unitsCurrent },
+        title: { text: units.display },
       },
 
       series: seriesData,
@@ -72,6 +77,7 @@ const createChart = (lang) => {
 
     selectUnitsMarine.addEventListener("change", (selectUnitsMarine) => {
       units.unitsCurrent = selectUnitsMarine.target.value;
+      units.display = langUnits[units.unitsCurrent];
       if (units.unitsCurrent !== units.unitsBase) {
         series.update({
           data: marineData,
@@ -92,10 +98,10 @@ const createChart = (lang) => {
       marineChart.update({
         series: series.hcSeries,
         yAxis: {
-          title: { text: units.unitsCurrent },
+          title: { text: units.display },
         },
         tooltip: {
-          pointFormat: tooltipPoint(units.unitsCurrent),
+          pointFormat: tooltipPoint(units.display),
         },
       });
     });
@@ -108,8 +114,8 @@ const createChart = (lang) => {
   }
 };
 
-export function coletteMarine(lang) {
+export function coletteMarine(lang, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits)), 0);
   });
 }

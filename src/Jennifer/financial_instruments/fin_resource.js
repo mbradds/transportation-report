@@ -5,7 +5,7 @@ import finResData from "./fin_resource_totals.json";
 import finClassData from "./fin_resource_class.json";
 import finResNames from "./fin_resource_class_names.json";
 
-export async function jenniferFinResources(lang) {
+export async function jenniferFinResources(lang, translate) {
   var resFilters = { Commodity: "All" };
 
   const resChartTypes = {
@@ -329,6 +329,8 @@ export async function jenniferFinResources(lang) {
         seriesClass.hcSeries,
         resFilters
       );
+      translate(chartFinResource);
+      translate(chartfinClassData);
     });
   };
 

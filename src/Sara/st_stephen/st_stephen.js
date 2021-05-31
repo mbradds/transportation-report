@@ -9,7 +9,7 @@ import mnpData from "./st_stephen.json";
 import offshoreData from "./ns_offshore.json";
 import Series from "highseries";
 
-const createChart = (lang) => {
+const createChart = (lang, langUnits, translate) => {
   const mnpColors = {
     Exports: cerPalette["Night Sky"],
     Imports: cerPalette["Sun"],
@@ -23,6 +23,7 @@ const createChart = (lang) => {
   };
 
   var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
+  units.display = langUnits[units.unitsCurrent];
 
   var yMax = 0.5;
   const ticks = (units) => {
@@ -64,7 +65,7 @@ const createChart = (lang) => {
 
       tooltip: {
         shared: true,
-        pointFormat: tooltipPoint(units.unitsCurrent),
+        pointFormat: tooltipPoint(units.display),
       },
 
       xAxis: {
@@ -73,7 +74,7 @@ const createChart = (lang) => {
       },
 
       yAxis: {
-        title: { text: units.unitsCurrent },
+        title: { text: units.display },
         tickInterval: ticks(units),
         max: yMax,
         labels: {
@@ -122,6 +123,7 @@ const createChart = (lang) => {
     );
     selectUnitsGasInsert.addEventListener("change", (selectUnitsGasInsert) => {
       units.unitsCurrent = selectUnitsGasInsert.target.value;
+      units.display = langUnits[units.unitsCurrent];
       if (units.unitsCurrent !== units.unitsBase) {
         mnpseries.update({
           data: mnpData,
@@ -159,14 +161,15 @@ const createChart = (lang) => {
         value.chart.update({
           series: value.series,
           yAxis: {
-            title: { text: units.unitsCurrent },
+            title: { text: units.display },
             tickInterval: ticks(units),
             max: yMax,
           },
           tooltip: {
-            pointFormat: tooltipPoint(units.unitsCurrent),
+            pointFormat: tooltipPoint(units.display),
           },
         });
+        translate(value.chart);
       }
     });
 
@@ -200,8 +203,8 @@ const createChart = (lang) => {
   }
 };
 
-export function saraMnp(lang) {
+export function saraMnp(lang, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
   });
 }

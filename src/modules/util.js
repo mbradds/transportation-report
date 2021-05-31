@@ -184,7 +184,13 @@ export const tooltipSymbol = (
   }
 };
 
-export const tooltipSorted = (points, title, units, transform = false) => {
+export const tooltipSorted = (
+  points,
+  title,
+  units,
+  transform = false,
+  text = ""
+) => {
   const yCalc = (transform) => {
     if (transform) {
       return (y) => y / transform[0]; //TODO: add more options like multiply/add if needed
@@ -194,7 +200,7 @@ export const tooltipSorted = (points, title, units, transform = false) => {
   };
   let yVal = yCalc(transform);
   var sortedPoints = sortJson(points, "y");
-  var toolText = `<b>${title}</b> - <i> values sorted from largest to smallest</i>`;
+  var toolText = `<b>${title}</b> - <i> ${text}</i>`;
   toolText += `<table>`;
   sortedPoints.map((point) => {
     toolText += `<tr><td> <span style="color: ${point.color}">&#9679</span> ${

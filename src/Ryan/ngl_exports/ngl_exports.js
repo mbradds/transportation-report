@@ -8,8 +8,9 @@ import Series from "highseries";
 import { errorChart } from "../../modules/charts.js";
 import nglData from "./origin.json";
 
-const createChart = (lang) => {
+const createChart = (lang, langUnits, translate) => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
+  units.display = langUnits[units.unitsCurrent];
   const nglFilters = {
     Product: "p",
     Origin: "ca",
@@ -73,7 +74,7 @@ const createChart = (lang) => {
 
       tooltip: {
         shared: true,
-        pointFormat: tooltipPoint(units.unitsCurrent),
+        pointFormat: tooltipPoint(units.display),
       },
 
       xAxis: {
@@ -82,7 +83,7 @@ const createChart = (lang) => {
       },
 
       yAxis: {
-        title: { text: units.unitsCurrent },
+        title: { text: units.display },
         endOnTick: false,
       },
 
@@ -113,6 +114,7 @@ const createChart = (lang) => {
       setTitle(figure_title, nglFilters);
       series.update({ data: nglData, filters: nglFilters });
       nglChart = createNglChart(series.hcSeries, units);
+      translate(nglChart);
     });
 
     var selectRegionNgl = document.getElementById("select_region_ngl");
@@ -121,11 +123,13 @@ const createChart = (lang) => {
       setTitle(figure_title, nglFilters);
       series.update({ data: nglData, filters: nglFilters });
       nglChart = createNglChart(series.hcSeries, units);
+      translate(nglChart);
     });
 
     var selectUnitsNgl = document.getElementById("select_units_ngl");
     selectUnitsNgl.addEventListener("change", (selectUnitsNgl) => {
       units.unitsCurrent = selectUnitsNgl.target.value;
+      units.display = langUnits[units.unitsCurrent];
       if (units.unitsCurrent !== units.unitsBase) {
         series.update({
           data: nglData,
@@ -146,12 +150,13 @@ const createChart = (lang) => {
       nglChart.update({
         series: series.hcSeries,
         yAxis: {
-          title: { text: units.unitsCurrent },
+          title: { text: units.display },
         },
         tooltip: {
-          pointFormat: tooltipPoint(units.unitsCurrent),
+          pointFormat: tooltipPoint(units.display),
         },
       });
+      translate(nglChart);
     });
   };
   try {
@@ -161,8 +166,8 @@ const createChart = (lang) => {
   }
 };
 
-export function ryanNglExports(lang) {
+export function ryanNglExports(lang, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
   });
 }

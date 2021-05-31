@@ -9,8 +9,9 @@ import { errorChart } from "../../modules/charts.js";
 import crudeImportsData from "./UScrudeoilimports.json";
 import Series from "highseries";
 
-const createChart = (lang) => {
+const createChart = (lang, langUnits, translate) => {
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
+  units.display = langUnits[units.unitsCurrent];
 
   const crudeImportColors = {
     "U.S. crude oil imports from rest of world": cerPalette["Night Sky"],
@@ -50,7 +51,7 @@ const createChart = (lang) => {
 
       tooltip: {
         shared: true,
-        pointFormat: tooltipPoint(params.units.unitsCurrent),
+        pointFormat: tooltipPoint(params.units.display),
       },
 
       xAxis: {
@@ -62,7 +63,7 @@ const createChart = (lang) => {
       annotations: [annotation(840, 30, cerPalette["Sun"], lang.annotation)],
 
       yAxis: {
-        title: { text: params.units.unitsCurrent },
+        title: { text: params.units.display },
         stackLabels: {
           enabled: true,
           formatter: function () {
@@ -97,6 +98,7 @@ const createChart = (lang) => {
       "change",
       (selectUnitsCrudeImports) => {
         units.unitsCurrent = selectUnitsCrudeImports.target.value;
+        units.display = langUnits[units.unitsCurrent];
         if (units.unitsCurrent !== units.unitsBase) {
           series.update({
             data: crudeImportsData,
@@ -117,12 +119,13 @@ const createChart = (lang) => {
         chartCrudeImports.update({
           series: series.hcSeries,
           yAxis: {
-            title: { text: units.unitsCurrent },
+            title: { text: units.display },
           },
           tooltip: {
-            pointFormat: tooltipPoint(units.unitsCurrent),
+            pointFormat: tooltipPoint(units.display),
           },
         });
+        translate(chartCrudeImports);
       }
     );
   };
@@ -134,8 +137,8 @@ const createChart = (lang) => {
   }
 };
 
-export function kevinUsImports(lang) {
+export function kevinUsImports(lang, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
   });
 }

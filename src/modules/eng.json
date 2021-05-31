@@ -140,7 +140,8 @@
     "source": "Source: CER REGDOCS",
     "pipe": "pipelines",
     "legend": "Larger symbol size used to show overlapping data. Click on a legend item to remove from chart.",
-    "noData": "No Financial Data"
+    "noData": "No Financial Data",
+    "sorted": "values sorted from largest to smallest"
   },
   "ratingsCross": {
     "enbridge": "Enbridge & Subsidiaries",
@@ -157,5 +158,14 @@
   },
   "shared": {
     "estimate": "Estimated Value"
+  },
+  "units": {
+    "MMb/d": "MMb/d",
+    "Thousand m3/d": "Thousand m3/d",
+    "Mb/d": "Mb/d",
+    "m3/d": "m3/d",
+    "Bcf/d": "Bcf/d",
+    "Million m3/d": "Million m3/d",
+    "b/d": "b/d"
   }
 }

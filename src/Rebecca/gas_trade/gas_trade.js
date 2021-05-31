@@ -9,7 +9,7 @@ import { errorChart } from "../../modules/charts.js";
 import gasTradeData from "./natural-gas-exports-and-imports-annual.json";
 import Series from "highseries";
 
-const createChart = (lang) => {
+const createChart = (lang, langUnits, translate) => {
   const gasTrafficColors = {
     ["U.S. West"]: cerPalette["Forest"],
     ["U.S. Midwest"]: cerPalette["Ocean"],
@@ -17,6 +17,7 @@ const createChart = (lang) => {
   };
   var gasTradeFilters = { Activity: "Exports" };
   var gasTradeUnits = { unitsCol: "Volume (Bcf/d)", unitsCurrent: "Bcf/d" };
+  gasTradeUnits.display = langUnits[gasTradeUnits.unitsCurrent];
 
   const setTitle = (figure_title, filters) => {
     if (filters.Activity == "Exports") {
@@ -295,11 +296,11 @@ const createChart = (lang) => {
       },
 
       tooltip: {
-        pointFormat: tooltipPoint(units.unitsCurrent),
+        pointFormat: tooltipPoint(units.display),
       },
 
       yAxis: {
-        title: { text: units.unitsCurrent },
+        title: { text: units.display },
         stackLabels: {
           enabled: true,
         },
@@ -328,6 +329,7 @@ const createChart = (lang) => {
     selectUnitsGasTrade.addEventListener("change", (selectUnitsGasTrade) => {
       var units = selectUnitsGasTrade.target.value;
       gasTradeUnits.unitsCurrent = units;
+      gasTradeUnits.display = langUnits[gasTradeUnits.unitsCurrent];
       if (units == "Bcf/d") {
         gasTradeUnits.unitsCol = "Volume (Bcf/d)";
       } else {
@@ -340,11 +342,12 @@ const createChart = (lang) => {
       });
       chartGasTraffic.update({
         series: series.hcSeries,
-        yAxis: { title: { text: units } },
+        yAxis: { title: { text: gasTradeUnits.display } },
         tooltip: {
-          pointFormat: tooltipPoint(units),
+          pointFormat: tooltipPoint(gasTradeUnits.display),
         },
       });
+      translate(chartGasTraffic);
     });
 
     var selectTradeType = document.getElementById("select_gas_trade_type");
@@ -354,6 +357,7 @@ const createChart = (lang) => {
       series.update({ data: gasTradeData, filters: gasTradeFilters });
       chartGasTraffic = createGasTrafficChart(series.hcSeries, gasTradeUnits);
       addVectors(mapGasTraffic, gasTradeFilters);
+      translate(chartGasTraffic);
     });
     return;
   } catch (err) {
@@ -363,8 +367,8 @@ const createChart = (lang) => {
   }
 };
 
-export function rebeccaGasTrade(lang) {
+export function rebeccaGasTrade(lang, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
   });
 }

@@ -11,13 +11,14 @@ import { errorChart } from "../../modules/charts.js";
 import gas2019Data from "./gas_2019.json";
 import Series from "highseries";
 
-const createChart = (lang) => {
+const createChart = (lang, langUnits, translate) => {
   const gas2019Colors = {
     Throughput: cerPalette["Sun"],
     Capacity: cerPalette["Night Sky"],
   };
 
   var units = conversions("Bcf/d to Million m3/d", "Bcf/d", "Bcf/d");
+  units.display = langUnits[units.unitsCurrent];
   var pointsFilters = { Year: "2020" };
 
   const columnPlacement = (series) => {
@@ -289,7 +290,7 @@ const createChart = (lang) => {
         gridLineWidth: 0,
         startOnTick: false,
         endOnTick: false,
-        title: { text: units.unitsCurrent },
+        title: { text: units.display },
         labels: {
           formatter: function () {
             return Math.abs(this.value);
@@ -323,7 +324,7 @@ const createChart = (lang) => {
             }">&#9679</span> ${
               p.series.name
             }:</td><td style="padding:0"><b>${Math.abs(p.y)} ${
-              units.unitsCurrent
+              units.display
             }</b></td></tr>`;
           });
           return toolText + "</table>";
@@ -392,6 +393,7 @@ const createChart = (lang) => {
     var selectUnitsGas2019 = document.getElementById("select_units_gas_2019");
     selectUnitsGas2019.addEventListener("change", (selectUnitsGas2019) => {
       units.unitsCurrent = selectUnitsGas2019.target.value;
+      units.display = langUnits[units.unitsCurrent];
       if (units.unitsCurrent !== units.unitsBase) {
         series.update({
           data: gas2019Data,
@@ -412,9 +414,10 @@ const createChart = (lang) => {
       chartGas2019.update({
         series: columnPlacement(series.hcSeries),
         yAxis: {
-          title: { text: units.unitsCurrent },
+          title: { text: units.display },
         },
       });
+      translate(chartGas2019);
     });
 
     $("#gas-points-years button").on("click", function () {
@@ -430,6 +433,7 @@ const createChart = (lang) => {
       chartGas2019.update({
         series: columnPlacement(series.hcSeries),
       });
+      translate(chartGas2019);
     });
     return chartGas2019;
   } catch (err) {
@@ -439,8 +443,8 @@ const createChart = (lang) => {
   }
 };
 
-export function sara2019(lang) {
+export function sara2019(lang, langUnits, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
   });
 }

@@ -9,7 +9,7 @@ import {
 import { errorChart } from "../../modules/charts.js";
 import financialData from "./PipelineProfileTables.json";
 
-const createChart = (lang) => {
+const createChart = (lang, translate) => {
   const sortLegend = (series) => {
     const toSort = sortJson(
       series.map((row) => {
@@ -185,7 +185,8 @@ const createChart = (lang) => {
             this.points,
             this.x,
             yOptions.yLabel,
-            yOptions.transform
+            yOptions.transform,
+            lang.sorted
           );
         },
       },
@@ -243,6 +244,7 @@ const createChart = (lang) => {
       (selectMetricFinancial) => {
         financeFilters.Type = selectMetricFinancial.target.value;
         chartFinance = graphEvent(financeFilters);
+        translate(chartFinance);
       }
     );
 
@@ -253,6 +255,7 @@ const createChart = (lang) => {
     selectPipeFinancial.addEventListener("change", (selectPipeFinancial) => {
       financeFilters.Category = selectPipeFinancial.target.value;
       chartFinance = graphEvent(financeFilters);
+      translate(chartFinance);
     });
 
     const graphEvent = (filters) => {
@@ -267,8 +270,8 @@ const createChart = (lang) => {
   }
 };
 
-export function cassandraAllPipes(lang) {
+export function cassandraAllPipes(lang, translate) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, translate)), 0);
   });
 }

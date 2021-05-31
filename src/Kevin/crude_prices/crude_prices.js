@@ -28,7 +28,7 @@ const createChart = (lang) => {
       div: "container_crude_prices",
       sourceLink: "https://www.ne2group.com/",
       sourceText: lang.source,
-      units: { unitsCurrent: "USD/bbl" },
+      units: { unitsCurrent: "USD/bbl", display: "USD/bbl" },
       series: series.hcSeries,
       xAxisType: "datetime",
       crosshair: true,
