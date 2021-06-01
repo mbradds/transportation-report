@@ -141,7 +141,14 @@
     "pipe": "pipelines",
     "legend": "Larger symbol size used to show overlapping data. Click on a legend item to remove from chart.",
     "noData": "No Financial Data",
-    "sorted": "values sorted from largest to smallest"
+    "sorted": "values sorted from largest to smallest",
+    "types": {
+      "Deemed Equity Ratio": "Deemed Equity Ratio",
+      "Actual Return on Equity": "Actual Return on Equity",
+      "Rate Base": "Rate Base",
+      "Revenue": "Revenue"
+    },
+    "categories": { "All": "All", "Oil": "Oil", "Gas": "Gas" }
   },
   "ratingsCross": {
     "enbridge": "Enbridge & Subsidiaries",

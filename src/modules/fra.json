@@ -234,7 +234,14 @@
     "pipe": "pipelines",
     "legend": "Des symboles plus gros indiquent les données qui se chevauchent. Cliquer sur les légendes pour afficher moins de données.",
     "noData": "Aucune donnée financière",
-    "sorted": "valeurs triées du plus grand au plus petit"
+    "sorted": "valeurs triées du plus grand au plus petit",
+    "types": {
+      "Deemed Equity Ratio": "Ratio présumé du capital-actions ordinaires",
+      "Actual Return on Equity": "Rendement réel du capital-actions ordinaires",
+      "Rate Base": "Base tarifaire",
+      "Revenue": "Revenus"
+    },
+    "categories": { "All": "Tous", "Oil": "Pétrole", "Gas": "Gaz" }
   },
   "ratingsCross": {
     "enbridge": "Enbridge et filiales",
@@ -310,12 +317,12 @@
     "estimate": "Valeur estimative"
   },
   "units": {
-    "MMb/d": "MMb/d FR",
-    "Thousand m3/d": "Thousand m3/d FR",
-    "Mb/d": "Mb/d FR",
-    "m3/d": "m3/d FR",
-    "Bcf/d": "Bcf/d FR",
-    "Million m3/d": "Million m3/d FR",
-    "b/d": "b/d FR"
+    "MMb/d": "Mb/j",
+    "Thousand m3/d": "Milliers m³/j",
+    "Mb/d": "kb/j",
+    "m3/d": "m3/j",
+    "Bcf/d": "Gpi3/j",
+    "Million m3/d": "Mm3/j",
+    "b/d": "b/j"
   }
 }
