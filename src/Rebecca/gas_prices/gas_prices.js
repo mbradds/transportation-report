@@ -156,19 +156,20 @@ const createChart = (lang) => {
       },
 
       tooltip: {
-        shared: true,
-        formatter: function () {
-          var toolText = `<b> ${dateFormat(this.x, "%B-%Y")} </b><table>`;
-          this.points.map((p) => {
-            toolText += tooltipSymbol(p, "", true, false);
-          });
-          return toolText + "</table>";
-        },
+        enabled: false,
+        // shared: true,
+        // formatter: function () {
+        //   var toolText = `<b> ${dateFormat(this.x, "%B-%Y")} </b><table>`;
+        //   this.points.map((p) => {
+        //     toolText += tooltipSymbol(p, "", true, false);
+        //   });
+        //   return toolText + "</table>";
+        // },
       },
 
       xAxis: {
         type: "datetime",
-        crosshair: true,
+        // crosshair: true,
       },
 
       yAxis: {
