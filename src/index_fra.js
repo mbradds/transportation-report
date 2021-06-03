@@ -42,7 +42,6 @@ generalTheme();
 frenchTheme();
 
 async function loadAllCharts(fra) {
-  console.time(`chart loading`);
   let arrayOfCharts = [
     instructionsChart(fra.instructionsChart),
     kevinCrudeProduction(
@@ -75,9 +74,15 @@ async function loadAllCharts(fra) {
     jenniferRatingsCross(fra.ratingsCross, fra.ratingsLevel),
     jenniferRatingsMulti(fra.ratingsMultiple, fra.ratingsLevel),
   ];
-  Promise.allSettled(arrayOfCharts).then((value) => {
-    translateFra();
-    console.timeEnd(`chart loading`);
-  });
+  try {
+    Promise.allSettled(arrayOfCharts).then((value) => {
+      translateFra(undefined);
+    }).catch((err) => {
+      console.log('promise error')
+      translateFra(undefined);
+    });
+  } catch (err) {
+    translateFra(undefined)
+  }
 }
 loadAllCharts(fra);
