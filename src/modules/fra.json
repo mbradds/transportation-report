@@ -24,7 +24,12 @@
     "source": "Source : Système de suivi des produits de la Régie",
     "pctOfTotal": "Pourcentage du total :",
     "exportVolume": "Volume d’exportations:",
-    "title": "Exportations de brut selon le mode"
+    "title": "Exportations de brut selon le mode",
+    "series": {
+      "Marine": "Navire",
+      "Rail": "Train",
+      "Pipeline": "Pipeline"
+    }
   },
   "crudeByRail": {
     "source": "Source : Exportations de brut par chemin de fer de la Régie et NE2 Group",
@@ -42,8 +47,8 @@
     "source": "Source : Avenir énergétique"
   },
   "gasTrade": {
-    "titleExports": "Figure 16 – Exportations de gaz naturel du Canada vers les États-Unis",
-    "titleImports": "Figure 16 – Importations de gaz naturel des États-Unis vers le Canada",
+    "titleExports": "Figure 17 – Exportations de gaz naturel du Canada vers les États-Unis",
+    "titleImports": "Figure 17 – Importations de gaz naturel des États-Unis vers le Canada",
     "source": "Source : Système de suivi des produits de la Régie",
     "tooltip": "Le gaz naturel est acheminé aux États non frontaliers par pipeline à partir d’une ou de plusieurs régions frontalières regroupées"
   },
@@ -65,7 +70,19 @@
     "tooltipUtilization": "Utilisation de la capacité",
     "imports": "Importations",
     "xAxis": "Point principal (d’ouest en est)",
-    "title": "Débit et capacité des pipelines aux points principaux"
+    "title": "Débit et capacité des pipelines aux points principaux",
+    "series": {
+      "NGTL System - Upstream of James River - intracanada": "Réseau de NGTL - En amont de la rivière James - Intra-Canada",
+      "TC Canadian Mainline - Prairies - intracanada": "Réseau principal de TC au Canada - Prairies - Intra-Canada",
+      "Foothills System - Kingsgate - export": "Réseau Foothills - Kingsgate - Exportation",
+      "NGTL System - West Gate - intracanada": "Réseau de NGTL - Entrée ouest - Intra-Canada",
+      "Foothills System - Monchy - export": "Réseau Foothills - Monchy - Exportation",
+      "Enbridge BC Pipeline - Huntingdon Export - export": "Gazoduc BC d’Enbridge - Point d’exportation de Huntingdon - Exportation",
+      "Alliance Pipeline - Border - export": "Pipeline Alliance - Frontière - Exportation",
+      "TC Canadian Mainline - Iroquois - export": "Réseau principal de TC au Canada - Iroquois - Exportation",
+      "M&NP Pipeline - St. Stephen - import": "Pipeline de M&NP - St. Stephen - Importation",
+      "TC Canadian Mainline - Niagara - import": "Réseau principal de TC au Canada - Niagara - Importation"
+    }
   },
   "nglProduction": {
     "source": "Source : Avenir énergétique"
@@ -241,7 +258,11 @@
       "Rate Base": "Base tarifaire",
       "Revenue": "Revenus"
     },
-    "categories": { "All": "Tous", "Oil": "Pétrole", "Gas": "Gaz" }
+    "categories": {
+      "All": "Tous",
+      "Oil": "Pétrole",
+      "Gas": "Gaz"
+    }
   },
   "ratingsCross": {
     "enbridge": "Enbridge et filiales",
@@ -285,26 +306,26 @@
     "Default": "Inexécution"
   },
   "pipeline_name": {
-    "Alliance Pipeline": "Alliance Pipeline Ltd.",
-    "Aurora Pipeline": "Aurora Pipeline",
+    "Alliance Pipeline": "Gazoduc Alliance",
+    "Aurora Pipeline": "Pipeline Aurora",
     "Brunswick Pipeline": "Gazoduc Brunswick d’Emera",
     "Cochin Pipeline": "Cochin de Kinder Morgan",
-    "Enbridge Bakken System": "Enbridge Bakken System",
-    "Enbridge BC Pipeline": "Enbridge BC Pipeline",
+    "Enbridge Bakken System": "Réseau Bakken d’Enbridge",
+    "Enbridge BC Pipeline": "Gazoduc BC d’Enbridge",
     "Enbridge Canadian Mainline": "Réseau principal d’Enbridge",
-    "Express Pipeline": "Express Pipeline",
-    "Foothills System": "Foothills System",
+    "Express Pipeline": "Pipeline Express",
+    "Foothills System": "Réseau de Foothills",
     "Genesis Pipeline": "Genesis Pipeline",
-    "Keystone Pipeline": "Keystone Pipeline",
-    "M&NP Pipeline": "M&NP Pipeline",
+    "Keystone Pipeline": "Pipeline Keystone",
+    "M&NP Pipeline": "Gazoduc M&NP",
     "Milk River Pipeline": "Milk River Pipeline",
     "Montreal Pipeline": "Montréal",
-    "NGTL System": "NGTL System",
+    "NGTL System": "Réseau de NGTL",
     "Norman Wells Pipeline": "Norman Wells d’Enbridge",
     "Southern Lights Pipeline": "Southern Lights Pipeline",
     "TC Canadian Mainline": "Réseau principal de TransCanada",
     "TQM Pipeline": "Gazoduc Trans Québec & Maritimes",
-    "Trans Mountain Pipeline": "Trans Mountain Pipeline",
+    "Trans Mountain Pipeline": "Pipeline Trans Mountain",
     "Trans-Northern Pipeline": "Trans-Nord",
     "Vector Pipeline": "Vector Pipeline",
     "GDP Deflator": "Indice implicite du PIB"

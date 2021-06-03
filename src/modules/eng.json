@@ -24,7 +24,12 @@
     "source": "Source: CER Commodity Tracking System",
     "pctOfTotal": "Percent of total:",
     "exportVolume": "Export volume:",
-    "title": "Crude Oil Exports by Mode of Transportation"
+    "title": "Crude Oil Exports by Mode of Transportation",
+    "series": {
+      "Marine": "Marine",
+      "Rail": "Rail",
+      "Pipeline": "Pipeline"
+    }
   },
   "crudeByRail": {
     "source": "Source: CER Crude by Rail Exports & ne2 Group",
@@ -65,7 +70,19 @@
     "tooltipUtilization": "Capacity Utilization",
     "imports": "Imports",
     "xAxis": "Key Point (West to East)",
-    "title": "Average Throughput and Capacity at Key Pipeline Points"
+    "title": "Average Throughput and Capacity at Key Pipeline Points",
+    "series": {
+      "NGTL System - Upstream of James River - intracanada": "NGTL System - Upstream of James River - intracanada",
+      "TC Canadian Mainline - Prairies - intracanada": "TC Canadian Mainline - Prairies - intracanada",
+      "Foothills System - Kingsgate - export": "Foothills System - Kingsgate - export",
+      "NGTL System - West Gate - intracanada": "NGTL System - West Gate - intracanada",
+      "Foothills System - Monchy - export": "Foothills System - Monchy - export",
+      "Enbridge BC Pipeline - Huntingdon Export - export": "Enbridge BC Pipeline - Huntingdon Export - export",
+      "Alliance Pipeline - Border - export": "Alliance Pipeline - Border - export",
+      "TC Canadian Mainline - Iroquois - export": "TC Canadian Mainline - Iroquois - export",
+      "M&NP Pipeline - St. Stephen - import": "M&NP Pipeline - St. Stephen - import",
+      "TC Canadian Mainline - Niagara - import": "TC Canadian Mainline - Niagara - import"
+    }
   },
   "nglProduction": {
     "source": "Source: Energy Futures"
@@ -103,7 +120,9 @@
       "Settlements with fixed end date": "Settlements with fixed end date",
       "Settlements without fixed end date": "Settlements without fixed end date"
     },
-    "names": { "null": "null" }
+    "names": {
+      "null": "null"
+    }
   },
   "tolls": {
     "source": "Source: CER",
@@ -148,7 +167,11 @@
       "Rate Base": "Rate Base",
       "Revenue": "Revenue"
     },
-    "categories": { "All": "All", "Oil": "Oil", "Gas": "Gas" }
+    "categories": {
+      "All": "All",
+      "Oil": "Oil",
+      "Gas": "Gas"
+    }
   },
   "ratingsCross": {
     "enbridge": "Enbridge & Subsidiaries",

@@ -100,7 +100,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: "NGTL System - Upstream of James River - intracanada",
+          name: lang.series["NGTL System - Upstream of James River - intracanada"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -114,7 +114,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: "TC Canadian Mainline - Prairies - intracanada",
+          name: lang.series["TC Canadian Mainline - Prairies - intracanada"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -128,7 +128,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: "Foothills System - Kingsgate - export",
+          name: lang.series["Foothills System - Kingsgate - export"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -142,7 +142,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: "NGTL System - West Gate - intracanada",
+          name: lang.series["NGTL System - West Gate - intracanada"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -156,7 +156,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: "Foothills System - Monchy - export",
+          name: lang.series["Foothills System - Monchy - export"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -170,7 +170,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: "Enbridge BC Pipeline - Huntingdon Export - export",
+          name: lang.series["Enbridge BC Pipeline - Huntingdon Export - export"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -184,7 +184,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: "Alliance Pipeline - Border - export",
+          name: lang.series["Alliance Pipeline - Border - export"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -198,7 +198,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: "TC Canadian Mainline - Iroquois - export",
+          name: lang.series["TC Canadian Mainline - Iroquois - export"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -212,7 +212,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: "M&NP Pipeline - St. Stephen - import",
+          name: lang.series["M&NP Pipeline - St. Stephen - import"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -226,7 +226,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: "TC Canadian Mainline - Niagara - import",
+          name: lang.series["TC Canadian Mainline - Niagara - import"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -312,20 +312,17 @@ const createChart = (lang, langUnits, translate) => {
         useHTML: true,
         style: { opacity: 1 },
         formatter: function () {
-          var pipelineName = this.points[0].key;
+          var pipelineName = lang.series[this.points[0].key];
           var toolText = `<b> ${pipelineName} (${pointsFilters.Year.trim()}) </b><table>`;
           var cap = this.points[0].y;
           var through = this.points.slice(-1)[0].y;
           var utilization = ((through / cap) * 100).toFixed(0);
           toolText += `<tr><td>${lang.tooltipUtilization}</td><td style="padding:0">:<b> ${utilization} %</b></td></tr>`;
           this.points.map((p) => {
-            toolText += `<tr><td><span style="color: ${
-              p.series.color
-            }">&#9679</span> ${
-              p.series.name
-            }:</td><td style="padding:0"><b>${Math.abs(p.y)} ${
-              units.display
-            }</b></td></tr>`;
+            toolText += `<tr><td><span style="color: ${p.series.color
+              }">&#9679</span> ${p.series.name
+              }:</td><td style="padding:0"><b>${Math.abs(p.y)} ${units.display
+              }</b></td></tr>`;
           });
           return toolText + "</table>";
         },
@@ -339,7 +336,8 @@ const createChart = (lang, langUnits, translate) => {
           labels: {
             useHTML: true,
             formatter: function () {
-              var companyName = this.value.split(" - ")[0];
+              let fullname = lang.series[this.value]
+              var companyName = fullname.split(" - ")[0];
               companyName = companyName.split(" ");
               return companyName.join("<br>");
             },
@@ -357,7 +355,8 @@ const createChart = (lang, langUnits, translate) => {
           labels: {
             autoRotation: 0,
             formatter: function () {
-              var pointName = this.chart.xAxis[0].names[this.value]
+              var fullname = lang.series[this.chart.xAxis[0].names[this.value]]
+              var pointName = fullname
                 .split(" - ")
                 .slice(-2)[0];
               if (pointName == "Upstream of James River") {

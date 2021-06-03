@@ -97,13 +97,14 @@ export const prepareSeriesPie = (
   nameCol,
   yCol,
   colors,
+  langSeries,
   colorByPoint = true
 ) => {
   const data = filterData(dataRaw, filters);
   const series = { name: seriesName, colorByPoint: colorByPoint, data: [] };
   series.data = data.map((row) => {
     return {
-      name: row[nameCol],
+      name: langSeries[row[nameCol]],
       y: row[yCol],
       color: colors[row[nameCol]],
     };

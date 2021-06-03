@@ -69,6 +69,9 @@ const frenchSeries = {
     "Henry Hub": "Carrefour Henry",
   },
   container_gas_traffic: {
+    "NGTL System - East Gate": "Réseau de NGTL – Entrée est",
+    "NGTL System - West Gate": "Réseau de NGTL – Entrée ouest",
+    "Combined Pipeline Capacity": "Capacité pipelinière combinée",
     "Alliance Pipeline - Border": "Pipeline Alliance – Frontière",
     "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland":
       "Westcoast Energy Inc. – Gazoduc BC Pipeline – Huntingdon/Vallée du bas Fraser",
