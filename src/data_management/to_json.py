@@ -480,6 +480,8 @@ def qsrToCersei(tosql=False, fromsql=True):
                                       'Southern Lights Pipeline',
                                       'Milk River Pipeline',
                                       'Foothills System by Zone',
+                                      'Enbridge Bakken System',
+                                      'Brunswick Pipeline',
                                       'Montreal Pipeline',
                                       'Genesis Pipeline'])]
 
@@ -503,7 +505,13 @@ def qsrToCersei(tosql=False, fromsql=True):
                                          'Year': [2015+x for x in range(6)],
                                          'Unit': ['$' for x in range(6)],
                                          'Value': [8785000000, 8824000000, 8952000000, 8857000000, 13608000000, 13314000000]})
-        df = pd.concat([df, df_enb], ignore_index=True)
+        df_key = pd.DataFrame.from_dict({'Pipeline': ['Keystone Pipeline' for x in range(6)],
+                                         'Category': ['Oil' for x in range(6)],
+                                         'Type': ['Rate Base' for x in range(6)],
+                                         'Year': [2015+x for x in range(6)],
+                                         'Unit': ['$' for x in range(6)],
+                                         'Value': [2089699000, 2052106000, 2007910000, 1963465000, 1920620000, 1873211000]})
+        df = pd.concat([df, df_enb, df_key], ignore_index=True)
         df = df.sort_values(by=['Type', 'Pipeline','Category', 'Year', 'Value'])
         df = df.reset_index(drop=True)
         write_path = os.path.join(os.getcwd(), '../Cassandra/all_pipes/', name.split('.')[0]+'.json')
@@ -880,7 +888,7 @@ if __name__ == '__main__':
     # dfmnp, dfoffshore = st_stephen()
 
     # rebecca
-    df = readCersei('platts_gas.sql', 'gas_prices.json')
+    # df = readCersei('platts_gas.sql', 'gas_prices.json')
     # df = readExcel('Natural_Gas_Production.xlsx')
     # df = readCersei('CTS_OpenGov_Gas-report.sql', 'natural-gas-exports-and-imports-annual.json')
 
