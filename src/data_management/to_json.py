@@ -158,9 +158,9 @@ def readCersei(query, name=None):
         write_path = os.path.join(os.getcwd(), '../Colette/marine_exports/', name)
         
     if name == 'gas_prices.json':
-        max_price, min_price = max(df['Price ($CN/GIG)']), min(df['Price ($CN/GIG)'])
-        diff = max_price-min_price
-        df['Price ($CN/GIG)'] = [((x-min_price)/diff)+min_price for x in df['Price ($CN/GIG)']]
+        # max_price, min_price = max(df['Price ($CN/GIG)']), min(df['Price ($CN/GIG)'])
+        # diff = max_price-min_price
+        # df['Price ($CN/GIG)'] = [((x-min_price)/diff)+min_price for x in df['Price ($CN/GIG)']]
         df['Location'] = df['Location'].replace({'Henry Hub TDt Com': 'Henry Hub',
                                                  'Dawn Ontario TDt Com': 'Dawn',
                                                  'TC Alb AECO-C TDt Com Dly': 'Alberta NIT',
@@ -880,7 +880,7 @@ if __name__ == '__main__':
     # dfmnp, dfoffshore = st_stephen()
 
     # rebecca
-    # df = readCersei('platts_gas.sql','gas_prices.json')
+    df = readCersei('platts_gas.sql', 'gas_prices.json')
     # df = readExcel('Natural_Gas_Production.xlsx')
     # df = readCersei('CTS_OpenGov_Gas-report.sql', 'natural-gas-exports-and-imports-annual.json')
 
