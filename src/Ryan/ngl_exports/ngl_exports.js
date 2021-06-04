@@ -43,7 +43,7 @@ const createChart = (lang, langUnits) => {
       chart: {
         type: "line",
         zoomType: "x",
-        borderWidth: 1,
+        // borderWidth: 1,
         events: {
           load: function () {
             creditsClick(

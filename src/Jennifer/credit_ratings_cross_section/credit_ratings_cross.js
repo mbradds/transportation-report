@@ -69,7 +69,7 @@ const createChart = (lang, fraLevel) => {
   const createChartCross = (series, minY, maxY) => {
     return Highcharts.chart("container_ratings_cross", {
       chart: {
-        borderWidth: 1,
+        // borderWidth: 1,
         type: "column",
       },
 

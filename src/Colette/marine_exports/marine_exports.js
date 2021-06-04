@@ -18,7 +18,7 @@ const createChart = (lang, langUnits) => {
       chart: {
         type: "area",
         zoomType: "x",
-        borderWidth: 1,
+        // borderWidth: 1,
         events: {
           load: function () {
             creditsClick(

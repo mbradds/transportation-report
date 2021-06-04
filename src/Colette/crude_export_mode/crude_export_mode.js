@@ -18,7 +18,7 @@ const createChart = (lang, langUnits) => {
   const createCrudeModeChart = (seriesData, filters) => {
     return new Highcharts.chart("container_crude_mode", {
       chart: {
-        borderWidth: 1,
+        // borderWidth: 1,
         type: "pie",
         events: {
           load: function () {

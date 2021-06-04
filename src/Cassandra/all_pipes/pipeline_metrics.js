@@ -146,7 +146,7 @@ const createChart = (lang, pipeline_name) => {
       chart: {
         type: "line",
         zoomType: "x",
-        borderWidth: 1,
+        // borderWidth: 1,
         events: {
           load: function () {
             creditsClick(this, "https://apps.cer-rec.gc.ca/REGDOCS/Home/Index");

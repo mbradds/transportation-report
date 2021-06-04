@@ -2,7 +2,7 @@ import { cerPalette } from "./util.js";
 export const generalTheme = () => {
   Highcharts.transportation = {
     chart: {
-      borderColor: "black",
+      // borderColor: "black",
       animation: true,
     },
 

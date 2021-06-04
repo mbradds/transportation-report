@@ -52,7 +52,7 @@ const createChart = (lang, pipeline_name) => {
     return new Highcharts.chart(div, {
       chart: {
         zoomType: "x",
-        borderWidth: 1,
+        // borderWidth: 1,
         events: {
           load: function () {
             creditsClick(this, "https://www.cer-rec.gc.ca/en/index.html");

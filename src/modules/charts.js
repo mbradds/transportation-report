@@ -11,7 +11,7 @@ export const productionChart = (params, estimate = true) => {
   return new Highcharts.chart(params.div, {
     chart: {
       type: "column",
-      borderWidth: 1,
+      // borderWidth: 1,
       events: {
         load: function () {
           creditsClick(this, params.sourceLink);
@@ -49,7 +49,7 @@ export const lineAndStackedArea = (params) => {
   return new Highcharts.chart(params.div, {
     chart: {
       zoomType: "x",
-      borderWidth: 1,
+      // borderWidth: 1,
       events: {
         load: function () {
           creditsClick(this, params.sourceLink);
@@ -235,7 +235,7 @@ export const createPaddMap = (div, actionChart, paddColors, lang) => {
 function createInstructionChart(lang) {
   return new Highcharts.chart("hc-instructions", {
     chart: {
-      borderWidth: 1,
+      // borderWidth: 1,
       zoomType: "x",
       animation: false,
     },

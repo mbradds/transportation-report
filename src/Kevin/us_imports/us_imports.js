@@ -38,7 +38,7 @@ const createChart = (lang, langUnits) => {
     return new Highcharts.chart(params.div, {
       chart: {
         zoomType: "x",
-        borderWidth: 1,
+        // borderWidth: 1,
         events: {
           load: function () {
             creditsClick(this, params.sourceLink);

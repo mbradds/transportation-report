@@ -222,7 +222,7 @@ const createChart = (lang, names) => {
       chart: {
         type: "gantt",
         marginRight: 0,
-        borderWidth: 1,
+        // borderWidth: 1,
         events: {
           load: function () {
             creditsClick(this, "https://www.cer-rec.gc.ca/en/index.html");
