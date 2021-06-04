@@ -8,7 +8,14 @@
   },
   "crudeProduction": {
     "title": "Production de pétrole brut",
-    "source": "Source : Avenir énergétique"
+    "source": "Source : Avenir énergétique",
+    "series": {
+      "Conventional Light": "Léger classique",
+      "Conventional Heavy": "Lourd classique",
+      "Field Condensate": "Condensat de puits",
+      "Mined Bitumen": "Bitume extrait",
+      "In Situ Bitumen": "Bitume in situ"
+    }
   },
   "crudeExports": {
     "credits": "Source : Système de suivi des produits de la Régie"

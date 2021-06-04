@@ -8,7 +8,14 @@
   },
   "crudeProduction": {
     "title": "Crude Oil Production by Type",
-    "source": "Source: Energy Futures"
+    "source": "Source: Energy Futures",
+    "series": {
+      "Conventional Light": "Conventional Light",
+      "Conventional Heavy": "Conventional Heavy",
+      "Field Condensate": "Field Condensate",
+      "Mined Bitumen": "Mined Bitumen",
+      "In Situ Bitumen": "In Situ Bitumen"
+    }
   },
   "crudeExports": {
     "credits": "Source: CER Commodity Tracking System"

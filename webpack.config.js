@@ -5,8 +5,8 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 //   .BundleAnalyzerPlugin;
 
 module.exports = {
-  // mode: "development",
-  mode: "production",
+  mode: "development",
+  // mode: "production",
   entry: {
     eng: "./src/index_eng.js",
     fra: "./src/index_fra.js",
