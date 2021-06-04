@@ -3,7 +3,7 @@ import {
   conversions,
   tooltipPoint,
   creditsClick,
-  annotation,
+  labeler,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import crudeImportsData from "./UScrudeoilimports.json";
@@ -42,6 +42,7 @@ const createChart = (lang, langUnits) => {
         events: {
           load: function () {
             creditsClick(this, params.sourceLink);
+            labeler(this, lang.annotation, cerPalette.Sun, -50, 5);
           },
         },
       },
@@ -61,7 +62,7 @@ const createChart = (lang, langUnits) => {
         categories: true,
       },
 
-      annotations: [annotation(840, 20, cerPalette["Sun"], lang.annotation)],
+      //annotations: [annotation(840, 20, cerPalette["Sun"], lang.annotation)],
 
       yAxis: {
         title: { text: params.units.display },

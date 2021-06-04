@@ -4,6 +4,7 @@ import {
   cerPalette,
   bands,
   annotation,
+  labeler,
   mouseOverFunction,
   mouseOutFunction,
 } from "./util.js";
@@ -238,6 +239,15 @@ function createInstructionChart(lang) {
       // borderWidth: 1,
       zoomType: "x",
       animation: false,
+      events: {
+        load() {
+          labeler(
+            this,
+            lang.annotation,
+            (Highcharts.theme && Highcharts.theme.textColor) || "grey"
+          );
+        },
+      },
     },
     title: {
       text: "",
@@ -269,7 +279,7 @@ function createInstructionChart(lang) {
         animation: false,
       },
     },
-    annotations: [annotation(320, 16, cerPalette["Dim Grey"], lang.annotation)],
+    // annotations: [annotation(320, 16, cerPalette["Dim Grey"], lang.annotation)],
     series: [
       {
         name: lang.series1,

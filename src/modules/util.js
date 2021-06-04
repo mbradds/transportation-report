@@ -290,6 +290,36 @@ export const annotation = (x, y, bdColor, text) => {
   };
 };
 
+export const labeler = (chart, text, strokeColor, x = -30, y = 0) => {
+  const label = chart.renderer
+    .label(text, null, null, null, null, null, true)
+    .attr({
+      fill: "white",
+      stroke: strokeColor,
+      "stroke-width": 1,
+      padding: 5,
+      r: 2,
+    })
+    .css({
+      margin: 0,
+      fontWeight: "bold",
+      color: (Highcharts.theme && Highcharts.theme.textColor) || "grey",
+    })
+    .add(chart.rGroup);
+
+  label.align(
+    Highcharts.extend(label.getBBox(), {
+      align: "right",
+      x: x, // offset
+      verticalAlign: "top",
+      y: y, // offset
+    }),
+    null,
+    "spacingBox"
+  );
+  chart.customLabel = label;
+};
+
 export const frenchAxis = (ax, names) => {
   if (names) {
     if (names.hasOwnProperty(ax.value)) {
