@@ -3,7 +3,7 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import gasProdData from "./Natural_Gas_Production.json";
 import Series from "highseries";
 
-const createChart = (lang, langShared, langUnits, translate) => {
+const createChart = (lang, langShared, langUnits) => {
   const gasProdColors = {
     Solution: cerPalette["Aubergine"],
     "Conventional Non-tight": cerPalette["Forest"],
@@ -22,6 +22,7 @@ const createChart = (lang, langShared, langUnits, translate) => {
       yCols: "Production Type",
       valuesCol: "Production (BCf/d)",
       colors: gasProdColors,
+      names: lang.series,
     });
     var params = {
       div: "container_gas_production",
@@ -63,7 +64,6 @@ const createChart = (lang, langShared, langUnits, translate) => {
           pointFormat: tooltipPoint(units.display),
         },
       });
-      translate(gasProdChart);
     });
   };
 
@@ -74,11 +74,8 @@ const createChart = (lang, langShared, langUnits, translate) => {
   }
 };
 
-export function rebeccaGasProd(lang, langShared, langUnits, translate) {
+export function rebeccaGasProd(lang, langShared, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(
-      () => resolve(createChart(lang, langShared, langUnits, translate)),
-      0
-    );
+    setTimeout(() => resolve(createChart(lang, langShared, langUnits)), 0);
   });
 }

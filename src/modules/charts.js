@@ -31,7 +31,7 @@ export const productionChart = (params, estimate = true) => {
     },
 
     tooltip: {
-      pointFormat: tooltipPoint(params.units.unitsCurrent),
+      pointFormat: tooltipPoint(params.units.display),
     },
 
     yAxis: {

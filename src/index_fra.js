@@ -10,11 +10,11 @@ import { coletteCrudeByRail } from "./Colette/crude_by_rail/crude_by_rail";
 import { coletteMarine } from "./Colette/marine_exports/marine_exports";
 import { coletteCrudeTakeaway } from "./Colette/crude_takeaway/crude_takeaway";
 import { rebeccaGasProd } from "./Rebecca/gas_production/gas_production";
-// import { rebeccaGasTrade } from "./Rebecca/gas_trade/gas_trade";
-// import { rebeccaGasPrices } from "./Rebecca/gas_prices/gas_prices";
-// import { saraGasTraffic } from "./Sara/gas_traffic/gas_traffic";
-// import { saraMnp } from "./Sara/st_stephen/st_stephen";
-// import { sara2019 } from "./Sara/gas_2019/gas_2019";
+import { rebeccaGasTrade } from "./Rebecca/gas_trade/gas_trade";
+import { rebeccaGasPrices } from "./Rebecca/gas_prices/gas_prices";
+import { saraGasTraffic } from "./Sara/gas_traffic/gas_traffic";
+import { saraMnp } from "./Sara/st_stephen/st_stephen";
+import { sara2019 } from "./Sara/gas_2019/gas_2019";
 // import { ryanNglProduction } from "./Ryan/ngl_production/ngl_production";
 // import { ryanNglExports } from "./Ryan/ngl_exports/ngl_exports";
 // import { ryanNglDestination } from "./Ryan/ngl_exports/ngl_destination";
@@ -53,11 +53,11 @@ async function loadAllCharts(fra) {
     coletteMarine(fra.marineCrudeExports, fra.units),
     coletteCrudeTakeaway(fra.crudeTakeaway, fra.units),
     rebeccaGasProd(fra.gasProduction, fra.shared, fra.units),
-    // rebeccaGasTrade(fra.gasTrade, fra.units, translateFra),
-    // rebeccaGasPrices(fra.gasPrices),
-    // saraGasTraffic(fra.gasTraffic, fra.units, translateFra),
-    // saraMnp(fra.gasMnp, fra.units, translateFra),
-    // sara2019(fra.gas2019, fra.units, translateFra),
+    rebeccaGasTrade(fra.gasTrade, fra.units),
+    rebeccaGasPrices(fra.gasPrices),
+    saraGasTraffic(fra.gasTraffic, fra.units),
+    saraMnp(fra.gasMnp, fra.units),
+    sara2019(fra.gas2019, fra.units),
     // ryanNglProduction(fra.nglProduction, fra.shared, fra.units, translateFra),
     // ryanNglExports(fra.nglExports, fra.units, translateFra),
     // ryanNglDestination(fra.nglDestination, fra.units, translateFra),

@@ -76,26 +76,54 @@
     }
   },
   "gasProduction": {
-    "source": "Source : Avenir énergétique"
+    "source": "Source : Avenir énergétique",
+    "series": {
+      "Conventional Non-tight": "Gaz naturel classique ne provenant pas de réservoirs étanches",
+      "Tight": "Gaz de réservoir étanche",
+      "Shale": "Schistes",
+      "Coalbed Methane": "Méthane de houille"
+    }
   },
   "gasTrade": {
     "titleExports": "Figure 17 – Exportations de gaz naturel du Canada vers les États-Unis",
     "titleImports": "Figure 17 – Importations de gaz naturel des États-Unis vers le Canada",
     "source": "Source : Système de suivi des produits de la Régie",
-    "tooltip": "Le gaz naturel est acheminé aux États non frontaliers par pipeline à partir d’une ou de plusieurs régions frontalières regroupées"
+    "tooltip": "Le gaz naturel est acheminé aux États non frontaliers par pipeline à partir d’une ou de plusieurs régions frontalières regroupées",
+    "series": {
+      "U.S. West": "Ouest américain",
+      "U.S. Midwest": "Midwest américain",
+      "U.S. East": "Est des États-Unis"
+    }
   },
   "gasPrices": {
     "source": "Source: Platts",
-    "yAxis": "Prix mensuels du disponible (CAD/GJ)"
+    "yAxis": "Prix mensuels du disponible (CAD/GJ)",
+    "series": {
+      "Alberta NIT": "Carrefour NIT en Alberta",
+      "Henry Hub": "Carrefour Henry"
+    }
   },
   "gasTraffic": {
-    "source": "Source : Données sur le débit et la capacité du gouvernement ouvert"
+    "source": "Source : Données sur le débit et la capacité du gouvernement ouvert",
+    "series": {
+      "NGTL System - East Gate": "Réseau de NGTL – Entrée est",
+      "NGTL System - West Gate": "Réseau de NGTL – Entrée ouest",
+      "Combined Pipeline Capacity": "Capacité pipelinière combinée",
+      "Alliance Pipeline - Border": "Pipeline Alliance – Frontière",
+      "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland": "Westcoast Energy Inc. – Gazoduc BC Pipeline – Huntingdon/Vallée du bas Fraser"
+    }
   },
   "gasMnp": {
     "titleMnp": "Débit et capacité du pipeline de M&NP",
     "titleOffshore": "Production gazière extracôtière de la N.-É.",
     "source": "Source : Régie, OCNEHE",
-    "prodEnd": "Arrêt de la production"
+    "prodEnd": "Arrêt de la production",
+    "series": {
+      "Exports": "Exportations",
+      "Imports": "Importations",
+      "Capacity": "Capacité",
+      "Sable Island": "Île de Sable"
+    }
   },
   "gas2019": {
     "source": "Source : Données sur le débit et la capacité du gouvernement ouvert",
@@ -103,7 +131,7 @@
     "imports": "Importations",
     "xAxis": "Point principal (d’ouest en est)",
     "title": "Débit et capacité des pipelines aux points principaux",
-    "series": {
+    "seriesTitles": {
       "NGTL System - Upstream of James River - intracanada": "Réseau de NGTL - En amont de la rivière James - Intra-Canada",
       "TC Canadian Mainline - Prairies - intracanada": "Réseau principal de TC au Canada - Prairies - Intra-Canada",
       "Foothills System - Kingsgate - export": "Réseau Foothills - Kingsgate - Exportation",
@@ -114,6 +142,10 @@
       "TC Canadian Mainline - Iroquois - export": "Réseau principal de TC au Canada - Iroquois - Exportation",
       "M&NP Pipeline - St. Stephen - import": "Pipeline de M&NP - St. Stephen - Importation",
       "TC Canadian Mainline - Niagara - import": "Réseau principal de TC au Canada - Niagara - Importation"
+    },
+    "series": {
+      "Capacity": "capacité",
+      "Throughput": "débit"
     }
   },
   "nglProduction": {

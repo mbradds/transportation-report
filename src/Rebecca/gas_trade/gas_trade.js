@@ -9,7 +9,7 @@ import { errorChart } from "../../modules/charts.js";
 import gasTradeData from "./natural-gas-exports-and-imports-annual.json";
 import Series from "highseries";
 
-const createChart = (lang, langUnits, translate) => {
+const createChart = (lang, langUnits) => {
   const gasTrafficColors = {
     ["U.S. West"]: cerPalette["Forest"],
     ["U.S. Midwest"]: cerPalette["Ocean"],
@@ -107,6 +107,7 @@ const createChart = (lang, langUnits, translate) => {
           },
           events: {
             mouseOver: function () {
+              // var currentSelection = lang.series[this.name];
               var currentSelection = this.name;
               mouseOverFunction(this.chart.series, currentSelection);
               mouseOverFunction(chartGasTraffic.series, currentSelection);
@@ -121,7 +122,7 @@ const createChart = (lang, langUnits, translate) => {
 
       series: [
         {
-          name: "U.S. West",
+          name: lang.series["U.S. West"],
           data: [
             ["us-wa", 1],
             ["us-id", 1],
@@ -130,7 +131,7 @@ const createChart = (lang, langUnits, translate) => {
           color: gasTrafficColors["U.S. West"],
         },
         {
-          name: "U.S. Midwest",
+          name: lang.series["U.S. Midwest"],
           data: [
             ["us-mt", 1],
             ["us-nd", 1],
@@ -141,7 +142,7 @@ const createChart = (lang, langUnits, translate) => {
           color: gasTrafficColors["U.S. Midwest"],
         },
         {
-          name: "U.S. East",
+          name: lang.series["U.S. East"],
           data: [
             ["us-ny", 1],
             ["us-vt", 1],
@@ -318,6 +319,7 @@ const createChart = (lang, langUnits, translate) => {
       valuesCol: "Volume (Bcf/d)",
       filters: gasTradeFilters,
       colors: gasTrafficColors,
+      names: lang.series,
     });
     var mapGasTraffic = createGasRegionMap();
     var chartGasTraffic = createGasTrafficChart(series.hcSeries, gasTradeUnits);
@@ -347,7 +349,6 @@ const createChart = (lang, langUnits, translate) => {
           pointFormat: tooltipPoint(gasTradeUnits.display),
         },
       });
-      translate(chartGasTraffic);
     });
 
     var selectTradeType = document.getElementById("select_gas_trade_type");
@@ -357,7 +358,6 @@ const createChart = (lang, langUnits, translate) => {
       series.update({ data: gasTradeData, filters: gasTradeFilters });
       chartGasTraffic = createGasTrafficChart(series.hcSeries, gasTradeUnits);
       addVectors(mapGasTraffic, gasTradeFilters);
-      translate(chartGasTraffic);
     });
     return;
   } catch (err) {
@@ -367,8 +367,8 @@ const createChart = (lang, langUnits, translate) => {
   }
 };
 
-export function rebeccaGasTrade(lang, langUnits, translate) {
+export function rebeccaGasTrade(lang, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits)), 0);
   });
 }

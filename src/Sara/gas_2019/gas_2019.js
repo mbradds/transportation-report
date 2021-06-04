@@ -11,7 +11,7 @@ import { errorChart } from "../../modules/charts.js";
 import gas2019Data from "./gas_2019.json";
 import Series from "highseries";
 
-const createChart = (lang, langUnits, translate) => {
+const createChart = (lang, langUnits) => {
   const gas2019Colors = {
     Throughput: cerPalette["Sun"],
     Capacity: cerPalette["Night Sky"],
@@ -100,7 +100,9 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: lang.series["NGTL System - Upstream of James River - intracanada"],
+          name: lang.seriesTitles[
+            "NGTL System - Upstream of James River - intracanada"
+          ],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -114,7 +116,9 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: lang.series["TC Canadian Mainline - Prairies - intracanada"],
+          name: lang.seriesTitles[
+            "TC Canadian Mainline - Prairies - intracanada"
+          ],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -128,7 +132,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: lang.series["Foothills System - Kingsgate - export"],
+          name: lang.seriesTitles["Foothills System - Kingsgate - export"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -142,7 +146,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: lang.series["NGTL System - West Gate - intracanada"],
+          name: lang.seriesTitles["NGTL System - West Gate - intracanada"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -156,7 +160,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: lang.series["Foothills System - Monchy - export"],
+          name: lang.seriesTitles["Foothills System - Monchy - export"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -170,7 +174,9 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: lang.series["Enbridge BC Pipeline - Huntingdon Export - export"],
+          name: lang.seriesTitles[
+            "Enbridge BC Pipeline - Huntingdon Export - export"
+          ],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -184,7 +190,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: lang.series["Alliance Pipeline - Border - export"],
+          name: lang.seriesTitles["Alliance Pipeline - Border - export"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -198,7 +204,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: lang.series["TC Canadian Mainline - Iroquois - export"],
+          name: lang.seriesTitles["TC Canadian Mainline - Iroquois - export"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -212,7 +218,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: lang.series["M&NP Pipeline - St. Stephen - import"],
+          name: lang.seriesTitles["M&NP Pipeline - St. Stephen - import"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -226,7 +232,7 @@ const createChart = (lang, langUnits, translate) => {
         },
         {
           type: "mappoint",
-          name: lang.series["TC Canadian Mainline - Niagara - import"],
+          name: lang.seriesTitles["TC Canadian Mainline - Niagara - import"],
           color: cerPalette["Night Sky"],
           data: [
             {
@@ -261,7 +267,7 @@ const createChart = (lang, langUnits, translate) => {
           point: {
             events: {
               mouseOver: function () {
-                var currentSelection = this.name;
+                var currentSelection = lang.seriesTitles[this.name];
                 mouseOverFunction(
                   gasPointsMap.series,
                   currentSelection,
@@ -312,17 +318,20 @@ const createChart = (lang, langUnits, translate) => {
         useHTML: true,
         style: { opacity: 1 },
         formatter: function () {
-          var pipelineName = lang.series[this.points[0].key];
+          var pipelineName = lang.seriesTitles[this.points[0].key];
           var toolText = `<b> ${pipelineName} (${pointsFilters.Year.trim()}) </b><table>`;
           var cap = this.points[0].y;
           var through = this.points.slice(-1)[0].y;
           var utilization = ((through / cap) * 100).toFixed(0);
           toolText += `<tr><td>${lang.tooltipUtilization}</td><td style="padding:0">:<b> ${utilization} %</b></td></tr>`;
           this.points.map((p) => {
-            toolText += `<tr><td><span style="color: ${p.series.color
-              }">&#9679</span> ${p.series.name
-              }:</td><td style="padding:0"><b>${Math.abs(p.y)} ${units.display
-              }</b></td></tr>`;
+            toolText += `<tr><td><span style="color: ${
+              p.series.color
+            }">&#9679</span> ${
+              p.series.name
+            }:</td><td style="padding:0"><b>${Highcharts.numberFormat(
+              Math.abs(p.y)
+            )} ${units.display}</b></td></tr>`;
           });
           return toolText + "</table>";
         },
@@ -336,7 +345,7 @@ const createChart = (lang, langUnits, translate) => {
           labels: {
             useHTML: true,
             formatter: function () {
-              let fullname = lang.series[this.value]
+              let fullname = lang.seriesTitles[this.value];
               var companyName = fullname.split(" - ")[0];
               companyName = companyName.split(" ");
               return companyName.join("<br>");
@@ -355,10 +364,9 @@ const createChart = (lang, langUnits, translate) => {
           labels: {
             autoRotation: 0,
             formatter: function () {
-              var fullname = lang.series[this.chart.xAxis[0].names[this.value]]
-              var pointName = fullname
-                .split(" - ")
-                .slice(-2)[0];
+              var fullname =
+                lang.seriesTitles[this.chart.xAxis[0].names[this.value]];
+              var pointName = fullname.split(" - ").slice(-2)[0];
               if (pointName == "Upstream of James River") {
                 return "Upstream<br> of<br> James River";
               } else if (pointName == "Huntingdon Export") {
@@ -383,6 +391,7 @@ const createChart = (lang, langUnits, translate) => {
       colors: gas2019Colors,
       filters: pointsFilters,
       xName: "name",
+      names: lang.series,
     });
     let seriesData = columnPlacement(series.hcSeries);
     var figure_title = document.getElementById("gas_points_title");
@@ -416,7 +425,6 @@ const createChart = (lang, langUnits, translate) => {
           title: { text: units.display },
         },
       });
-      translate(chartGas2019);
     });
 
     $("#gas-points-years button").on("click", function () {
@@ -432,7 +440,6 @@ const createChart = (lang, langUnits, translate) => {
       chartGas2019.update({
         series: columnPlacement(series.hcSeries),
       });
-      translate(chartGas2019);
     });
     return chartGas2019;
   } catch (err) {
@@ -442,8 +449,8 @@ const createChart = (lang, langUnits, translate) => {
   }
 };
 
-export function sara2019(lang, langUnits, translate) {
+export function sara2019(lang, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits)), 0);
   });
 }

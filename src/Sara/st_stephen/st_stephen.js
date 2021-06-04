@@ -9,7 +9,7 @@ import mnpData from "./st_stephen.json";
 import offshoreData from "./ns_offshore.json";
 import Series from "highseries";
 
-const createChart = (lang, langUnits, translate) => {
+const createChart = (lang, langUnits) => {
   const mnpColors = {
     Exports: cerPalette["Night Sky"],
     Imports: cerPalette["Sun"],
@@ -95,12 +95,14 @@ const createChart = (lang, langUnits, translate) => {
       yCols: ["Exports", "Imports", "Capacity"],
       colors: mnpColors,
       seriesTypes: mnpTypes,
+      names: lang.series,
     });
     let offseries = new Series({
       data: offshoreData,
       xCol: "Date",
       yCols: ["Deep Panuke", "Sable Island"],
       colors: offshoreColors,
+      names: lang.series,
     });
     const chartObj = {};
     chartObj.mnp = { series: mnpseries.hcSeries };
@@ -169,7 +171,6 @@ const createChart = (lang, langUnits, translate) => {
             pointFormat: tooltipPoint(units.display),
           },
         });
-        translate(value.chart);
       }
     });
 
@@ -203,8 +204,8 @@ const createChart = (lang, langUnits, translate) => {
   }
 };
 
-export function saraMnp(lang, langUnits, translate) {
+export function saraMnp(lang, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits)), 0);
   });
 }

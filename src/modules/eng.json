@@ -76,26 +76,54 @@
     }
   },
   "gasProduction": {
-    "source": "Source: Energy Futures"
+    "source": "Source: Energy Futures",
+    "series": {
+      "Conventional Non-tight": "Conventional Non-tight",
+      "Tight": "Tight",
+      "Shale": "Shale",
+      "Coalbed Methane": "Coalbed Methane"
+    }
   },
   "gasTrade": {
     "titleExports": "Figure 17. Natural Gas Exports from Canada to U.S. Region",
     "titleImports": "Figure 17. Natural Gas Imports from U.S. Region to Canada",
     "source": "Source: CER Commodity Tracking System, Map:",
-    "tooltip": "Natural Gas flows to non border states by pipeline from one or more grouped border regions"
+    "tooltip": "Natural Gas flows to non border states by pipeline from one or more grouped border regions",
+    "series": {
+      "U.S. West": "U.S. West",
+      "U.S. Midwest": "U.S. Midwest",
+      "U.S. East": "U.S. East"
+    }
   },
   "gasPrices": {
     "source": "Source: Platts",
-    "yAxis": "Monthly Spot Prices (CAD/GJ)"
+    "yAxis": "Monthly Spot Prices (CAD/GJ)",
+    "series": {
+      "Alberta NIT": "Alberta NIT",
+      "Henry Hub": "Henry Hub"
+    }
   },
   "gasTraffic": {
-    "source": "Source: Open Government Throughput and Capacity Data"
+    "source": "Source: Open Government Throughput and Capacity Data",
+    "series": {
+      "NGTL System - East Gate": "NGTL System - East Gate",
+      "NGTL System - West Gate": "NGTL System - West Gate",
+      "Combined Pipeline Capacity": "Combined Pipeline Capacity",
+      "Alliance Pipeline - Border": "Alliance Pipeline - Border",
+      "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland": "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland"
+    }
   },
   "gasMnp": {
     "titleMnp": "M&NP Pipeline Throughput & Capacity",
     "titleOffshore": "N.S. Offshore Natural Gas Production",
     "source": "Source: CER, CNSOPB",
-    "prodEnd": "Production ceases"
+    "prodEnd": "Production ceases",
+    "series": {
+      "Exports": "Exports",
+      "Imports": "Imports",
+      "Capacity": "Capacity",
+      "Sable Island": "Sable Island"
+    }
   },
   "gas2019": {
     "source": "Source: Open Government Throughput and Capacity Data",
@@ -103,7 +131,7 @@
     "imports": "Imports",
     "xAxis": "Key Point (West to East)",
     "title": "Average Throughput and Capacity at Key Pipeline Points",
-    "series": {
+    "seriesTitles": {
       "NGTL System - Upstream of James River - intracanada": "NGTL System - Upstream of James River - intracanada",
       "TC Canadian Mainline - Prairies - intracanada": "TC Canadian Mainline - Prairies - intracanada",
       "Foothills System - Kingsgate - export": "Foothills System - Kingsgate - export",
@@ -114,6 +142,10 @@
       "TC Canadian Mainline - Iroquois - export": "TC Canadian Mainline - Iroquois - export",
       "M&NP Pipeline - St. Stephen - import": "M&NP Pipeline - St. Stephen - import",
       "TC Canadian Mainline - Niagara - import": "TC Canadian Mainline - Niagara - import"
+    },
+    "series": {
+      "Capacity": "Capacity",
+      "Throughput": "Throughput"
     }
   },
   "nglProduction": {

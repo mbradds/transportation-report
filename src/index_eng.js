@@ -10,11 +10,11 @@ import { coletteCrudeByRail } from "./Colette/crude_by_rail/crude_by_rail";
 import { coletteMarine } from "./Colette/marine_exports/marine_exports";
 import { coletteCrudeTakeaway } from "./Colette/crude_takeaway/crude_takeaway";
 import { rebeccaGasProd } from "./Rebecca/gas_production/gas_production";
-// import { rebeccaGasTrade } from "./Rebecca/gas_trade/gas_trade";
-// import { rebeccaGasPrices } from "./Rebecca/gas_prices/gas_prices";
-// import { saraGasTraffic } from "./Sara/gas_traffic/gas_traffic";
-// import { saraMnp } from "./Sara/st_stephen/st_stephen";
-// import { sara2019 } from "./Sara/gas_2019/gas_2019";
+import { rebeccaGasTrade } from "./Rebecca/gas_trade/gas_trade";
+import { rebeccaGasPrices } from "./Rebecca/gas_prices/gas_prices";
+import { saraGasTraffic } from "./Sara/gas_traffic/gas_traffic";
+import { saraMnp } from "./Sara/st_stephen/st_stephen";
+import { sara2019 } from "./Sara/gas_2019/gas_2019";
 // import { ryanNglProduction } from "./Ryan/ngl_production/ngl_production";
 // import { ryanNglExports } from "./Ryan/ngl_exports/ngl_exports";
 // import { ryanNglDestination } from "./Ryan/ngl_exports/ngl_destination";
@@ -54,11 +54,11 @@ async function loadAllCharts(eng) {
     coletteMarine(eng.marineCrudeExports, eng.units),
     coletteCrudeTakeaway(eng.crudeTakeaway, eng.units),
     rebeccaGasProd(eng.gasProduction, eng.shared, eng.units),
-    // rebeccaGasTrade(eng.gasTrade, eng.units, translateEng),
-    // rebeccaGasPrices(eng.gasPrices),
-    // saraGasTraffic(eng.gasTraffic, eng.units, translateEng),
-    // saraMnp(eng.gasMnp, eng.units, translateEng),
-    // sara2019(eng.gas2019, eng.units, translateEng),
+    rebeccaGasTrade(eng.gasTrade, eng.units),
+    rebeccaGasPrices(eng.gasPrices),
+    saraGasTraffic(eng.gasTraffic, eng.units),
+    saraMnp(eng.gasMnp, eng.units),
+    sara2019(eng.gas2019, eng.units),
     // ryanNglProduction(eng.nglProduction, eng.shared, eng.units, translateEng),
     // ryanNglExports(eng.nglExports, eng.units, translateEng),
     // ryanNglDestination(eng.nglDestination, eng.units, translateEng),
