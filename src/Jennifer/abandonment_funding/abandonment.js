@@ -3,7 +3,7 @@ import { errorChart } from "../../modules/charts.js";
 import abandonData from "./Modified.json";
 import Series from "highseries";
 
-const createChart = (lang, names, translate) => {
+const createChart = (lang, names) => {
   const colors = {
     "Amounts Set Aside": cerPalette["Sun"],
     "Remaining Estimate": cerPalette["Night Sky"],
@@ -85,17 +85,25 @@ const createChart = (lang, names, translate) => {
   };
 
   const tooltipAbandon = (event) => {
-    var toolText = `<b>${event.points[0].key}</b><table>`;
+    const header = event.points[0].key;
+    let toolText = `<b>${header}</b><table>`;
+    if (lang.totalAxis.hasOwnProperty(header)) {
+      toolText = `<b>${lang.totalAxis[header]}</b><table>`;
+    }
     var calc = {};
     event.points.map((p) => {
-      calc[p.series.name] = p.y;
+      let name = p.series.name;
+      if (p.color === cerPalette.Sun) {
+        name = "Amounts Set Aside";
+      } else {
+        name = "Remaining Estimate";
+      }
+      calc[name] = p.y;
       toolText += `<tr><td> <span style="color: ${p.color}">\u25CF</span> ${
         p.series.name
-      }: </td><td style="padding:0"><b>$${Highcharts.numberFormat(
+      }: </td><td style="padding:0">&nbsp<b>$${Highcharts.numberFormat(
         p.y,
-        0,
-        ".",
-        " "
+        0
       )}</b></td></tr>`;
     });
 
@@ -106,7 +114,12 @@ const createChart = (lang, names, translate) => {
     ).toFixed(1);
     return (
       toolText +
-      `<tr><td> ${lang.pctAside} </td><td style="padding:0"> <b>${calc["pctRecovered"]}% </b></td></tr>`
+      `<tr><td> ${
+        lang.pctAside
+      } </td><td style="padding:0">&nbsp<b>${Highcharts.numberFormat(
+        calc["pctRecovered"],
+        1
+      )}% </b></td></tr>`
     );
   };
 
@@ -237,8 +250,7 @@ const createChart = (lang, names, translate) => {
         margin: 0,
         y: 0,
         padding: 0,
-        itemMarginTop: 0,
-        itemMarginBottom: 0,
+        itemMarginTop: 10,
       },
 
       tooltip: {
@@ -260,7 +272,6 @@ const createChart = (lang, names, translate) => {
           },
         },
       },
-
       series: seriesData,
     });
   };
@@ -272,6 +283,7 @@ const createChart = (lang, names, translate) => {
       yCols: ["Amounts Set Aside", "Remaining Estimate"],
       colors: colors,
       xName: "name",
+      names: lang.series,
     });
     var [seriesData, seriesTotals] = filterSeries(series.hcSeries, filters);
     createAbandonmentTotals(seriesTotals);
@@ -295,7 +307,6 @@ const createChart = (lang, names, translate) => {
         abandonChart.update({
           title: { text: titleText },
         });
-        translate(abandonChart);
       }
     );
   };
@@ -308,8 +319,8 @@ const createChart = (lang, names, translate) => {
   }
 };
 
-export function jenniferAbandonment(lang, names, translate) {
+export function jenniferAbandonment(lang, names) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, names, translate)), 0);
+    setTimeout(() => resolve(createChart(lang, names)), 0);
   });
 }

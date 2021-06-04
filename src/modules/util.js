@@ -162,7 +162,7 @@ const symbolHTML = (symbolName) => {
 };
 
 export const tooltipPoint = (unitsCurrent) => {
-  return `<tr><td> <span style="color: {series.color}">&#9679</span> {series.name}: </td><td style="padding:0"><b>{point.y} ${unitsCurrent}</b></td></tr>`;
+  return `<tr><td> <span style="color: {series.color}">&#9679</span> {series.name}: </td><td style="padding:0"><b>&nbsp{point.y} ${unitsCurrent}</b></td></tr>`;
 };
 
 export const tooltipSymbol = (
@@ -201,12 +201,17 @@ export const tooltipSorted = (
   };
   let yVal = yCalc(transform);
   var sortedPoints = sortJson(points, "y");
-  var toolText = `<b>${title}</b> - <i> ${text}</i>`;
+  let toolText = `<b>${title}</b>`;
+  if (text) {
+    toolText = `<b>${title}</b> - <i> ${text}</i>`;
+  }
   toolText += `<table>`;
   sortedPoints.map((point) => {
     toolText += `<tr><td> <span style="color: ${point.color}">&#9679</span> ${
       point.series.name
-    }:</td><td style="padding:0"><b> ${yVal(point.y)} ${units}</b></td></tr>`;
+    }:</td><td style="padding:0">&nbsp<b>${Highcharts.numberFormat(
+      yVal(point.y)
+    )} ${units}</b></td></tr>`;
   });
   toolText += `</table>`;
   return toolText;

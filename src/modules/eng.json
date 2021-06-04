@@ -216,7 +216,7 @@
     }
   },
   "abandon": {
-    "pctAside": "% set-aside:",
+    "pctAside": "% set-aside",
     "titleTotal": "Costs to Abandon CER-Regulated Pipelines",
     "billy": "billion",
     "title": "Group 1 Abandonment Breakdown",
@@ -226,6 +226,10 @@
       "All CER Regulated Pipeline Companies": "All CER Regulated Pipeline Companies",
       "Group 1 Pipeline Companies": "Group 1 Pipeline Companies",
       "Group 2 Pipeline Companies": "Group 2 Pipeline Companies"
+    },
+    "series": {
+      "Amounts Set Aside": "Amounts Set Aside",
+      "Remaining Estimate": "Remaining Estimate"
     }
   },
   "finance": {
@@ -271,5 +275,6 @@
     "Bcf/d": "Bcf/d",
     "Million m3/d": "Million m3/d",
     "b/d": "b/d"
-  }
+  },
+  "pipeline_name": {}
 }

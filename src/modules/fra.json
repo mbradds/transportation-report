@@ -328,6 +328,10 @@
       "All CER Regulated Pipeline Companies": "Toutes les sociétés pipelinières réglementées par la Régie",
       "Group 1 Pipeline Companies": "Sociétés pipelinières du groupe 1",
       "Group 2 Pipeline Companies": "Sociétés pipelinières du groupe 2"
+    },
+    "series": {
+      "Amounts Set Aside": "Sommes mises de côté",
+      "Remaining Estimate": "Estimation restante"
     }
   },
   "finance": {

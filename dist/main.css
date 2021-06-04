@@ -1,0 +1,125 @@
+/* 
+notes: 
+All styles that with .chart can be used to control the size of the "dashboard" (chart+filters+title). Wrap the entire html for a chart
+in something like .chart-small to make a small chart with text beside it, or use different sized columns
+
+All styles that start with .hc- are used to contol the size of the highcharts immediate parent div, and nothing else (titles, filters, etc)
+These are used to shrink the height of the charts for smaller screen sizes
+
+*/
+
+/* general styles for titles, filter titles, and other chart elements */
+.cerlabel {
+  position: center;
+  font-family: Arial;
+  font-weight: bold;
+  color: #871455;
+}
+.form-control {
+  min-width: 200px;
+  max-height: 85px;
+}
+.legend_title {
+  text-align: center;
+  font-family: Arial;
+  font-weight: bold;
+  font-size: small;
+  color: #871455;
+}
+.header {
+  font-family: Arial;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.figure_title {
+  font-size: 25px;
+  font-weight: bold;
+  font-family: Arial;
+  color: dimgray;
+}
+.my-container-border {
+  border: 1px solid black;
+}
+.chart-small {
+  max-width: 400px;
+}
+.chart-insert {
+  max-width: 700px;
+}
+#hc-instructions {
+  height: 275px;
+}
+.ratings-legend {
+  text-align: center;
+}
+#ratings-instructions {
+  height: 130px;
+}
+.source-code {
+  max-width: 600px;
+}
+/* responsive width/height styles for laptop vs desktop screens */
+@media only screen and (max-height: 900px), screen and (max-width: 1440px) {
+  .chart-large {
+    max-width: 950px;
+  }
+  .chart-map {
+    max-width: 900px;
+  }
+  .hc-small {
+    height: 300px;
+  }
+  .hc-large {
+    height: 300px;
+  }
+  .hc-insert {
+    height: 225px;
+  }
+  .hc-ratings {
+    height: 400px;
+  }
+  #hc-abanbdon-totals {
+    height: 175px;
+  }
+  #hc-fin-totals {
+    height: 60px;
+  }
+}
+@media only screen and (min-height: 901px), screen and (min-width: 1441px) {
+  .chart-large {
+    max-width: 1100px;
+  }
+  .chart-map {
+    max-width: 1000px;
+  }
+  .hc-large {
+    height: 380px;
+  }
+  .hc-insert {
+    height: 275px;
+  }
+  .hc-ratings {
+    height: 450px;
+  }
+  #hc-abanbdon-totals {
+    height: 200px;
+  }
+  .hc-small {
+    height: 350px;
+  }
+  #hc-fin-totals {
+    height: 75px;
+  }
+}
+/* wet4 buttons */
+.tablinks {
+  height: 140px !important;
+}
+.profile-hide {
+  display: none;
+}
+.profile-show {
+  display: block;
+}

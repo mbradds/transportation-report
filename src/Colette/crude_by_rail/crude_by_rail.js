@@ -55,7 +55,7 @@ const createChart = (lang, langUnits) => {
         shared: true,
         formatter: function () {
           var toolText = `<b> ${Highcharts.dateFormat(
-            "%B-%Y",
+            "%B %Y",
             this.x
           )} </b><table>`;
           this.points.map((p) => {

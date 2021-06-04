@@ -148,7 +148,8 @@ export async function jenniferFinResources(lang) {
             toolText += `<br><tr><td> <span style="color: ${
               p.color
             }">&#9679</span> ${name}: </td><td style="padding:0"><b>${Highcharts.numberFormat(
-              p.y
+              p.y,
+              0
             )}</b></td></tr>`;
           });
 

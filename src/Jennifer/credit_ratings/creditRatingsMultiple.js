@@ -82,6 +82,15 @@ const createChart = (lang, fraLevel) => {
     }
   };
 
+  function getFrenchLevel(value) {
+    if (fraLevel) {
+      var langLevel = fraLevel[scaleData[value].creditQuality];
+    } else {
+      var langLevel = scaleData[value].creditQuality;
+    }
+    return langLevel;
+  }
+
   const createCreditChart = (series, scaleData, minY, maxY) => {
     return Highcharts.chart("container_ratings_multi", {
       chart: {
@@ -113,11 +122,7 @@ const createChart = (lang, fraLevel) => {
         min: minY - 1,
         labels: {
           formatter: function () {
-            if (fraLevel) {
-              var langLevel = fraLevel[scaleData[this.value].creditQuality];
-            } else {
-              var langLevel = scaleData[this.value].creditQuality;
-            }
+            var langLevel = getFrenchLevel(this.value);
             return `${langLevel}<b> - ${scaleData[this.value]["S&P"]},
               ${scaleData[this.value]["Moody's"]},
               ${scaleData[this.value]["DBRS"]}</b>`;
@@ -142,7 +147,7 @@ const createChart = (lang, fraLevel) => {
         formatter: function () {
           var selectedYear = this.x;
           var selectedRatings = this.y;
-          var selectedScale = scaleData[this.y].creditQuality;
+          var selectedScale = getFrenchLevel(this.y);
           var overlaps = {};
           this.series.chart.series.map((s) => {
             s.data.map((row) => {
@@ -152,14 +157,14 @@ const createChart = (lang, fraLevel) => {
             });
           });
           var toolText = `<b>${selectedYear}</b><table>`;
-          toolText += `<tr><td>${lang.tooltip}</td><td style="padding:0"><b> ${selectedScale} </b></td></tr>`;
+          toolText += `<tr><td>${lang.tooltip}</td><td style="padding:0">&nbsp<b>${selectedScale}</b></td></tr>`;
           for (var agency in overlaps) {
             var agencyName = agency.split(" - ").slice(-1)[0];
-            toolText += `<tr><td> <span style="color: ${
+            toolText += `<tr><td><span style="color: ${
               overlaps[agency].color
             }">${
               symbols[agencyName]
-            }</span> ${agency}: </td><td style="padding:0"><b>${
+            }</span>${agency}:</td><td style="padding:0">&nbsp<b>${
               scaleData[overlaps[agency].y][agencyName]
             }</b></td></tr>`;
           }

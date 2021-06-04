@@ -1,14 +1,11 @@
-import {
-  cerPalette,
-  creditsClick,
-  dateFormat,
-  frenchAxis,
-} from "../../modules/util.js";
+import { cerPalette, creditsClick, frenchAxis } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
 import settleJson from "./settleJson.json";
 
 const createChart = (lang, names) => {
   const oneDay = 86400000;
+
+  const dFormat = "%b %d, %Y";
 
   const legendNames = {
     company: {
@@ -279,7 +276,9 @@ const createChart = (lang, names) => {
               align: "right",
               x: -5,
               formatter: function () {
-                return `${dateFormat(this.options.value)} ${lang.today}`;
+                return `${Highcharts.dateFormat(dFormat, this.options.value)} ${
+                  lang.today
+                }`;
               },
             },
           },
@@ -357,7 +356,6 @@ const createChart = (lang, names) => {
       ],
 
       tooltip: {
-        xDateFormat: "%Y-%m-%d",
         formatter: function () {
           var point = this.point,
             years = 1000 * 60 * 60 * 24 * 365,
@@ -368,21 +366,27 @@ const createChart = (lang, names) => {
           ) {
             var endText = lang.tooltipEnd;
           } else {
-            var endText = dateFormat(point.end);
+            var endText = Highcharts.dateFormat(dFormat, point.end);
           }
           if (point.parent == null && point.dateType == null) {
+            let header = this.key;
+            if (names) {
+              header = names[this.key];
+            }
             return (
-              `<b>${this.key}</b><table><tr><td>${
+              `<b>${header}</b><table><tr><td>${
                 lang.tooltipActiveStart
-              }</td><td style="padding:0"><b>${dateFormat(
+              }</td><td style="padding:0">&nbsp<b>${Highcharts.dateFormat(
+                dFormat,
                 point.start
               )}</b></td></tr>` +
               `<tr><td>${
                 lang.tooltipActiveEnd
-              }</td><td style="padding:0"><b>${dateFormat(
+              }</td><td style="padding:0">&nbsp<b>${Highcharts.dateFormat(
+                dFormat,
                 point.end
               )}</b></td></tr>` +
-              `<tr><td>${lang.tooltipActiveDuration}</td><td style="padding:0"><b>${years} ${lang.tooltipActiveYears}</b></table>`
+              `<tr><td>${lang.tooltipActiveDuration}</td><td style="padding:0">&nbsp<b>${years} ${lang.tooltipActiveYears}</b></table>`
             );
           } else if (point.parent == null && point.dateType != null) {
             let dateTypeText = "";
@@ -391,13 +395,19 @@ const createChart = (lang, names) => {
             } else {
               dateTypeText = lang.tooltipEnter;
             }
-            return `<b> ${point.name} - ${dateTypeText} </b><br> ${dateFormat(
+            return `<b> ${
+              point.name
+            } - ${dateTypeText} </b><br> ${Highcharts.dateFormat(
+              dFormat,
               point.start
             )}`;
           } else {
             return (
               `<b>${point.parent} - ${this.key} </b><table>` +
-              `<tr><td>${lang.start}</td><td style="padding:0"><b> ${dateFormat(
+              `<tr><td>${
+                lang.start
+              }</td><td style="padding:0"><b> ${Highcharts.dateFormat(
+                dFormat,
                 point.start
               )}</b>` +
               `<tr><td>${lang.end}</td><td style="padding:0"><b> ${endText}</b>` +

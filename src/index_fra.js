@@ -1,5 +1,4 @@
 import { generalTheme, frenchTheme } from "./modules/themes";
-// import { translateFra } from "./modules/translateSeries.js";
 import { instructionsChart } from "./modules/charts";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
@@ -21,10 +20,10 @@ import { ryanNglDestination } from "./Ryan/ngl_exports/ngl_destination";
 import { cassandraSettlements } from "./Cassandra/negotiated_settlements/settlements";
 import { cassandraTolls } from "./Cassandra/tolls/tolls";
 import { jenniferFinResources } from "./Jennifer/financial_instruments/fin_resource";
-// import { jenniferAbandonment } from "./Jennifer/abandonment_funding/abandonment";
-// import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
-// import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
-// import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
+import { jenniferAbandonment } from "./Jennifer/abandonment_funding/abandonment";
+import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
+import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
+import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
 import fra from "./modules/fra.json";
 import justWhy from "ie-gang";
 try {
@@ -62,25 +61,21 @@ async function loadAllCharts(fra) {
     ryanNglExports(fra.nglExports, fra.units),
     ryanNglDestination(fra.nglDestination, fra.units),
     cassandraSettlements(fra.settlements, fra.pipeline_name),
-    cassandraTolls(fra.tolls),
+    cassandraTolls(fra.tolls, fra.pipeline_name),
     jenniferFinResources(fra.finResource),
-    // jenniferAbandonment(fra.abandon, fra.company_name, translateFra),
-    // cassandraAllPipes(fra.finance, translateFra),
-    // jenniferRatingsCross(fra.ratingsCross, fra.ratingsLevel),
-    // jenniferRatingsMulti(fra.ratingsMultiple, fra.ratingsLevel),
+    jenniferAbandonment(fra.abandon, fra.company_name),
+    cassandraAllPipes(fra.finance, fra.pipeline_name),
+    jenniferRatingsCross(fra.ratingsCross, fra.ratingsLevel),
+    jenniferRatingsMulti(fra.ratingsMultiple, fra.ratingsLevel),
   ];
   try {
     Promise.allSettled(arrayOfCharts)
-      .then((value) => {
-        // translateFra(undefined);
-      })
+      .then((value) => {})
       .catch((err) => {
         console.log("promise error");
-        // translateFra(undefined);
       });
   } catch (err) {
     undefined;
-    // translateFra(undefined)
   }
 }
 loadAllCharts(fra);

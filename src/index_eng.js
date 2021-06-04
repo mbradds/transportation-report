@@ -1,5 +1,4 @@
 import { generalTheme } from "./modules/themes";
-// import { translateEng } from "./modules/translateSeries.js";
 import { instructionsChart } from "./modules/charts";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
 import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
@@ -21,10 +20,10 @@ import { ryanNglDestination } from "./Ryan/ngl_exports/ngl_destination";
 import { cassandraSettlements } from "./Cassandra/negotiated_settlements/settlements";
 import { cassandraTolls } from "./Cassandra/tolls/tolls";
 import { jenniferFinResources } from "./Jennifer/financial_instruments/fin_resource";
-// import { jenniferAbandonment } from "./Jennifer/abandonment_funding/abandonment";
-// import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
-// import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
-// import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
+import { jenniferAbandonment } from "./Jennifer/abandonment_funding/abandonment";
+import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
+import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
+import { jenniferRatingsMulti } from "./Jennifer/credit_ratings/creditRatingsMultiple";
 import eng from "./modules/eng.json";
 import justWhy from "ie-gang";
 try {
@@ -42,7 +41,6 @@ try {
 generalTheme();
 
 async function loadAllCharts(eng) {
-  console.time(`chart loading`);
   let arrayOfCharts = [
     instructionsChart(eng.instructionsChart),
     kevinCrudeProduction(eng.crudeProduction, eng.shared, eng.units),
@@ -65,13 +63,11 @@ async function loadAllCharts(eng) {
     cassandraSettlements(eng.settlements),
     cassandraTolls(eng.tolls),
     jenniferFinResources(eng.finResource),
-    // jenniferAbandonment(eng.abandon, undefined, translateEng),
-    // cassandraAllPipes(eng.finance, translateEng),
-    // jenniferRatingsCross(eng.ratingsCross, false),
-    // jenniferRatingsMulti(eng.ratingsMultiple, false),
+    jenniferAbandonment(eng.abandon, undefined),
+    cassandraAllPipes(eng.finance, eng.pipeline_name),
+    jenniferRatingsCross(eng.ratingsCross, false),
+    jenniferRatingsMulti(eng.ratingsMultiple, false),
   ];
-  Promise.allSettled(arrayOfCharts).then((value) => {
-    console.timeEnd(`chart loading`);
-  });
+  Promise.allSettled(arrayOfCharts).then((value) => {});
 }
 loadAllCharts(eng);

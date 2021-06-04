@@ -3,8 +3,6 @@ import {
   creditsClick,
   mouseOverFunction,
   mouseOutFunction,
-  tooltipSymbol,
-  dateFormat,
 } from "../../modules/util.js";
 import Series from "highseries";
 import { errorChart } from "../../modules/charts.js";

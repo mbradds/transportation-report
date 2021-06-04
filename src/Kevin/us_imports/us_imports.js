@@ -61,7 +61,7 @@ const createChart = (lang, langUnits) => {
         categories: true,
       },
 
-      annotations: [annotation(840, 30, cerPalette["Sun"], lang.annotation)],
+      annotations: [annotation(840, 20, cerPalette["Sun"], lang.annotation)],
 
       yAxis: {
         title: { text: params.units.display },

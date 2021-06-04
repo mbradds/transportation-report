@@ -9,7 +9,7 @@ import {
 import { errorChart } from "../../modules/charts.js";
 import financialData from "./PipelineProfileTables.json";
 
-const createChart = (lang, translate) => {
+const createChart = (lang, pipeline_name) => {
   const sortLegend = (series) => {
     const toSort = sortJson(
       series.map((row) => {
@@ -55,8 +55,13 @@ const createChart = (lang, translate) => {
         };
       });
 
+      let seriesName = pipe;
+      if (pipeline_name.hasOwnProperty(pipe)) {
+        seriesName = pipeline_name[pipe];
+      }
+
       return {
-        name: pipe,
+        name: seriesName,
         data: dataPipe,
         color: colors[pipeIndex],
       };
@@ -249,7 +254,6 @@ const createChart = (lang, translate) => {
       (selectMetricFinancial) => {
         financeFilters.Type = selectMetricFinancial.target.value;
         chartFinance = graphEvent(financeFilters);
-        translate(chartFinance);
       }
     );
 
@@ -260,7 +264,6 @@ const createChart = (lang, translate) => {
     selectPipeFinancial.addEventListener("change", (selectPipeFinancial) => {
       financeFilters.Category = selectPipeFinancial.target.value;
       chartFinance = graphEvent(financeFilters);
-      translate(chartFinance);
     });
 
     const graphEvent = (filters) => {
@@ -275,8 +278,8 @@ const createChart = (lang, translate) => {
   }
 };
 
-export function cassandraAllPipes(lang, translate) {
+export function cassandraAllPipes(lang, pipeline_name) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, translate)), 0);
+    setTimeout(() => resolve(createChart(lang, pipeline_name)), 0);
   });
 }

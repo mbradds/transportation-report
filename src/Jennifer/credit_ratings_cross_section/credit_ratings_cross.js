@@ -158,7 +158,7 @@ const createChart = (lang, fraLevel) => {
           this.points.map((p) => {
             toolText += `<tr><td> <span style="color: ${
               p.color
-            }">\u25CF</span> ${p.series.name}: </td><td style="padding:0"><b>${
+            }">\u25CF</span> ${p.series.name}:</td><td style="padding:0">&nbsp<b>${
               scaleData[p.y][p.series.name]
             }</b></td></tr>`;
           });

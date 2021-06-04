@@ -44,10 +44,12 @@ const createChart = (lang, langUnits) => {
           toolText += `<tr><td>${
             lang.exportVolume
           }</td><td style="padding:0"><b>${Highcharts.numberFormat(
-            this.y.toFixed(1)
+            this.y.toFixed(1),
+            1
           )} ${langUnits["b/d"]}</b></td></tr>`;
           toolText += `<tr><td></td><td style="padding:0"><b><i>${Highcharts.numberFormat(
-            (this.y / 6.2898).toFixed(1)
+            (this.y / 6.2898).toFixed(1),
+            1
           )} ${langUnits["m3/d"]}</b></i></td></tr>`;
           toolText += `</table>`;
           return toolText;
