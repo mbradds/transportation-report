@@ -22,7 +22,7 @@
   "homepage": "https://github.com/mbradds/transportation-report#readme",
   "dependencies": {
     "@babel/runtime": "^7.12.13",
-    "highseries": "^1.0.4",
+    "highseries": "^1.0.5",
     "ie-gang": "^1.0.4",
     "mapshaper": "^0.5.26"
   },

@@ -2,7 +2,7 @@
   "ieWarnMessage": "Nous avons remarqué que vous utilisez Internet Explorer. Veuillez envisager d'utiliser un autre navigateur pour une meilleure expérience sur cette page.",
   "ieWarnTitle": "avertissement ancien navigateur",
   "instructionsChart": {
-    "annotation": "Cliquez sur cette icône pour télécharger les images/données de graphiques:",
+    "annotation": "Cliquez sur cette icône pour <br>télécharger les images/données de graphiques:",
     "series1": "Données 1 (cliquez pour filtrer)",
     "series2": "Données 2 (cliquez pour filtrer)"
   },
