@@ -124,6 +124,7 @@ export const frenchTheme = () => {
         "Samedi",
       ],
       decimalPoint: ",",
+      thousandsSep: " ",
       downloadCSV: "Télécharger en CSV",
       downloadJPEG: "Télécharger en JPEG",
       downloadPDF: "Télécharger en PDF",

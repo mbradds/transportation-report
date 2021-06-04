@@ -18,14 +18,25 @@
     }
   },
   "crudeExports": {
-    "credits": "Source: CER Commodity Tracking System"
+    "credits": "Source: CER Commodity Tracking System",
+    "series": {
+      "Other": "Other"
+    }
   },
   "crudePrices": {
-    "source": "Source: ne2 Group"
+    "source": "Source: ne2 Group",
+    "series": {
+      "Differential": "Differential"
+    }
   },
   "crudeImports": {
     "annotation": "% - Canada's share of U.S. crude oil imports",
-    "source": "Source: CER Commodity Tracking System & EIA"
+    "source": "Source: CER Commodity Tracking System & EIA",
+    "series": {
+      "U.S. crude oil imports from rest of world": "U.S. crude oil imports from rest of world",
+      "U.S. crude oil exports": "U.S. crude oil exports",
+      "U.S. crude oil imports from Canada": "U.S. crude oil imports from Canada"
+    }
   },
   "crudeMode": {
     "source": "Source: CER Commodity Tracking System",
@@ -41,14 +52,28 @@
   "crudeByRail": {
     "source": "Source: CER Crude by Rail Exports & ne2 Group",
     "yAxis": "Rail Exports",
-    "differential": "Differential"
+    "differential": "Differential",
+    "series": {
+      "Crude by Rail": "Crude by Rail",
+      "WCS-WTI Differential": "WCS-WTI Differential"
+    }
   },
   "marineCrudeExports": {
     "credits": "Source: CER Commodity Tracking System"
   },
   "crudeTakeaway": {
     "source": "Source: Energy Futures",
-    "plotLines": "Estimated <br> values start"
+    "plotLines": "Estimated <br> values start",
+    "series": {
+      "Total Supply Available for Export": "Total Supply Available for Export",
+      "Express Pipeline": "Express Pipeline",
+      "Milk River Pipeline": "Milk River Pipeline",
+      "Aurora Pipeline": "Aurora Pipeline",
+      "Trans Mountain Pipeline": "Trans Mountain Pipeline",
+      "Enbridge Canadian Mainline": "Enbridge Canadian Mainline",
+      "Keystone Pipeline": "Keystone Pipeline",
+      "Rail": "Rail"
+    }
   },
   "gasProduction": {
     "source": "Source: Energy Futures"

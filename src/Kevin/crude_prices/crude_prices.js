@@ -23,6 +23,7 @@ const createChart = (lang) => {
       yCols: ["WCS", "WTI", "Differential"],
       colors: crudePriceColors,
       seriesTypes: crudePriceTypes,
+      names: lang.series,
     });
     var params = {
       div: "container_crude_prices",

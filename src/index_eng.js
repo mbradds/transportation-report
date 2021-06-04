@@ -2,14 +2,14 @@ import { generalTheme } from "./modules/themes";
 // import { translateEng } from "./modules/translateSeries.js";
 import { instructionsChart } from "./modules/charts";
 import { kevinCrudeProduction } from "./Kevin/crude_production/crude_production";
-// import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
-// import { kevinUsImports } from "./Kevin/us_imports/us_imports";
-// import { kevinCrudePrices } from "./Kevin/crude_prices/crude_prices";
-// import { coletteCrudeMode } from "./Colette/crude_export_mode/crude_export_mode";
-// import { coletteCrudeByRail } from "./Colette/crude_by_rail/crude_by_rail";
-// import { coletteMarine } from "./Colette/marine_exports/marine_exports";
-// import { coletteCrudeTakeaway } from "./Colette/crude_takeaway/crude_takeaway";
-// import { rebeccaGasProd } from "./Rebecca/gas_production/gas_production";
+import { kevinCrudeExports } from "./Kevin/crude_exports/crude_exports";
+import { kevinCrudePrices } from "./Kevin/crude_prices/crude_prices";
+import { kevinUsImports } from "./Kevin/us_imports/us_imports";
+import { coletteCrudeMode } from "./Colette/crude_export_mode/crude_export_mode";
+import { coletteCrudeByRail } from "./Colette/crude_by_rail/crude_by_rail";
+import { coletteMarine } from "./Colette/marine_exports/marine_exports";
+import { coletteCrudeTakeaway } from "./Colette/crude_takeaway/crude_takeaway";
+import { rebeccaGasProd } from "./Rebecca/gas_production/gas_production";
 // import { rebeccaGasTrade } from "./Rebecca/gas_trade/gas_trade";
 // import { rebeccaGasPrices } from "./Rebecca/gas_prices/gas_prices";
 // import { saraGasTraffic } from "./Sara/gas_traffic/gas_traffic";
@@ -46,14 +46,14 @@ async function loadAllCharts(eng) {
   let arrayOfCharts = [
     instructionsChart(eng.instructionsChart),
     kevinCrudeProduction(eng.crudeProduction, eng.shared, eng.units),
-    // kevinCrudeExports(eng.crudeExports, eng.units, translateEng),
-    // kevinCrudePrices(eng.crudePrices, eng.units),
-    // kevinUsImports(eng.crudeImports, eng.units, translateEng),
-    // coletteCrudeMode(eng.crudeMode, eng.units),
-    // coletteCrudeByRail(eng.crudeByRail, eng.units, translateEng),
-    // coletteMarine(eng.marineCrudeExports, eng.units),
-    // coletteCrudeTakeaway(eng.crudeTakeaway, eng.units, translateEng),
-    // rebeccaGasProd(eng.gasProduction, eng.shared, eng.units, translateEng),
+    kevinCrudeExports(eng.crudeExports, eng.units),
+    kevinUsImports(eng.crudeImports, eng.units),
+    kevinCrudePrices(eng.crudePrices, eng.units),
+    coletteCrudeMode(eng.crudeMode, eng.units),
+    coletteCrudeByRail(eng.crudeByRail, eng.units),
+    coletteMarine(eng.marineCrudeExports, eng.units),
+    coletteCrudeTakeaway(eng.crudeTakeaway, eng.units),
+    rebeccaGasProd(eng.gasProduction, eng.shared, eng.units),
     // rebeccaGasTrade(eng.gasTrade, eng.units, translateEng),
     // rebeccaGasPrices(eng.gasPrices),
     // saraGasTraffic(eng.gasTraffic, eng.units, translateEng),

@@ -18,14 +18,25 @@
     }
   },
   "crudeExports": {
-    "credits": "Source : Système de suivi des produits de la Régie"
+    "credits": "Source : Système de suivi des produits de la Régie",
+    "series": {
+      "Other": "Autre"
+    }
   },
   "crudePrices": {
-    "source": "Source : NE2 Group"
+    "source": "Source : NE2 Group",
+    "series": {
+      "Differential": "Écart"
+    }
   },
   "crudeImports": {
     "annotation": "% – Part du Canada dans les importations américaines de pétrole brut",
-    "source": "Source : Système de suivi des produits de la Régie et EIA"
+    "source": "Source : Système de suivi des produits de la Régie et EIA",
+    "series": {
+      "U.S. crude oil imports from rest of world": "Importations américaines de pétrole brut du reste du monde",
+      "U.S. crude oil exports": "Exportations américaines de pétrole brut",
+      "U.S. crude oil imports from Canada": "Importations américaines de pétrole brut du Canada"
+    }
   },
   "crudeMode": {
     "source": "Source : Système de suivi des produits de la Régie",
@@ -41,14 +52,28 @@
   "crudeByRail": {
     "source": "Source : Exportations de brut par chemin de fer de la Régie et NE2 Group",
     "yAxis": "Exportations par chemin de fer",
-    "differential": "Écart"
+    "differential": "Écart",
+    "series": {
+      "Crude by Rail": "Transport de brut par chemin de fer",
+      "WCS-WTI Differential": "Écart entre WCS et WTI"
+    }
   },
   "marineCrudeExports": {
     "credits": "Source : Système de suivi des produits de la Régie"
   },
   "crudeTakeaway": {
     "source": "Source : Avenir énergétique",
-    "plotLines": "Début des<br>valeurs estimatives"
+    "plotLines": "Début des<br>valeurs estimatives",
+    "series": {
+      "Total Supply Available for Export": "Quantité totale disponible à l’exportation",
+      "Express Pipeline": "Pipeline Express",
+      "Milk River Pipeline": "Pipeline Milk River",
+      "Aurora Pipeline": "Pipeline Aurora",
+      "Trans Mountain Pipeline": "Pipeline Trans Mountain",
+      "Enbridge Canadian Mainline": "Réseau d’Enbridge au Canada",
+      "Keystone Pipeline": "Pipeline Keystone",
+      "Rail": "Train"
+    }
   },
   "gasProduction": {
     "source": "Source : Avenir énergétique"

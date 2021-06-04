@@ -2,7 +2,6 @@ import {
   cerPalette,
   creditsClick,
   prepareSeriesPie,
-  numberFormat,
   setTitle,
 } from "../../modules/util.js";
 import { errorChart } from "../../modules/charts.js";
@@ -37,14 +36,17 @@ const createChart = (lang, langUnits) => {
         useHTML: true,
         formatter: function () {
           var toolText = `<table><b>${this.key} - ${filters.Year}</b>`;
-          toolText += `<tr><td>${lang.pctOfTotal
-            }</td><td style="padding:0"><b>${this.point.percentage.toFixed(
-              0
-            )} %</b></td></tr>`;
-          toolText += `<tr><td>${lang.exportVolume
-            }</td><td style="padding:0"><b>${numberFormat(this.y.toFixed(1))} ${langUnits["b/d"]
-            }</b></td></tr>`;
-          toolText += `<tr><td></td><td style="padding:0"><b><i>${numberFormat(
+          toolText += `<tr><td>${
+            lang.pctOfTotal
+          }</td><td style="padding:0"><b>${this.point.percentage.toFixed(
+            0
+          )} %</b></td></tr>`;
+          toolText += `<tr><td>${
+            lang.exportVolume
+          }</td><td style="padding:0"><b>${Highcharts.numberFormat(
+            this.y.toFixed(1)
+          )} ${langUnits["b/d"]}</b></td></tr>`;
+          toolText += `<tr><td></td><td style="padding:0"><b><i>${Highcharts.numberFormat(
             (this.y / 6.2898).toFixed(1)
           )} ${langUnits["m3/d"]}</b></i></td></tr>`;
           toolText += `</table>`;
@@ -90,10 +92,9 @@ const createChart = (lang, langUnits) => {
       $(".btn-crude-mode > .btn").removeClass("active");
       $(this).addClass("active");
       var thisBtn = $(this);
-      var btnText = thisBtn.text();
       var btnValue = thisBtn.val();
       $("#selectedVal").text(btnValue);
-      crudeModeFilters.Year = btnText;
+      crudeModeFilters.Year = parseInt(btnValue);
       setTitle(figure_title, "10", crudeModeFilters.Year, lang.title);
       crudeModePie.update({
         series: prepareSeriesPie(
@@ -102,7 +103,8 @@ const createChart = (lang, langUnits) => {
           "Crude Exports by Mode",
           "Mode",
           "Volume (bbl/d)",
-          crudeModeColors
+          crudeModeColors,
+          lang.series
         ),
       });
     });
