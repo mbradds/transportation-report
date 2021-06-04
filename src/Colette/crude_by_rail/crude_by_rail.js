@@ -3,7 +3,7 @@ import { errorChart } from "../../modules/charts.js";
 import Series from "highseries";
 import railData from "./crude_by_rail_wcs.json";
 
-const createChart = (lang, langUnits, translate) => {
+const createChart = (lang, langUnits) => {
   const railFilters = { Units: "Mb/d" };
   const railColors = {
     "Crude by Rail": cerPalette["Night Sky"],
@@ -28,6 +28,7 @@ const createChart = (lang, langUnits, translate) => {
     filters: railFilters,
     seriesTypes: railTypes,
     yAxis: railAxis,
+    names: lang.series,
   });
 
   const createRailChart = (seriesData, railFilters) => {
@@ -54,7 +55,7 @@ const createChart = (lang, langUnits, translate) => {
         shared: true,
         formatter: function () {
           var toolText = `<b> ${Highcharts.dateFormat(
-            "%B-%Y",
+            "%B %Y",
             this.x
           )} </b><table>`;
           this.points.map((p) => {
@@ -113,7 +114,6 @@ const createChart = (lang, langUnits, translate) => {
           title: { text: `${lang.yAxis} - ${langUnits[railFilters.Units]}` },
         },
       });
-      translate(chartRail);
     });
   };
   try {
@@ -123,8 +123,8 @@ const createChart = (lang, langUnits, translate) => {
   }
 };
 
-export function coletteCrudeByRail(lang, langUnits, translate) {
+export function coletteCrudeByRail(lang, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits)), 0);
   });
 }

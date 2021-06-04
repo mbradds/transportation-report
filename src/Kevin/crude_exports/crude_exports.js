@@ -9,7 +9,7 @@ import { errorChart, createPaddMap } from "../../modules/charts.js";
 import crudeExportsData from "./crude-oil-exports-by-destination-annual.json";
 import Series from "highseries";
 
-const createChart = (lang, langUnits, translate) => {
+const createChart = (lang, langUnits) => {
   const crudeExportColors = {
     "PADD I": cerPalette["Sun"],
     "PADD II": cerPalette["Night Sky"],
@@ -70,6 +70,7 @@ const createChart = (lang, langUnits, translate) => {
       xCol: "Year",
       yCols: "PADD",
       valuesCol: "Value",
+      names: lang.series,
     });
     var chartCrudeExports = createCrudeExportsChart(series.hcSeries, units);
   } catch (err) {
@@ -120,14 +121,13 @@ const createChart = (lang, langUnits, translate) => {
         pointFormat: tooltipPoint(units.display),
       },
     });
-    translate(chartCrudeExports);
   });
 
   return chartCrudeExports;
 };
 
-export function kevinCrudeExports(lang, langUnits, translate) {
+export function kevinCrudeExports(lang, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits)), 0);
   });
 }

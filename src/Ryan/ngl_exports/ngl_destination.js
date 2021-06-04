@@ -3,7 +3,7 @@ import Series from "highseries";
 import { errorChart, createPaddMap } from "../../modules/charts.js";
 import nglData from "./destination.json";
 
-const createChart = (lang, langUnits, translate) => {
+const createChart = (lang, langUnits) => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
   units.display = langUnits[units.unitsCurrent];
 
@@ -74,6 +74,7 @@ const createChart = (lang, langUnits, translate) => {
       yCols: ["PADD I", "PADD II", "PADD III", "PADD IV", "PADD V", "Other"],
       filters: nglFilters,
       colors: nglDestinationColors,
+      names: lang.series,
     });
     var nglDestChart = createNglChart(series.hcSeries, units);
   } catch (err) {
@@ -104,7 +105,6 @@ const createChart = (lang, langUnits, translate) => {
     nglDestChart.update({
       series: series.hcSeries,
     });
-    translate(nglDestChart);
   });
 
   var selectNglChart = document.getElementById("select_ngl_chart_type");
@@ -115,7 +115,6 @@ const createChart = (lang, langUnits, translate) => {
         type: newChartType,
       },
     });
-    translate(nglDestChart);
   });
   var selectUnitsNgl = document.getElementById("select_units_ngl_destination");
   selectUnitsNgl.addEventListener("change", (selectUnitsNgl) => {
@@ -147,13 +146,12 @@ const createChart = (lang, langUnits, translate) => {
         pointFormat: tooltipPoint(units.display),
       },
     });
-    translate(nglDestChart);
   });
   return 1;
 };
 
-export function ryanNglDestination(lang, langUnits, translate) {
+export function ryanNglDestination(lang, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits)), 0);
   });
 }

@@ -3,8 +3,6 @@ import {
   creditsClick,
   mouseOverFunction,
   mouseOutFunction,
-  tooltipSymbol,
-  dateFormat,
 } from "../../modules/util.js";
 import Series from "highseries";
 import { errorChart } from "../../modules/charts.js";
@@ -97,7 +95,7 @@ const createChart = (lang) => {
         },
         {
           type: "mappoint",
-          name: "Henry Hub",
+          name: lang.series["Henry Hub"],
           color: gasPriceColors["Henry Hub"],
           data: [
             {
@@ -111,7 +109,7 @@ const createChart = (lang) => {
         },
         {
           type: "mappoint",
-          name: "Alberta NIT",
+          name: lang.series["Alberta NIT"],
           color: gasPriceColors["Alberta NIT"],
           data: [
             {
@@ -157,19 +155,10 @@ const createChart = (lang) => {
 
       tooltip: {
         enabled: false,
-        // shared: true,
-        // formatter: function () {
-        //   var toolText = `<b> ${dateFormat(this.x, "%B-%Y")} </b><table>`;
-        //   this.points.map((p) => {
-        //     toolText += tooltipSymbol(p, "", true, false);
-        //   });
-        //   return toolText + "</table>";
-        // },
       },
 
       xAxis: {
         type: "datetime",
-        // crosshair: true,
       },
 
       yAxis: {
@@ -191,6 +180,7 @@ const createChart = (lang) => {
       xCol: "Date",
       yCols: ["Alberta NIT", "Dawn", "Henry Hub", "Station 2"],
       colors: gasPriceColors,
+      names: lang.series,
     });
     var gasMap = createGasPriceMap();
     var chartGasPrice = createGasPriceChart(series.hcSeries);

@@ -8,17 +8,35 @@
   },
   "crudeProduction": {
     "title": "Crude Oil Production by Type",
-    "source": "Source: Energy Futures"
+    "source": "Source: Energy Futures",
+    "series": {
+      "Conventional Light": "Conventional Light",
+      "Conventional Heavy": "Conventional Heavy",
+      "Field Condensate": "Field Condensate",
+      "Mined Bitumen": "Mined Bitumen",
+      "In Situ Bitumen": "In Situ Bitumen"
+    }
   },
   "crudeExports": {
-    "credits": "Source: CER Commodity Tracking System"
+    "credits": "Source: CER Commodity Tracking System",
+    "series": {
+      "Other": "Other"
+    }
   },
   "crudePrices": {
-    "source": "Source: ne2 Group"
+    "source": "Source: ne2 Group",
+    "series": {
+      "Differential": "Differential"
+    }
   },
   "crudeImports": {
     "annotation": "% - Canada's share of U.S. crude oil imports",
-    "source": "Source: CER Commodity Tracking System & EIA"
+    "source": "Source: CER Commodity Tracking System & EIA",
+    "series": {
+      "U.S. crude oil imports from rest of world": "U.S. crude oil imports from rest of world",
+      "U.S. crude oil exports": "U.S. crude oil exports",
+      "U.S. crude oil imports from Canada": "U.S. crude oil imports from Canada"
+    }
   },
   "crudeMode": {
     "source": "Source: CER Commodity Tracking System",
@@ -34,36 +52,78 @@
   "crudeByRail": {
     "source": "Source: CER Crude by Rail Exports & ne2 Group",
     "yAxis": "Rail Exports",
-    "differential": "Differential"
+    "differential": "Differential",
+    "series": {
+      "Crude by Rail": "Crude by Rail",
+      "WCS-WTI Differential": "WCS-WTI Differential"
+    }
   },
   "marineCrudeExports": {
     "credits": "Source: CER Commodity Tracking System"
   },
   "crudeTakeaway": {
     "source": "Source: Energy Futures",
-    "plotLines": "Estimated <br> values start"
+    "plotLines": "Estimated <br> values start",
+    "series": {
+      "Total Supply Available for Export": "Total Supply Available for Export",
+      "Express Pipeline": "Express Pipeline",
+      "Milk River Pipeline": "Milk River Pipeline",
+      "Aurora Pipeline": "Aurora Pipeline",
+      "Trans Mountain Pipeline": "Trans Mountain Pipeline",
+      "Enbridge Canadian Mainline": "Enbridge Canadian Mainline",
+      "Keystone Pipeline": "Keystone Pipeline",
+      "Rail": "Rail"
+    }
   },
   "gasProduction": {
-    "source": "Source: Energy Futures"
+    "source": "Source: Energy Futures",
+    "series": {
+      "Conventional Non-tight": "Conventional Non-tight",
+      "Tight": "Tight",
+      "Shale": "Shale",
+      "Coalbed Methane": "Coalbed Methane"
+    }
   },
   "gasTrade": {
     "titleExports": "Figure 17. Natural Gas Exports from Canada to U.S. Region",
     "titleImports": "Figure 17. Natural Gas Imports from U.S. Region to Canada",
     "source": "Source: CER Commodity Tracking System, Map:",
-    "tooltip": "Natural Gas flows to non border states by pipeline from one or more grouped border regions"
+    "tooltip": "Natural Gas flows to non border states by pipeline from one or more grouped border regions",
+    "series": {
+      "U.S. West": "U.S. West",
+      "U.S. Midwest": "U.S. Midwest",
+      "U.S. East": "U.S. East"
+    }
   },
   "gasPrices": {
     "source": "Source: Platts",
-    "yAxis": "Monthly Spot Prices (CAD/GJ)"
+    "yAxis": "Monthly Spot Prices (CAD/GJ)",
+    "series": {
+      "Alberta NIT": "Alberta NIT",
+      "Henry Hub": "Henry Hub"
+    }
   },
   "gasTraffic": {
-    "source": "Source: Open Government Throughput and Capacity Data"
+    "source": "Source: Open Government Throughput and Capacity Data",
+    "series": {
+      "NGTL System - East Gate": "NGTL System - East Gate",
+      "NGTL System - West Gate": "NGTL System - West Gate",
+      "Combined Pipeline Capacity": "Combined Pipeline Capacity",
+      "Alliance Pipeline - Border": "Alliance Pipeline - Border",
+      "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland": "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland"
+    }
   },
   "gasMnp": {
     "titleMnp": "M&NP Pipeline Throughput & Capacity",
     "titleOffshore": "N.S. Offshore Natural Gas Production",
     "source": "Source: CER, CNSOPB",
-    "prodEnd": "Production ceases"
+    "prodEnd": "Production ceases",
+    "series": {
+      "Exports": "Exports",
+      "Imports": "Imports",
+      "Capacity": "Capacity",
+      "Sable Island": "Sable Island"
+    }
   },
   "gas2019": {
     "source": "Source: Open Government Throughput and Capacity Data",
@@ -71,7 +131,7 @@
     "imports": "Imports",
     "xAxis": "Key Point (West to East)",
     "title": "Average Throughput and Capacity at Key Pipeline Points",
-    "series": {
+    "seriesTitles": {
       "NGTL System - Upstream of James River - intracanada": "NGTL System - Upstream of James River - intracanada",
       "TC Canadian Mainline - Prairies - intracanada": "TC Canadian Mainline - Prairies - intracanada",
       "Foothills System - Kingsgate - export": "Foothills System - Kingsgate - export",
@@ -82,6 +142,10 @@
       "TC Canadian Mainline - Iroquois - export": "TC Canadian Mainline - Iroquois - export",
       "M&NP Pipeline - St. Stephen - import": "M&NP Pipeline - St. Stephen - import",
       "TC Canadian Mainline - Niagara - import": "TC Canadian Mainline - Niagara - import"
+    },
+    "series": {
+      "Capacity": "Capacity",
+      "Throughput": "Throughput"
     }
   },
   "nglProduction": {
@@ -132,6 +196,7 @@
   "finResource": {
     "dataLabel": "total financial resources:",
     "billy": "billion $CAD",
+    "b": "billion",
     "titleResource": "Financial Instruments Utilized in Financial Resource Plan:",
     "pipe": "Pipelines",
     "yAxisResource1": "Number of companies using financial resource",
@@ -139,10 +204,19 @@
     "source": "Source: CER",
     "tooltipClass": "Companies in",
     "titleClass": "Absolute Liability Limits by Class:",
-    "yAxisClass": "Financial resource requirement (Billion $CAD)"
+    "yAxisClass": "Financial resource requirement (Billion $CAD)",
+    "series": {
+      "Oil": "Oil",
+      "Gas": "Gas",
+      "All": "All"
+    },
+    "tooltip": {
+      "companies": "Companies using Financial Instrument",
+      "total": "Financial Instrument Total"
+    }
   },
   "abandon": {
-    "pctAside": "% set-aside:",
+    "pctAside": "% set-aside",
     "titleTotal": "Costs to Abandon CER-Regulated Pipelines",
     "billy": "billion",
     "title": "Group 1 Abandonment Breakdown",
@@ -152,6 +226,10 @@
       "All CER Regulated Pipeline Companies": "All CER Regulated Pipeline Companies",
       "Group 1 Pipeline Companies": "Group 1 Pipeline Companies",
       "Group 2 Pipeline Companies": "Group 2 Pipeline Companies"
+    },
+    "series": {
+      "Amounts Set Aside": "Amounts Set Aside",
+      "Remaining Estimate": "Remaining Estimate"
     }
   },
   "finance": {
@@ -197,5 +275,6 @@
     "Bcf/d": "Bcf/d",
     "Million m3/d": "Million m3/d",
     "b/d": "b/d"
-  }
+  },
+  "pipeline_name": {}
 }

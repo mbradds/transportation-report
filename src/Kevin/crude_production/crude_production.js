@@ -8,7 +8,7 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import crudeProdData from "./Crude_Oil_Production.json";
 import Series from "highseries";
 
-const createChart = (lang, langShared, langUnits, translate) => {
+const createChart = (lang, langShared, langUnits) => {
   const crudeProdColors = {
     ["Conventional Light"]: cerPalette["Sun"],
     ["Conventional Heavy"]: cerPalette["Night Sky"],
@@ -77,6 +77,7 @@ const createChart = (lang, langShared, langUnits, translate) => {
       filters: crudeProdFilters,
       xCol: "Year",
       yCols: crudeProdColumns,
+      names: lang.series,
     });
     series.transform = { decimals: roundValues(crudeProdFilters) };
 
@@ -116,7 +117,6 @@ const createChart = (lang, langShared, langUnits, translate) => {
             },
           },
         });
-        translate(chartCrude);
       }
     );
 
@@ -159,7 +159,6 @@ const createChart = (lang, langShared, langUnits, translate) => {
           pointFormat: tooltipPoint(units.display),
         },
       });
-      translate(chartCrude);
     });
     return chartCrude;
   };
@@ -172,11 +171,8 @@ const createChart = (lang, langShared, langUnits, translate) => {
   }
 };
 
-export function kevinCrudeProduction(lang, langShared, langUnits, translate) {
+export function kevinCrudeProduction(lang, langShared, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(
-      () => resolve(createChart(lang, langShared, langUnits, translate)),
-      0
-    );
+    setTimeout(() => resolve(createChart(lang, langShared, langUnits)), 0);
   });
 }

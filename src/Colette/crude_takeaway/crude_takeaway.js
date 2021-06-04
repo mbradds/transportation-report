@@ -8,7 +8,7 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import crudeTakeawayData from "./figures.json";
 import Series from "highseries";
 
-const createChart = (lang, langUnits, translate) => {
+const createChart = (lang, langUnits) => {
   const crudeTakeawayColors = {
     "Total Supply Available for Export": cerPalette["Cool Grey"],
     "Express Pipeline": cerPalette["Aubergine"],
@@ -56,6 +56,7 @@ const createChart = (lang, langUnits, translate) => {
     colors: crudeTakeawayColors,
     seriesTypes: crudeTakeawayTypes,
     zIndex: z,
+    names: lang.series,
   });
 
   const mainCrudeTakeaway = () => {
@@ -109,7 +110,6 @@ const createChart = (lang, langUnits, translate) => {
           title: { text: units.display },
         },
       });
-      translate(crudeTakeawayChart);
     });
   };
 
@@ -120,8 +120,8 @@ const createChart = (lang, langUnits, translate) => {
   }
 };
 
-export function coletteCrudeTakeaway(lang, langUnits, translate) {
+export function coletteCrudeTakeaway(lang, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits)), 0);
   });
 }

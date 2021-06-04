@@ -5,7 +5,7 @@ import finResData from "./fin_resource_totals.json";
 import finClassData from "./fin_resource_class.json";
 import finResNames from "./fin_resource_class_names.json";
 
-export async function jenniferFinResources(lang, translate) {
+export async function jenniferFinResources(lang) {
   var resFilters = { Commodity: "All" };
 
   const resChartTypes = {
@@ -74,9 +74,9 @@ export async function jenniferFinResources(lang, translate) {
           dataLabels: {
             enabled: true,
             formatter: function () {
-              return `${this.point.series.name} ${lang.dataLabel} <br> ${(
-                this.y / 1000000000
-              ).toFixed(2)} ${lang.billy}`;
+              return `${lang.series[this.point.series.name]} ${
+                lang.dataLabel
+              } <br> ${(this.y / 1000000000).toFixed(2)} ${lang.billy}`;
             },
           },
         },
@@ -131,7 +131,30 @@ export async function jenniferFinResources(lang, translate) {
 
       tooltip: {
         shared: true,
-        pointFormat: tooltipPoint(""),
+        formatter: function () {
+          let toolText = "";
+          let header = this.points[0].key;
+          if (lang.instruments) {
+            header = lang.instruments[header];
+          }
+          toolText += `<strong>${header}</strong>`;
+          this.points.forEach((p) => {
+            let name = "";
+            if (p.color === "#42464B") {
+              name = lang.tooltip.companies;
+            } else {
+              name = lang.tooltip.total;
+            }
+            toolText += `<br><tr><td> <span style="color: ${
+              p.color
+            }">&#9679</span> ${name}: </td><td style="padding:0"><b>${Highcharts.numberFormat(
+              p.y,
+              0
+            )}</b></td></tr>`;
+          });
+
+          return toolText;
+        },
       },
 
       legend: {
@@ -142,7 +165,9 @@ export async function jenniferFinResources(lang, translate) {
       },
 
       title: {
-        text: `${lang.titleResource} ${resFilters.Commodity} ${lang.pipe}`,
+        text: `${lang.titleResource} ${lang.series[resFilters.Commodity]} ${
+          lang.pipe
+        }`,
       },
 
       xAxis: {
@@ -218,14 +243,20 @@ export async function jenniferFinResources(lang, translate) {
 
       tooltip: {
         formatter: function () {
-          return `<b>${this.key}</b><br>
+          let header = this.key;
+          if (lang.classes) {
+            header = lang.classes[this.key];
+          }
+          return `<b>${header}</b><br>
             <i>${lang.tooltipClass} ${this.key}:</i><br>
             ${finResNames[this.key].join(", ")}`;
         },
       },
 
       title: {
-        text: `${lang.titleClass} ${resFilters.Commodity} ${lang.pipe}`,
+        text: `${lang.titleClass} ${lang.series[resFilters.Commodity]} ${
+          lang.pipe
+        }`,
         margin: 0,
       },
 
@@ -254,7 +285,7 @@ export async function jenniferFinResources(lang, translate) {
         stackLabels: {
           enabled: true,
           formatter: function () {
-            return `${this.total / 1000000000} billion`;
+            return `${this.total / 1000000000} ${lang.b}`;
           },
         },
       },
@@ -285,6 +316,7 @@ export async function jenniferFinResources(lang, translate) {
       seriesTypes: resChartTypes,
       filters: resFilters,
       yAxis: resyAxis,
+      names: lang.series,
     });
     var seriesClass = new Series({
       data: finClassData,
@@ -294,6 +326,7 @@ export async function jenniferFinResources(lang, translate) {
       yCols: "Commodity",
       valuesCol: "Financial Resource",
       xName: "name",
+      names: lang.series,
     });
 
     const chartFinTotals = createFinResourceTotals(totals);
@@ -329,8 +362,6 @@ export async function jenniferFinResources(lang, translate) {
         seriesClass.hcSeries,
         resFilters
       );
-      translate(chartFinResource);
-      translate(chartfinClassData);
     });
   };
 

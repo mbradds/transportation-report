@@ -3,7 +3,7 @@ import { lineAndStackedArea, errorChart } from "../../modules/charts.js";
 import Series from "highseries";
 import gasData from "./gas_traffic.json";
 
-const createChart = (lang, langUnits, translate) => {
+const createChart = (lang, langUnits) => {
   const gasColors = {
     "Alliance Pipeline - Border": cerPalette["Night Sky"],
     "NGTL System - East Gate": cerPalette["Sun"],
@@ -32,6 +32,7 @@ const createChart = (lang, langUnits, translate) => {
       yCols: columns,
       colors: gasColors,
       seriesTypes: gasChartTypes,
+      names: lang.series,
     });
     var params = {
       div: "container_gas_traffic",
@@ -79,7 +80,6 @@ const createChart = (lang, langUnits, translate) => {
             pointFormat: tooltipPoint(units.display),
           },
         });
-        translate(chartGasTraffic);
       }
     );
   };
@@ -90,8 +90,8 @@ const createChart = (lang, langUnits, translate) => {
   }
 };
 
-export function saraGasTraffic(lang, langUnits, translate) {
+export function saraGasTraffic(lang, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits)), 0);
   });
 }

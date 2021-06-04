@@ -9,7 +9,7 @@ import { errorChart } from "../../modules/charts.js";
 import crudeImportsData from "./UScrudeoilimports.json";
 import Series from "highseries";
 
-const createChart = (lang, langUnits, translate) => {
+const createChart = (lang, langUnits) => {
   var units = conversions("MMb/d to Mm3/d", "MMb/d", "MMb/d");
   units.display = langUnits[units.unitsCurrent];
 
@@ -30,6 +30,7 @@ const createChart = (lang, langUnits, translate) => {
     xCol: "Year",
     yCols: "Attribute",
     valuesCol: "Value",
+    names: lang.series,
   });
   series.seriesTypes = seriesTypes;
 
@@ -60,7 +61,7 @@ const createChart = (lang, langUnits, translate) => {
         categories: true,
       },
 
-      annotations: [annotation(840, 30, cerPalette["Sun"], lang.annotation)],
+      annotations: [annotation(840, 20, cerPalette["Sun"], lang.annotation)],
 
       yAxis: {
         title: { text: params.units.display },
@@ -125,7 +126,6 @@ const createChart = (lang, langUnits, translate) => {
             pointFormat: tooltipPoint(units.display),
           },
         });
-        translate(chartCrudeImports);
       }
     );
   };
@@ -137,8 +137,8 @@ const createChart = (lang, langUnits, translate) => {
   }
 };
 
-export function kevinUsImports(lang, langUnits, translate) {
+export function kevinUsImports(lang, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang, langUnits, translate)), 0);
+    setTimeout(() => resolve(createChart(lang, langUnits)), 0);
   });
 }

@@ -3,10 +3,10 @@ import Series from "highseries";
 import { errorChart } from "../../modules/charts.js";
 import tollsData from "./tolls.json";
 
-const createChart = (lang) => {
+const createChart = (lang, pipeline_name) => {
   const tollChartTypes = (series) => {
     series.map((data) => {
-      if (data.name == "GDP Deflator") {
+      if (data.id == "GDP Deflator") {
         data.type = "line";
         data.dashStyle = "longDash";
       } else {
@@ -103,6 +103,7 @@ const createChart = (lang) => {
         yCols: "Pipeline",
         valuesCol: "Rate Normalized",
         colors: oilColors,
+        names: pipeline_name,
       });
       var chartTollsOil = createTollsChart(
         tollChartTypes(oilseries.hcSeries),
@@ -119,6 +120,7 @@ const createChart = (lang) => {
         yCols: "Pipeline",
         valuesCol: "Rate Normalized",
         colors: gasColors,
+        names: pipeline_name,
       });
       var chartTollsGas = createTollsChart(
         tollChartTypes(gasseries.hcSeries),
@@ -132,8 +134,8 @@ const createChart = (lang) => {
   return mainTolls();
 };
 
-export function cassandraTolls(lang) {
+export function cassandraTolls(lang, pipeline_name) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(createChart(lang)), 0);
+    setTimeout(() => resolve(createChart(lang, pipeline_name)), 0);
   });
 }

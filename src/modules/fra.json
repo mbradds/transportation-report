@@ -8,17 +8,35 @@
   },
   "crudeProduction": {
     "title": "Production de pétrole brut",
-    "source": "Source : Avenir énergétique"
+    "source": "Source : Avenir énergétique",
+    "series": {
+      "Conventional Light": "Léger classique",
+      "Conventional Heavy": "Lourd classique",
+      "Field Condensate": "Condensat de puits",
+      "Mined Bitumen": "Bitume extrait",
+      "In Situ Bitumen": "Bitume in situ"
+    }
   },
   "crudeExports": {
-    "credits": "Source : Système de suivi des produits de la Régie"
+    "credits": "Source : Système de suivi des produits de la Régie",
+    "series": {
+      "Other": "Autre"
+    }
   },
   "crudePrices": {
-    "source": "Source : NE2 Group"
+    "source": "Source : NE2 Group",
+    "series": {
+      "Differential": "Écart"
+    }
   },
   "crudeImports": {
     "annotation": "% – Part du Canada dans les importations américaines de pétrole brut",
-    "source": "Source : Système de suivi des produits de la Régie et EIA"
+    "source": "Source : Système de suivi des produits de la Régie et EIA",
+    "series": {
+      "U.S. crude oil imports from rest of world": "Importations américaines de pétrole brut du reste du monde",
+      "U.S. crude oil exports": "Exportations américaines de pétrole brut",
+      "U.S. crude oil imports from Canada": "Importations américaines de pétrole brut du Canada"
+    }
   },
   "crudeMode": {
     "source": "Source : Système de suivi des produits de la Régie",
@@ -34,36 +52,78 @@
   "crudeByRail": {
     "source": "Source : Exportations de brut par chemin de fer de la Régie et NE2 Group",
     "yAxis": "Exportations par chemin de fer",
-    "differential": "Écart"
+    "differential": "Écart",
+    "series": {
+      "Crude by Rail": "Transport de brut par chemin de fer",
+      "WCS-WTI Differential": "Écart entre WCS et WTI"
+    }
   },
   "marineCrudeExports": {
     "credits": "Source : Système de suivi des produits de la Régie"
   },
   "crudeTakeaway": {
     "source": "Source : Avenir énergétique",
-    "plotLines": "Début des<br>valeurs estimatives"
+    "plotLines": "Début des<br>valeurs estimatives",
+    "series": {
+      "Total Supply Available for Export": "Quantité totale disponible à l’exportation",
+      "Express Pipeline": "Pipeline Express",
+      "Milk River Pipeline": "Pipeline Milk River",
+      "Aurora Pipeline": "Pipeline Aurora",
+      "Trans Mountain Pipeline": "Pipeline Trans Mountain",
+      "Enbridge Canadian Mainline": "Réseau d’Enbridge au Canada",
+      "Keystone Pipeline": "Pipeline Keystone",
+      "Rail": "Train"
+    }
   },
   "gasProduction": {
-    "source": "Source : Avenir énergétique"
+    "source": "Source : Avenir énergétique",
+    "series": {
+      "Conventional Non-tight": "Gaz naturel classique ne provenant pas de réservoirs étanches",
+      "Tight": "Gaz de réservoir étanche",
+      "Shale": "Schistes",
+      "Coalbed Methane": "Méthane de houille"
+    }
   },
   "gasTrade": {
     "titleExports": "Figure 17 – Exportations de gaz naturel du Canada vers les États-Unis",
     "titleImports": "Figure 17 – Importations de gaz naturel des États-Unis vers le Canada",
     "source": "Source : Système de suivi des produits de la Régie",
-    "tooltip": "Le gaz naturel est acheminé aux États non frontaliers par pipeline à partir d’une ou de plusieurs régions frontalières regroupées"
+    "tooltip": "Le gaz naturel est acheminé aux États non frontaliers par pipeline à partir d’une ou de plusieurs régions frontalières regroupées",
+    "series": {
+      "U.S. West": "Ouest américain",
+      "U.S. Midwest": "Midwest américain",
+      "U.S. East": "Est des États-Unis"
+    }
   },
   "gasPrices": {
     "source": "Source: Platts",
-    "yAxis": "Prix mensuels du disponible (CAD/GJ)"
+    "yAxis": "Prix mensuels du disponible (CAD/GJ)",
+    "series": {
+      "Alberta NIT": "Carrefour NIT en Alberta",
+      "Henry Hub": "Carrefour Henry"
+    }
   },
   "gasTraffic": {
-    "source": "Source : Données sur le débit et la capacité du gouvernement ouvert"
+    "source": "Source : Données sur le débit et la capacité du gouvernement ouvert",
+    "series": {
+      "NGTL System - East Gate": "Réseau de NGTL – Entrée est",
+      "NGTL System - West Gate": "Réseau de NGTL – Entrée ouest",
+      "Combined Pipeline Capacity": "Capacité pipelinière combinée",
+      "Alliance Pipeline - Border": "Pipeline Alliance – Frontière",
+      "Westcoast Energy Inc. - BC Pipeline - Huntingdon/Lower Mainland": "Westcoast Energy Inc. – Gazoduc BC Pipeline – Huntingdon/Vallée du bas Fraser"
+    }
   },
   "gasMnp": {
     "titleMnp": "Débit et capacité du pipeline de M&NP",
     "titleOffshore": "Production gazière extracôtière de la N.-É.",
     "source": "Source : Régie, OCNEHE",
-    "prodEnd": "Arrêt de la production"
+    "prodEnd": "Arrêt de la production",
+    "series": {
+      "Exports": "Exportations",
+      "Imports": "Importations",
+      "Capacity": "Capacité",
+      "Sable Island": "Île de Sable"
+    }
   },
   "gas2019": {
     "source": "Source : Données sur le débit et la capacité du gouvernement ouvert",
@@ -71,7 +131,7 @@
     "imports": "Importations",
     "xAxis": "Point principal (d’ouest en est)",
     "title": "Débit et capacité des pipelines aux points principaux",
-    "series": {
+    "seriesTitles": {
       "NGTL System - Upstream of James River - intracanada": "Réseau de NGTL - En amont de la rivière James - Intra-Canada",
       "TC Canadian Mainline - Prairies - intracanada": "Réseau principal de TC au Canada - Prairies - Intra-Canada",
       "Foothills System - Kingsgate - export": "Réseau Foothills - Kingsgate - Exportation",
@@ -82,22 +142,37 @@
       "TC Canadian Mainline - Iroquois - export": "Réseau principal de TC au Canada - Iroquois - Exportation",
       "M&NP Pipeline - St. Stephen - import": "Pipeline de M&NP - St. Stephen - Importation",
       "TC Canadian Mainline - Niagara - import": "Réseau principal de TC au Canada - Niagara - Importation"
+    },
+    "series": {
+      "Capacity": "capacité",
+      "Throughput": "débit"
     }
   },
   "nglProduction": {
-    "source": "Source : Avenir énergétique"
+    "source": "Source : Avenir énergétique",
+    "series": {
+      "Ethane": "Éthane"
+    }
   },
   "nglExports": {
     "figureNum": "Figure 22:",
     "exports": "Exportations",
     "source": "Source : Système de suivi des produits de la Régie",
-    "noData": "Aucune exportation"
+    "noData": "Aucune exportation",
+    "series": {
+      "Truck": "Camion",
+      "Marine": "Navire",
+      "Rail": "Train"
+    }
   },
   "nglDestination": {
     "figureNum": "Figure 23:",
     "exports": "Destination d’exportation",
     "noData": "Aucune exportation",
-    "credits": "Source : Système de suivi des produits de la Régie"
+    "credits": "Source : Système de suivi des produits de la Régie",
+    "series": {
+      "Other": "Autre"
+    }
   },
   "settlements": {
     "active": "Règlement(s) actif(s)",
@@ -203,6 +278,7 @@
   "finResource": {
     "dataLabel": "Total des ressources financières:",
     "billy": "en milliards de dollars CA",
+    "b": "milliard",
     "titleResource": "Instruments financiers utilisés dans le plan relatif aux ressources financières:",
     "pipe": "pipelines",
     "yAxisResource1": "Nombre de sociétés utilisant des ressources financières",
@@ -218,8 +294,8 @@
       "Commercial Paper": "Papier commercial",
       "Credit Facility": "Facilité de crédit",
       "Parental Guarantee": "Lettre de garantie de la société mère",
-      "Other financial resources:": "Autres ressources financières",
-      "Surety Bond / Indemnity etc.": "Cautionnement / indemnité, etc.",
+      "Other financial resources": "Autres ressources financières",
+      "Surety Bond  / Indemnity etc.": "Cautionnement / indemnité, etc.",
       "Letter of Credit": "Lettre de crédit"
     },
     "classes": {
@@ -230,6 +306,15 @@
       "Gas Class 2": "Gaz – Catégorie 2",
       "Gas Class 3": "Gaz – Catégorie 3",
       "Gas Class 4": "Gaz – Catégorie 4"
+    },
+    "series": {
+      "Oil": "pétrole",
+      "Gas": "gaz",
+      "All": "Tous"
+    },
+    "tooltip": {
+      "companies": "Sociétés ayant recours à un instrument financier",
+      "total": "Total des instruments financiers"
     }
   },
   "abandon": {
@@ -243,6 +328,10 @@
       "All CER Regulated Pipeline Companies": "Toutes les sociétés pipelinières réglementées par la Régie",
       "Group 1 Pipeline Companies": "Sociétés pipelinières du groupe 1",
       "Group 2 Pipeline Companies": "Sociétés pipelinières du groupe 2"
+    },
+    "series": {
+      "Amounts Set Aside": "Sommes mises de côté",
+      "Remaining Estimate": "Estimation restante"
     }
   },
   "finance": {
