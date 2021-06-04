@@ -196,6 +196,7 @@
   "finResource": {
     "dataLabel": "total financial resources:",
     "billy": "billion $CAD",
+    "b": "billion",
     "titleResource": "Financial Instruments Utilized in Financial Resource Plan:",
     "pipe": "Pipelines",
     "yAxisResource1": "Number of companies using financial resource",
@@ -203,7 +204,16 @@
     "source": "Source: CER",
     "tooltipClass": "Companies in",
     "titleClass": "Absolute Liability Limits by Class:",
-    "yAxisClass": "Financial resource requirement (Billion $CAD)"
+    "yAxisClass": "Financial resource requirement (Billion $CAD)",
+    "series": {
+      "Oil": "Oil",
+      "Gas": "Gas",
+      "All": "All"
+    },
+    "tooltip": {
+      "companies": "Companies using Financial Instrument",
+      "total": "Financial Instrument Total"
+    }
   },
   "abandon": {
     "pctAside": "% set-aside:",

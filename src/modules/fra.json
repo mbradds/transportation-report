@@ -149,19 +149,30 @@
     }
   },
   "nglProduction": {
-    "source": "Source : Avenir énergétique"
+    "source": "Source : Avenir énergétique",
+    "series": {
+      "Ethane": "Éthane"
+    }
   },
   "nglExports": {
     "figureNum": "Figure 22:",
     "exports": "Exportations",
     "source": "Source : Système de suivi des produits de la Régie",
-    "noData": "Aucune exportation"
+    "noData": "Aucune exportation",
+    "series": {
+      "Truck": "Camion",
+      "Marine": "Navire",
+      "Rail": "Train"
+    }
   },
   "nglDestination": {
     "figureNum": "Figure 23:",
     "exports": "Destination d’exportation",
     "noData": "Aucune exportation",
-    "credits": "Source : Système de suivi des produits de la Régie"
+    "credits": "Source : Système de suivi des produits de la Régie",
+    "series": {
+      "Other": "Autre"
+    }
   },
   "settlements": {
     "active": "Règlement(s) actif(s)",
@@ -267,6 +278,7 @@
   "finResource": {
     "dataLabel": "Total des ressources financières:",
     "billy": "en milliards de dollars CA",
+    "b": "milliard",
     "titleResource": "Instruments financiers utilisés dans le plan relatif aux ressources financières:",
     "pipe": "pipelines",
     "yAxisResource1": "Nombre de sociétés utilisant des ressources financières",
@@ -282,8 +294,8 @@
       "Commercial Paper": "Papier commercial",
       "Credit Facility": "Facilité de crédit",
       "Parental Guarantee": "Lettre de garantie de la société mère",
-      "Other financial resources:": "Autres ressources financières",
-      "Surety Bond / Indemnity etc.": "Cautionnement / indemnité, etc.",
+      "Other financial resources": "Autres ressources financières",
+      "Surety Bond  / Indemnity etc.": "Cautionnement / indemnité, etc.",
       "Letter of Credit": "Lettre de crédit"
     },
     "classes": {
@@ -294,6 +306,15 @@
       "Gas Class 2": "Gaz – Catégorie 2",
       "Gas Class 3": "Gaz – Catégorie 3",
       "Gas Class 4": "Gaz – Catégorie 4"
+    },
+    "series": {
+      "Oil": "pétrole",
+      "Gas": "gaz",
+      "All": "Tous"
+    },
+    "tooltip": {
+      "companies": "Sociétés ayant recours à un instrument financier",
+      "total": "Total des instruments financiers"
     }
   },
   "abandon": {

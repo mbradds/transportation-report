@@ -15,12 +15,12 @@ import { rebeccaGasPrices } from "./Rebecca/gas_prices/gas_prices";
 import { saraGasTraffic } from "./Sara/gas_traffic/gas_traffic";
 import { saraMnp } from "./Sara/st_stephen/st_stephen";
 import { sara2019 } from "./Sara/gas_2019/gas_2019";
-// import { ryanNglProduction } from "./Ryan/ngl_production/ngl_production";
-// import { ryanNglExports } from "./Ryan/ngl_exports/ngl_exports";
-// import { ryanNglDestination } from "./Ryan/ngl_exports/ngl_destination";
-// import { cassandraSettlements } from "./Cassandra/negotiated_settlements/settlements";
-// import { cassandraTolls } from "./Cassandra/tolls/tolls";
-// import { jenniferFinResources } from "./Jennifer/financial_instruments/fin_resource";
+import { ryanNglProduction } from "./Ryan/ngl_production/ngl_production";
+import { ryanNglExports } from "./Ryan/ngl_exports/ngl_exports";
+import { ryanNglDestination } from "./Ryan/ngl_exports/ngl_destination";
+import { cassandraSettlements } from "./Cassandra/negotiated_settlements/settlements";
+import { cassandraTolls } from "./Cassandra/tolls/tolls";
+import { jenniferFinResources } from "./Jennifer/financial_instruments/fin_resource";
 // import { jenniferAbandonment } from "./Jennifer/abandonment_funding/abandonment";
 // import { cassandraAllPipes } from "./Cassandra/all_pipes/pipeline_metrics";
 // import { jenniferRatingsCross } from "./Jennifer/credit_ratings_cross_section/credit_ratings_cross";
@@ -59,12 +59,12 @@ async function loadAllCharts(eng) {
     saraGasTraffic(eng.gasTraffic, eng.units),
     saraMnp(eng.gasMnp, eng.units),
     sara2019(eng.gas2019, eng.units),
-    // ryanNglProduction(eng.nglProduction, eng.shared, eng.units, translateEng),
-    // ryanNglExports(eng.nglExports, eng.units, translateEng),
-    // ryanNglDestination(eng.nglDestination, eng.units, translateEng),
-    // cassandraSettlements(eng.settlements),
-    // cassandraTolls(eng.tolls),
-    // jenniferFinResources(eng.finResource, translateEng),
+    ryanNglProduction(eng.nglProduction, eng.shared, eng.units),
+    ryanNglExports(eng.nglExports, eng.units),
+    ryanNglDestination(eng.nglDestination, eng.units),
+    cassandraSettlements(eng.settlements),
+    cassandraTolls(eng.tolls),
+    jenniferFinResources(eng.finResource),
     // jenniferAbandonment(eng.abandon, undefined, translateEng),
     // cassandraAllPipes(eng.finance, translateEng),
     // jenniferRatingsCross(eng.ratingsCross, false),

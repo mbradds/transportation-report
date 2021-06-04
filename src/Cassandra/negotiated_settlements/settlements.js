@@ -101,7 +101,6 @@ const createChart = (lang, names) => {
     const addRow = (row) => {
       return {
         name: applySubNames(row["Settlement Name"], lang.names),
-        //name: row["Settlement Name"],
         id: row["Settlement Name"],
         parent: row.Company,
         color: row.color,
@@ -304,7 +303,11 @@ const createChart = (lang, names) => {
               var legendText2 = "";
               if (clickedCompanies.size > 0) {
                 this.axis.series[0].points.map((settlement) => {
-                  if (clickedCompanies.has(settlement.parent)) {
+                  let parent = settlement.parent;
+                  if (names) {
+                    parent = names[settlement.parent];
+                  }
+                  if (clickedCompanies.has(parent)) {
                     subColors.add(settlement.color);
                   }
                 });

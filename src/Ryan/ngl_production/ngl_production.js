@@ -3,7 +3,7 @@ import { productionChart, errorChart } from "../../modules/charts.js";
 import nglProdData from "./figures.json";
 import Series from "highseries";
 
-const createChart = (lang, langShared, langUnits, translate) => {
+const createChart = (lang, langShared, langUnits) => {
   var units = conversions("Mb/d to m3/d", "Mb/d", "Mb/d");
   units.display = langUnits[units.unitsCurrent];
   var nglProdColors = {
@@ -18,6 +18,7 @@ const createChart = (lang, langShared, langUnits, translate) => {
       xCol: "Year",
       yCols: ["Ethane", "Propane", "Butanes"],
       colors: nglProdColors,
+      names: lang.series,
     });
     var params = {
       div: "container_ngl_production",
@@ -59,7 +60,6 @@ const createChart = (lang, langShared, langUnits, translate) => {
           pointFormat: tooltipPoint(units.display),
         },
       });
-      translate(chartNgl);
     });
   };
   try {
@@ -69,11 +69,8 @@ const createChart = (lang, langShared, langUnits, translate) => {
   }
 };
 
-export function ryanNglProduction(lang, langShared, langUnits, translate) {
+export function ryanNglProduction(lang, langShared, langUnits) {
   return new Promise((resolve) => {
-    setTimeout(
-      () => resolve(createChart(lang, langShared, langUnits, translate)),
-      0
-    );
+    setTimeout(() => resolve(createChart(lang, langShared, langUnits)), 0);
   });
 }
