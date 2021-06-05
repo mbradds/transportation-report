@@ -69,6 +69,7 @@ const createChart = (lang, langUnits) => {
       series: series.hcSeries,
       xAxisType: "linear",
       crosshair: true,
+      endOnTick: true,
     };
     var crudeTakeawayChart = lineAndStackedArea(params);
     crudeTakeawayChart.update({

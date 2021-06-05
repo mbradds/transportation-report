@@ -43,6 +43,7 @@ const createChart = (lang, langUnits) => {
       series: series.hcSeries,
       xAxisType: "datetime",
       crosshair: true,
+      endOnTick: false,
     };
     var chartGasTraffic = lineAndStackedArea(params);
 

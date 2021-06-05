@@ -3,7 +3,6 @@ import {
   creditsClick,
   cerPalette,
   bands,
-  annotation,
   labeler,
   mouseOverFunction,
   mouseOutFunction,
@@ -70,11 +69,12 @@ export const lineAndStackedArea = (params) => {
     xAxis: {
       type: params.xAxisType,
       crosshair: params.crosshair,
+      allowDecimals: false,
     },
 
     yAxis: {
       title: { text: params.units.display },
-      endOnTick: false,
+      endOnTick: params.endOnTick,
     },
 
     series: params.series,

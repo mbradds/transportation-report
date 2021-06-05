@@ -33,6 +33,7 @@ const createChart = (lang) => {
       series: series.hcSeries,
       xAxisType: "datetime",
       crosshair: true,
+      endOnTick: false,
     };
     return lineAndStackedArea(params);
   } catch (err) {
