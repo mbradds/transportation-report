@@ -147,6 +147,7 @@ export const frenchTheme = () => {
       downloadXLS: "Télécharger en XLS",
       printChart: "Imprimer le graphique",
       resetZoom: "Réinitialiser l’agrandissement",
+      viewFullscreen: "Voir en plein écran",
       viewData: "Afficher les données",
     },
   };
